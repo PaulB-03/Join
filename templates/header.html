@@ -1,11 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join</title>
+
+    <link rel="stylesheet" href="../styles/standard.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background-color: aliceblue;
+        }
+
+        header {
+            height: 96px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px 20px 348px;
+            background-color: #fff;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .avatar-wrapper {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .avatar-wrapper img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .avatar-wrapper img.hover {
+            opacity: 0;
+        }
+
+        .avatar-wrapper:hover img.hover {
+            opacity: 1;
+        }
+
+        .avatar-wrapper:hover img.default {
+            opacity: 0;
+        }
+
+        .helper {
+            width: 40px;
+            height: 40px;
+            display: block;
+            object-fit: contain;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .helper:hover {
+            transform: scale(1.2);
+        }
+    </style>
 </head>
+
 <body>
-    
+    <header id="header">
+        <p>Kanban Projekt Management Tool</p>
+        <nav class="header-nav">
+            <img class="helper" src="../../../../assets/img/helper.png" alt="Hilfe Icon" />
+            
+            <div class="avatar-wrapper" title="Profil">
+                <img class="default" src="../../../../assets/img/user.png" alt="Benutzerprofil">
+                <img class="hover" src="../../../../assets/img/user-hover.png" alt="Benutzerprofil Hover">
+            </div>
+
+            <div class="avatar-wrapper" title="Gast">
+                <img class="default" src="../../../../assets/img/guest.png" alt="Gastprofil">
+                <img class="hover" src="../../../../assets/img/guest-hover.png" alt="Gastprofil Hover">
+            </div>
+        </nav>
+    </header>
 </body>
+
 </html>
