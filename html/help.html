@@ -1,11 +1,208 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Join – Help</title>
+    <link rel="styleseeht" href="../styles/standard.css">
+    <style>
+        body {
+            line-height: 1.6;
+            color: #1b1f23;
+            background: #fff;
+        }
+
+        main {
+            max-width: var(--max);
+            margin: 48px auto;
+            padding: 0 24px 64px;
+        }
+
+        .eyebrow {
+            font-size: 0.875rem;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: #6a737d;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            line-height: 1.2;
+            margin: 0 0 16px;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            margin: 32px 0 8px;
+        }
+
+        p {
+            margin: 0 0 14px;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .lead {
+            color: #374151
+        }
+
+        ol {
+            counter-reset: step;
+            list-style: none;
+            padding: 0;
+            margin: 18px 0 8px;
+        }
+
+        li {
+            counter-increment: step;
+            margin: 18px 0 0;
+            padding-left: 48px;
+            position: relative;
+        }
+
+        li::before {
+            content: counter(step) ".";
+            position: absolute;
+            left: 0;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        li h3 {
+            margin: 0 0 6px;
+            font-size: 1.05rem;
+        }
+
+        .footer-note {
+            margin-top: 24px;
+        }
+
+        .enjoy {
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .help-title {
+            display: inline-block;
+            margin: 0;
+        }
+
+        .scroll-arrow {
+            position: sticky;
+            top: 20px;
+            float: right;
+            width: 24px;
+            height: auto;
+            border-radius: 50%;
+            padding: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-arrow:hover {
+            background: #e5e7eb;
+            transform: scale(0.8);
+            cursor: pointer;
+        }
+    </style>
 </head>
+
 <body>
-    
+    <main>
+        <h1 class="help-title">Help</h1>
+        <img class="scroll-arrow" src="../assets/svg/Default-arrow.svg" alt="arrow" onclick="history.back()">
+
+        <p class="lead">
+            Welcome to the help page for <strong>Join</strong>, your guide to using our Kanban project management tool.
+            Here, we'll provide an overview of what Join is, how it can benefit you, and how to use it.
+        </p>
+
+        <h2>What is Join?</h2>
+        <p>
+            <strong>Join</strong> is a Kanban-based project management tool designed and built by a group of dedicated
+            students as part of their web development bootcamp at the Developer Akademie.
+        </p>
+        <p>
+            Kanban, a Japanese term meaning “billboard”, is a highly effective method to visualize work,
+            limit work-in-progress, and maximize efficiency (flow). Join leverages Kanban principles to help you
+            manage tasks and projects in an intuitive, visual interface.
+        </p>
+        <div class="note">
+            It is important to note that Join is designed as an educational exercise and is not intended for extensive
+            business usage. While we strive to ensure the best possible user experience, we cannot guarantee consistent
+            availability, reliability, accuracy, or other aspects of quality regarding Join.
+        </div>
+
+        <h2>How to use it</h2>
+        <p>Here is a step-by-step guide on how to use Join:</p>
+
+        <ol>
+            <li>
+                <h3>Exploring the Board</h3>
+                <p>
+                    When you log in to Join, you'll find a default board. This board represents your project and
+                    contains four default lists: “To Do”, “In Progress”, “Await feedback”, and “Done”.
+                </p>
+            </li>
+
+            <li>
+                <h3>Creating Contacts</h3>
+                <p>
+                    In Join, you can add contacts to collaborate on your projects. Go to the “Contacts” section,
+                    click “New contact”, and fill in the required information. Once added, these contacts can be
+                    assigned
+                    tasks and interact with tasks on the board.
+                </p>
+            </li>
+
+            <li>
+                <h3>Adding Cards</h3>
+                <p>
+                    Now that you've added your contacts, you can start adding cards. Cards represent individual tasks.
+                    Click the “+” button under the appropriate list to create a new card. Fill in the task details such
+                    as
+                    task name, description, due date, assignees, and priority.
+                </p>
+            </li>
+
+            <li>
+                <h3>Moving Cards</h3>
+                <p>
+                    As a task moves from one stage to another, reflect that on the board by dragging and dropping the
+                    card
+                    from one list to another.
+                </p>
+            </li>
+
+            <li>
+                <h3>Deleting Cards</h3>
+                <p>
+                    Once a task is completed, you can either move it to the “Done” list or delete it. Deleting a card
+                    will
+                    permanently remove it from the board. Please exercise caution when deleting cards, as this action is
+                    irreversible.
+                </p>
+            </li>
+        </ol>
+
+        <p class="footer-note">
+            Remember that using Join effectively requires consistent updates from you and your team to ensure
+            the board reflects the current state of your project.
+        </p>
+        <p class="footer-note">
+            Have more questions about Join? Feel free to contact us at <em>[Your Contact Email]</em>.
+            We're here to help you!
+        </p>
+        <p class="enjoy">Enjoy using Join!</p>
+    </main>
 </body>
+
 </html>
