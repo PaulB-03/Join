@@ -1,0 +1,33 @@
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --color-link: #007cee;
+  --color-icon: #a8a8a8;
+  --light-blue: #29abe2;
+  --color-statsbar: #4589ff;
+  --main-color: #2a3647;
+  --main-color-dark: #091931;
+  --main-bg-color: #f6f7f8;
+  --color-sidebar-icons: #cdcdcd;
+  --color-placeholder: #d1d1d1;
+  --bottom-gradient: #f4f4f4;
+  --button-urgent: #ff3d00;
+  --button-medium: #ffa800;
+  --button-low: #7ae229;
+  --form-error: #ff8190;
+  --contact-bg-blue: #0038ff;
+  --contact-bg-light-blue: #00bee8;
+  --contact-bg-light-green: #1fd7c1;
+  --contact-bg-purple: #6e52ff;
+  --contact-bg-lilac: #9327ff;
+  --contact-bg-green: #c3ff2b;
+  --contact-bg-pink: #fc71ff;
+  --contact-bg-red: #ff4646;
+  --contact-bg-rose: #ff5eb3;
+  --contact-bg-peach: #ff745e;
+  --contact-bg-orange: #ff7a00;
+  --contact-bg-light-orange: #ffa35e;
+  --contact-bg-dark-yellow: #ffbb2b;
+  --contact-bg-medium-yellow: #ffc701;
+  --contact-bg-yellow: #ffe62b;
+}
