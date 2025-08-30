@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Inter';
 }
 
 /* Fonts: */
@@ -13,7 +14,7 @@
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/inter-v19-latin-regular.woff2') format('woff2');
+  src: url('../assets/fonts/inter-v19-latin-regular.woff2') format('woff2');
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
@@ -24,6 +25,6 @@
   font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
-  src: url('../fonts/inter-v19-latin-700.woff2') format('woff2');
+  src: url('../assets/fonts/inter-v19-latin-700.woff2') format('woff2');
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
