@@ -12,6 +12,8 @@
 
 .summaryNumber {
     font-size: 64px;
+    font-weight: 600;
+    text-align: center;
 }
 
 .svgImgContainer {
@@ -25,9 +27,25 @@
 
 .divider {
     background-color: #29ABE2;
-    width: 1px;
-    height: 54px;
+    width: 3px;
+    height: 59px;
+    border-radius: 10px;
 }
+
+/* -----------------------------summaryParentContainer------------------------------------ */
+
+.summaryParentContainer {
+    display: flex;
+    align-items: center;
+}
+
+.summaryContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    margin-left: 20px;
+}
+
 
 /* -------------------------------joinPresentationContainer------------------------ */
 
@@ -54,7 +72,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 18px
+    gap: 18px;
 }
 
 .toDoDoneSummaryBox {
@@ -63,6 +81,10 @@
     align-items: center;
     gap: 10px;
     padding: 19px 38px;
+    border-radius: 20px;
+    border-left: 1px solid #8080802e;
+    border-right: 1px solid #8080802e;
+    width: 264px;
 }
 
 .toDoDoneSummaryTextBox {
@@ -87,12 +109,75 @@
     justify-content: center;
     align-items: center;
     padding: 28px 48px;
-    gap: 18px;
+    gap: 50px;
+    border-radius: 20px;
+    border-left: 1px solid #8080802e;
+    border-right: 1px solid #8080802e;
 }
 
 .urgencyImgTextBox {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 18px;
+}
 
+.urgencyTextBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.summaryDeadLineTextBox p:first-child {
+    margin-bottom: 13px;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.summaryDeadLineTextBox p:nth-child(2) {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+
+/* ------------------------------- taskSummaryBoxes------------------------------- */
+
+.taskSummaryBoxes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 13px;
+
+}
+
+.numberBox {
+    padding: 25px;
+    border-radius: 20px;
+    border-left: 1px solid #8080802e;
+    border-right: 1px solid #8080802e;
+    width: 168px;
+}
+
+.numberBoxText {
+    font-size: 21px;
+    text-align: center;
+}
+
+/* -----------------greeting and Name----------------------------------- */
+
+.sumGreetingContainer {
+    width: 385px;
+    margin-left: 60px;
+}
+
+.sumGreetingContainer p:first-child {
+    font-size: 47px;
+    font-weight: 500;
+}
+
+.sumGreetingContainer p:nth-child(2) {
+    font-size: 64px;
+    font-weight: 700;
+    color: #2ca9e1;
 }
