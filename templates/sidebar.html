@@ -1,11 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Join</title>
+    <link rel="stylesheet" href="../styles/standard.css">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            background: linear-gradient(180deg, #1f2a3a, #243449);
+            color: #e8eef7;
+            box-sizing: border-box;
+        }
+
+        .sb-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 100px;
+            margin-top: 50px;
+        }
+
+        .join-logo {
+            width: 80px;
+            height: auto;
+            display: block;
+        }
+
+        .nav-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            width: 100%;
+            box-sizing: border-box;
+            text-decoration: none;
+            color: #a9b4c2;
+            font-size: 20px;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #e8eef7;
+        }
+
+        .icon img {
+            width: 20px;
+            height: 20px;
+            display: block;
+            filter: grayscale(1) brightness(0.8);
+            transition: filter 0.2s;
+        }
+
+        .nav-link:hover img,
+        .nav-link.active img {
+            filter: none;
+        }
+
+        .sb-footer {
+            margin-top: 180px;
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 16px;
+        }
+
+        .sb-footer a {
+            color: #a9b4c2;
+            text-decoration: none;
+        }
+
+        .sb-footer a:hover {
+            color: #e8eef7;
+        }
+    </style>
 </head>
+
 <body>
-    
+    <aside class="sidebar">
+        <div class="sb-header">
+            <img class="join-logo" src="../assets/svg/join_logo.svg" alt="Join Logo">
+        </div>
+
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">
+                        <span class="icon"><img src="../assets/svg/summary.svg" alt="Summary"></span>
+                        <span class="label">Summary</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span class="icon"><img src="../assets/svg/add.svg" alt="Add Task"></span>
+                        <span class="label">Add Task</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span class="icon"><img src="../assets/svg/board.svg" alt="Board"></span>
+                        <span class="label">Board</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span class="icon"><img src="../assets/svg/contacts.svg" alt="Contacts"></span>
+                        <span class="label">Contacts</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sb-footer">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Legal notice</a>
+        </div>
+    </aside>
 </body>
+
 </html>
