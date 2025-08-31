@@ -1,203 +1,200 @@
 <!DOCTYPE html>
 <html lang="de">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Kanban Project Management Tool</title>
-    <link rel="stylesheet" href="../styles/standard.css">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../styles/board.css">
-</head>
+    <link rel="stylesheet" href="../styles/standard.css" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/board.css" />
+    <link rel="stylesheet" href="../styles/fonts.css" />
+  </head>
 
-<body>
+  <body>
     <header id="header">
-        <p>Kanban Projekt Management Tool</p>
-        <nav class="header-nav">
-            <a href="../html/help.html"><img class="helper" src="../../assets/img/helper.png" alt="Hilfe Icon" /></a>
-            <div class="avatar-wrapper" title="Profil">
-                <img class="default" src="../../assets/img/user.png" alt="Benutzerprofil">
-                <img class="hover" src="../../assets/img/user-hover.png" alt="Benutzerprofil Hover">
-            </div>
-            <div class="avatar-wrapper" title="Gast">
-                <img class="default" src="../../assets/img/guest.png" alt="Gastprofil">
-                <img class="hover" src="../../assets/img/guest-hover.png" alt="Benutzerprofil Hover">
-            </div>
-        </nav>
+      <p>Kanban Projekt Management Tool</p>
+      <nav class="header-nav">
+        <a href="../html/help.html"><img class="helper" src="../../assets/img/helper.png" alt="Hilfe Icon" /></a>
+        <div class="avatar-wrapper" title="Profil">
+          <img class="default" src="../../assets/img/user.png" alt="Benutzerprofil" />
+          <img class="hover" src="../../assets/img/user-hover.png" alt="Benutzerprofil Hover" />
+        </div>
+        <div class="avatar-wrapper" title="Gast">
+          <img class="default" src="../../assets/img/guest.png" alt="Gastprofil" />
+          <img class="hover" src="../../assets/img/guest-hover.png" alt="Benutzerprofil Hover" />
+        </div>
+      </nav>
     </header>
 
     <aside class="sidebar">
-        <div class="sb-header">
-            <img class="join-logo" src="../assets/svg/join_logo.svg" alt="Join Logo">
-        </div>
+      <div class="sb-header">
+        <img class="join-logo" src="../assets/svg/join_logo.svg" alt="Join Logo" />
+      </div>
 
-        <nav>
-            <ul class="nav-list">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">
-                        <span class="icon"><img src="../assets/svg/summary.svg" alt="Summary"></span>
-                        <span class="label">Summary</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="icon"><img src="../assets/svg/add.svg" alt="Add Task"></span>
-                        <span class="label">Add Task</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="icon"><img src="../assets/svg/board.svg" alt="Board"></span>
-                        <span class="label">Board</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span class="icon"><img src="../assets/svg/contacts.svg" alt="Contacts"></span>
-                        <span class="label">Contacts</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+      <nav>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">
+              <span class="icon"><img src="../assets/svg/summary.svg" alt="Summary" /></span>
+              <span class="label">Summary</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span class="icon"><img src="../assets/svg/add.svg" alt="Add Task" /></span>
+              <span class="label">Add Task</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span class="icon"><img src="../assets/svg/board.svg" alt="Board" /></span>
+              <span class="label">Board</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span class="icon"><img src="../assets/svg/contacts.svg" alt="Contacts" /></span>
+              <span class="label">Contacts</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-        <div class="sb-footer">
-            <a href="../html/privacyPolicy.html">Privacy Policy</a>
-            <a href="../html/legalNotice.html">Legal notice</a>
-        </div>
+      <div class="sb-footer">
+        <a href="../html/privacyPolicy.html">Privacy Policy</a>
+        <a href="../html/legalNotice.html">Legal notice</a>
+      </div>
     </aside>
 
     <div class="app">
-        <div class="heading">
-            <h1>Board</h1>
-            <div class="controls">
-                <div class="search" role="search">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="7" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
-                    <input type="search" placeholder="Find Task" aria-label="Find Task" />
-                </div>
-                <a class="btn" href="#" onclick="return false" aria-label="Add task">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    Add task
-                </a>
-            </div>
+      <div class="heading">
+        <h1>Board</h1>
+        <div class="controls">
+          <div class="search" role="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input type="search" placeholder="Find Task" aria-label="Find Task" />
+          </div>
+          <a class="btn" href="#" onclick="return false" aria-label="Add task">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            Add task
+          </a>
+        </div>
+      </div>
+
+      <section class="board" aria-label="Kanban Board">
+        <!-- To do (leer) -->
+        <div class="column">
+          <div class="col-head">
+            To do
+            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+          </div>
+          <div class="dropzone">
+            <div class="empty">No tasks To do</div>
+          </div>
         </div>
 
-        <section class="board" aria-label="Kanban Board">
-            <!-- To do (leer) -->
-            <div class="column">
-                <div class="col-head">
-                    To do
-                    <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+        <!-- In progress (mit Karte) -->
+        <div class="column">
+          <div class="col-head">
+            In progress
+            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+          </div>
+          <div class="dropzone">
+            <article class="card">
+              <span class="pill user">User Story</span>
+              <div class="task-title">Kochwelt Page &amp; Recipe Recommender</div>
+              <div class="task-desc">Build start page with recipe recommendation cards and filter chips…</div>
+
+              <div class="row">
+                <div class="avatars">
+                  <div class="av orange">AK</div>
+                  <div class="av blue">EN</div>
+                  <div class="av violet">MB</div>
                 </div>
-                <div class="dropzone">
-                    <div class="empty">No tasks To do</div>
+              </div>
+
+              <div class="progress">
+                <div class="bar" style="width: 50%"></div>
+              </div>
+              <div class="meta"><span>1/2 Subtasks</span></div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Await feedback (2 Karten) -->
+        <div class="column">
+          <div class="col-head">
+            Await feedback
+            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+          </div>
+          <div class="dropzone">
+            <article class="card">
+              <span class="pill tech">Technical Task</span>
+              <div class="task-title">HTML Base Template Creation</div>
+              <div class="task-desc">Create reusable HTML base templates for pages and modals…</div>
+
+              <div class="row">
+                <div class="avatars">
+                  <div class="av violet">DE</div>
+                  <div class="av blue">AS</div>
                 </div>
-            </div>
+              </div>
+              <div class="progress">
+                <div class="bar" style="width: 70%"></div>
+              </div>
+              <div class="meta"><span>2/2 Subtasks</span></div>
+            </article>
 
-            <!-- In progress (mit Karte) -->
-            <div class="column">
-                <div class="col-head">
-                    In progress
-                    <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+            <article class="card">
+              <span class="pill user">User Story</span>
+              <div class="task-title">Daily Kochwelt Recipe</div>
+              <div class="task-desc">Implement daily recipe and portion calculator with favorites…</div>
+
+              <div class="row">
+                <div class="avatars">
+                  <div class="av green">CS</div>
+                  <div class="av pink">TW</div>
                 </div>
-                <div class="dropzone">
-                    <article class="card">
-                        <span class="pill user">User Story</span>
-                        <div class="task-title">Kochwelt Page &amp; Recipe Recommender</div>
-                        <div class="task-desc">Build start page with recipe recommendation cards and filter chips…</div>
+              </div>
+              <div class="progress">
+                <div class="bar" style="width: 30%"></div>
+              </div>
+            </article>
+          </div>
+        </div>
 
-                        <div class="row">
-                            <div class="avatars">
-                                <div class="av orange">AK</div>
-                                <div class="av blue">EN</div>
-                                <div class="av violet">MB</div>
-                            </div>
-                        </div>
+        <!-- Done (1 Karte) -->
+        <div class="column">
+          <div class="col-head">
+            Done
+            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+          </div>
+          <div class="dropzone">
+            <article class="card">
+              <span class="pill tech">Technical Task</span>
+              <div class="task-title">CSS Architecture Planning</div>
+              <div class="task-desc">Define CSS naming conventions and structure for components…</div>
 
-                        <div class="progress">
-                            <div class="bar" style="width:50%"></div>
-                        </div>
-                        <div class="meta"><span>1/2 Subtasks</span></div>
-                    </article>
+              <div class="row">
+                <div class="avatars">
+                  <div class="av blue">SK</div>
+                  <div class="av violet">BZ</div>
                 </div>
-            </div>
-
-            <!-- Await feedback (2 Karten) -->
-            <div class="column">
-                <div class="col-head">
-                    Await feedback
-                    <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
-                </div>
-                <div class="dropzone">
-                    <article class="card">
-                        <span class="pill tech">Technical Task</span>
-                        <div class="task-title">HTML Base Template Creation</div>
-                        <div class="task-desc">Create reusable HTML base templates for pages and modals…</div>
-
-                        <div class="row">
-                            <div class="avatars">
-                                <div class="av violet">DE</div>
-                                <div class="av blue">AS</div>
-                            </div>
-                        </div>
-                        <div class="progress">
-                            <div class="bar" style="width:70%"></div>
-                        </div>
-                        <div class="meta"><span>2/2 Subtasks</span></div>
-                    </article>
-
-                    <article class="card">
-                        <span class="pill user">User Story</span>
-                        <div class="task-title">Daily Kochwelt Recipe</div>
-                        <div class="task-desc">Implement daily recipe and portion calculator with favorites…</div>
-
-                        <div class="row">
-                            <div class="avatars">
-                                <div class="av green">CS</div>
-                                <div class="av pink">TW</div>
-                            </div>
-                        </div>
-                        <div class="progress">
-                            <div class="bar" style="width:30%"></div>
-                        </div>
-                    </article>
-                </div>
-            </div>
-
-            <!-- Done (1 Karte) -->
-            <div class="column">
-                <div class="col-head">
-                    Done
-                    <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
-                </div>
-                <div class="dropzone">
-                    <article class="card">
-                        <span class="pill tech">Technical Task</span>
-                        <div class="task-title">CSS Architecture Planning</div>
-                        <div class="task-desc">Define CSS naming conventions and structure for components…</div>
-
-                        <div class="row">
-                            <div class="avatars">
-                                <div class="av blue">SK</div>
-                                <div class="av violet">BZ</div>
-                            </div>
-                        </div>
-                        <div class="progress">
-                            <div class="bar" style="width:100%"></div>
-                        </div>
-                        <div class="meta"><span>2/2 Subtasks</span></div>
-                    </article>
-                </div>
-            </div>
-        </section>
+              </div>
+              <div class="progress">
+                <div class="bar" style="width: 100%"></div>
+              </div>
+              <div class="meta"><span>2/2 Subtasks</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
     </div>
-</body>
-
+  </body>
 </html>

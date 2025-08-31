@@ -1,185 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Join – Help</title>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Join – Help</title>
+    <link rel="stylesheet" href="../styles/standard.css" />
+    <link rel="stylesheet" href="../styles/colors.css" />
+    <link rel="stylesheet" href="../styles/help.css" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/fonts.css" />
+  </head>
 
-  <link rel="stylesheet" href="../styles/standard.css" />
-  <link rel="stylesheet" href="../styles/colors.css" />
-  <link rel="stylesheet" href="../styles/help.css" />
-  <link rel="stylesheet" href="../style.css" />
-</head>
+  <body>
+    <header id="header">
+      <p>Kanban Projekt Management Tool</p>
+      <nav class="header-nav" aria-label="Top navigation">
+        <a href="../html/help.html" aria-current="page" title="Help">
+          <img class="helper" src="../../assets/img/helper.png" alt="Hilfe Icon" />
+        </a>
 
-<body>
-  <header id="header">
-    <p>Kanban Projekt Management Tool</p>
-    <nav class="header-nav" aria-label="Top navigation">
-      <a href="../html/help.html" aria-current="page" title="Help">
-        <img class="helper" src="../../assets/img/helper.png" alt="Hilfe Icon" />
-      </a>
+        <div class="avatar-wrapper" title="Profil">
+          <img class="default" src="../../assets/img/user.png" alt="Benutzerprofil" />
+          <img class="hover" src="../../assets/img/user-hover.png" alt="Benutzerprofil Hover" />
+        </div>
 
-      <div class="avatar-wrapper" title="Profil">
-        <img class="default" src="../../assets/img/user.png" alt="Benutzerprofil">
-        <img class="hover" src="../../assets/img/user-hover.png" alt="Benutzerprofil Hover">
+        <div class="avatar-wrapper" title="Gast">
+          <img class="default" src="../../assets/img/guest.png" alt="Gastprofil" />
+          <img class="hover" src="../../assets/img/guest-hover.png" alt="Gastprofil Hover" />
+        </div>
+      </nav>
+    </header>
+
+    <aside class="sidebar" aria-label="Sidebar">
+      <div class="sb-header">
+        <a href="../index.html" title="Zur Startseite">
+          <img class="join-logo" src="../assets/svg/join_logo.svg" alt="Join Logo" />
+        </a>
       </div>
 
-      <div class="avatar-wrapper" title="Gast">
-        <img class="default" src="../../assets/img/guest.png" alt="Gastprofil">
-        <img class="hover" src="../../assets/img/guest-hover.png" alt="Gastprofil Hover">
+      <nav>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">
+              <span class="icon"><img src="../assets/svg/summary.svg" alt="Summary" /></span>
+              <span class="label">Summary</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span class="icon"><img src="../assets/svg/add.svg" alt="Add Task" /></span>
+              <span class="label">Add Task</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span class="icon"><img src="../assets/svg/board.svg" alt="Board" /></span>
+              <span class="label">Board</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span class="icon"><img src="../assets/svg/contacts.svg" alt="Contacts" /></span>
+              <span class="label">Contacts</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Hauptnavigation">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a class="nav-link" href="../html/login.html">
+              <span class="icon"><img src="../assets/svg/login.svg" alt="Log In" /></span>
+              <span class="label">Log In</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sb-footer">
+        <a href="../html/privacyPolicy.html">Privacy Policy</a>
+        <a href="../html/legalNotice.html">Legal notice</a>
       </div>
-    </nav>
-  </header>
+    </aside>
 
-  <aside class="sidebar" aria-label="Sidebar">
-    <div class="sb-header">
-      <a href="../index.html" title="Zur Startseite">
-        <img class="join-logo" src="../assets/svg/join_logo.svg" alt="Join Logo">
-      </a>
-    </div>
+    <main>
+      <h1 class="help-title">Help</h1>
+      <img class="scroll-arrow" src="../assets/svg/Default-arrow.svg" alt="Go back" onclick="history.back()" />
 
-    <nav>
-      <ul class="nav-list">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">
-            <span class="icon"><img src="../assets/svg/summary.svg" alt="Summary"></span>
-            <span class="label">Summary</span>
-          </a>
+      <p class="lead">
+        Welcome to the help page for
+        <a href="../index.html">Join</a>, your guide to using our Kanban project management tool. Here, we'll provide an overview of what <a href="../index.html">Join</a> is, how it can benefit you,
+        and how to use it.
+      </p>
+
+      <h2>What is Join?</h2>
+      <p>
+        <a href="../index.html">Join</a> is a Kanban-based project management tool designed and built by a group of dedicated students as part of their web development bootcamp at the Developer
+        Akademie.
+      </p>
+      <p>
+        Kanban, a Japanese term meaning “billboard”, is a highly effective method to visualize work, limit work-in-progress, and maximize efficiency (flow). <a href="../index.html">Join</a> leverages
+        Kanban principles to help you manage tasks and projects in an intuitive, visual interface.
+      </p>
+
+      <div class="note">
+        It is important to note that <a href="../index.html">Join</a> is designed as an educational exercise and is not intended for extensive business usage. While we strive to ensure the best
+        possible user experience, we cannot guarantee consistent availability, reliability, accuracy, or other aspects of quality regarding <a href="../index.html">Join</a>.
+      </div>
+
+      <h2>How to use it</h2>
+      <p>Here is a step-by-step guide on how to use <a href="../index.html">Join</a>:</p>
+
+      <ol>
+        <li>
+          <h3>Exploring the Board</h3>
+          <p>
+            When you log in to <a href="../index.html">Join</a>, you'll find a default board. This board represents your project and contains four default lists: “To Do”, “In Progress”, “Await
+            feedback”, and “Done”.
+          </p>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span class="icon"><img src="../assets/svg/add.svg" alt="Add Task"></span>
-            <span class="label">Add Task</span>
-          </a>
+
+        <li>
+          <h3>Creating Contacts</h3>
+          <p>
+            In <a href="../index.html">Join</a>, you can add contacts to collaborate on your projects. Go to the “Contacts” section, click “New contact”, and fill in the required information. Once
+            added, these contacts can be assigned tasks and interact with tasks on the board.
+          </p>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span class="icon"><img src="../assets/svg/board.svg" alt="Board"></span>
-            <span class="label">Board</span>
-          </a>
+
+        <li>
+          <h3>Adding Cards</h3>
+          <p>
+            Now that you've added your contacts, you can start adding cards. Cards represent individual tasks. Click the “+” button under the appropriate list to create a new card. Fill in the task
+            details such as task name, description, due date, assignees, and priority.
+          </p>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span class="icon"><img src="../assets/svg/contacts.svg" alt="Contacts"></span>
-            <span class="label">Contacts</span>
-          </a>
+
+        <li>
+          <h3>Moving Cards</h3>
+          <p>As a task moves from one stage to another, reflect that on the board by dragging and dropping the card from one list to another.</p>
         </li>
-      </ul>
-    </nav>
 
-    <nav aria-label="Hauptnavigation">
-      <ul class="nav-list">
-        <li class="nav-item">
-          <a class="nav-link" href="../html/login.html">
-            <span class="icon"><img src="../assets/svg/login.svg" alt="Log In"></span>
-            <span class="label">Log In</span>
-          </a>
+        <li>
+          <h3>Deleting Cards</h3>
+          <p>
+            Once a task is completed, you can either move it to the “Done” list or delete it. Deleting a card will permanently remove it from the board. Please exercise caution when deleting cards, as
+            this action is irreversible.
+          </p>
         </li>
-      </ul>
-    </nav>
+      </ol>
 
-    <div class="sb-footer">
-      <a href="../html/privacyPolicy.html">Privacy Policy</a>
-      <a href="../html/legalNotice.html">Legal notice</a>
-    </div>
-  </aside>
+      <p class="footer-note">
+        Remember that using <a href="../index.html">Join</a> effectively requires consistent updates from you and your team to ensure the board reflects the current state of your project.
+      </p>
 
-  <main>
-    <h1 class="help-title">Help</h1>
-    <img class="scroll-arrow" src="../assets/svg/Default-arrow.svg" alt="Go back" onclick="history.back()" />
+      <p class="footer-note">Have more questions about <a href="../index.html">Join</a>? Feel free to contact us at <em>[Your Contact Email]</em>. We're here to help you!</p>
 
-    <p class="lead">
-      Welcome to the help page for
-      <a href="../index.html">Join</a>, your guide to using our Kanban project management tool. Here,
-      we'll provide an overview of what <a href="../index.html">Join</a> is, how it can benefit you, and how to use it.
-    </p>
-
-    <h2>What is Join?</h2>
-    <p>
-      <a href="../index.html">Join</a> is a Kanban-based project management tool designed and built by a group of
-      dedicated
-      students as part of their web development bootcamp at the Developer Akademie.
-    </p>
-    <p>
-      Kanban, a Japanese term meaning “billboard”, is a highly effective method to visualize work, limit
-      work-in-progress, and maximize efficiency (flow). <a href="../index.html">Join</a> leverages Kanban principles to
-      help
-      you manage tasks and projects in an intuitive, visual interface.
-    </p>
-
-    <div class="note">
-      It is important to note that <a href="../index.html">Join</a> is designed as an educational exercise and is not
-      intended for extensive
-      business usage. While we strive to ensure the best possible user experience, we
-      cannot guarantee consistent availability, reliability, accuracy, or other aspects of quality regarding <a
-        href="../index.html">Join</a>.
-    </div>
-
-    <h2>How to use it</h2>
-    <p>Here is a step-by-step guide on how to use <a href="../index.html">Join</a>:</p>
-
-    <ol>
-      <li>
-        <h3>Exploring the Board</h3>
-        <p>
-          When you log in to <a href="../index.html">Join</a>, you'll find a default board. This board represents your
-          project and contains four
-          default lists: “To Do”, “In Progress”, “Await feedback”, and “Done”.
-        </p>
-      </li>
-
-      <li>
-        <h3>Creating Contacts</h3>
-        <p>
-          In <a href="../index.html">Join</a>, you can add contacts to collaborate on your projects. Go to the
-          “Contacts” section, click “New
-          contact”, and fill in the required information. Once added, these contacts can be assigned tasks and interact
-          with tasks on the board.
-        </p>
-      </li>
-
-      <li>
-        <h3>Adding Cards</h3>
-        <p>
-          Now that you've added your contacts, you can start adding cards. Cards represent individual tasks. Click the
-          “+” button under the appropriate list to create a new card. Fill in the task details such as task name,
-          description, due date, assignees, and priority.
-        </p>
-      </li>
-
-      <li>
-        <h3>Moving Cards</h3>
-        <p>
-          As a task moves from one stage to another, reflect that on the board by dragging and dropping the card from
-          one list to another.
-        </p>
-      </li>
-
-      <li>
-        <h3>Deleting Cards</h3>
-        <p>
-          Once a task is completed, you can either move it to the “Done” list or delete it. Deleting a card will
-          permanently remove it from the board. Please exercise caution when deleting cards, as this action is
-          irreversible.
-        </p>
-      </li>
-    </ol>
-
-    <p class="footer-note">
-      Remember that using <a href="../index.html">Join</a> effectively requires consistent updates from you and your
-      team to
-      ensure the board reflects the current state of your project.
-    </p>
-
-    <p class="footer-note">
-      Have more questions about <a href="../index.html">Join</a>? Feel free to contact us at <em>[Your Contact
-        Email]</em>.
-      We're here to help you!
-    </p>
-
-    <p class="enjoy">Enjoy using <a href="../index.html">Join</a>!</p>
-  </main>
-</body>
-
+      <p class="enjoy">Enjoy using <a href="../index.html">Join</a>!</p>
+    </main>
+  </body>
 </html>
