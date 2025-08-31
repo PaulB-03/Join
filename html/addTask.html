@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/addTask.css">
+    <link rel="stylesheet" href="../styles/colors.css">
+    <link rel="stylesheet" href="../styles/standard.css">
+
+    <script src="../scripts/addTask.js"></script>
     <title>Add Task</title>
     <link rel="stylesheet" href="../styles/fonts.css" />
+
 
 </head>
 <body>
@@ -18,7 +24,7 @@
             </div>
             <div class="inputFlexbox">
                 <span id="requiredHeaders">Title <img src="../assets/svg/required.svg" alt="" id="required"></span>
-                <input class="title" id="titleInput" type="text" placeholder="Enter a title">
+                <input class="title" id="titleInput" type="text" placeholder="Enter a title" required onclick="keepInputBlue(0)">
             </div>
             <div class="inputFlexbox">
                 <span>Description</span>
@@ -33,10 +39,7 @@
                     </div>
                     <ul id="dropdown-list-contacts"></ul>
                 </div>
-                <div id="assignedToInitials" style="display: none;">
-                    
-                </div>
-
+                <div id="assignedToInitials" style="display: none;"></div>
             </div>
             <div class="inputFlexbox">
                 <span id="requiredHeaders">Due date <img src="../assets/svg/required.svg" alt="" id="required"></span>
@@ -45,13 +48,13 @@
             <div class="inputFlexbox">
                 <span>Prio</span>
                 <div class="prioDivsWrapper">
-                    <div id="urgent" class="prioGrade">
+                    <div id="urgent" class="prioGrade" onclick="setPrioColor(0)">
                         <span>Urgent</span> <img src="../assets/svg/double_arrow_up.svg" class="prioImage" alt="">
                     </div>
-                    <div id="medium" class="prioGrade">
+                    <div id="medium" class="prioGrade" onclick="setPrioColor(1)">
                         <span>Medium</span> <img src="../assets/svg/double_lines.svg" class="prioImage" alt="">
                     </div>
-                    <div id="low" class="prioGrade">
+                    <div id="low" class="prioGrade" onclick="setPrioColor(2)">
                         <span>Low</span> <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="">
                     </div>
                 </div>
@@ -64,16 +67,16 @@
                         <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks"></img>
                     </div>
                     <ul id="dropdown-list-category">
-                        <li class="dropdown-item-category">
+                        <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
                             <label for="checkbox-1" class="custom-checkbox">
                                 Userstory
                                 <input type="checkbox">
                                 <span style="display: none;"></span>
                             </label>
                         </li>
-                        <li class="dropdown-item-category">
+                        <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
                             <label for="checkbox-2" class="custom-checkbox">
-                                Technical task
+                                Technical Task
                                 <input type="checkbox">
                                 <span style="display: none;"></span>
                             </label>
@@ -107,13 +110,12 @@
                 <span id="requiredHeaders"><img id="required" src="../assets/svg/required.svg" class="prioImage" alt=""><p>This field is required</p></span>
             </div>
         </div>
-        </div>
         <div class="addOrClear">
             <div id="clear" class="addOrClearBtn">
                 <p>Clear</p> <img src="../assets/svg/cancel.svg" alt="">
             </div>
             <button id="add" class="addOrClearBtn" type="submit">
-                <p>Create task</p> <img src="../assets/svg/check_2.svg" class="createTaskCheck" alt="">
+                <p>Create task</p> <img src="../assets/svg/check.svg" class="createTaskCheck" alt="">
             </button>
         </div>
     </form>
