@@ -32,6 +32,27 @@
     border-radius: 10px;
 }
 
+.boxHover:hover {
+    transition: 0.2s;
+    transform: scale(1.05);
+    cursor: pointer;
+    background-color: #2a3547;
+    color: white;
+    box-shadow: 0px 3px #2c364661;
+}
+
+.boxHover:hover .bgJoin {
+    background-color: white;
+}
+
+.boxHover:hover .svgImgContainer .svgImgEdit {
+    content: url('../assets/svg/edit_black.svg')
+}
+
+.boxHover:hover .svgImgContainer .svgImgCheck_2 {
+    content: url('../assets/svg/check_2_black.svg')
+}
+
 /* -----------------------------summaryParentContainer------------------------------------ */
 
 .summaryParentContainer {
@@ -43,6 +64,7 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
     margin-left: 20px;
 }
 
@@ -70,7 +92,7 @@
 
 .toDoDoneSummaryBoxes {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 18px;
 }
