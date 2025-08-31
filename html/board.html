@@ -1,11 +1,292 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kanban Project Management Tool</title>
+    <link rel="stylesheet" href="../styles/standard.css">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f6f8;
+            color: #0f172a;
+
+            /* Platz schaffen für Sidebar (240px) + Header (96px) */
+            padding-left: 240px;
+            padding-top: 96px;
+            margin: 0;
+        }
+
+        .app {
+            max-width: 1920px;
+            margin: 0 auto 80px;
+            padding: 28px 24px;
+        }
+
+        h1 {
+            font-size: 44px;
+            margin: 0;
+        }
+
+        .heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search {
+            position: relative;
+            width: 260px;
+        }
+
+        .search input {
+            width: 100%;
+            height: 40px;
+            padding: 0 40px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            outline: none;
+            font-size: 14px;
+            color: #0f172a;
+        }
+
+        .search svg {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            opacity: .55;
+        }
+
+        .btn {
+            height: 40px;
+            padding: 0 14px;
+            border-radius: 12px;
+            border: 1px solid #1118270f;
+            background: #111827;
+            color: #ffffff;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .06);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            align-items: start;
+        }
+
+        .col-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .col-head .count {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .col-head .add-card-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            margin-left: auto;
+            border: 1px solid #6b7280;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #6b7280;
+            background: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .col-head .add-card-btn:hover {
+            background: #f3f4f6;
+            color: #0f172a;
+            border-color: #0f172a;
+        }
+
+
+        .dropzone {
+            padding: 10px;
+            border-radius: 14px;
+            min-height: 200px;
+            background: transparent;
+        }
+
+        .empty {
+            border: 1.5px dashed #d6dae2;
+            background: #fafbff;
+            color: #9aa3b2;
+            display: grid;
+            place-items: center;
+            height: 84px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+    </style>
 </head>
+
 <body>
-    
+    <header id="header">
+        <p>Kanban Projekt Management Tool</p>
+        <nav class="header-nav">
+            <a href="../html/help.html">
+                <img class="helper" src="../../assets/img/helper.png" alt="Hilfe Icon" />
+            </a>
+
+            <div class="avatar-wrapper" title="Profil">
+                <img class="default" src="../../assets/img/user.png" alt="Benutzerprofil">
+                <img class="hover" src="../../assets/img/user-hover.png" alt="Benutzerprofil Hover">
+            </div>
+
+            <div class="avatar-wrapper" title="Gast">
+                <img class="default" src="../../assets/img/guest.png" alt="Gastprofil">
+                <img class="hover" src="../../assets/img/guest-hover.png" alt="Gastprofil Hover">
+            </div>
+        </nav>
+    </header>
+
+    <aside class="sidebar">
+        <div class="sb-header">
+            <img class="join-logo" src="../assets/svg/join_logo.svg" alt="Join Logo">
+        </div>
+
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">
+                        <span class="icon"><img src="../assets/svg/summary.svg" alt="Summary"></span>
+                        <span class="label">Summary</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span class="icon"><img src="../assets/svg/add.svg" alt="Add Task"></span>
+                        <span class="label">Add Task</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span class="icon"><img src="../assets/svg/board.svg" alt="Board"></span>
+                        <span class="label">Board</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <span class="icon"><img src="../assets/svg/contacts.svg" alt="Contacts"></span>
+                        <span class="label">Contacts</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="sb-footer">
+            <a href="../html/privacyPolicy.html">Privacy Policy</a>
+            <a href="../html/legalNotice.html">Legal notice</a>
+        </div>
+    </aside>
+    <div class="app">
+        <div class="heading">
+            <h1>Board</h1>
+            <div class="controls">
+                <div class="search" role="search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input type="search" placeholder="Find Task" aria-label="Find Task" />
+                </div>
+                <a class="btn" href="#" onclick="return false" aria-label="Add task">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Add task
+                </a>
+            </div>
+        </div>
+
+        <section class="board" aria-label="Kanban Board">
+            <div class="column">
+                <div class="col-head">
+                    To do
+                    <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+                </div>
+
+                <div class="dropzone">
+                    <div class="empty">No tasks To do</div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="col-head">
+                    In progress
+                    <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+                </div>
+
+                <div class="dropzone">
+                    <div class="empty">No tasks In progress</div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="col-head">
+                    Await feedback
+                    <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+                </div>
+
+                <div class="dropzone">
+                    <div class="empty">No tasks Await feedback</div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="col-head">
+                    Done
+                    <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+                </div>
+
+                <div class="dropzone">
+                    <div class="empty">No tasks Done</div>
+                </div>
+            </div>
+        </section>
+    </div>
 </body>
+
 </html>
