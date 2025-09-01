@@ -12,6 +12,12 @@
   overflow-y: auto;
 }
 
+.contactList img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
 .contactDetails {
   width: 75%;
   display: flex;
