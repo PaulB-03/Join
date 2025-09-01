@@ -23,7 +23,7 @@
           <h1>Add Task</h1>
         </div>
         <div class="inputFlexbox">
-          <span id="requiredHeaders">Title <img src="../assets/svg/required.svg" alt="" id="required" /></span>
+          <span id="requiredHeaders">Title <img src="../assets/svg/required.svg" alt="" id="required" required onclick="keepInputBlue(0)"></span>
           <input class="title" id="titleInput" type="text" placeholder="Enter a title" />
         </div>
         <div class="inputFlexbox">
@@ -48,9 +48,9 @@
         <div class="inputFlexbox">
           <span>Prio</span>
           <div class="prioDivsWrapper">
-            <div id="urgent" class="prioGrade"><span>Urgent</span> <img src="../assets/svg/double_arrow_up.svg" class="prioImage" alt="" /></div>
-            <div id="medium" class="prioGrade"><span>Medium</span> <img src="../assets/svg/double_lines.svg" class="prioImage" alt="" /></div>
-            <div id="low" class="prioGrade"><span>Low</span> <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="" /></div>
+            <div id="urgent" class="prioGrade"><span>Urgent</span> <img src="../assets/svg/double_arrow_up.svg" class="prioImage" alt="" onclick="setPrioColor(0)"></div>
+            <div id="medium" class="prioGrade"><span>Medium</span> <img src="../assets/svg/double_lines.svg" class="prioImage" alt="" onclick="setPrioColor(1)"></div>
+            <div id="low" class="prioGrade"><span>Low</span> <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="" onclick="setPrioColor(2)"></div>
           </div>
         </div>
         <div class="inputFlexbox" id="category">
@@ -61,16 +61,16 @@
               <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" />
             </div>
             <ul id="dropdown-list-category">
-              <li class="dropdown-item-category">
+              <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
                 <label for="checkbox-1" class="custom-checkbox">
                   Userstory
                   <input type="checkbox" />
                   <span style="display: none"></span>
                 </label>
               </li>
-              <li class="dropdown-item-category">
+              <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
                 <label for="checkbox-2" class="custom-checkbox">
-                  Technical task
+                  Technical Task
                   <input type="checkbox" />
                   <span style="display: none"></span>
                 </label>
@@ -114,7 +114,7 @@
         </div>
         <button id="add" class="addOrClearBtn" type="submit">
           <p>Create task</p>
-          <img src="../assets/svg/check_2.svg" class="createTaskCheck" alt="" />
+          <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
         </button>
       </div>
     </form>
