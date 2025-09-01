@@ -1,0 +1,29 @@
+.legalContent {
+  max-width: 1920px;
+  padding: 150px 20px 64px 380px;
+  line-height: 1.6;
+}
+
+.legalContent a {
+  color: var(--light-blue);
+}
+
+.legalContent a:hover {
+  font-weight: 400;
+}
+
+.legalContent h3 {
+  margin-top: 16px;
+}
+
+.legalContent p {
+  margin: 0 0 14px;
+}
+
+.legalContent ol {
+  margin-left: 32px;
+}
+
+.legalContent ul {
+  margin-left: 24px;
+}

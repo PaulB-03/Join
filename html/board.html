@@ -3,68 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kanban Project Management Tool</title>
+    <title>Join – Board</title>
+    <link rel="shortcut icon" href="../assets/svg/favicon.svg" type="image/x-icon" />
     <link rel="stylesheet" href="../styles/standard.css" />
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../styles/board.css" />
     <link rel="stylesheet" href="../styles/fonts.css" />
+    <script src="../script.js"></script>
   </head>
 
-  <body>
-    <header id="header">
-      <p>Kanban Projekt Management Tool</p>
-      <nav class="header-nav">
-        <a href="../html/help.html"><img class="helper" src="../../assets/img/helper.png" alt="Hilfe Icon" /></a>
-        <div class="avatar-wrapper" title="Profil">
-          <img class="default" src="../../assets/img/user.png" alt="Benutzerprofil" />
-          <img class="hover" src="../../assets/img/user-hover.png" alt="Benutzerprofil Hover" />
-        </div>
-        <div class="avatar-wrapper" title="Gast">
-          <img class="default" src="../../assets/img/guest.png" alt="Gastprofil" />
-          <img class="hover" src="../../assets/img/guest-hover.png" alt="Benutzerprofil Hover" />
-        </div>
-      </nav>
-    </header>
-
-    <aside class="sidebar">
-      <div class="sb-header">
-        <img class="join-logo" src="../assets/svg/join_logo.svg" alt="Join Logo" />
-      </div>
-
-      <nav>
-        <ul class="nav-list">
-          <li class="nav-item">
-            <a class="nav-link active" href="#">
-              <span class="icon"><img src="../assets/svg/summary.svg" alt="Summary" /></span>
-              <span class="label">Summary</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span class="icon"><img src="../assets/svg/add.svg" alt="Add Task" /></span>
-              <span class="label">Add Task</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span class="icon"><img src="../assets/svg/board.svg" alt="Board" /></span>
-              <span class="label">Board</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span class="icon"><img src="../assets/svg/contacts.svg" alt="Contacts" /></span>
-              <span class="label">Contacts</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-
-      <div class="sb-footer">
-        <a href="../html/privacyPolicy.html">Privacy Policy</a>
-        <a href="../html/legalNotice.html">Legal notice</a>
-      </div>
-    </aside>
+  <body onload="includeHTML()">
+    <header id="header" class="d_none" w3-include-html="../templates/header.html"></header>
+    <aside id="sidebar" class="d_none" w3-include-html="../templates/sidebar.html"></aside>
 
     <div class="app">
       <div class="heading">

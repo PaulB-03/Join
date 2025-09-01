@@ -4,13 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join – Contacts</title>
+    <link rel="shortcut icon" href="../assets/svg/favicon.svg" type="image/x-icon" />
     <link rel="stylesheet" href="../styles/standard.css" />
     <link rel="stylesheet" href="../styles/contacts.css" />
     <link rel="stylesheet" href="../styles/colors.css" />
     <link rel="stylesheet" href="../styles/fonts.css" />
+    <script src="../script.js"></script>
     <script src="../scripts/contacts.js"></script>
   </head>
-  <body onload="initContactsList()">
+  <body onload="init()">
+    <header id="header" class="d_none" w3-include-html="../templates/header.html"></header>
+    <aside id="sidebar" class="d_none" w3-include-html="../templates/sidebar.html"></aside>
     <div class="contactPage">
       <div class="contactList">
         <img src="../assets/svg/addContactButton.svg" alt="" />

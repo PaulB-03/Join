@@ -3,14 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../assets/svg/favicon.svg" type="image/x-icon" />
     <link rel="stylesheet" href="../styles/summary.css" />
     <link rel="stylesheet" href="../styles/standard.css" />
     <link rel="stylesheet" href="../styles/colors.css" />
     <link rel="stylesheet" href="../styles/fonts.css" />
-    <title>Document</title>
+    <script src="../script.js"></script>
+    <title>Join – Summary</title>
   </head>
 
-  <body>
+  <body onload="includeHTML()">
+    <header id="header" class="d_none" w3-include-html="../templates/header.html"></header>
+    <aside id="sidebar" class="d_none" w3-include-html="../templates/sidebar.html"></aside>
     <section class="summarySection">
       <div class="joinPresentationContainer">
         <h1>Join 360</h1>

@@ -3,94 +3,29 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Join - Legal Notice</title>
+    <title>Join – Legal Notice</title>
+    <link rel="shortcut icon" href="../assets/svg/favicon.svg" type="image/x-icon" />
     <link rel="stylesheet" href="../styles/standard.css" />
+    <link rel="stylesheet" href="../styles/legal.css" />
     <link rel="stylesheet" href="../styles/colors.css" />
     <link rel="stylesheet" href="../styles/fonts.css" />
-    <style>
-      body {
-        line-height: 1.6;
-        color: #1b1f23;
-        background: #fff;
-      }
-
-      main {
-        max-width: var(--max);
-        margin: 48px auto;
-        padding: 0 24px 64px;
-      }
-
-      h1 {
-        font-size: 2.25rem;
-        line-height: 1.2;
-        margin: 0 0 16px;
-      }
-
-      h2 {
-        font-size: 1.35rem;
-        margin: 32px 0 8px;
-      }
-
-      h3 {
-        margin-top: 16px;
-      }
-
-      p {
-        margin: 0 0 14px;
-      }
-
-      a {
-        color: #2563eb;
-        text-decoration: none;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      ol {
-        counter-reset: step;
-        list-style: none;
-        padding: 0;
-        margin: 18px 0 8px;
-      }
-
-      li {
-        counter-increment: step;
-        margin: 8px 0 0;
-        padding-left: 48px;
-        position: relative;
-      }
-
-      li::before {
-        content: counter(step) ".";
-        position: absolute;
-        left: 0;
-        font-weight: 800;
-        font-size: 20px;
-      }
-
-      .noNumbers li {
-        counter-increment: none;
-        padding-left: 0;
-      }
-      .noNumbers li::before {
-        content: none;
-      }
-    </style>
+    <script src="../script.js"></script>
+    <style></style>
   </head>
 
-  <body>
-    <main>
+  <body onload="includeHTML()">
+    <header id="header" class="d_none" w3-include-html="../templates/header.html"></header>
+    <aside id="sidebar" class="d_none" w3-include-html="../templates/sidebar.html"></aside>
+    <main class="legalContent">
       <h1>Legal Notice</h1>
-      <h2>Imprint</h2>
-      <ul class="noNumbers">
+      <h2 class="font_700_27">Imprint</h2>
+      <ul>
         <li>Paul Burmester</li>
         <li>Musterstrasse 1</li>
         <li>12345 Musterstadt</li>
       </ul>
       <h3>Exploring the Board</h3>
-      <p>Email: mustermann@example.com</p>
+      <p>Email: <a href=""> mustermann@example.com</a></p>
       <h3>Acceptance of terms</h3>
       <p>
         By accessing and using <a href="join-1323.developerakademie.net">Join</a> (Product), you acknowledge and agree to the following terms and conditions, and any policies, guidelines, or
@@ -130,7 +65,7 @@
         directors, agents, and employees, from and against any claim, demand, loss, damage, cost, or liability (including reasonable legal fees) arising out of or relating to your use of
         <a href="join-1323.developerakademie.net">Join</a> and/or your breach of this Legal Notice.
       </p>
-      <p>For any questions or notices, please contact us at mustermann@example.com.</p>
+      <p>For any questions or notices, please contact us at <a href="">mustermann@example.com.</a></p>
       <p>Date: 30.08.2025</p>
     </main>
   </body>
