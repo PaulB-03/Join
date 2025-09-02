@@ -17,13 +17,13 @@
   max-width: 1920px;
   display: flex;
   justify-content: flex-end; /* rechts bleibt frei */
-  padding: 60px 60px 0 60px;
+  padding: 64px 64px 0 64px;
 }
 
 .indexHeader .logo {
   position: absolute;
-  top: 32px; /* passe nach Wunsch an */
-  left: 32px; /* passe nach Wunsch an */
+  top: 64px;
+  left: 64px;
   width: 48px;
   height: 48px;
 }
@@ -42,7 +42,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 372px);
+  height: calc(100vh - 229px);
 }
 
 .loginContainer {
@@ -151,7 +151,7 @@
   display: flex;
   justify-content: center;
   gap: 44px;
-  padding: 118px 48px 48px 48px;
+  padding: 47px 48px 48px;
 }
 
 .legalLink {
