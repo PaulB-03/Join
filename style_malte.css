@@ -1,8 +1,36 @@
+.hidden {
+  visibility: hidden;
+}
+
+.startLogo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* exakt in die Mitte */
+  height: 400px; /* deine gewünschte Größe */
+  transition: transform 1.2s ease-in-out, opacity 0.4s ease;
+  z-index: 999;
+}
+
 .indexHeader {
+  position: relative; /* wichtig, damit .logo absolut dazu positioniert */
   max-width: 1920px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* rechts bleibt frei */
   padding: 60px 60px 0 60px;
+}
+
+.indexHeader .logo {
+  position: absolute;
+  top: 32px; /* passe nach Wunsch an */
+  left: 32px; /* passe nach Wunsch an */
+  width: 48px;
+  height: 48px;
+}
+
+.indexHeader .logo img {
+  /*width: 100%;*/
+  height: auto;
 }
 
 .indexHeaderRight span {
@@ -124,4 +152,8 @@
   justify-content: center;
   gap: 44px;
   padding: 118px 48px 48px 48px;
+}
+
+.legalLink {
+  width: 112px;
 }

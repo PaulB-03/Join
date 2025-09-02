@@ -15,9 +15,28 @@ async function includeHTML() {
       element.innerHTML = "Error loading include";
     }
 
-    // Klasse entfernen → CSS bestimmt, wie es angezeigt wird
+    // Klasse entfernen → Sidebar sichtbar machen
     element.classList.remove("d_none");
   }
+
+  // Sidebar-Links hervorheben, wenn geladen
+  highlightActiveLink();
+}
+
+function highlightActiveLink() {
+  const currentPath = location.pathname.replace(/\/+$/, "") || "/";
+
+  // Entferne alte Marker
+  document.querySelectorAll(".nav-link.active").forEach((el) => el.classList.remove("active"));
+
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    // benutze href-Attribut und resolve relativ zum origin
+    const href = link.getAttribute("href") || link.href;
+    const linkPath = new URL(href, location.origin).pathname.replace(/\/+$/, "") || "/";
+    if (linkPath === currentPath) {
+      link.classList.add("active");
+    }
+  });
 }
 
 function showSignupScreen() {

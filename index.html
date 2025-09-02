@@ -10,18 +10,21 @@
     <link rel="stylesheet" href="./styles/colors.css" />
     <link rel="stylesheet" href="style_malte.css" />
     <script src="script.js"></script>
+    <script src="./scripts/animateLogo.js"></script>
   </head>
   <body>
-    <header class="indexHeader">
+    <header class="indexHeader hidden">
       <div class="logo"><img src="./assets/svg/favicon.svg" alt="Join-Logo" /></div>
       <div id="indexHeaderRight" class="indexHeaderRight">
         <span class="font_400_20">Not a Join user?</span>
         <button onclick="showSignupScreen()" class="btn-dark font_700_16">Sign up</button>
       </div>
     </header>
+
     <main class="indexMain">
-      <div id="loginScreen" class="loginContainer">
-        <div class="loginHeadline">
+      <img class="startLogo" style="height: 400px" src="./assets/svg/favicon.svg" alt="" />
+      <div id="loginScreen" class="loginContainer hidden d_none">
+        <div class="indexHeadline">
           <h1>Log in</h1>
           <div class="loginDivider"></div>
         </div>
@@ -32,11 +35,11 @@
           </div>
           <div class="actions">
             <button class="btn-dark font_700_21" type="submit" id="loginBtn">Log in</button>
-            <button class="btn-white font_700_21" type="button" id="guestLogin">Guest Log in</button>
+            <a href="./html/summary.html"><button class="btn-white font_700_21" type="button" id="guestLogin">Guest Log in</button></a>
           </div>
         </form>
       </div>
-      <div id="signupScreen" class="signupContainer d_none">
+      <div id="signupScreen" class="signupContainer hidden d_none">
         <div onclick="showLoginScreen()" class="signupReturnArrowContainer"><img class="signupReturnArrow" src="./assets/svg/Default-arrow.svg" alt="back-arrow" /></div>
         <div class="indexHeadline">
           <h1>Sign up</h1>
@@ -59,9 +62,9 @@
         </form>
       </div>
     </main>
-    <footer class="indexFooter">
-      <a class="font_400_16" href="./html/privacyPolicy.html">Privacy Police</a>
-      <a class="font_400_16" href="./html/legalNotice.html">Legal Notice</a>
+    <footer class="indexFooter hidden">
+      <a class="legalLink font_400_16" href="./html/privacyPolicy.html">Privacy Police</a>
+      <a class="legalLink font_400_16" href="./html/legalNotice.html">Legal Notice</a>
     </footer>
   </body>
 </html>
