@@ -1,36 +1,6 @@
 let baseURL = 'https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/';
 let prioGrade = "";
 
-function createTask(event) {
-    event.preventDefault();
-    let title = document.getElementById('titleInput');
-    let description = document.getElementById('descriptionInput');
-    let date = document.getElementById('date');
-    if (title.value && description.value) {
-        const response = saveTask("tasks", {
-            "title": title.value,
-            "description": description.value,
-            "date": date.value,
-        });
-        if (response) {
-            window.location.href = 'board.html';
-        }
-    } else {
-        alert('bitte Felder ausfüllen');
-    }
-}
-
-async function saveTask(path = "", data = {}) {
-    let firebase = await fetch(baseURL + path + ".json", {
-        method: "PUT",
-        header: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
-    return firebaseToJson = await firebase.json();
-}
-
 document.addEventListener('DOMContentLoaded', init);
 function init() {
     let select = document.getElementById('assignedToDropdownContacts');
@@ -43,6 +13,38 @@ function init() {
     let dropDown2 = document.getElementById('dropdown-list-category');
     dropdownFunctionCategory(arrow2, dropDown2, select2, isClicked, dropDownItem2);
     initialiseSavePrioImg();
+}
+
+async function createTask(event) {
+    event.preventDefault();
+    let title = document.getElementById('titleInput');
+    let description = document.getElementById('descriptionInput');
+    let date = document.getElementById('date');
+    if (title.value && description.value && date.value) {
+        try {
+            await saveTask("tasks", {
+                "title": title.value,
+                "description": description.value,
+                "date": date.value,
+            });
+            window.location.href = 'board.html';
+        } catch (error) {
+            alert("Die Aufgabe konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.");
+        }
+    } else {
+        alert('bitte Felder ausfüllen');
+    }
+}
+
+async function saveTask(path = "", data = {}) {
+    let response = await fetch(baseURL + path + ".json", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    return await response.json();
 }
 
 function keepInputBlue(index) {

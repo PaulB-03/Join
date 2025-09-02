@@ -87,6 +87,10 @@ textarea {
   height: 120px !important;
 }
 
+textarea:focus {
+  border: 1.5px solid var(--light-blue);
+}
+
 #date {
   color: var(--color-placeholder);
 }
@@ -118,13 +122,13 @@ textarea {
 #assignedToDropdownContacts:focus-within,
 .dropdown-selected:focus,
 #assignedToDropdownContacts:active {
-  border-color: var(--light-blue);
+  border: 1.5px solid var(--light-blue);
 }
 
 #assignedToDropdownCategory:focus-within,
 .dropdown-selected:focus,
 #assignedToDropdownCategory:active {
-  border-color: var(--light-blue);
+  border: 1.5px solid var(--light-blue);
 }
 
 .dropdown-selected {
@@ -231,13 +235,12 @@ textarea {
 
 .input-subtask {
   width: 100%;
-  color: var(--black);
-  border: none;
-}
-.input-subtask:focus {
-  border: 1px solid;
+  border: var(--color-icon);
   outline: none;
-  border-color: var(--light-blue);
+}
+
+.input-subtask:focus {
+  border: 1px solid var(--light-blue);
 }
 
 .prioDivsWrapper {
