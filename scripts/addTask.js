@@ -20,9 +20,9 @@ async function createTask(event) {
     let title = document.getElementById('titleInput');
     let description = document.getElementById('descriptionInput');
     let date = document.getElementById('date');
-    if (title.value && description.value) {
+    if (title.value && description.value && date.value) {
         try {
-            const response = await saveTask("tasks", {
+            await saveTask("tasks", {
                 "title": title.value,
                 "description": description.value,
                 "date": date.value,
