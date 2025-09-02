@@ -1,12 +1,16 @@
 let baseURL = 'https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/';
+let prioGrade = "";
 
-function addTask() {
+function createTask(event) {
+    event.preventDefault();
     let title = document.getElementById('titleInput');
     let description = document.getElementById('descriptionInput');
+    let date = document.getElementById('date');
     if (title.value && description.value) {
         const response = saveTask("tasks", {
             "title": title.value,
             "description": description.value,
+            "date": date.value,
         });
         if (response) {
             window.location.href = 'board.html';

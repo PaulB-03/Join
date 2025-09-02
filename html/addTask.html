@@ -36,11 +36,11 @@
           <div class="divider"></div>
             <div>
               <div class="inputFlexbox">
-                <span>Prio</span>
+                <span>Priority</span>
                   <div class="prioDivsWrapper">
-                    <div id="urgent" class="prioGrade"><span>Urgent</span> <img src="../assets/svg/double_arrow_up.svg" class="prioImage" alt="" onclick="setPrioColor(0)"></div>
-                    <div id="medium" class="prioGrade"><span>Medium</span> <img src="../assets/svg/double_lines.svg" class="prioImage" alt="" onclick="setPrioColor(1)"></div>
-                    <div id="low" class="prioGrade"><span>Low</span> <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="" onclick="setPrioColor(2)"></div>
+                    <div id="urgent" onclick="setPrioColor(0)" class="prioGrade"><span>Urgent</span> <img src="../assets/svg/double_arrow_up.svg" class="prioImage" alt="red"></div>
+                    <div id="medium" onclick="setPrioColor(1)" class="prioGrade"><span>Medium</span> <img src="../assets/svg/double_lines.svg" class="prioImage" alt="orange"></div>
+                    <div id="low" onclick="setPrioColor(2)"class="prioGrade"><span>Low</span> <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="green"></div>
                   </div>
               </div>
               <div class="inputFlexbox">
@@ -112,7 +112,7 @@
           <div id="clear" class="addOrClearBtn">
             <p>Clear</p><img src="../assets/svg/cancel.svg" alt="" />
           </div>
-          <button id="add" class="addOrClearBtn" type="submit">
+          <button id="add" class="addOrClearBtn" type="button" onclick="createTask(event)">
             <p>Create task</p><img src="../assets/svg/check.svg" class="createTaskCheck" alt="">
           </button>
         </div>
