@@ -1,4 +1,33 @@
-    document.addEventListener('DOMContentLoaded', init);
+let baseURL = 'https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/';
+
+function addTask() {
+    let title = document.getElementById('titleInput');
+    let description = document.getElementById('descriptionInput');
+    if (title.value && description.value) {
+        const response = saveTask("tasks", {
+            "title": title.value,
+            "description": description.value,
+        });
+        if (response) {
+            window.location.href = 'board.html';
+        }
+    } else {
+        alert('bitte Felder ausfüllen');
+    }
+}
+
+async function saveTask(path = "", data = {}) {
+    let firebase = await fetch(baseURL + path + ".json", {
+        method: "PUT",
+        header: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    return firebaseToJson = await firebase.json();
+}
+
+document.addEventListener('DOMContentLoaded', init);
 function init() {
     let select = document.getElementById('assignedToDropdownContacts');
     let select2 = document.getElementById('assignedToDropdownCategory');
