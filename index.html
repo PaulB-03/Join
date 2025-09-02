@@ -28,7 +28,7 @@
           <h1>Log in</h1>
           <div class="loginDivider"></div>
         </div>
-        <form>
+        <form class="signupFormContainer">
           <div class="inputGroup">
             <input class="formMailIcon" id="signinEmail" name="email" type="email" placeholder="Email" required aria-label="E-Mail" />
             <input class="formLockIcon" id="signinPassword" name="password" type="password" placeholder="Password" required aria-label="Passwort" />
@@ -45,7 +45,7 @@
           <h1>Sign up</h1>
           <div class="loginDivider"></div>
         </div>
-        <form>
+        <form id="signUpForm" class="signupFormContainer">
           <div class="inputGroup">
             <input class="formPersonIcon" id="signupName" name="name" type="name" placeholder="Name" required aria-label="Name" />
             <input class="formMailIcon" id="signupEmail" name="email" type="email" placeholder="Email" required aria-label="E-Mail" />
@@ -57,7 +57,7 @@
             </div>
           </div>
           <div class="actions">
-            <button class="btn-dark font_700_21" type="submit" id="signupBtn">Sign up</button>
+            <button onclick="signUpNewUser()" class="btn-dark font_700_21" type="submit" id="signupBtn">Sign up</button>
           </div>
         </form>
       </div>
@@ -66,5 +66,6 @@
       <a class="legalLink font_400_16" href="./html/privacyPolicy.html">Privacy Police</a>
       <a class="legalLink font_400_16" href="./html/legalNotice.html">Legal Notice</a>
     </footer>
+    <script src="./scripts/signUp.js"></script>
   </body>
 </html>

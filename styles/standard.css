@@ -108,13 +108,6 @@ a:hover {
   font-weight: 700;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
 input {
   border: solid 1px var(--color-placeholder);
   border-radius: 10px;
