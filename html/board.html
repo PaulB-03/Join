@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../styles/board.css" />
     <link rel="stylesheet" href="../styles/fonts.css" />
     <script src="../script.js"></script>
+    <script src="../scripts/board.js"></script>
   </head>
 
   <body onload="includeHTML()">
@@ -27,7 +28,7 @@
             </svg>
             <input type="search" placeholder="Find Task" aria-label="Find Task" />
           </div>
-          <a class="btn" href="#" onclick="return false" aria-label="Add task">
+          <a class="btn" href="../html/addTask.html" aria-label="Add task">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
@@ -38,25 +39,25 @@
       </div>
 
       <section class="board" aria-label="Kanban Board">
-        <!-- To do (leer) -->
+        <!-- To do -->
         <div class="column">
           <div class="col-head">
             To do
             <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
           </div>
-          <div class="dropzone">
+          <div class="dropzone" id="todo">
             <div class="empty">No tasks To do</div>
           </div>
         </div>
 
-        <!-- In progress (mit Karte) -->
+        <!-- In progress -->
         <div class="column">
           <div class="col-head">
             In progress
             <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
           </div>
-          <div class="dropzone">
-            <article class="card">
+          <div class="dropzone" id="in-progress">
+            <article class="card" data-id="task-1">
               <span class="pill user">User Story</span>
               <div class="task-title">Kochwelt Page &amp; Recipe Recommender</div>
               <div class="task-desc">Build start page with recipe recommendation cards and filter chips…</div>
@@ -77,14 +78,14 @@
           </div>
         </div>
 
-        <!-- Await feedback (2 Karten) -->
+        <!-- Await feedback -->
         <div class="column">
           <div class="col-head">
             Await feedback
             <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
           </div>
-          <div class="dropzone">
-            <article class="card">
+          <div class="dropzone" id="await-feedback">
+            <article class="card" data-id="task-2">
               <span class="pill tech">Technical Task</span>
               <div class="task-title">HTML Base Template Creation</div>
               <div class="task-desc">Create reusable HTML base templates for pages and modals…</div>
@@ -101,7 +102,7 @@
               <div class="meta"><span>2/2 Subtasks</span></div>
             </article>
 
-            <article class="card">
+            <article class="card" data-id="task-3">
               <span class="pill user">User Story</span>
               <div class="task-title">Daily Kochwelt Recipe</div>
               <div class="task-desc">Implement daily recipe and portion calculator with favorites…</div>
@@ -119,14 +120,14 @@
           </div>
         </div>
 
-        <!-- Done (1 Karte) -->
+        <!-- Done -->
         <div class="column">
           <div class="col-head">
             Done
             <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
           </div>
-          <div class="dropzone">
-            <article class="card">
+          <div class="dropzone" id="done">
+            <article class="card" data-id="task-4">
               <span class="pill tech">Technical Task</span>
               <div class="task-title">CSS Architecture Planning</div>
               <div class="task-desc">Define CSS naming conventions and structure for components…</div>
