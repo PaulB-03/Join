@@ -20,20 +20,20 @@ async function createTask(event) {
     let title = document.getElementById('titleInput');
     let description = document.getElementById('descriptionInput');
     let date = document.getElementById('date');
-    if (title.value && description.value && date.value) {
-        try {
-            await saveTask("tasks", {
-                "title": title.value,
-                "description": description.value,
-                "date": date.value,
-            });
-            window.location.href = 'board.html';
-        } catch (error) {
-            alert("Die Aufgabe konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.");
+        if (title.value && description.value && date.value) {
+            try {
+                await saveTask("tasks", {
+                    "title": title.value,
+                    "description": description.value,
+                    "date": date.value,
+                });
+                window.location.href = 'board.html';
+            } catch (error) {
+                alert("Die Aufgabe konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.");
+            }
+        } else {
+            alert('bitte Felder ausfüllen');
         }
-    } else {
-        alert('bitte Felder ausfüllen');
-    }
 }
 
 async function saveTask(path = "", data = {}) {
@@ -45,17 +45,6 @@ async function saveTask(path = "", data = {}) {
         body: JSON.stringify(data)
     });
     return await response.json();
-}
-
-function keepInputBlue(index) {
-    let inputField = document.getElementsByClassName('title')[index];
-    inputField.addEventListener('input', () => {
-        if (inputField.value !== "") {
-            inputField.classList.add('blueFrame');
-        } else {
-            inputField.classList.remove('blueFrame');
-        }
-    });
 }
 
 let selectedPrioImg = [];
@@ -160,4 +149,11 @@ function saveSelectedCategory(index) {
         return
 
     }
+}
+
+function clearTask() {
+    let inputs = document.querySelectorAll('.title');
+    inputs.forEach(element => {
+        element.value = "";
+    });
 }

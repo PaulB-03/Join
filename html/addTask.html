@@ -21,16 +21,16 @@
         <div class="addTaskWrapper">
           <div>
             <div class="inputFlexbox">
-              <span id="requiredHeaders">Title <img src="../assets/svg/required.svg" alt="" id="required" required onclick="keepInputBlue(0)"></span>
-              <input class="title" id="titleInput" type="text" placeholder="Enter a title" />
+              <span id="requiredHeaders">Title <img src="../assets/svg/required.svg" alt="" id="required" required></span>
+              <input class="title" id="titleInput" type="text" placeholder="Enter a title">
             </div>
             <div class="inputFlexbox">
               <span>Description</span>
-              <textarea rows="5" cols="50" class="title" id="descriptionInput" type="text" placeholder="Enter description"></textarea>
+              <textarea rows="5" cols="50" class="title" id="descriptionInput" type="text" placeholder="Enter description" required></textarea>
             </div>
             <div class="inputFlexbox">
               <span id="requiredHeaders">Due date <img src="../assets/svg/required.svg" alt="" id="required" /></span>
-              <input class="title" id="date" type="date" tabindex="0" />
+              <input class="title" id="date" type="date" tabindex="0" required>
             </div>
           </div>
           <div class="divider"></div>
@@ -65,14 +65,14 @@
                     <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
                       <label for="checkbox-1" class="custom-checkbox">
                         Userstory
-                        <input type="checkbox" />
+                        <input type="checkbox" required>
                         <span style="display: none"></span>
                       </label>
                     </li>
                     <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
                       <label for="checkbox-2" class="custom-checkbox">
                         Technical Task
-                        <input type="checkbox" />
+                        <input type="checkbox" required>
                         <span style="display: none"></span>
                       </label>
                     </li>
@@ -109,8 +109,8 @@
           </div>
         </div>
         <div class="addOrClear">
-          <div id="clear" class="addOrClearBtn">
-            <p>Clear</p><img src="../assets/svg/cancel.svg" alt="" />
+          <div id="clear" class="addOrClearBtn" onclick="clearTask()">
+            <p>Clear</p><img src="../assets/svg/cancel.svg" alt="">
           </div>
           <button id="add" class="addOrClearBtn" type="button" onclick="createTask(event)">
             <p>Create task</p><img src="../assets/svg/check.svg" class="createTaskCheck" alt="">

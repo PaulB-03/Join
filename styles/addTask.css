@@ -91,6 +91,10 @@ textarea:focus {
   border: 1.5px solid var(--light-blue);
 }
 
+textarea:valid {
+  background-color: rgb(232, 240, 254);
+}
+
 #date {
   color: var(--color-placeholder);
 }
@@ -219,6 +223,11 @@ textarea:focus {
   justify-content: space-between;
   align-items: center;
   height: 30px;
+}
+
+.dropdown-item-category:hover {
+  background-color: var(--main-color);
+  color: var(--white);
 }
 
 #titleInput.title::placeholder {
@@ -357,6 +366,10 @@ textarea:focus {
 input[type="date" i] {
   background-color: white;
   color: black;
+}
+
+input[type="date" i]:valid {
+  background-color: rgb(232, 240, 254);
 }
 
 .creaateTaskCheck {
