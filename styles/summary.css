@@ -1,7 +1,26 @@
+/* ------------------------------------------ general---------------------------------- */
+
+body {
+  background-color: #f6f7f9;
+}
+
 .summarySection {
   max-width: 1920px;
   padding: 150px 20px 64px 380px;
   line-height: 1.6;
+  width: clamp(1920px, 100%, 1920px);
+  line-height: 1.2;
+}
+
+.summaryBox {
+  border-left: 1px solid #8080802e;
+  border-right: 1px solid #8080802e;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 4px 0px rgba(0 0 0 / 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
 }
 
 .summarySection img {
@@ -13,22 +32,13 @@
 }
 
 .bgUrgency {
-  background-color: rgb(251, 57, 0);
+  background-color: #ff3d00;
 }
 
 .summaryNumber {
   font-size: 64px;
   font-weight: 600;
   text-align: center;
-}
-
-.svgImgContainer {
-  display: flex;
-  align-items: center;
-  border-radius: 50%;
-  width: 69px;
-  height: 69px;
-  padding: 15px;
 }
 
 .divider {
@@ -44,18 +54,18 @@
   cursor: pointer;
   background-color: #2a3547;
   color: white;
-  box-shadow: 0px 3px #2c364661;
+  box-shadow: 0px 4px 4px 0px rgba(0 0 0 / 0.25);
 }
 
 .boxHover:hover .bgJoin {
   background-color: white;
 }
 
-.boxHover:hover .svgImgContainer .svgImgEdit {
+.boxHover:hover .svgImgContainerEdit .svgImgEdit {
   content: url("../assets/svg/edit_black.svg");
 }
 
-.boxHover:hover .svgImgContainer .svgImgCheck_2 {
+.boxHover:hover .svgImgContainerUrgencyCheckmark .svgImgCheck_2 {
   content: url("../assets/svg/check_2_black.svg");
 }
 
@@ -70,18 +80,18 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(3, 1fr);
-  gap: 13px;
-  margin-left: 20px;
+  gap: 20px;
 }
 
 /* -------------------------------joinPresentationContainer------------------------ */
 
 .joinPresentationContainer {
   display: flex;
-  justify-content: center;
   align-items: center;
   width: 625px;
-  gap: 8px;
+  gap: 25px;
+  margin-bottom: 35px;
+  margin-top: 50px;
 }
 
 .joinPresentationContainer h1 {
@@ -101,16 +111,29 @@
   gap: 18px;
 }
 
-.toDoDoneSummaryBox {
+.svgImgContainerUrgencyCheckmark {
   display: flex;
-  justify-content: center;
   align-items: center;
+  border-radius: 50%;
+  width: 69px;
+  height: 69px;
+  padding: 15px;
+}
+
+.svgImgContainerEdit {
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  width: 69px;
+  height: 69px;
+  padding: 20px;
+}
+
+.toDoDoneSummaryBox {
   gap: 10px;
   padding: 19px 38px;
-  border-radius: 20px;
-  border-left: 1px solid #8080802e;
-  border-right: 1px solid #8080802e;
   width: 264px;
+  height: 100%;
 }
 
 .toDoDoneSummaryTextBox {
@@ -130,14 +153,8 @@
 }
 
 .urgencySummaryBoxes {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: 28px 48px;
   gap: 50px;
-  border-radius: 20px;
-  border-left: 1px solid #8080802e;
-  border-right: 1px solid #8080802e;
 }
 
 .urgencyImgTextBox {
@@ -169,21 +186,23 @@
 
 .taskSummaryBoxes {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 13px;
 }
 
 .numberBox {
-  padding: 25px;
-  border-radius: 20px;
-  border-left: 1px solid #8080802e;
-  border-right: 1px solid #8080802e;
+  padding: 15px;
   width: 168px;
+  height: 168px;
 }
 
+ .numberBoxChild {
+  line-height: 1.2;
+ }
+
 .numberBoxText {
-  font-size: 21px;
+  font-size: 20px;
   text-align: center;
 }
 
@@ -192,6 +211,7 @@
 .sumGreetingContainer {
   width: 385px;
   margin-left: 60px;
+  line-height: 1.2;
 }
 
 .sumGreetingContainer p:first-child {

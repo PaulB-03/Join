@@ -1,90 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="../assets/svg/favicon.svg" type="image/x-icon" />
-    <link rel="stylesheet" href="../styles/summary.css" />
-    <link rel="stylesheet" href="../styles/standard.css" />
-    <link rel="stylesheet" href="../styles/colors.css" />
-    <link rel="stylesheet" href="../styles/fonts.css" />
-    <script src="../script.js"></script>
-    <title>Join – Summary</title>
-  </head>
 
-  <body onload="includeHTML()">
-    <header id="header" class="d_none" w3-include-html="../templates/header.html"></header>
-    <aside id="sidebar" class="d_none" w3-include-html="../templates/sidebar.html"></aside>
-    <section class="summarySection">
-      <div class="joinPresentationContainer">
-        <h1>Join 360</h1>
-        <div class="divider"></div>
-        <p>Key Metrics at Glance</p>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="../assets/svg/favicon.svg" type="image/x-icon" />
+  <link rel="stylesheet" href="../styles/summary.css" />
+  <link rel="stylesheet" href="../styles/standard.css" />
+  <link rel="stylesheet" href="../styles/colors.css" />
+  <link rel="stylesheet" href="../styles/fonts.css" />
+  <script src="../script.js" defer></script>
+  <script src="../scripts/summary.js" defer></script>
+  <title>Join – Summary</title>
+</head>
 
-      <div class="summaryParentContainer">
-        <div class="summaryContainer">
-          <div class="toDoDoneSummaryBoxes">
-            <div class="toDoDoneSummaryBox boxHover">
-              <div class="svgImgContainer bgJoin">
-                <img class="svgImgEdit" src="../assets/svg/edit.svg" alt="" />
-              </div>
-              <div class="toDoDoneSummaryTextBox">
-                <p class="summaryNumber">1</p>
-                <p>To-do</p>
-              </div>
+<body onload="init()">
+  <header id="header" class="d_none" w3-include-html="../templates/header.html"></header>
+  <aside id="sidebar" class="d_none" w3-include-html="../templates/sidebar.html"></aside>
+  <section class="summarySection">
+    <div class="joinPresentationContainer">
+      <h1>Join 360</h1>
+      <div class="divider"></div>
+      <p>Key Metrics at Glance</p>
+    </div>
+
+    <div class="summaryParentContainer">
+      <div class="summaryContainer">
+        <div class="toDoDoneSummaryBoxes" onclick="postData()">
+          <div class="toDoDoneSummaryBox boxHover summaryBox">
+            <div class="svgImgContainerEdit bgJoin">
+              <img class="svgImgEdit" src="../assets/svg/edit.svg" alt="" />
             </div>
-            <div class="toDoDoneSummaryBox boxHover">
-              <div class="svgImgContainer bgJoin">
-                <img class="svgImgCheck_2" src="../assets/svg/check_2.svg" alt="" />
-              </div>
-              <div class="toDoDoneSummaryTextBox">
-                <p class="summaryNumber">1</p>
-                <p>Done</p>
-              </div>
+            <div class="toDoDoneSummaryTextBox">
+              <p class="summaryNumber" id="toDo">1</p>
+              <p>To-do</p>
             </div>
           </div>
-
-          <div class="urgencySummaryBoxes boxHover">
-            <div class="urgencyImgTextBox">
-              <div class="svgImgContainer bgUrgency">
-                <img src="../assets/svg/double_arrow_up.svg" alt="" />
-              </div>
-              <div class="urgencyTextBox">
-                <p class="summaryNumber">1</p>
-                <p>Urgent</p>
-              </div>
+          <div class="toDoDoneSummaryBox boxHover summaryBox">
+            <div class="svgImgContainerUrgencyCheckmark bgJoin">
+              <img class="svgImgCheck_2" src="../assets/svg/check_2.svg" alt="" />
             </div>
-            <div class="dividerUrgency"></div>
-            <div class="summaryDeadLineTextBox">
-              <p>October 16, 2022</p>
-              <p>Upcoming Deadline</p>
+            <div class="toDoDoneSummaryTextBox">
+              <p class="summaryNumber">1</p>
+              <p>Done</p>
             </div>
           </div>
+        </div>
 
-          <div class="taskSummaryBoxes">
-            <div class="numberBox boxHover">
+        <div class="urgencySummaryBoxes boxHover summaryBox">
+          <div class="urgencyImgTextBox">
+            <div class="svgImgContainerUrgencyCheckmark bgUrgency">
+              <img src="../assets/svg/double_arrow_up.svg" alt="" />
+            </div>
+            <div class="urgencyTextBox">
+              <p class="summaryNumber">1</p>
+              <p>Urgent</p>
+            </div>
+          </div>
+          <div class="dividerUrgency"></div>
+          <div class="summaryDeadLineTextBox">
+            <p>October 16, 2022</p>
+            <p>Upcoming Deadline</p>
+          </div>
+        </div>
+
+        <div class="taskSummaryBoxes">
+          <div class="numberBox boxHover summaryBox">
+            <div class="numberBoxChild">
               <p class="summaryNumber">5</p>
               <p class="numberBoxText">Task in Board</p>
             </div>
-            <div class="dividerLight"></div>
-            <div class="numberBox boxHover">
+          </div>
+          <div class="numberBox boxHover summaryBox">
+            <div class="numberBoxChild">
               <p class="summaryNumber">2</p>
               <p class="numberBoxText">Task in Progress</p>
             </div>
-            <div class="dividerLight"></div>
-            <div class="numberBox boxHover">
+          </div>
+          <div class="numberBox boxHover summaryBox">
+            <div class="numberBoxChild">
               <p class="summaryNumber">2</p>
               <p class="numberBoxText">Awaiting Feedback</p>
             </div>
           </div>
         </div>
-
-        <div class="sumGreetingContainer">
-          <p class="sumGreeting">Good morning,</p>
-          <p class="sumName">Sofia Müller</p>
-        </div>
       </div>
-    </section>
-  </body>
+
+      <div class="sumGreetingContainer">
+        <p class="sumGreeting">Good morning,</p>
+        <p class="sumName">Sofia Müller</p>
+      </div>
+    </div>
+  </section>
+</body>
 </html>

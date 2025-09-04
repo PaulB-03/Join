@@ -1,157 +1,3 @@
-// Example contact List, only for now until we integrate with a real database from Firebase
-const contacts = [
-  {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "123-456-7890",
-  },
-  {
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phone: "987-654-3210",
-  },
-  {
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
-    phone: "201-555-0101",
-  },
-  {
-    name: "Bob Williams",
-    email: "bob.williams@example.com",
-    phone: "202-555-0102",
-  },
-  {
-    name: "Carlos Garcia",
-    email: "carlos.garcia@example.com",
-    phone: "203-555-0103",
-  },
-  {
-    name: "Diana Evans",
-    email: "diana.evans@example.com",
-    phone: "204-555-0104",
-  },
-  {
-    name: "Ethan Brown",
-    email: "ethan.brown@example.com",
-    phone: "205-555-0105",
-  },
-  {
-    name: "Fatima Khan",
-    email: "fatima.khan@example.com",
-    phone: "206-555-0106",
-  },
-  {
-    name: "Gabriel Martins",
-    email: "gabriel.martins@example.com",
-    phone: "207-555-0107",
-  },
-  {
-    name: "Hannah Lee",
-    email: "hannah.lee@example.com",
-    phone: "208-555-0108",
-  },
-  {
-    name: "Ivan Petrov",
-    email: "ivan.petrov@example.com",
-    phone: "209-555-0109",
-  },
-  {
-    name: "Julia Müller",
-    email: "julia.mueller@example.com",
-    phone: "210-555-0110",
-  },
-  {
-    name: "Kai Nakamura",
-    email: "kai.nakamura@example.com",
-    phone: "211-555-0111",
-  },
-  {
-    name: "Laura Rossi",
-    email: "laura.rossi@example.com",
-    phone: "212-555-0112",
-  },
-  {
-    name: "Miguel Alvarez",
-    email: "miguel.alvarez@example.com",
-    phone: "213-555-0113",
-  },
-  {
-    name: "Noor Hassan",
-    email: "noor.hassan@example.com",
-    phone: "214-555-0114",
-  },
-  {
-    name: "Olivia White",
-    email: "olivia.white@example.com",
-    phone: "215-555-0115",
-  },
-  {
-    name: "Priya Sharma",
-    email: "priya.sharma@example.com",
-    phone: "216-555-0116",
-  },
-  {
-    name: "Quentin Laurent",
-    email: "quentin.laurent@example.com",
-    phone: "217-555-0117",
-  },
-  {
-    name: "Rosa Castillo",
-    email: "rosa.castillo@example.com",
-    phone: "218-555-0118",
-  },
-  {
-    name: "Samuel Neill",
-    email: "samuel.neill@example.com",
-    phone: "219-555-0119",
-  },
-  {
-    name: "Tara Connor",
-    email: "tara.connor@example.com",
-    phone: "220-555-0120",
-  },
-  {
-    name: "Umar Farouk",
-    email: "umar.farouk@example.com",
-    phone: "221-555-0121",
-  },
-  {
-    name: "Valentina Costa",
-    email: "valentina.costa@example.com",
-    phone: "222-555-0122",
-  },
-  {
-    name: "Wei Chen",
-    email: "wei.chen@example.com",
-    phone: "223-555-0123",
-  },
-  {
-    name: "Xia Li",
-    email: "xia.li@example.com",
-    phone: "224-555-0124",
-  },
-  {
-    name: "Yara Haddad",
-    email: "yara.haddad@example.com",
-    phone: "225-555-0125",
-  },
-  {
-    name: "Zoe Dimitriou",
-    email: "zoe.dimitriou@example.com",
-    phone: "226-555-0126",
-  },
-  {
-    name: "Aron Kovacs",
-    email: "aron.kovacs@example.com",
-    phone: "227-555-0127",
-  },
-  {
-    name: "Lukasz Nowak",
-    email: "lukasz.nowak@example.com",
-    phone: "228-555-0128",
-  },
-];
-
 const COLOR_VARS = [
   "--contact-bg-blue",
   "--contact-bg-light-blue",
@@ -170,9 +16,56 @@ const COLOR_VARS = [
   "--contact-bg-yellow",
 ];
 
+// conntection to databse
+const DB_ROOT =
+  "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
+const CONTACTS_URL = `${DB_ROOT}/contacts.json`;
+
+let contacts = [];
+
+// load contacts, then render
+async function loadContacts() {
+  const res = await fetch(CONTACTS_URL);
+  const obj = await res.json();
+  contacts = Object.entries(obj ?? {}).map(([id, c]) => ({ id, ...c }));
+  initContactsList();
+}
+
+// add a new contact to the database, then reload the list, called by add contact form
+async function addContact(contact) {
+  await fetch(CONTACTS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(contact),
+  });
+  await loadContacts(); // refresh list
+}
+
+// helpers for setupAddContactOverlay()
+function openAddContactDialog(){ var overlay=document.getElementById("contactOverlay"); if(overlay){ overlay.classList.add("open"); document.body.classList.add("modal-open"); } }
+function closeAddContactDialog(){ var overlay=document.getElementById("contactOverlay"), form=document.getElementById("addContactForm"); if(overlay){ overlay.classList.remove("open"); document.body.classList.remove("modal-open"); } if(form) form.reset(); }
+function readAddContactForm(){ var form=document.getElementById("addContactForm"); return { name:form.name.value.trim(), email:form.email.value.trim(), phone:form.phone.value.trim() }; }
+async function submitAddContact(event){ event.preventDefault(); await addContact(readAddContactForm()); closeAddContactDialog(); }
+
+// setup the add contact overlay, called by init
+function setupAddContactOverlay(){
+  var overlay=document.getElementById("contactOverlay");
+  var form=document.getElementById("addContactForm");
+  var openButton=document.getElementById("openAddContact");
+  var closeButton=document.getElementById("closeAddContact");
+  var cancelButton=document.getElementById("cancelAdd");
+  if(openButton) openButton.addEventListener("click", openAddContactDialog);
+  if(closeButton) closeButton.addEventListener("click", closeAddContactDialog);
+  if(cancelButton) cancelButton.addEventListener("click", closeAddContactDialog);
+  if(overlay) overlay.addEventListener("click", closeAddContactDialog);
+  if(form) form.addEventListener("submit", submitAddContact);
+}
+
+
 function init() {
   includeHTML();
-  initContactsList();
+  loadContacts();
+  setupAddContactOverlay();
 }
 
 // Initialize the contacts list gets called by body onload
@@ -232,7 +125,11 @@ function createElementWith(tag, cls, text) {
 // loads each row in the contact list, called by initContactsList
 function contactRow(contact) {
   const row = createElementWith("div", "contactItem"); // outer container
-  const avatar = createElementWith("div", "contactAvatar", initials(contact.name)); // profile picture with initials
+  const avatar = createElementWith(
+    "div",
+    "contactAvatar",
+    initials(contact.name)
+  ); // profile picture with initials
   avatar.style.background = colorForName(contact.name); //use colorForName to pick a color
   const text = createElementWith("div", "contactText"); // wrapper container for the text (name and email)
   text.appendChild(createElementWith("div", "contactName", contact.name)); // add name to the container
@@ -261,7 +158,9 @@ function colorForName(name = "") {
 
 // called by contactRow with onClick
 function selectContact(row, contact) {
-  document.querySelectorAll(".contactItem.is-selected").forEach((el) => el.classList.remove("is-selected")); // clear any previous selection
+  document
+    .querySelectorAll(".contactItem.is-selected")
+    .forEach((el) => el.classList.remove("is-selected")); // clear any previous selection
   row.classList.add("is-selected"); // mark this row
   renderContactDetails(contact); // show details on the right
 }
@@ -280,7 +179,11 @@ function renderContactDetails(contact) {
 // top section (avatar, name, action buttons (edit, delete)), called by renderContactDetails
 function detailsTop(contact) {
   const top = createElementWith("div", "detailsTop"); // outer container
-  const avatar = createElementWith("div", "detailsAvatar", initials(contact.name)); // profile picture with initials
+  const avatar = createElementWith(
+    "div",
+    "detailsAvatar",
+    initials(contact.name)
+  ); // profile picture with initials
   avatar.style.background = colorForName(contact.name); //use colorForName to pick a color (so it is the same color as it is in the list)
   const title = createElementWith("div", "detailsTitleWrap"); // container for name and buttons
   title.appendChild(createElementWith("div", "detailsName", contact.name)); // add name
@@ -304,8 +207,12 @@ function detailsInfo(contact) {
 function detailsInfoHTML(contact) {
   return `
     <div class="sectionTitle">Contact Information</div>
-    <div class="infoRow"><div class="label">Email</div><a class="value link" href="mailto:${contact.email}">${contact.email}</a></div>
-    <div class="infoRow"><div class="label">Phone</div><div class="value">${contact.phone || ""}</div></div>
+    <div class="infoRow"><div class="label">Email</div><a class="value link" href="mailto:${
+      contact.email
+    }">${contact.email}</a></div>
+    <div class="infoRow"><div class="label">Phone</div><div class="value">${
+      contact.phone || ""
+    }</div></div>
   `;
 }
 
