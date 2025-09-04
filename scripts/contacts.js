@@ -1,8 +1,25 @@
-
+const COLOR_VARS = [
+  "--contact-bg-blue",
+  "--contact-bg-light-blue",
+  "--contact-bg-light-green",
+  "--contact-bg-purple",
+  "--contact-bg-lilac",
+  "--contact-bg-green",
+  "--contact-bg-pink",
+  "--contact-bg-red",
+  "--contact-bg-rose",
+  "--contact-bg-peach",
+  "--contact-bg-orange",
+  "--contact-bg-light-orange",
+  "--contact-bg-dark-yellow",
+  "--contact-bg-medium-yellow",
+  "--contact-bg-yellow",
+];
 
 // conntection to databse
-const DB_ROOT = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app"; 
-const CONTACTS_URL = `${DB_ROOT}/contacts.json`; 
+const DB_ROOT =
+  "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
+const CONTACTS_URL = `${DB_ROOT}/contacts.json`;
 
 let contacts = [];
 
@@ -24,28 +41,31 @@ async function addContact(contact) {
   await loadContacts(); // refresh list
 }
 
+// helpers for setupAddContactOverlay()
+function openAddContactDialog(){ var overlay=document.getElementById("contactOverlay"); if(overlay){ overlay.classList.add("open"); document.body.classList.add("modal-open"); } }
+function closeAddContactDialog(){ var overlay=document.getElementById("contactOverlay"), form=document.getElementById("addContactForm"); if(overlay){ overlay.classList.remove("open"); document.body.classList.remove("modal-open"); } if(form) form.reset(); }
+function readAddContactForm(){ var form=document.getElementById("addContactForm"); return { name:form.name.value.trim(), email:form.email.value.trim(), phone:form.phone.value.trim() }; }
+async function submitAddContact(event){ event.preventDefault(); await addContact(readAddContactForm()); closeAddContactDialog(); }
 
-const COLOR_VARS = [
-  "--contact-bg-blue",
-  "--contact-bg-light-blue",
-  "--contact-bg-light-green",
-  "--contact-bg-purple",
-  "--contact-bg-lilac",
-  "--contact-bg-green",
-  "--contact-bg-pink",
-  "--contact-bg-red",
-  "--contact-bg-rose",
-  "--contact-bg-peach",
-  "--contact-bg-orange",
-  "--contact-bg-light-orange",
-  "--contact-bg-dark-yellow",
-  "--contact-bg-medium-yellow",
-  "--contact-bg-yellow",
-];
+// setup the add contact overlay, called by init
+function setupAddContactOverlay(){
+  var overlay=document.getElementById("contactOverlay");
+  var form=document.getElementById("addContactForm");
+  var openButton=document.getElementById("openAddContact");
+  var closeButton=document.getElementById("closeAddContact");
+  var cancelButton=document.getElementById("cancelAdd");
+  if(openButton) openButton.addEventListener("click", openAddContactDialog);
+  if(closeButton) closeButton.addEventListener("click", closeAddContactDialog);
+  if(cancelButton) cancelButton.addEventListener("click", closeAddContactDialog);
+  if(overlay) overlay.addEventListener("click", closeAddContactDialog);
+  if(form) form.addEventListener("submit", submitAddContact);
+}
+
 
 function init() {
   includeHTML();
   loadContacts();
+  setupAddContactOverlay();
 }
 
 // Initialize the contacts list gets called by body onload
@@ -105,7 +125,11 @@ function createElementWith(tag, cls, text) {
 // loads each row in the contact list, called by initContactsList
 function contactRow(contact) {
   const row = createElementWith("div", "contactItem"); // outer container
-  const avatar = createElementWith("div", "contactAvatar", initials(contact.name)); // profile picture with initials
+  const avatar = createElementWith(
+    "div",
+    "contactAvatar",
+    initials(contact.name)
+  ); // profile picture with initials
   avatar.style.background = colorForName(contact.name); //use colorForName to pick a color
   const text = createElementWith("div", "contactText"); // wrapper container for the text (name and email)
   text.appendChild(createElementWith("div", "contactName", contact.name)); // add name to the container
@@ -134,7 +158,9 @@ function colorForName(name = "") {
 
 // called by contactRow with onClick
 function selectContact(row, contact) {
-  document.querySelectorAll(".contactItem.is-selected").forEach((el) => el.classList.remove("is-selected")); // clear any previous selection
+  document
+    .querySelectorAll(".contactItem.is-selected")
+    .forEach((el) => el.classList.remove("is-selected")); // clear any previous selection
   row.classList.add("is-selected"); // mark this row
   renderContactDetails(contact); // show details on the right
 }
@@ -153,7 +179,11 @@ function renderContactDetails(contact) {
 // top section (avatar, name, action buttons (edit, delete)), called by renderContactDetails
 function detailsTop(contact) {
   const top = createElementWith("div", "detailsTop"); // outer container
-  const avatar = createElementWith("div", "detailsAvatar", initials(contact.name)); // profile picture with initials
+  const avatar = createElementWith(
+    "div",
+    "detailsAvatar",
+    initials(contact.name)
+  ); // profile picture with initials
   avatar.style.background = colorForName(contact.name); //use colorForName to pick a color (so it is the same color as it is in the list)
   const title = createElementWith("div", "detailsTitleWrap"); // container for name and buttons
   title.appendChild(createElementWith("div", "detailsName", contact.name)); // add name
@@ -177,8 +207,12 @@ function detailsInfo(contact) {
 function detailsInfoHTML(contact) {
   return `
     <div class="sectionTitle">Contact Information</div>
-    <div class="infoRow"><div class="label">Email</div><a class="value link" href="mailto:${contact.email}">${contact.email}</a></div>
-    <div class="infoRow"><div class="label">Phone</div><div class="value">${contact.phone || ""}</div></div>
+    <div class="infoRow"><div class="label">Email</div><a class="value link" href="mailto:${
+      contact.email
+    }">${contact.email}</a></div>
+    <div class="infoRow"><div class="label">Phone</div><div class="value">${
+      contact.phone || ""
+    }</div></div>
   `;
 }
 
