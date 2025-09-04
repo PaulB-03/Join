@@ -9,11 +9,12 @@
   <link rel="stylesheet" href="../styles/standard.css" />
   <link rel="stylesheet" href="../styles/colors.css" />
   <link rel="stylesheet" href="../styles/fonts.css" />
-  <script src="../script.js"></script>
+  <script src="../script.js" defer></script>
+  <script src="../scripts/summary.js" defer></script>
   <title>Join – Summary</title>
 </head>
 
-<body onload="includeHTML()">
+<body onload="init()">
   <header id="header" class="d_none" w3-include-html="../templates/header.html"></header>
   <aside id="sidebar" class="d_none" w3-include-html="../templates/sidebar.html"></aside>
   <section class="summarySection">
@@ -25,13 +26,13 @@
 
     <div class="summaryParentContainer">
       <div class="summaryContainer">
-        <div class="toDoDoneSummaryBoxes">
+        <div class="toDoDoneSummaryBoxes" onclick="postData()">
           <div class="toDoDoneSummaryBox boxHover summaryBox">
             <div class="svgImgContainerEdit bgJoin">
               <img class="svgImgEdit" src="../assets/svg/edit.svg" alt="" />
             </div>
             <div class="toDoDoneSummaryTextBox">
-              <p class="summaryNumber">1</p>
+              <p class="summaryNumber" id="toDo">1</p>
               <p>To-do</p>
             </div>
           </div>
