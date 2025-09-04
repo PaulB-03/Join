@@ -114,9 +114,11 @@ input {
   padding: 12px;
   background-repeat: no-repeat;
   background-position: right 10px center;
+  background-size: 22px 22px;
   font-size: 20px;
   font-weight: 400;
   cursor: pointer;
+  outline: none;
 }
 
 ::placeholder {
@@ -126,7 +128,11 @@ input {
 }
 
 input:focus {
-  outline: solid 1px var(--light-blue);
+  border-color: var(--light-blue);
+}
+
+.input-error {
+  border-color: var(--input-error);
 }
 
 .checkBoxContainer {
