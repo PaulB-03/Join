@@ -43,29 +43,38 @@
       </div>
     </div>
     <div id="contactOverlay" class="overlay" aria-hidden="true">
-      <div class="overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+      <div
+        class="overlay-panel"
+        role="dialog"
+        aria-modal="true"
+        onclick="event.stopPropagation()"
+      >
         <div class="overlay-left">
           <img src="../assets/svg/newContactForm.svg" alt="" />
         </div>
         <form id="addContactForm" class="overlay-body">
-          <button type="button" id="closeAddContact" class="overlay-close" aria-label="Close">
+          <button
+            type="button"
+            id="closeAddContact"
+            class="overlay-close"
+            aria-label="Close"
+          >
             ×
           </button>
+          <div class="add-contact-overlay-right">
+            <div class="avatar-placeholder"></div>
+            <div class="add-contact-overlay-form">
+              <input name="name" placeholder="Name" required />
+              <input name="email" type="email" placeholder="Email" required />
+              <input name="phone" placeholder="Phone" />
 
-          <h2 class="overlay-title">Add contact</h2>
-          <p>Tasks are better with a team!</p>
-
-          <div class="avatar-placeholder"></div>
-
-          <input name="name" placeholder="Name" required />
-          <input name="email" type="email" placeholder="Email" required />
-          <input name="phone" placeholder="Phone" />
-
-          <div class="overlay-actions">
-            <button type="button" class="btn-white" id="cancelAdd">
-              Cancel
-            </button>
-            <button type="submit" class="btn-dark">Create contact</button>
+              <div class="overlay-actions">
+                <button type="button" class="btn-white" id="cancelAdd">
+                  Cancel
+                </button>
+                <button type="submit" class="btn-dark">Create contact</button>
+              </div>
+            </div>
           </div>
         </form>
       </div>

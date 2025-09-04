@@ -22,14 +22,15 @@
   width: 75%;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .contactDetailsHeader {
   width: 100%;
   align-items: center;
   display: flex;
-  justify-content: center;
   height: 20%;
+  padding: 32px;
 }
 
 .contactDetailsBody {
@@ -283,4 +284,11 @@ body.modal-open {
 
 #openAddContact {
   cursor: pointer;
+}
+
+.add-contact-overlay-right {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  width: 100%;
 }
