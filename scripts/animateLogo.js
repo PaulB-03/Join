@@ -33,7 +33,7 @@ function animateLogo(startLogo, deltaX, deltaY, scale) {
     requestAnimationFrame(() => {
       startLogo.style.transform = `translate(-50%, -50%) translate(${deltaX}px, ${deltaY}px) scale(${scale})`;
     });
-  }, 2000);
+  }, 800);
 }
 
 function showHiddenElements(startLogo) {
