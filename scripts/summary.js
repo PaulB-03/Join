@@ -8,7 +8,7 @@ function init() {
 
 
 async function getData() {
-    const BASE_URL = "https://fir-f30ab-default-rtdb.europe-west1.firebasedatabase.app/";
+    const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
 
     let response = await fetch(BASE_URL + ".json");
     responseToJson = await response.json()
@@ -22,13 +22,15 @@ function countForSummary(responseToJson) {
     let toDoCount = 0;
     let doneCount = 0;
     let awaitFeedbackCount = 0;
+    let urgencyCount = 0;
 
     for (let index = 0; index < responseToJson.tasks.length; index++) {
-        let status = responseToJson.tasks[index].status
+        let status = responseToJson.tasks[index].state
+        let urgency = responseToJson.tasks[index].priority
         if (status == "in progress") {
             progressCount += 1
         }
-        if (status == "to do") {
+        if (status == "toDo") {
             toDoCount += 1
         }
         if (status == "done") {
@@ -37,14 +39,51 @@ function countForSummary(responseToJson) {
         if (status == "await feedback") {
             awaitFeedbackCount += 1
         }
+        if (urgency == "hoch") {
+            urgencyCount += 1
+            // changeDateOfUrgentDeadLine(responseToJson.tasks[index].date)
+
+        }
+        changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount, urgencyCount)
     }
-    changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount)
 }
 
-function changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount) {
-    let toDoNumberHTml = document.getElementById('toDo')
+function changeDateOfUrgentDeadLine(date) {
+    let urgencyDeadlineDate = document.getElementById('urgencyDeadline')
+    urgencyDeadlineDate.innerHTML = "";
+    urgencyDeadlineDate.innerHTML = date
+}
+
+function changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount, urgencyCount) {
+    let toDoNumberHTml = document.getElementById('toDoNumberBox')
     toDoNumberHTml.innerHTML = "";
     toDoNumberHTml.innerHTML = toDoCount;
+
+    let doneNumberHTml = document.getElementById('doneNumberBox')
+    doneNumberHTml.innerHTML = "";
+    doneNumberHTml.innerHTML = doneCount;
+
+    let progressCountHTml = document.getElementById('progressCountBox')
+    progressCountHTml.innerHTML = "";
+    progressCountHTml.innerHTML = progressCount;
+
+    let awaitFreedbackCountHTml = document.getElementById('awaitFreedbackCountBox')
+    awaitFreedbackCountHTml.innerHTML = "";
+    awaitFreedbackCountHTml.innerHTML = awaitFeedbackCount;
+
+    let urgencyCountHTml = document.getElementById('urgencyCountBox')
+    urgencyCountHTml.innerHTML = "";
+    urgencyCountHTml.innerHTML = urgencyCount;
+
+    let allTaskCount = document.getElementById('allTaskCountBox')
+    allTaskCount.innerHTML = "";
+    allTaskCount.innerHTML = calcAllTasksInBoard(progressCount, toDoCount, doneCount, awaitFeedbackCount);
+}
+
+function calcAllTasksInBoard(progressCount, toDoCount, doneCount, awaitFeedbackCount) {
+    let allTaskCount = progressCount + toDoCount + doneCount + awaitFeedbackCount
+
+    return allTaskCount
 }
 
 // async function postData() {
