@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const L = document.getElementById("loginBtn");
   const G = document.getElementById("guestLogin");
-  const A = G?.closest("a");                 // <a> um den Gast-Button
+  const A = G?.closest("a");               
 
   L?.addEventListener("click", (e) => {
     e.preventDefault();
@@ -45,5 +45,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const setG = () => setLoginStatus("guest");
   G?.addEventListener("click", setG);
-  A?.addEventListener("click", setG);        // falls <a> geklickt wird
+  A?.addEventListener("click", setG);
 });
+
+function toggleProfileMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById("profileMenu");
+  menu.style.display = (menu.style.display === "block") ? "none" : "block";
+}
+
+// Klick außerhalb → Menü schließen
+document.addEventListener("click", () => {
+  const menu = document.getElementById("profileMenu");
+  if (menu) menu.style.display = "none";
+});
+
+// ESC → Menü schließen
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const menu = document.getElementById("profileMenu");
+    if (menu) menu.style.display = "none";
+  }
+});
+
+function logoutUser() {
+  localStorage.removeItem("currentUser");
+  document.getElementById("profileMenu").style.display = "none";
+  window.location.href = "../index.html";
+}
