@@ -23,7 +23,7 @@
         <div class="addTaskWrapper">
           <div>
             <div class="inputFlexbox">
-              <span id="requiredHeaders">Title <img src="../assets/svg/required.svg" alt="" id="required" required></span>
+              <span id="requiredHeaders">Title<img src="../assets/svg/required.svg" alt="" id="required" required></span>
               <input class="title" id="titleInput" type="text" placeholder="Enter a title">
             </div>
             <div class="inputFlexbox">
@@ -49,7 +49,7 @@
               <span>Assigned to</span>
                 <div id="assignedToDropdownContacts" class="title" tabindex="0">
                   <div class="dropdown-selected">
-                    <span>Select contact</span>
+                    <span>Select contacts</span>
                     <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts">
                   </div>
                   <ul id="dropdown-list-contacts"></ul>
@@ -61,7 +61,7 @@
               <div id="assignedToDropdownCategory" class="title" tabindex="0">
                 <div class="dropdown-selected" id="input-category">
                   <span id="categoryPlaceholder">Select task category</span>
-                  <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" />
+                  <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks">
                 </div>
                 <ul id="dropdown-list-category">
                   <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
@@ -84,7 +84,7 @@
             <div class="inputFlexbox" id="subtasks">
               <span>Subtasks</span>
               <div class="dropdown-subtasks" class="dropdown-container">
-                <input type="text" class="dropdown-selected input-subtask" placeholder="Select new subtask">
+                <input type="text" class="dropdown-selected input-subtask" placeholder="Add a new subtask">
                 <!-- <img src="../assets/svg/add_small.svg" class="dropdown-plus-subtasks"/> -->
 
                 <div class="subtask-images-container" style="display: none">

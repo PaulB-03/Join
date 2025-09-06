@@ -59,6 +59,10 @@ body {
   font-size: 16px;
 }
 
+.title.filled {
+  background-color: rgb(232, 240, 254);
+}
+
 .title:focus {
   border-color: var(--light-blue);
 }
