@@ -161,6 +161,10 @@ textarea:valid {
   background-color: rgb(232, 240, 254);
 }
 
+.selected-red {
+    background-color: rgb(232, 240, 254) !important;
+}
+
 #subtasks {
     padding-bottom: 50px;
 }

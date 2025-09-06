@@ -214,11 +214,15 @@ function dropdownFunction(arrow, dropDown, select, items, onSelect) {
 }
 
 function saveSelectedCategory(index) {
-    const categories = ["Userstory", "Technical Task"];
-    selectedCategory = categories[index];
-
-    document.getElementById("categoryPlaceholder").textContent = selectedCategory;
-    document.getElementById("dropdown-list-category").style.display = "none";
+    const categories = ['Userstory', 'Technical Task'];
+    const placeholder = document.getElementById('categoryPlaceholder');
+    const dropdown = document.getElementById('assignedToDropdownCategory');
+    const dropdownList = document.getElementById('dropdown-list-category');
+    
+    placeholder.textContent = categories[index];
+    dropdown.classList.add('selected-red');
+    dropdownList.style.display = 'none';
+    dropdown.classList.remove('active');
 }
 
 function clearTask() {
@@ -236,6 +240,7 @@ function clearTask() {
 
     selectedCategory = "";
     document.getElementById("categoryPlaceholder").textContent = "Select task category";
+    document.getElementById("assignedToDropdownCategory").classList.remove('selected-red');
     let checkboxes = document.querySelectorAll("#dropdown-list-category input[type='checkbox']");
     checkboxes.forEach(cb => cb.checked = false);
 
@@ -243,6 +248,7 @@ function clearTask() {
     selectedContact = "";
     document.getElementById("assignedToInitials").innerHTML = "";
     document.querySelector("#assignedToDropdownContacts .dropdown-selected span").textContent = "Select contact";
+    document.getElementById("assignedToDropdownContacts").style.backgroundColor = "white";
 
     const dropDown = document.getElementById('dropdown-list-contacts');
     const labels = dropDown.querySelectorAll("label.custom-checkbox");
