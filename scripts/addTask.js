@@ -1,39 +1,53 @@
 let baseURL = 'https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/';
 let prioGrade = "";
+let selectedPrio = "";
+let selectedCategory = "";
+let selectedContact = "";
+let assignedContacts = [];
 
-document.addEventListener('DOMContentLoaded', init);
-function init() {
-    let select = document.getElementById('assignedToDropdownContacts');
-    let select2 = document.getElementById('assignedToDropdownCategory');
-    let dropDownItem2 = document.getElementsByClassName('dropdown-item-category');
-    let isClicked = false;
-    let arrow = document.querySelector('#dropdown-arrow-contacts');
-    let arrow2 = document.querySelector('#dropdown-arrow-subtasks');
-    let dropDown = document.getElementById('dropdown-list-contacts');
-    let dropDown2 = document.getElementById('dropdown-list-category');
-    dropdownFunctionCategory(arrow2, dropDown2, select2, isClicked, dropDownItem2);
+document.addEventListener('DOMContentLoaded', () => {
+    initCategoryDropdown();
+    initContactsDropdown();
     initialiseSavePrioImg();
-}
+});
 
 async function createTask(event) {
     event.preventDefault();
     let title = document.getElementById('titleInput');
     let description = document.getElementById('descriptionInput');
     let date = document.getElementById('date');
-        if (title.value && description.value && date.value) {
-            try {
-                await saveTask("tasks", {
-                    "title": title.value,
-                    "description": description.value,
-                    "date": date.value,
-                });
-                window.location.href = 'board.html';
-            } catch (error) {
-                alert("Die Aufgabe konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.");
+
+    if (title.value && description.value && date.value && selectedPrio && selectedCategory) {
+        try {
+            let tasks = await getTasks();
+            let nextIndex = 0;
+            if (tasks) {
+                const existingIndices = Object.keys(tasks)
+                    .map(key => parseInt(key))
+                    .filter(key => !isNaN(key));
+                if (existingIndices.length > 0) {
+                    nextIndex = Math.max(...existingIndices) + 1;
+                }
             }
-        } else {
-            alert('bitte Felder ausfüllen');
+
+            await saveTask(`tasks/${nextIndex}`, {
+                "title": title.value,
+                "description": description.value,
+                "date": date.value,
+                "state": "toDo",
+                "priority": selectedPrio,
+                "category": selectedCategory,
+                "assignedContacts": assignedContacts
+            });
+
+            window.location.href = 'board.html';
+        } catch (error) {
+            alert("Die Aufgabe konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.");
+            console.error("Error saving task:", error);
         }
+    } else {
+        alert('Bitte alle Felder inkl. Priorität und Kategorie ausfüllen');
+    }
 }
 
 async function saveTask(path = "", data = {}) {
@@ -47,26 +61,37 @@ async function saveTask(path = "", data = {}) {
     return await response.json();
 }
 
-let selectedPrioImg = [];
-isClickedPrio = false;
+async function getTasks() {
+    try {
+        let response = await fetch(baseURL + "tasks.json");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Could not get tasks: ", error);
+        return null;
+    }
+}
 
 function initialiseSavePrioImg() {
     let prioRefs = document.getElementsByClassName('prioGrade');
     let prioArray = Array.from(prioRefs);
+
     prioArray.forEach(element => {
         element.addEventListener('click', () => {
-            element.classList.toggle('isClicked');
-            let prioImg = element.querySelector('.prioImage');
-            let fullImgPath = prioImg.src;
-            let localImgPath = fullImgPath.replace(window.location.origin + "/join/", "");
+            prioArray.forEach(el => el.classList.remove('isClicked'));
+            
             if (element.classList.contains('isClicked')) {
-                selectedPrioImg = [];
-                selectedPrioImg.push(localImgPath);
+                element.classList.remove('isClicked');
+                selectedPrio = "";
             } else {
-                selectedPrioImg = [];
+                element.classList.add('isClicked');
+                selectedPrio = element.id;
             }
-        })
-    })
+        });
+    });
 }
 
 function setPrioColor(index) {
@@ -74,8 +99,6 @@ function setPrioColor(index) {
     let prioRef = prioRefs[index];
     let images = document.querySelectorAll('.prioGrade .prioImage');
     let prioImg = prioRef.querySelector("img");
-    let prioImgSource = prioImg.src;
-
 
     images.forEach(image => image.classList.remove('filterWhite'));
     Array.from(prioRefs).forEach(element => element.classList.remove('whitePrioFont'));
@@ -107,53 +130,195 @@ function removePrioImgColor(prioRef, prioImg) {
     prioImg.classList.remove('filterWhite');
 }
 
-function dropdownFunctionCategory(arrow2, dropDown2, select2, isClicked, dropDownItem2) {
-    select2.addEventListener('click', (event) => {
+function initCategoryDropdown() {
+    let select2 = document.getElementById('assignedToDropdownCategory');
+    let arrow2 = document.querySelector('#dropdown-arrow-subtasks');
+    let dropDown2 = document.getElementById('dropdown-list-category');
+    let dropDownItem2 = document.getElementsByClassName('dropdown-item-category');
+
+    dropdownFunction(arrow2, dropDown2, select2, dropDownItem2, (item) => {
+        let name = item.textContent.trim();
+        selectedCategory = name;
+
+        document.getElementById("categoryPlaceholder").textContent = name;
+    });
+}
+
+async function initContactsDropdown() {
+    let select = document.getElementById('assignedToDropdownContacts');
+    let arrow = document.querySelector('#dropdown-arrow-contacts');
+    let dropDown = document.getElementById('dropdown-list-contacts');
+    let response = await fetch(baseURL + "contacts.json");
+    let contacts = await response.json();
+
+    dropDown.innerHTML = "";
+    Object.entries(contacts).forEach(([key, contact]) => {
+        let li = document.createElement("li");
+        li.classList.add("dropdown-item-contact");
+        li.innerHTML = `
+            <label class="custom-checkbox">
+                ${contact.name}
+                <input type="checkbox" onchange="toggleContact('${contact.name}')">
+                <span style="display:none"></span>
+            </label>
+        `;
+        dropDown.appendChild(li);
+    });
+
+    let items = document.getElementsByClassName("dropdown-item-contact");
+
+    dropdownFunction(arrow, dropDown, select, items, null);
+}
+
+function dropdownFunction(arrow, dropDown, select, items, onSelect) {
+    let isClicked = false;
+
+    select.addEventListener('click', (event) => {
         event.stopPropagation();
-        arrow2.style.transform = isClicked ? "translateY(-50%) rotate(0deg)" : "translateY(-50%) rotate(180deg)";
-        dropDown2.style.display = isClicked ? 'none' : 'block';
+        arrow.style.transform = isClicked ? "translateY(-50%) rotate(0deg)" : "translateY(-50%) rotate(180deg)";
+        dropDown.style.display = isClicked ? 'none' : 'block';
         isClicked = !isClicked;
     });
 
-    Array.from(dropDownItem2).forEach(item => {
+    Array.from(items).forEach(item => {
         item.addEventListener('click', (event) => {
             event.stopPropagation();
-            dropDown2.style.display = 'none';
-            arrow2.style.transform = isClicked ? "translateY(-50%) rotate(0deg)" : "translateY(-50%) rotate(180deg)";
-            isClicked = !isClicked;
-        })
-    })
+            dropDown.style.display = 'none';
+            arrow.style.transform = "translateY(-50%) rotate(0deg)";
+            isClicked = false;
 
-    document.body.addEventListener('click', (event) => {
+            if (onSelect) onSelect(item);
+        });
+    });
+
+    document.body.addEventListener('click', () => {
         if (isClicked) {
-            arrow2.style.transform = "translateY(-50%) rotate(0deg)";
-            dropDown2.style.display = 'none';
+            arrow.style.transform = "translateY(-50%) rotate(0deg)";
+            dropDown.style.display = 'none';
             isClicked = false;
         }
     });
 }
 
-let selectedCategory = [];
 function saveSelectedCategory(index) {
-    let categoryInputRef = document.getElementById('categoryPlaceholder');
-    let dropDownItem = document.getElementsByClassName('dropdown-item-category')[index];
-    let dropDownItemContent = dropDownItem.textContent.trim();
-    if (selectedCategory.length === 0) {
-        selectedCategory.push(dropDownItemContent);
-        categoryInputRef.innerHTML = selectedCategory;
-        return
-    } else {
-        selectedCategory = [];
-        selectedCategory.push(dropDownItemContent);
-        categoryInputRef.innerHTML = selectedCategory;
-        return
+    const categories = ["Userstory", "Technical Task"];
+    selectedCategory = categories[index];
 
-    }
+    document.getElementById("categoryPlaceholder").textContent = selectedCategory;
+    document.getElementById("dropdown-list-category").style.display = "none";
 }
 
 function clearTask() {
-    let inputs = document.querySelectorAll('.title');
-    inputs.forEach(element => {
-        element.value = "";
+    document.getElementById('titleInput').value = "";
+    document.getElementById('descriptionInput').value = "";
+    document.getElementById('date').value = "";
+
+    let prioRefs = document.getElementsByClassName('prioGrade');
+    Array.from(prioRefs).forEach(el => {
+        el.classList.remove('isClicked', 'redColor', 'orangeColor', 'greenColor', 'whitePrioFont');
     });
+    let images = document.querySelectorAll('.prioGrade .prioImage');
+    images.forEach(img => img.classList.remove('filterWhite'));
+    selectedPrio = "";
+
+    selectedCategory = "";
+    document.getElementById("categoryPlaceholder").textContent = "Select task category";
+    let checkboxes = document.querySelectorAll("#dropdown-list-category input[type='checkbox']");
+    checkboxes.forEach(cb => cb.checked = false);
+
+    assignedContacts = [];
+    selectedContact = "";
+    document.getElementById("assignedToInitials").innerHTML = "";
+    document.querySelector("#assignedToDropdownContacts .dropdown-selected span").textContent = "Select contact";
+
+}
+
+async function loadContacts() {
+    try {
+        let response = await fetch(baseURL + "contacts.json");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let contacts = await response.json();
+
+        let contactList = document.getElementById("dropdown-list-contacts");
+        contactList.innerHTML = "";
+
+        if (contacts) {
+            Object.entries(contacts).forEach(([key, contact]) => {
+                let li = document.createElement("li");
+                li.classList.add("dropdown-item-contact");
+                li.textContent = contact.name;
+                li.onclick = () => saveSelectedContact(contact.name);
+                contactList.appendChild(li);
+            });
+        }
+    } catch (error) {
+        console.error("Could not load contacts: ", error);
+    }
+}
+
+function saveSelectedContact(name) {
+    selectedContact = name;
+
+    let selectedSpan = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
+    selectedSpan.textContent = name;
+
+    document.getElementById("dropdown-list-contacts").style.display = "none";
+    document.querySelector("#dropdown-arrow-contacts").style.transform = "rotate(0deg)";
+
+    renderAssignedContact(name);
+}
+
+function renderAssignedContact(name) {
+    let initialsDiv = document.getElementById("assignedToInitials");
+    initialsDiv.style.display = "flex";
+    initialsDiv.innerHTML = "";
+
+    let initials = name.split(" ").map(w => w[0]).join("").toUpperCase();
+    let span = document.createElement("span");
+    span.textContent = initials;
+    span.classList.add("contact-initial");
+    initialsDiv.appendChild(span);
+}
+
+function toggleContact(name) {
+    if (assignedContacts.includes(name)) {
+        assignedContacts = assignedContacts.filter(c => c !== name);
+    } else {
+        assignedContacts.push(name);
+    }
+
+    let span = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
+    span.textContent = assignedContacts.length > 0
+        ? assignedContacts.join(", ")
+        : "Select contact";
+
+    renderAssignedContacts();
+}
+
+function renderAssignedContacts() {
+    let initialsDiv = document.getElementById("assignedToInitials");
+    if (assignedContacts.length === 0) {
+        initialsDiv.style.display = "none";
+        initialsDiv.innerHTML = "";
+        return;
+    }
+
+    initialsDiv.style.display = "flex";
+    initialsDiv.innerHTML = "";
+
+    assignedContacts.forEach((contactName, index) => {
+        let initials = contactName.split(" ").map(w => w[0]).join("").toUpperCase();
+        let span = document.createElement("span");
+        span.textContent = initials;
+        span.classList.add("contact-initial");
+        span.style.backgroundColor = getColor(index);
+        initialsDiv.appendChild(span);
+    });
+}
+
+function getColor(index) {
+    const colors = ["#f44336", "#2196F3", "#FF9800", "#9C27B0", "#4CAF50", "#00BCD4", "#FFC107"];
+    return colors[index % colors.length];
 }

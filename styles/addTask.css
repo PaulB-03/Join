@@ -196,8 +196,8 @@ textarea:valid {
   padding: 0;
   margin: 0;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  height: auto;
-  overflow: auto;
+  max-height: 200px;
+  overflow-y: auto;
   z-index: 1;
 }
 
@@ -229,6 +229,35 @@ textarea:valid {
   background-color: var(--main-color);
   color: var(--white);
 }
+
+#assignedToInitials {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.contact-initial {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    border: 2px solid white;
+    margin-left: -5px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+}
+
+.contact-initial:nth-child(1) { background-color: #f44336; }
+.contact-initial:nth-child(2) { background-color: #2196F3; }
+.contact-initial:nth-child(3) { background-color: #FF9800; }
+.contact-initial:nth-child(4) { background-color: #9C27B0; }
+.contact-initial:nth-child(5) { background-color: #4CAF50; }
 
 #titleInput.title::placeholder {
   font-size: 16px;
@@ -372,7 +401,7 @@ input[type="date" i]:valid {
   background-color: rgb(232, 240, 254);
 }
 
-.creaateTaskCheck {
+.createTaskCheck {
     height: 18px;
     width: 18px;
 }
