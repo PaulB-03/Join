@@ -3,6 +3,7 @@ let prioGrade = "";
 let selectedPrio = "";
 let selectedCategory = "";
 let selectedContact = "";
+let allContacts = [];
 let assignedContacts = [];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -151,14 +152,20 @@ async function initContactsDropdown() {
     let response = await fetch(baseURL + "contacts.json");
     let contacts = await response.json();
 
+    allContacts = Object.values(contacts).map(contact => contact.name);
+
     dropDown.innerHTML = "";
-    Object.entries(contacts).forEach(([key, contact]) => {
+
+    allContacts.forEach(name => {
         let li = document.createElement("li");
         li.classList.add("dropdown-item-contact");
+
+        let isChecked = assignedContacts.includes(name) ? "checked" : "";
+
         li.innerHTML = `
-            <label class="custom-checkbox">
-                ${contact.name}
-                <input type="checkbox" onchange="toggleContact('${contact.name}')">
+            <label class="custom-checkbox" style="display: block; padding: 5px; cursor: pointer; ${isChecked ? 'color: lightgrey;' : ''}">
+                ${name}
+                <input type="checkbox" onchange="toggleContact('${name}')" ${isChecked}>
                 <span style="display:none"></span>
             </label>
         `;
@@ -231,6 +238,23 @@ function clearTask() {
     document.getElementById("assignedToInitials").innerHTML = "";
     document.querySelector("#assignedToDropdownContacts .dropdown-selected span").textContent = "Select contact";
 
+    const dropDown = document.getElementById('dropdown-list-contacts');
+    const labels = dropDown.querySelectorAll("label.custom-checkbox");
+    labels.forEach(label => {
+        label.style.color = "black";
+        const checkbox = label.querySelector("input[type='checkbox']");
+        if (checkbox) checkbox.checked = false;
+    });
+}
+
+const dropDown = document.getElementById('dropdown-list-contacts');
+if (dropDown) {
+    const labels = dropDown.querySelectorAll("label.custom-checkbox");
+    labels.forEach(label => {
+        label.style.color = "black";
+        const checkbox = label.querySelector("input[type='checkbox']");
+        if (checkbox) checkbox.checked = false;
+    });
 }
 
 async function loadContacts() {
@@ -260,7 +284,6 @@ async function loadContacts() {
 
 function saveSelectedContact(name) {
     selectedContact = name;
-
     let selectedSpan = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
     selectedSpan.textContent = name;
 
@@ -268,6 +291,20 @@ function saveSelectedContact(name) {
     document.querySelector("#dropdown-arrow-contacts").style.transform = "rotate(0deg)";
 
     renderAssignedContact(name);
+}
+
+function renderContactList() {
+    const list = document.getElementById("dropdown-list-contacts");
+    list.innerHTML = "";
+    allContacts.forEach(name => {
+        const li = document.createElement("li");
+        li.textContent = name;
+        if (assignedContacts.includes(name)) {
+            li.classList.add("selected-contact");
+        }
+        li.addEventListener("click", () => toggleContact(name));
+        list.appendChild(li);
+    });
 }
 
 function renderAssignedContact(name) {
@@ -288,13 +325,13 @@ function toggleContact(name) {
     } else {
         assignedContacts.push(name);
     }
-
     let span = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
     span.textContent = assignedContacts.length > 0
         ? assignedContacts.join(", ")
         : "Select contact";
 
     renderAssignedContacts();
+    updateDropdownHighlight();
 }
 
 function renderAssignedContacts() {
@@ -322,3 +359,24 @@ function getColor(index) {
     const colors = ["#f44336", "#2196F3", "#FF9800", "#9C27B0", "#4CAF50", "#00BCD4", "#FFC107"];
     return colors[index % colors.length];
 }
+
+function updateDropdownHighlight() {
+    const dropDown = document.getElementById('dropdown-list-contacts');
+    const labels = dropDown.querySelectorAll("label.custom-checkbox");
+
+    labels.forEach(label => {
+        const name = label.textContent.trim();
+        const checkbox = label.querySelector("input[type='checkbox']");
+        if (assignedContacts.includes(name)) {
+            checkbox.checked = true;
+            label.style.color = "lightgrey";
+        } else {
+            checkbox.checked = false;
+            label.style.color = "";
+        }
+    });
+}
+
+window.addEventListener("load", () => {
+    initContactsDropdown();
+});
