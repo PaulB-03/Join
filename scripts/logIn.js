@@ -1,49 +1,95 @@
-function setLoginStatus(type, name = "") {
-  localStorage.setItem("currentUser", JSON.stringify({ type, name }));
+function saveLoginStatus(userType, userName = "") {
+  localStorage.setItem("currentUser", JSON.stringify({ type: userType, name: userName }));
 }
 
-function getLoginStatus() {
-  try { return JSON.parse(localStorage.getItem("currentUser")) || {}; }
-  catch { return {}; }
+function loadLoginStatus() {
+  try {
+    return JSON.parse(localStorage.getItem("currentUser")) || {};
+  } catch {
+    return {};
+  }
 }
 
-function toggleHeaderIcons() {
-  const u = getLoginStatus();
-  const userAv = document.querySelector("#header #userAvatar");
-  const guestAv = document.querySelector("#header #guestAvatar");
-  const show = (el, on) => { if (el) el.style.display = on ? "flex" : "none"; };
-  if (u.type === "user") { show(userAv, true); show(guestAv, false); }
-  else if (u.type === "guest") { show(userAv, false); show(guestAv, true); }
-  else { show(userAv, false); show(guestAv, false); }
+function updateHeaderAvatars() {
+  const currentUser = loadLoginStatus();
+  const userAvatar = document.querySelector("#header #userAvatar");
+  const guestAvatar = document.querySelector("#header #guestAvatar");
+
+  const toggleElement = (element, shouldShow) => {
+    if (element) element.style.display = shouldShow ? "flex" : "none";
+  };
+
+  if (currentUser.type === "user") {
+    toggleElement(userAvatar, true);
+    toggleElement(guestAvatar, false);
+  } else if (currentUser.type === "guest") {
+    toggleElement(userAvatar, false);
+    toggleElement(guestAvatar, true);
+  } else {
+    toggleElement(userAvatar, false);
+    toggleElement(guestAvatar, false);
+  }
 }
 
-function applySummaryGreeting() {
-  const u = getLoginStatus();
-  const nameEl = document.querySelector(".sumName");
-  if (!nameEl) return;
-  nameEl.textContent = u.type === "guest" ? "Gast" : (u.name || "");
+function showSummaryGreeting() {
+  const currentUser = loadLoginStatus();
+  const greetingNameElement = document.querySelector(".sumName");
+  if (!greetingNameElement) return;
+
+  greetingNameElement.textContent =
+    currentUser.type === "guest" ? "" : (currentUser.name || "");
 }
 
-function waitForHeaderAndApply() {
-  const ready = document.querySelector("#header #userAvatar, #header #guestAvatar");
-  if (ready) toggleHeaderIcons();
-  else setTimeout(waitForHeaderAndApply, 50);
+function waitForHeaderAndUpdateAvatars() {
+  const headerReady = document.querySelector("#header #userAvatar, #header #guestAvatar");
+  if (headerReady) {
+    updateHeaderAvatars();
+  } else {
+    setTimeout(waitForHeaderAndUpdateAvatars, 50);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  waitForHeaderAndApply(); applySummaryGreeting();
+  waitForHeaderAndUpdateAvatars();
+  showSummaryGreeting();
 
-  const L = document.getElementById("loginBtn");
-  const G = document.getElementById("guestLogin");
-  const A = G?.closest("a");                 // <a> um den Gast-Button
+  const loginButton = document.getElementById("loginBtn");
+  const guestLoginButton = document.getElementById("guestLogin");
+  const guestLoginLink = guestLoginButton?.closest("a");
 
-  L?.addEventListener("click", (e) => {
+  loginButton?.addEventListener("click", (e) => {
     e.preventDefault();
-    setLoginStatus("user", "Sofia Müller");
+    saveLoginStatus("user", "Sofia Müller");
     window.location.href = "./html/summary.html";
   });
 
-  const setG = () => setLoginStatus("guest");
-  G?.addEventListener("click", setG);
-  A?.addEventListener("click", setG);        // falls <a> geklickt wird
+  const activateGuestLogin = () => saveLoginStatus("guest");
+
+  guestLoginButton?.addEventListener("click", activateGuestLogin);
+  guestLoginLink?.addEventListener("click", activateGuestLogin);
 });
+
+
+function toggleProfileMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById("profileMenu");
+  menu.style.display = (menu.style.display === "block") ? "none" : "block";
+}
+
+document.addEventListener("click", () => {
+  const menu = document.getElementById("profileMenu");
+  if (menu) menu.style.display = "none";
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const menu = document.getElementById("profileMenu");
+    if (menu) menu.style.display = "none";
+  }
+});
+
+function logoutUser() {
+  localStorage.removeItem("currentUser");
+  document.getElementById("profileMenu").style.display = "none";
+  window.location.href = "../index.html";
+}
