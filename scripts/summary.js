@@ -4,6 +4,7 @@ function init() {
     includeHTML()
     getData()
     getCurrentTime()
+    greetingForNameOrGuest()
 }
 
 function getCurrentTime() {
@@ -15,17 +16,28 @@ function getCurrentTime() {
     changeInnerHtmlOfSummaryGreeting(hours + "." + minutes)
 }
 
+function greetingForNameOrGuest() {
+    let logInName = document.getElementById('logInName').innerHTML
+    let markDestinction = document.getElementById('markDestinction')
+    
+    if (logInName.length < 1) {
+        markDestinction.innerHTML = "!"
+    } else {
+         markDestinction.innerHTML = ","
+    }
+}
+
 function changeInnerHtmlOfSummaryGreeting(hours) {
     let sumGreeting = document.getElementById('sumGreeting')
     sumGreeting.innerHTML = "";
 
     if (hours <= 12) {
-        sumGreeting.innerHTML = "Good morning!"
+        sumGreeting.innerHTML = "Good morning"
     } else
         if (hours >= 12 && hours < 18) {
-            sumGreeting.innerHTML = "Good afternoon!"
+            sumGreeting.innerHTML = "Good afternoon"
         } else {
-            sumGreeting.innerHTML = "Good evening!"
+            sumGreeting.innerHTML = "Good evening"
         }
 }
 
