@@ -98,19 +98,12 @@ h3 {
 
 a {
   text-align: center;
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.aTags {
-  text-align: center;
   color: var(--color-icon);
   text-decoration: none;
   cursor: pointer;
 }
 
-.aTags:hover {
+a:hover {
   color: var(--light-blue);
   font-weight: 700;
 }
