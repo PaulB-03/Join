@@ -3,9 +3,31 @@
 function init() {
     includeHTML()
     getData()
+    getCurrentTime()
 }
 
+function getCurrentTime() {
+    const now = new Date();
+    const day = now.getDay();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    
+    changeInnerHtmlOfSummaryGreeting(hours + "." + minutes)
+}
 
+function changeInnerHtmlOfSummaryGreeting(hours) {
+    let sumGreeting = document.getElementById('sumGreeting')
+    sumGreeting.innerHTML = "";
+
+    if (hours <= 12) {
+        sumGreeting.innerHTML = "Good morning!"
+    } else
+        if (hours >= 12 && hours < 18) {
+            sumGreeting.innerHTML = "Good afternoon!"
+        } else {
+            sumGreeting.innerHTML = "Good evening!"
+        }
+}
 
 async function getData() {
     const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -42,15 +64,9 @@ function countForSummary(responseToJson) {
         if (urgency == "hoch") {
             urgencyCount += 1
             // changeDateOfUrgentDeadLine(responseToJson.tasks[index].date)
-
         }
-        const now = new Date();
-        const day = now.getDay(); // returns a number representing the day of the week, starting with 0 for Sunday
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        console.log(`Today is day ${day} and the time is ${hours}:${minutes}.`);
-        changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount, urgencyCount)
     }
+    changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount, urgencyCount)
 }
 
 function changeDateOfUrgentDeadLine(date) {
