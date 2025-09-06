@@ -37,7 +37,7 @@ function showSummaryGreeting() {
   if (!greetingNameElement) return;
 
   greetingNameElement.textContent =
-    currentUser.type === "guest" ? "Gast" : (currentUser.name || "");
+    currentUser.type === "guest" ? "" : (currentUser.name || "");
 }
 
 function waitForHeaderAndUpdateAvatars() {
