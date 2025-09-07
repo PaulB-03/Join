@@ -42,7 +42,7 @@ document.getElementById("signinForm").addEventListener("submit", async (event) =
     if (foundUser) {
       saveLoginStatus("user", foundUser.name);
       window.location.href = "../html/summary.html";
-      console.log(foundUser);
+      console.log(foundUser.name);
     } else {
       loginError.style.visibility = "visible";
       document.getElementById("signinEmail").classList.add("input-error");
