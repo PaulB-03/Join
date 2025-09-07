@@ -1,41 +1,48 @@
-  const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
-  
-  
-  document.getElementById("signinForm").addEventListener("submit", async (event) => {
-    event.preventDefault(); // stop the form from reloading the page
+document.getElementById("guestLogin").addEventListener("click", () => {
+  window.location.href = "../html/summary.html";
+});
 
-    const email = document.getElementById("signinEmail").value.trim();
-    const password = document.getElementById("signinPassword").value.trim();
+document.getElementById("signinForm").addEventListener("submit", async (event) => {
+  event.preventDefault(); // stop the form from reloading the page
 
-    try {
-      // Fetch all users from Realtime Database
-      const res = await fetch(`${BASE_URL}/users.json`);
-      const data = await res.json();
+  const signinEmail = document.getElementById("signinEmail").value.trim();
+  const signinPassword = document.getElementById("signinPassword").value.trim();
 
-      if (!data) {
-        alert("No users found!");
-        return;
-      }
+  try {
+    // Fetch all users from Realtime Database
+    const res = await fetch(`${BASE_URL}/users.json`);
 
-      // Check if email + password match
-      let foundUser = null;
-      for (const key in data) {
-        const user = data[key];
-        if (user.email === email && user.password === password) {
-          foundUser = user;
-          break;
-        }
-      }
+    const data = await res.json();
+    console.log(data);
 
-      if (foundUser) {
-        // ✅ Login successful → redirect
-        window.location.href = "summary.html";
-      } else {
-        alert("Invalid email or password!");
-      }
-
-    } catch (err) {
-      console.error("Error during login:", err);
-      alert("Login failed. Please try again.");
+    if (!data) {
+      console.log("No users found!");
+      return;
     }
-  });
+
+    // Check if email + password match
+
+    let foundUser = null;
+    for (const key in data) {
+      const user = data[key];
+      if (user.email === signinEmail && user.password === signinPassword) {
+        foundUser = user;
+        break;
+      }
+    }
+
+    if (foundUser) {
+      window.location.href = "../html/summary.html";
+      console.log(foundUser);
+    } else {
+      loginError.style.visibility = "visible";
+      document.getElementById("signinEmail").classList.add("input-error");
+      document.getElementById("signinPassword").classList.add("input-error");
+    }
+  } catch (error) {
+    console.error("Error during sign in:", error);
+    loginError.style.visibility = "visible";
+    document.getElementById("signinEmail").classList.add("input-error");
+    document.getElementById("signinPassword").classList.add("input-error");
+  }
+});

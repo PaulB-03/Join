@@ -1,9 +1,14 @@
 // regex patterns
-const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+$/;
+const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+(?:\s+[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+)+$/;
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 // references
 const signupForm = document.getElementById("signUpForm");
+const signinForm = document.getElementById("signinForm");
+
+const signinEmail = document.getElementById("signinEmail");
+const loginError = document.getElementById("loginError");
+const signinPassword = document.getElementById("signinPassword");
 
 const signupName = document.getElementById("signupName");
 const nameError = document.getElementById("nameError");
@@ -19,40 +24,37 @@ const acceptPolicy = document.getElementById("acceptPolicy");
 const policyError = document.getElementById("policyError");
 
 const acceptPolicyImg = document.getElementById("policyCheckboxImg");
+
 let policyChecked = false;
+
+// Helper function: updates visibility + error class
+const updateFieldError = (isValid, inputElement, errorElement) => {
+  errorElement.style.visibility = isValid ? "hidden" : "visible";
+  inputElement.classList.toggle("input-error", !isValid);
+};
+
+const validateSignupForm = () => {
+  const isNameValid = nameRegex.test(signupName.value);
+  const isEmailValid = emailRegex.test(signupEmail.value);
+  const doPasswordsMatch = signupPassword.value && signupPassword.value === confirmPassword.value;
+  // Use helper for each field
+  updateFieldError(isNameValid, signupName, nameError);
+  updateFieldError(isEmailValid, signupEmail, emailError);
+  updateFieldError(doPasswordsMatch, signupPassword, passwordMatchError);
+  updateFieldError(doPasswordsMatch, confirmPassword, passwordMatchError);
+  // Policy check
+  policyError.style.visibility = policyChecked ? "hidden" : "visible";
+
+  return isNameValid && isEmailValid && doPasswordsMatch && policyChecked;
+};
 
 // Toggle checkbox image and state
 acceptPolicyImg.addEventListener("click", () => {
   policyChecked = !policyChecked;
   acceptPolicyImg.src = policyChecked ? "./assets/svg/checked.svg" : "./assets/svg/check_button.svg";
-
-  // Hide error immediately if checked
-  policyError.style.visibility = policyChecked ? "hidden" : "visible";
+  policyError.style.visibility = policyChecked ? "hidden" : "visible"; // Hide error immediately if checked
 });
 
-//validate function
-const validateSignupForm = () => {
-  const isNameValid = nameRegex.test(signupName.value);
-  const isEmailValid = emailRegex.test(signupEmail.value);
-  const doPasswordsMatch = signupPassword.value && signupPassword.value === confirmPassword.value;
-
-  nameError.style.visibility = isNameValid ? "hidden" : "visible";
-  signupName.classList.toggle("input-error", !isNameValid);
-  emailError.style.visibility = isEmailValid ? "hidden" : "visible";
-  signupEmail.classList.toggle("input-error", !isEmailValid);
-  passwordMatchError.style.visibility = doPasswordsMatch ? "hidden" : "visible";
-  signupPassword.classList.toggle("input-error", !doPasswordsMatch);
-  confirmPassword.classList.toggle("input-error", !doPasswordsMatch);
-
-  // Only validate if policy is checked
-  if (!policyChecked) {
-    policyError.style.visibility = "visible";
-  }
-
-  return nameError.style.visibility === "hidden" && emailError.style.visibility === "hidden" && passwordMatchError.style.visibility === "hidden" && policyChecked;
-};
-
-// Single submit listener
 signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   if (!validateSignupForm()) return;
@@ -60,13 +62,43 @@ signupForm.addEventListener("submit", async (e) => {
   const email = signupEmail.value;
   const password = signupPassword.value;
   try {
-    await addUser(name, email, password);
-    alert("You signed up successfully!");
-    signupForm.reset(); //  clear the form
-    policyChecked = false; // reset your custom checkbox state
-    acceptPolicyImg.src = "./assets/svg/check_button.svg"; // reset checkbox icon
-    showLoginScreen();
+    await signupProcess(name, email, password);
   } catch (err) {
     console.error("Signup failed:", err);
   }
 });
+
+async function signupProcess(name, email, password) {
+  const success = await addUser(name, email, password);
+
+  if (!success) {
+    // Optionally show a UI error message
+    console.warn("Signup failed — user not added");
+    return; // stop here
+  }
+
+  // Success flow
+  showSignupSuccess();
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  signupForm.reset();
+  policyChecked = false;
+  acceptPolicyImg.src = "./assets/svg/check_button.svg";
+  showLoginScreen();
+}
+
+// async function signupProcess(name, email, password) {
+//   await addUser(name, email, password);
+//   showSignupSuccess();
+//   await new Promise((resolve) => setTimeout(resolve, 1000)); // wait 1 second inline
+//   signupForm.reset(); //  clear the form
+//   policyChecked = false; // reset checkbox state
+//   acceptPolicyImg.src = "./assets/svg/check_button.svg"; // reset checkbox icon
+//   showLoginScreen();
+// }
+
+function showSignupSuccess() {
+  const overlay = document.getElementById("signupOverlay");
+  overlay.classList.remove("d_none");
+  void overlay.offsetWidth; // force reflow so the animation can trigger
+  overlay.classList.add("show");
+}

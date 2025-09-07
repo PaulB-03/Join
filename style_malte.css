@@ -171,7 +171,7 @@
   color: var(--color-icon);
 }
 
-.acceptPolicy span {
+.acceptPolicy a {
   color: var(--light-blue);
   cursor: pointer;
 }
@@ -186,4 +186,39 @@
 
 .legalLink {
   width: 112px;
+}
+
+.signupOverlay {
+  background: rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.signupSuccess {
+  width: 312px;
+  height: 74px;
+  color: white;
+  background: var(--main-color);
+  border-radius: 20px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Start off-screen */
+  transform: translateY(100vh);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Active state when overlay is shown */
+.signupOverlay.show .signupSuccess {
+  transform: translateY(0);
+  opacity: 1;
 }

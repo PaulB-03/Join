@@ -9,9 +9,7 @@
     <link rel="stylesheet" href="./styles/fonts.css" />
     <link rel="stylesheet" href="./styles/colors.css" />
     <link rel="stylesheet" href="style_malte.css" />
-
     <script src="./scripts/animateLogo.js"></script>
-    <script src="./scripts/logIn.js" defer></script>
   </head>
   <body>
     <header class="indexHeader hidden">
@@ -24,6 +22,9 @@
 
     <main class="indexMain">
       <img class="startLogo" style="height: 400px" src="./assets/svg/favicon.svg" alt="" />
+      <div id="signupOverlay" class="signupOverlay d_none">
+        <div class="signupSuccess font_400_20">You Signed Up successfully</div>
+      </div>
       <div id="loginScreen" class="loginContainer hidden d_none">
         <div class="indexHeadline">
           <h1>Log in</h1>
@@ -31,13 +32,13 @@
         </div>
         <form id="signinForm" class="signupFormContainer">
           <div class="inputGroup">
-            <input class="formMailIcon" id="signinEmail" name="email" type="email" placeholder="Email" />
+            <input class="formMailIcon" id="signinEmail" name="email" type="text" placeholder="Email" />
             <input class="formLockIcon passwordMarginTop" id="signinPassword" name="password" type="password" placeholder="Password" />
             <p id="loginError" class="errors">Check your email and password. Please try again.</p>
           </div>
           <div class="actions">
             <button class="btn-dark font_700_21" type="submit" id="loginBtn">Log in</button>
-            <a href="./html/summary.html"><button class="btn-white font_700_21" type="button" id="guestLogin">Guest Log in</button></a>
+            <button class="btn-white font_700_21" type="button" id="guestLogin">Guest Log in</button>
           </div>
         </form>
       </div>
@@ -50,7 +51,7 @@
         <form id="signUpForm" class="signupFormContainer">
           <div class="inputGroup">
             <input class="formPersonIcon" id="signupName" name="name" type="text" placeholder="Name" />
-            <p id="nameError" class="errors">Please use a valid name.</p>
+            <p id="nameError" class="errors">Please use first and last name.</p>
             <input class="formMailIcon" id="signupEmail" name="email" type="text" placeholder="Email" />
             <p id="emailError" class="errors">Please use a valid email-adress.</p>
             <input class="formLockIcon" id="signupPassword" name="password" type="password" placeholder="Password" />
@@ -58,7 +59,7 @@
             <p id="passwordMatchError" class="errors">Your passwords don't match. Please try again.</p>
             <div class="acceptPolicy">
               <div class="checkBoxContainer"><img class="checkBox" id="policyCheckboxImg" src="./assets/svg/check_button.svg" alt="" /></div>
-              <p>I accept the <span>Privacy policy</span></p>
+              <p>I accept the <a href="./html/privacyPolicy.html">Privacy policy</a></p>
             </div>
             <p id="policyError" class="errors policyErrorMarginLeft">Please accept the policy.</p>
           </div>
@@ -73,7 +74,9 @@
       <a class="legalLink font_400_16" href="./html/legalNotice.html">Legal Notice</a>
     </footer>
     <script src="script.js"></script>
+    <script src="./scripts/signIn.js"></script>
     <script src="./scripts/signUp.js"></script>
     <script src="./scripts/formValidation.js"></script>
+    <script src="./scripts/contacts.js"></script>
   </body>
 </html>
