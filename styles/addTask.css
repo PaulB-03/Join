@@ -158,6 +158,10 @@ input[type="date"]:valid {
   border-radius: 10px;
 }
 
+.dropdown-subtasks:focus-within {
+  border: 1.5px solid var(--light-blue);
+}
+
 #assignedToDropdownContacts {
   background-color: var(--white);
   transition: background-color 0.3s ease;
@@ -299,10 +303,6 @@ input[type="date"]:valid {
   width: 85%;
   border: var(--color-icon);
   outline: none;
-}
-
-.input-subtask:focus {
-  border: 1px solid var(--light-blue);
 }
 
 .prioDivsWrapper {
