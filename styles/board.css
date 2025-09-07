@@ -53,12 +53,12 @@ h1 {
 .search::after {
   content: "";
   position: absolute;
-  right: 40px; 
+  right: 40px;
   top: 50%;
   transform: translateY(-50%);
   width: 1px;
   height: 18px;
-  background-color: #cbd5e1; 
+  background-color: #cbd5e1;
 }
 
 .btn {
@@ -66,7 +66,7 @@ h1 {
   padding: 0 14px;
   border-radius: 12px;
   border: 1px solid #1118270f;
-  background: #111827;
+  background: var(--main-color-dark, #091931);
   color: #ffffff;
   font-weight: 600;
   display: inline-flex;
@@ -76,6 +76,28 @@ h1 {
   cursor: pointer;
   text-decoration: none;
   flex-direction: row-reverse;
+}
+
+/* Schrift & Icon bleiben in allen Zuständen weiß */
+a.btn,
+a.btn:link,
+a.btn:visited,
+a.btn:hover,
+a.btn:focus,
+a.btn:active {
+  color: #fff;
+}
+
+.btn {
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease,
+    transform 0.05s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  background: var(--color-statsbar, #4589ff);
+  border-color: var(--color-statsbar, #4589ff);
+  color: #fff;
 }
 
 .btn svg {
@@ -264,5 +286,144 @@ h1 {
 .dropzone.is-over {
   outline: 2px dashed #cbd5e1;
   outline-offset: 6px;
-  background: rgba(203,213,225,.08);
+  background: rgba(203, 213, 225, 0.08);
+}
+
+.app h1 {
+  font-size: 44px;
+  margin: 0;
+  position: static; 
+  top: auto;
+  margin-left: 0;
+}
+
+#addTaskForm {
+  position: static;
+  padding: 0;
+  max-width: 100%;
+}
+
+#taskOverlay.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 5000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+#taskOverlay.overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+#taskOverlay .task-overlay-panel {
+  width: min(980px, 94vw);
+  max-height: 90vh;
+  background: #fff;
+  border-radius: 24px;
+  overflow: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  position: relative;
+  padding: 28px 32px 24px; 
+}
+
+#taskOverlay .overlay-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  border: 0;
+  background: transparent;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#taskOverlay .task-overlay-title {
+  font-size: 40px;
+  font-weight: 800;
+  margin: 6px 0 18px;
+}
+
+#taskOverlay .task-grid {
+  display: grid;
+  grid-template-columns: minmax(360px, 1fr) 1px minmax(360px, 1fr);
+  column-gap: 32px;
+  row-gap: 0;
+  align-items: start;
+}
+
+#taskOverlay .task-divider {
+  width: 1px;
+  background: #e6e9ef;
+  align-self: stretch; 
+  min-height: 340px; 
+}
+
+#taskOverlay .task-col {
+  display: flex;
+  flex-direction: column;
+  row-gap: 14px;
+  padding: 2px 6px; 
+}
+#taskOverlay .lbl {
+  display: block;
+  font-weight: 600;
+  margin: 10px 0 6px;
+}
+#taskOverlay .req {
+  color: var(--input-error);
+  margin-left: 4px;
+}
+
+#taskOverlay .task-col .title,
+#taskOverlay .task-col textarea.title,
+#taskOverlay .task-col .dropdown-subtasks {
+  width: 100%;
+}
+#taskOverlay textarea.title {
+  height: 120px;
+  resize: vertical;
+}
+
+#taskOverlay .prioDivsWrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+#taskOverlay .prioGrade {
+  width: auto;
+}
+
+#taskOverlay .task-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+#taskOverlay .task-required-hint {
+  margin-top: 6px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+#addTaskForm {
+  position: static;
+  padding: 0;
+  max-width: 100%;
+}
+.app h1 {
+  position: static;
+  top: auto;
+  margin-left: 0;
 }
