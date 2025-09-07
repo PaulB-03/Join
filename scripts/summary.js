@@ -2,7 +2,7 @@
 
 function init() {
     includeHTML()
-    getData()
+    getDataForTasks()
     getCurrentTime()
     greetingForNameOrGuest()
 }
@@ -41,7 +41,7 @@ function changeInnerHtmlOfSummaryGreeting(hours) {
         }
 }
 
-async function getData() {
+async function getDataForTasks() {
     const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
 
     let response = await fetch(BASE_URL + ".json");
@@ -78,30 +78,33 @@ function countForSummary(responseToJson) {
         if (urgency == "hoch") {
             urgencyCount += 1
             tasks = responseToJson.tasks
-            changeDateOfUrgentDeadLine(tasks)
         }
     }
-    filterNextUpcomingDeadline(datesArray)
+    filterNextUpcomingDeadline(datesArray, responseToJson)
     changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount, urgencyCount)
 }
 
-function filterNextUpcomingDeadline(datesArray) {
+function filterNextUpcomingDeadline(datesArray, responseToJson) {
     datesArray.sort()
-    console.log(datesArray);
+    let nextUpcomingDeadline = datesArray[0]
 
+    getDateFromDataBankAndChangeFormat(datesArray[0], responseToJson)
+    
 }
 
-// function checkUpcomingDeadline(date) {
-//     return date <= 
-// }
+function getDateFromDataBankAndChangeFormat(deadLineDate) {
+    let date = new Date(deadLineDate)
+    let calculatedMonth = date.getMonth()
+    let year = date.getFullYear()
+    let day = date.getDay()
+    let newFormat = responseToJson.months[calculatedMonth] + " " + day + ", " + year
+    changeInnerHtmlForDeadline(newFormat)
+}
 
-function changeDateOfUrgentDeadLine(tasks) {
-    // let urgencyDeadlineDate = document.getElementById('urgencyDeadline')
-    // urgencyDeadlineDate.innerHTML = "";
-    // urgencyDeadlineDate.innerHTML = date
-
-    console.log("tasks:", tasks[1].date < tasks[3].date);
-
+function changeInnerHtmlForDeadline(nextUpcomingDeadline) {
+    let urgencyDeadlineDate = document.getElementById('urgencyDeadline')
+    urgencyDeadlineDate.innerHTML = "";
+    urgencyDeadlineDate.innerHTML = nextUpcomingDeadline
 }
 
 function changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount, urgencyCount) {
@@ -136,92 +139,32 @@ function calcAllTasksInBoard(progressCount, toDoCount, doneCount, awaitFeedbackC
     return allTaskCount
 }
 
-
 document.getElementById("summaryContainer").addEventListener("click", () => {
     window.location.href = "../html/board.html";
 });
 
-
 async function postData() {
-    const ArneBASE_URL = 'https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/tasks.json'
+    const BASE_URL = 'https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/months.json'
 
-    let response = await fetch(ArneBASE_URL, {
+    let response = await fetch(BASE_URL, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify([
-            {
-                "priority": "hoch",
-                "title": "Backend-Verbindung aufbauen",
-                "description": "Eine funktionierende Verbindung zwischen server.js und main.js herstellen, um Highscores in einer JSON-Datei zu speichern und abzurufen.",
-                "state": "toDo",
-                "date": "2025-09-12",
-                "assignedContacts": ["Max Mustermann"],
-                "category": "technical task",
-                "subtasks": [
-                    { "title": "server.js vorbereiten", "state": "toDo" },
-                    { "title": "API-Endpunkte testen", "state": "toDo" },
-                    { "title": "main.js anbinden", "state": "toDo" }
-                ]
-            },
-            {
-                "priority": "mittel",
-                "title": "Als Nutzer möchte ich die Webseite auch mobil gut bedienen können",
-                "description": "Das Layout der Webseite soll auf mobilen Geräten übersichtlicher und einfacher nutzbar sein.",
-                "state": "in progress",
-                "date": "2025-09-05",
-                "assignedContacts": ["Anna Beispiel"],
-                "category": "userStory",
-                "subtasks": [
-                    { "title": "Responsive Breakpoints prüfen", "state": "toDo" },
-                    { "title": "Navigation anpassen", "state": "in progress" },
-                    { "title": "Footer überarbeiten", "state": "toDo" }
-                ]
-            },
-            {
-                "priority": "hoch",
-                "title": "Fehler im Spiel beheben",
-                "description": "Ein Bug sorgt dafür, dass nach 'Game Over' das Spiel nicht korrekt neu gestartet wird.",
-                "state": "await feedback",
-                "date": "2025-09-08",
-                "assignedContacts": ["Max Mustermann", "Lena Test"],
-                "category": "technical task",
-                "subtasks": [
-                    { "title": "Restart-Funktion prüfen", "state": "done" },
-                    { "title": "Variablen-Reset einbauen", "state": "in progress" },
-                    { "title": "Leertaste-Event testen", "state": "toDo" }
-                ]
-            },
-            {
-                "priority": "niedrig",
-                "title": "Als Entwickler möchte ich eine Dokumentation haben",
-                "description": "Die Projekt-Dokumentation soll mit Beispielen und Screenshots erweitert werden, damit andere Entwickler den Code besser verstehen.",
-                "state": "toDo",
-                "date": "2025-09-07",
-                "assignedContacts": ["Anna Beispiel"],
-                "category": "userStory",
-                "subtasks": [
-                    { "title": "README aktualisieren", "state": "toDo" },
-                    { "title": "Screenshots hinzufügen", "state": "toDo" },
-                    { "title": "Beispielcode einfügen", "state": "toDo" }
-                ]
-            },
-            {
-                "priority": "mittel",
-                "title": "Server online stellen",
-                "description": "Die eigene Webseite soll auf einem Server hochgeladen und öffentlich zugänglich gemacht werden.",
-                "state": "done",
-                "date": "2025-09-10",
-                "assignedContacts": ["Max Mustermann"],
-                "category": "technical task",
-                "subtasks": [
-                    { "title": "Server konfigurieren", "state": "done" },
-                    { "title": "Dateien hochladen", "state": "done" },
-                    { "title": "Domain verknüpfen", "state": "done" }
-                ]
-            }
+            "Januar",
+            "Februar",
+            "März",
+            "April",
+            "Mai",
+            "Juni",
+            "Juli",
+            "August",
+            "September",
+            "Oktober",
+            "November",
+            "Dezember"
         ]
         )
     })
