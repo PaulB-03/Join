@@ -96,8 +96,12 @@ textarea:valid {
   background-color: rgb(232, 240, 254);
 }
 
-#date {
+input[type="date"]:invalid {
   color: var(--color-placeholder);
+}
+
+input[type="date"]:valid {
+  color: black;
 }
 
 #assignedToDropdownContacts {
@@ -126,13 +130,11 @@ textarea:valid {
 }
 
 #assignedToDropdownContacts:focus-within,
-.dropdown-selected:focus,
 #assignedToDropdownContacts:active {
   border: 1.5px solid var(--light-blue);
 }
 
 #assignedToDropdownCategory:focus-within,
-.dropdown-selected:focus,
 #assignedToDropdownCategory:active {
   border: 1.5px solid var(--light-blue);
 }
@@ -166,11 +168,11 @@ textarea:valid {
 }
 
 .selected-red {
-    background-color: rgb(232, 240, 254) !important;
+  background-color: rgb(232, 240, 254) !important;
 }
 
 #subtasks {
-    padding-bottom: 50px;
+  padding-bottom: 50px;
 }
 
 #dropdown-arrow-contacts {
@@ -294,7 +296,7 @@ textarea:valid {
 }
 
 .input-subtask {
-  width: 100%;
+  width: 85%;
   border: var(--color-icon);
   outline: none;
 }
@@ -404,16 +406,6 @@ textarea:valid {
   transition: background-color 0.2s, border-color 0.2s;
 }
 
-.custom-checkbox input[type="checkbox"]:checked+span {
-  border: 0px;
-  background-image: url('../assets/svg/checked.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 26px 26px;
-  width: 26px;
-  height: 26px;
-}
-
 input[type="date" i] {
   background-color: white;
   color: black;
@@ -426,4 +418,93 @@ input[type="date" i]:valid {
 .createTaskCheck {
     height: 18px;
     width: 18px;
+}
+
+.subtask-images-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 5px;
+}
+
+.subtaskImages {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.subtaskImages:hover {
+  transform: scale(1.2);
+}
+
+.divider1 {
+  width: 1px;
+  height: 18px;
+  background: #ddd;
+}
+
+.addedSubtaskWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.subtaskItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8f9fa;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.subtaskTitle {
+  flex: 1;
+  margin-right: 10px;
+  word-break: break-word;
+}
+
+.subtaskActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.subtaskActions img {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.subtaskActions img:hover {
+  transform: scale(1.2);
+}
+
+/* Inline edit */
+.editInput {
+  flex: 1;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+.editInput:focus {
+  border-color: #007bff;
+}
+
+.editAction {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  margin-left: 6px;
+  transition: transform 0.2s;
+}
+
+.editAction:hover {
+  transform: scale(1.2);
 }
