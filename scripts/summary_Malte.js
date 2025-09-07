@@ -1,6 +1,5 @@
 function init() {
   includeHTML();
-  waitForHeaderAndUpdateAvatars();
   getDataForTasks();
   getCurrentTime();
   //greetingForNameOrGuest()
