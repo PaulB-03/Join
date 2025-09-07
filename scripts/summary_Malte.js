@@ -1,8 +1,10 @@
 function init() {
   includeHTML();
+  waitForHeaderAndUpdateAvatars();
   getDataForTasks();
   getCurrentTime();
-  greetingForNameOrGuest();
+  //greetingForNameOrGuest()
+  showSummaryGreeting(); // function located in logIn_Malte.js and logIn.js
 }
 
 function getCurrentTime() {
@@ -14,16 +16,16 @@ function getCurrentTime() {
   changeInnerHtmlOfSummaryGreeting(hours + "." + minutes);
 }
 
-function greetingForNameOrGuest() {
-  let logInName = document.getElementById("logInName").innerHTML;
-  let markDestinction = document.getElementById("markDestinction");
-
-  if (logInName.length < 1) {
-    markDestinction.innerHTML = "!";
-  } else {
-    markDestinction.innerHTML = ",";
-  }
-}
+// function greetingForNameOrGuest() {
+//   let logInName = document.getElementById("logInName").innerHTML;
+//   let markDestinction = document.getElementById("markDestinction");
+//
+//   if (logInName.length < 1) {
+//     markDestinction.innerHTML = "!";
+//   } else {
+//     markDestinction.innerHTML = ",";
+//   }
+// }
 
 function changeInnerHtmlOfSummaryGreeting(hours) {
   let sumGreeting = document.getElementById("sumGreeting");
