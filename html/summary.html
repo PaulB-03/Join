@@ -26,8 +26,8 @@
     </div>
 
     <div class="summaryParentContainer">
-      <div class="summaryContainer">
-        <div class="toDoDoneSummaryBoxes" onclick="postData()">
+      <div id="summaryContainer" class="summaryContainer">
+        <div class="toDoDoneSummaryBoxes">
           <div class="toDoDoneSummaryBox boxHover summaryBox">
             <div class="svgImgContainerEdit bgJoin">
               <img class="svgImgEdit" src="../assets/svg/edit.svg" alt="" />
@@ -88,10 +88,11 @@
       </div>
 
       <div class="sumGreetingContainer">
-        <p class="sumGreeting">Good morning,</p>
-        <p class="sumName">Sofia Müller</p>
+        <p class="sumGreeting"><span id="sumGreeting">Good morning</span><span id="markDestinction">,</span></p>
+        <p class="sumName" id="logInName">Sofia Müller</p>
       </div>
     </div>
   </section>
 </body>
+
 </html>

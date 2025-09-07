@@ -5,10 +5,7 @@ body {
   height: 100%;
   box-sizing: border-box;
   overflow: scroll;
-}
-
-::-webkit-scrollbar {
-  display: none;
+  overflow-x: hidden;
 }
 
 #required {
@@ -60,6 +57,10 @@ body {
   outline: none;
   padding: 6px;
   font-size: 16px;
+}
+
+.title.filled {
+  background-color: rgb(232, 240, 254);
 }
 
 .title:focus {
@@ -117,10 +118,11 @@ textarea:valid {
   border-radius: 10px;
   display: flex;
   background-color: var(--white);
+  transition: background-color 0.3s ease;
 }
 
 #assignedToDropdownCategory:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #assignedToDropdownContacts:focus-within,
@@ -141,14 +143,7 @@ textarea:valid {
   align-items: center;
   cursor: pointer;
   border-radius: 10px;
-}
-
-.dropdown-selected {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  border-radius: 10px;
+  font-size: 16px;
 }
 
 .dropdown-subtasks {
@@ -159,6 +154,19 @@ textarea:valid {
   height: 40px;
   border: 1px solid var(--color-icon);
   border-radius: 10px;
+}
+
+#assignedToDropdownContacts {
+  background-color: var(--white);
+  transition: background-color 0.3s ease;
+}
+
+#assignedToDropdownContacts.selected {
+  background-color: rgb(232, 240, 254);
+}
+
+.selected-red {
+    background-color: rgb(232, 240, 254) !important;
 }
 
 #subtasks {
@@ -196,8 +204,8 @@ textarea:valid {
   padding: 0;
   margin: 0;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  height: auto;
-  overflow: auto;
+  max-height: 200px;
+  overflow-y: scroll;
   z-index: 1;
 }
 
@@ -217,6 +225,20 @@ textarea:valid {
   z-index: 998;
 }
 
+#dropdown-list-contacts::-webkit-scrollbar {
+  width: 8px;
+}
+
+#dropdown-list-contacts::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+#dropdown-list-contacts::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 4px;
+}
+
 .dropdown-item-category {
   padding: 16px;
   display: flex;
@@ -229,6 +251,35 @@ textarea:valid {
   background-color: var(--main-color);
   color: var(--white);
 }
+
+#assignedToInitials {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.contact-initial {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    border: 2px solid white;
+    margin-left: -5px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+}
+
+.contact-initial:nth-child(1) { background-color: #f44336; }
+.contact-initial:nth-child(2) { background-color: #2196F3; }
+.contact-initial:nth-child(3) { background-color: #FF9800; }
+.contact-initial:nth-child(4) { background-color: #9C27B0; }
+.contact-initial:nth-child(5) { background-color: #4CAF50; }
 
 #titleInput.title::placeholder {
   font-size: 16px;
@@ -372,7 +423,7 @@ input[type="date" i]:valid {
   background-color: rgb(232, 240, 254);
 }
 
-.creaateTaskCheck {
+.createTaskCheck {
     height: 18px;
     width: 18px;
 }
