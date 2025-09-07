@@ -88,8 +88,7 @@ function filterNextUpcomingDeadline(datesArray, responseToJson) {
     datesArray.sort()
     let nextUpcomingDeadline = datesArray[0]
 
-    getDateFromDataBankAndChangeFormat(datesArray[0], responseToJson)
-    
+    getDateFromDataBankAndChangeFormat(nextUpcomingDeadline, responseToJson)
 }
 
 function getDateFromDataBankAndChangeFormat(deadLineDate) {
@@ -139,9 +138,14 @@ function calcAllTasksInBoard(progressCount, toDoCount, doneCount, awaitFeedbackC
     return allTaskCount
 }
 
-document.getElementById("summaryContainer").addEventListener("click", () => {
-    window.location.href = "../html/board.html";
-});
+const summaryBoxes = document.getElementsByClassName("summaryBox")
+for (let index = 0; index < summaryBoxes.length; index++) {
+
+    summaryBoxes[index].addEventListener("click", () => {
+        window.location.href = "../html/board.html";
+    });
+}
+
 
 async function postData() {
     const BASE_URL = 'https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/months.json'
