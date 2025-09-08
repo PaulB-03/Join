@@ -38,7 +38,8 @@ function showSummaryGreeting() {
   if (!greetingNameElement) return;
 
   greetingNameElement.innerHTML = currentUser.type === "guest" ? "" : currentUser.name || "";
-  if (logInName.length < 1) {
+  if (greetingNameElement.innerHTML.length < 1) {
+    // changed from original
     markDestinction.innerHTML = "!";
   } else {
     markDestinction.innerHTML = ",";

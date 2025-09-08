@@ -31,6 +31,10 @@ async function createTask(event) {
                 }
             }
 
+            let subtasks = Array.from(document.querySelectorAll(".subtaskTitle"))
+                                .map(el => el.textContent.trim())
+                                .filter(txt => txt !== "");
+
             await saveTask(`tasks/${nextIndex}`, {
                 "title": title.value,
                 "description": description.value,
@@ -38,7 +42,8 @@ async function createTask(event) {
                 "state": "toDo",
                 "priority": selectedPrio,
                 "category": selectedCategory,
-                "assignedContacts": assignedContacts
+                "assignedContacts": assignedContacts,
+                "subtasks": subtasks
             });
 
             window.location.href = 'board.html';
@@ -226,10 +231,9 @@ function saveSelectedCategory(index) {
 }
 
 function clearTask() {
-    // Clear input values
     const titleInput = document.getElementById('titleInput');
     titleInput.value = "";
-    titleInput.classList.remove('filled'); // <-- reset background
+    titleInput.classList.remove('filled');
 
     const descriptionInput = document.getElementById('descriptionInput');
     descriptionInput.value = "";
@@ -237,7 +241,6 @@ function clearTask() {
     const dateInput = document.getElementById('date');
     dateInput.value = "";
 
-    // Reset priority buttons
     let prioRefs = document.getElementsByClassName('prioGrade');
     Array.from(prioRefs).forEach(el => {
         el.classList.remove('isClicked', 'redColor', 'orangeColor', 'greenColor', 'whitePrioFont');
@@ -247,14 +250,12 @@ function clearTask() {
     images.forEach(img => img.classList.remove('filterWhite'));
     selectedPrio = "";
 
-    // Reset category
     selectedCategory = "";
     document.getElementById("categoryPlaceholder").textContent = "Select task category";
     document.getElementById("assignedToDropdownCategory").classList.remove('selected-red');
     let checkboxes = document.querySelectorAll("#dropdown-list-category input[type='checkbox']");
     checkboxes.forEach(cb => cb.checked = false);
 
-    // Reset assigned contacts
     assignedContacts = [];
     selectedContact = "";
     document.getElementById("assignedToInitials").innerHTML = "";
@@ -268,7 +269,23 @@ function clearTask() {
         const checkbox = label.querySelector("input[type='checkbox']");
         if (checkbox) checkbox.checked = false;
     });
+
+    const subtaskInput = document.querySelector(".input-subtask");
+    if (subtaskInput) {
+        subtaskInput.value = "";
+    }
+
+    const subtaskImagesContainer = document.querySelector(".subtask-images-container");
+    if (subtaskImagesContainer) {
+        subtaskImagesContainer.style.display = "none";
+    }
+
+    const subtaskWrapper = document.querySelector(".addedSubtaskWrapper");
+    if (subtaskWrapper) {
+        subtaskWrapper.innerHTML = "";
+    }
 }
+
 
 async function loadContacts() {
     try {

@@ -15,12 +15,37 @@ async function includeHTML() {
       element.innerHTML = "Error loading include";
     }
 
-    // Klasse entfernen → Sidebar sichtbar machen
     element.classList.remove("d_none");
   }
 
-  // Sidebar-Links hervorheben, wenn geladen
+  // show the correct sidebar based on login status
+  toggleSidebarAndHeader();
+
+  waitForHeaderAndUpdateAvatars();
+
+  // keep your existing link highlight
   highlightActiveLink();
+}
+
+function toggleSidebarAndHeader() {
+  const currentUser = loadLoginStatus();
+  const internalSidebar = document.getElementById("internalSidebar");
+  const externalSidebar = document.getElementById("externalSidebar");
+  const headerNav = document.getElementById("headerNav");
+
+  if (!internalSidebar || !externalSidebar) return;
+
+  if (!currentUser.type) {
+    // storage empty → show external sidebar
+    externalSidebar.classList.remove("d_none");
+    internalSidebar.classList.add("d_none");
+    headerNav.style.visibility = "hidden";
+  } else {
+    // guest OR user with name → show internal sidebar
+    internalSidebar.classList.remove("d_none");
+    externalSidebar.classList.add("d_none");
+    headerNav.style.visibility = "show";
+  }
 }
 
 function highlightActiveLink() {
