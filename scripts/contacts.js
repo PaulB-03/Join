@@ -296,7 +296,7 @@ const addEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const addPhoneRegex = /^\s*$|^\+?[0-9\s\-()]{6,}$/;
 
 // helper for updating error display
-function updateFieldError(isValid, inputEl, errorEl) {
+function updateFieldErr(isValid, inputEl, errorEl) {
   if (!inputEl || !errorEl) return;
   errorEl.style.visibility = isValid ? "hidden" : "visible";
   inputEl.classList.toggle("input-error", !isValid);
@@ -333,9 +333,9 @@ function validateAddContactForm() {
   const validEmail = addEmailRegex.test(email.value.trim());
   const validPhone = addPhoneRegex.test((phone.value || "").trim());
 
-  updateFieldError(validName, name, nameErr);
-  updateFieldError(validEmail, email, emailErr);
-  updateFieldError(validPhone, phone, phoneErr);
+  updateFieldErr(validName, name, nameErr);
+  updateFieldErr(validEmail, email, emailErr);
+  updateFieldErr(validPhone, phone, phoneErr);
 
   return validName && validEmail && validPhone;
 }
