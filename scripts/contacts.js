@@ -68,7 +68,7 @@ function readAddContactForm() {
 }
 async function submitAddContact(event) {
   event.preventDefault();
-  if(!validateAddContactForm()) return; // stop if invalid
+  if (!validateAddContactForm()) return; // stop if invalid
   await addContact(readAddContactForm());
   closeAddContactDialog();
 }
@@ -214,8 +214,14 @@ function detailsTop(contact) {
   const title = createElementWith("div", "detailsTitleWrap"); // container for name and buttons
   title.appendChild(createElementWith("div", "detailsName", contact.name)); // add name
   const actions = createElementWith("div", "detailsActions"); // container for the buttons
-  actions.appendChild(actionButton("Edit", "../assets/svg/edit.svg")); // edit button
-  actions.appendChild(actionButton("Delete", "../assets/svg/delete.svg")); // delete button
+  actions.appendChild(
+    actionButton("Edit", "../assets/svg/edit.svg", () => openEdit(contact))
+  );
+  actions.appendChild(
+    actionButton("Delete", "../assets/svg/delete.svg", () =>
+      deleteContact(contact.id)
+    )
+  );
   title.appendChild(actions); // place buttons
   top.appendChild(avatar); // add profile picture
   top.appendChild(title); // add name and buttons
@@ -262,11 +268,12 @@ function inlineSvg(url) {
 }
 
 // build a button with an inline svg placed before the label
-function actionButton(label, iconUrl) {
+function actionButton(label, iconUrl, onClick) {
   const btn = createElementWith("button", "detailsAction"); // create the button
   const placeholder = document.createElement("span"); // create a placeholder for the svg
   btn.appendChild(placeholder); // add the placeholder to the button
   btn.appendChild(document.createTextNode(label)); // add the button text
+  if (typeof onClick === "function") btn.addEventListener("click", onClick); // add the onClick event
   inlineSvg(iconUrl).then((svg) => placeholder.replaceWith(svg)); // load in the svg
   return btn;
 }
@@ -312,11 +319,164 @@ function validateAddContactForm() {
 
   const validName = addNameRegex.test(name.value.trim());
   const validEmail = addEmailRegex.test(email.value.trim());
-  const validPhone = addPhoneRegex.test((phone.value || "").trim()); 
+  const validPhone = addPhoneRegex.test((phone.value || "").trim());
 
   updateFieldError(validName, name, nameErr);
   updateFieldError(validEmail, email, emailErr);
   updateFieldError(validPhone, phone, phoneErr);
 
   return validName && validEmail && validPhone;
+}
+
+async function deleteContact(id) {
+  if (!id) return;
+  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Failed to delete contact");
+  await loadContacts(); // refresh list
+  const body = document.querySelector(".contactDetailsBody");
+  if (body) body.innerHTML = ""; // clear details panel
+}
+
+function stripId(obj) {
+  const { id, ...rest } = obj || {};
+  return rest;
+}
+
+async function updateContact(id, updates) {
+  const existing = contacts.find((c) => c.id === id) || {};
+  const payload = stripId({ ...existing, ...updates });
+  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error("Failed to update contact");
+  await loadContacts(); // refresh list
+  const updated = contacts.find((c) => c.id === id);
+  if (updated) renderContactDetails(updated); // refresh right pane
+}
+
+function editOverlayHTML() {
+  return `
+    <div class="overlay-panel" role="dialog" aria-modal="true">
+      <div class="overlay-left">
+        <img src="../assets/svg/editContactForm.svg" alt="Edit contact artwork" />
+      </div>
+
+      <form id="editContactForm" class="overlay-body" novalidate>
+        <button type="button" class="overlay-close" aria-label="Close">×</button>
+
+        <div class="add-contact-overlay-right">
+          <div id="editAvatar" class="detailsAvatar"></div>
+
+          <div class="add-contact-overlay-form">
+            <div class="field">
+              <input name="name" class="has-icon icon-user" placeholder="Name" required>
+            </div>
+            <div class="field">
+              <input name="email" class="has-icon icon-mail" type="email" placeholder="Email" required>
+            </div>
+            <div class="field">
+              <input name="phone" class="has-icon icon-phone" placeholder="Phone">
+            </div>
+
+            <div class="overlay-actions">
+              <button type="button" class="btn-white" id="editDeleteBtn">Delete</button>
+              <button type="submit" class="btn-dark">Save ✓</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  `;
+}
+
+function openEdit(contact) {
+  closeEditDialog();
+  const overlay = makeEditOverlay();
+  mountAndShow(overlay);
+  wireCloseHandlers(overlay);
+  prefillEditForm(overlay, contact);
+  wireLiveAvatar(overlay);
+  wireDelete(overlay, contact);
+  wireSave(overlay, contact);
+}
+
+// helpers for openEdit():
+function makeEditOverlay() {
+  const el = document.createElement("div");
+  el.id = "editOverlay";
+  el.className = "overlay";
+  el.innerHTML = editOverlayHTML();
+  return el;
+}
+
+function mountAndShow(overlay) {
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => overlay.classList.add("open"));
+  document.body.classList.add("modal-open");
+}
+
+function wireCloseHandlers(overlay) {
+  overlay.addEventListener("click", closeEditDialog);
+  overlay
+    .querySelector(".overlay-panel")
+    .addEventListener("click", (e) => e.stopPropagation());
+  overlay
+    .querySelector(".overlay-close")
+    .addEventListener("click", closeEditDialog);
+}
+
+function prefillEditForm(overlay, contact) {
+  const form = overlay.querySelector("#editContactForm");
+  form.elements.name.value = contact.name || "";
+  form.elements.email.value = contact.email || "";
+  form.elements.phone.value = contact.phone || "";
+  const avatar = overlay.querySelector("#editAvatar");
+  avatar.textContent = initials(contact.name);
+  avatar.style.background = colorForName(contact.name);
+}
+
+function wireLiveAvatar(overlay) {
+  const form = overlay.querySelector("#editContactForm");
+  const avatar = overlay.querySelector("#editAvatar");
+  const update = () => {
+    const v = form.elements.name.value;
+    avatar.textContent = initials(v);
+    avatar.style.background = colorForName(v);
+  };
+  form.elements.name.addEventListener("input", update);
+}
+
+function wireDelete(overlay, contact) {
+  overlay
+    .querySelector("#editDeleteBtn")
+    .addEventListener("click", async () => {
+      await deleteContact(contact.id);
+      closeEditDialog();
+    });
+}
+
+function wireSave(overlay, contact) {
+  overlay
+    .querySelector("#editContactForm")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const f = e.currentTarget;
+      const updates = {
+        name: f.elements.name.value.trim(),
+        email: f.elements.email.value.trim(),
+        phone: f.elements.phone.value.trim(),
+      };
+      await updateContact(contact.id, updates);
+      closeEditDialog();
+    });
+}
+
+function closeEditDialog() {
+  const el = document.getElementById("editOverlay");
+  if (el) el.remove();
+  document.body.classList.remove("modal-open");
 }
