@@ -46,7 +46,21 @@ async function createTask(event) {
                 "subtasks": subtasks
             });
 
-            window.location.href = 'board.html';
+            const overlay = document.createElement('div');
+            overlay.classList.add('task-added-overlay');
+            document.body.appendChild(overlay);
+    
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = "TASK ADDED TO BOARD";
+            messageDiv.classList.add('task-added-message');
+            document.body.appendChild(messageDiv);
+            setTimeout(() => {
+                document.body.removeChild(messageDiv);
+                document.body.removeChild(overlay);
+
+                window.location.href = 'board.html';
+            }, 2000);
+
         } catch (error) {
             alert("Die Aufgabe konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.");
             console.error("Error saving task:", error);

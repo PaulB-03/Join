@@ -544,3 +544,29 @@ input[type="date" i]:valid {
 .editAction:hover {
   transform: scale(1.2);
 }
+
+.task-added-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+}
+
+.task-added-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px 40px;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 8px;
+    z-index: 10000;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
