@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join – Contacts</title>
-    <link rel="shortcut icon" href="../assets/svg/favicon.svg" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="../assets/svg/favicon.svg"
+      type="image/x-icon"
+    />
     <link rel="stylesheet" href="../styles/standard.css" />
     <link rel="stylesheet" href="../styles/contacts.css" />
     <link rel="stylesheet" href="../styles/colors.css" />
@@ -13,11 +17,23 @@
     <script src="../scripts/contacts.js"></script>
   </head>
   <body onload="init()">
-    <header id="header" class="d_none" w3-include-html="../templates/header.html"></header>
-    <aside id="sidebar" class="d_none" w3-include-html="../templates/sidebar.html"></aside>
+    <header
+      id="header"
+      class="d_none"
+      w3-include-html="../templates/header.html"
+    ></header>
+    <aside
+      id="sidebar"
+      class="d_none"
+      w3-include-html="../templates/sidebar.html"
+    ></aside>
     <div class="contactPage">
       <div class="contactList">
-        <img id="openAddContact" src="../assets/svg/addContactButton.svg" alt="add contact" />
+        <div class="newContactBtnContainer">
+          <button id="openAddContact" class="newContactBtn" type="button">
+            Add new contact <img src="..//assets/svg/person_add.svg" alt="" />
+          </button>
+        </div>
       </div>
       <div class="contactDetails">
         <div class="contactDetailsHeader">
@@ -27,21 +43,77 @@
       </div>
     </div>
     <div id="contactOverlay" class="overlay" aria-hidden="true">
-      <div class="overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+      <div
+        class="overlay-panel"
+        role="dialog"
+        aria-modal="true"
+        onclick="event.stopPropagation()"
+      >
         <div class="overlay-left">
           <img src="../assets/svg/newContactForm.svg" alt="" />
         </div>
-        <form id="addContactForm" class="overlay-body">
-          <button type="button" id="closeAddContact" class="overlay-close" aria-label="Close">×</button>
+        <form id="addContactForm" class="overlay-body" novalidate>
+          <button
+            type="button"
+            id="closeAddContact"
+            class="overlay-close"
+            aria-label="Close"
+          >
+            ×
+          </button>
           <div class="add-contact-overlay-right">
-            <div class="avatar-placeholder"></div>
+            <div class="avatar"><img src="../assets/svg/unknown_person.svg" alt=""></div>
             <div class="add-contact-overlay-form">
-              <input name="name" placeholder="Name" required />
-              <input name="email" type="email" placeholder="Email" required />
-              <input name="phone" placeholder="Phone" />
+              <div class="field">
+                <input
+                  id="contactName"
+                  name="name"
+                  class="has-icon icon-user"
+                  placeholder="Name"
+                  required
+                />
+                <small
+                  id="contactNameError"
+                  class="field-error"
+                  style="visibility: hidden"
+                >
+                  Please enter first & last name
+                </small>
+              </div>
+
+              <div class="field">
+                <input
+                  id="contactEmail"
+                  name="email"
+                  class="has-icon icon-mail"
+                  type="email"
+                  placeholder="Email"
+                  required
+                />
+                <small
+                  id="contactEmailError"
+                  class="field-error"
+                  style="visibility: hidden"
+                >
+                  Please enter a valid email
+                </small>
+              </div>
+
+              <div class="field">
+                <input id="contactPhone" name="phone" placeholder="Phone" class="has-icon icon-phone" />
+                <small
+                  id="contactPhoneError"
+                  class="field-error"
+                  style="visibility: hidden"
+                >
+                  Use digits, spaces, +, - or ()
+                </small>
+              </div>
 
               <div class="overlay-actions">
-                <button type="button" class="btn-white" id="cancelAdd">Cancel</button>
+                <button type="button" class="btn-white" id="cancelAdd">
+                  Cancel
+                </button>
                 <button type="submit" class="btn-dark">Create contact</button>
               </div>
             </div>

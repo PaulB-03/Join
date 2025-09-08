@@ -12,10 +12,40 @@
   overflow-y: auto;
 }
 
-.contactList img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+.newContactBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: calc(100% - 64px);
+  align-self: center;
+  margin: 12px;
+  padding: 15px 24px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid var(--main-color);
+  background: var(--main-color);
+  color: var(--white);
+  transition: background-color 0.15s ease;
+}
+
+.newContactBtn:hover {
+  background: var(--light-blue);
+  border-color: var(--light-blue);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.newContactBtnContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.newContactBtn img {
+  width: 1.2em;
+  height: 1.2em;
+  margin: 0;
+  filter: brightness(0) invert(1);
 }
 
 .contactDetails {
@@ -246,11 +276,11 @@ body.modal-open {
 }
 
 .overlay-body {
-  padding: 28px;
+  padding: 28px 32px;
   display: flex;
   flex-direction: column;
+  height: 100%;
   gap: 16px;
-  width: 100%;
   overflow: auto;
 }
 
@@ -274,12 +304,21 @@ body.modal-open {
   margin-top: 8px;
 }
 
-.avatar-placeholder {
-  width: 96px;
-  height: 96px;
+.avatar {
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   background: #eef2f6;
-  align-self: center;
+  display: grid;
+  place-items: center;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.avatar img {
+  width: 64px;
+  height: 64px;
+  opacity: 0.8;
 }
 
 #openAddContact {
@@ -289,6 +328,40 @@ body.modal-open {
 .add-contact-overlay-right {
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  width: fit-content;
+  margin: auto;
+}
+
+.add-contact-overlay-form {
+  width: 320px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field-error {
+  color: var(--form-error);
+  font-size: 14px;
+  min-height: 14px;
+}
+
+.add-contact-overlay-form input {
   width: 100%;
 }
+
+.has-icon {
+  padding-right: 44px;
+}
+
+.icon-user  { background-image:url("../assets/svg/person.svg"); }
+.icon-mail  { background-image:url("../assets/svg/mail.svg"); }
+.icon-phone { background-image:url("../assets/svg/phone.svg"); }

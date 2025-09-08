@@ -42,25 +42,51 @@ async function addContact(contact) {
 }
 
 // helpers for setupAddContactOverlay()
-function openAddContactDialog(){ var overlay=document.getElementById("contactOverlay"); if(overlay){ overlay.classList.add("open"); document.body.classList.add("modal-open"); } }
-function closeAddContactDialog(){ var overlay=document.getElementById("contactOverlay"), form=document.getElementById("addContactForm"); if(overlay){ overlay.classList.remove("open"); document.body.classList.remove("modal-open"); } if(form) form.reset(); }
-function readAddContactForm(){ var form=document.getElementById("addContactForm"); return { name:form.name.value.trim(), email:form.email.value.trim(), phone:form.phone.value.trim() }; }
-async function submitAddContact(event){ event.preventDefault(); await addContact(readAddContactForm()); closeAddContactDialog(); }
-
-// setup the add contact overlay, called by init
-function setupAddContactOverlay(){
-  var overlay=document.getElementById("contactOverlay");
-  var form=document.getElementById("addContactForm");
-  var openButton=document.getElementById("openAddContact");
-  var closeButton=document.getElementById("closeAddContact");
-  var cancelButton=document.getElementById("cancelAdd");
-  if(openButton) openButton.addEventListener("click", openAddContactDialog);
-  if(closeButton) closeButton.addEventListener("click", closeAddContactDialog);
-  if(cancelButton) cancelButton.addEventListener("click", closeAddContactDialog);
-  if(overlay) overlay.addEventListener("click", closeAddContactDialog);
-  if(form) form.addEventListener("submit", submitAddContact);
+function openAddContactDialog() {
+  var overlay = document.getElementById("contactOverlay");
+  if (overlay) {
+    overlay.classList.add("open");
+    document.body.classList.add("modal-open");
+  }
+}
+function closeAddContactDialog() {
+  var overlay = document.getElementById("contactOverlay"),
+    form = document.getElementById("addContactForm");
+  if (overlay) {
+    overlay.classList.remove("open");
+    document.body.classList.remove("modal-open");
+  }
+  if (form) form.reset();
+}
+function readAddContactForm() {
+  var form = document.getElementById("addContactForm");
+  return {
+    name: form.name.value.trim(),
+    email: form.email.value.trim(),
+    phone: form.phone.value.trim(),
+  };
+}
+async function submitAddContact(event) {
+  event.preventDefault();
+  if(!validateAddContactForm()) return; // stop if invalid
+  await addContact(readAddContactForm());
+  closeAddContactDialog();
 }
 
+// setup the add contact overlay, called by init
+function setupAddContactOverlay() {
+  var overlay = document.getElementById("contactOverlay");
+  var form = document.getElementById("addContactForm");
+  var openButton = document.getElementById("openAddContact");
+  var closeButton = document.getElementById("closeAddContact");
+  var cancelButton = document.getElementById("cancelAdd");
+  if (openButton) openButton.addEventListener("click", openAddContactDialog);
+  if (closeButton) closeButton.addEventListener("click", closeAddContactDialog);
+  if (cancelButton)
+    cancelButton.addEventListener("click", closeAddContactDialog);
+  if (overlay) overlay.addEventListener("click", closeAddContactDialog);
+  if (form) form.addEventListener("submit", submitAddContact);
+}
 
 function init() {
   includeHTML();
@@ -243,4 +269,54 @@ function actionButton(label, iconUrl) {
   btn.appendChild(document.createTextNode(label)); // add the button text
   inlineSvg(iconUrl).then((svg) => placeholder.replaceWith(svg)); // load in the svg
   return btn;
+}
+
+// Form validation for add contact form used same style as formValidation.js
+const addNameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+(?:\s+[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+)+$/;
+const addEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const addPhoneRegex = /^\s*$|^\+?[0-9\s\-()]{6,}$/;
+
+// helper for updating error display
+function updateFieldError(isValid, inputEl, errorEl) {
+  if (!inputEl || !errorEl) return;
+  errorEl.style.visibility = isValid ? "hidden" : "visible";
+  inputEl.classList.toggle("input-error", !isValid);
+  inputEl.setAttribute("aria-invalid", String(!isValid));
+}
+
+// get references to the add contact form elements
+function getAddContactRefs() {
+  const form = document.getElementById("addContactForm");
+  if (!form) return {};
+  return {
+    form,
+    name:
+      document.getElementById("contactName") ||
+      form.querySelector('[name="name"]'),
+    email:
+      document.getElementById("contactEmail") ||
+      form.querySelector('[name="email"]'),
+    phone:
+      document.getElementById("contactPhone") ||
+      form.querySelector('[name="phone"]'),
+    nameErr: document.getElementById("contactNameError"),
+    emailErr: document.getElementById("contactEmailError"),
+    phoneErr: document.getElementById("contactPhoneError"),
+  };
+}
+
+function validateAddContactForm() {
+  const { name, email, phone, nameErr, emailErr, phoneErr } =
+    getAddContactRefs();
+  if (!name || !email || !phone) return false;
+
+  const validName = addNameRegex.test(name.value.trim());
+  const validEmail = addEmailRegex.test(email.value.trim());
+  const validPhone = addPhoneRegex.test((phone.value || "").trim()); 
+
+  updateFieldError(validName, name, nameErr);
+  updateFieldError(validEmail, email, emailErr);
+  updateFieldError(validPhone, phone, phoneErr);
+
+  return validName && validEmail && validPhone;
 }
