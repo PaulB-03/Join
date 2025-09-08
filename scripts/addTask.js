@@ -324,6 +324,11 @@ async function loadContacts() {
                     toggleContact(contact.name);
                 });
 
+                label.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    toggleContact(contact.name);
+                });
+
                 label.appendChild(initialsSpan);
                 label.appendChild(nameSpan);
                 label.appendChild(checkbox);

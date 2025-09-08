@@ -352,13 +352,10 @@ input[type="date"]:valid {
 
 .addOrClear {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   gap: 20px;
   background-color: var(--main-bg-color);
-  position: absolute;
-  left: 1030px;
-  top: 550px;
 }
 
 .addOrClearBtn {
