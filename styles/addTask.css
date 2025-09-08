@@ -18,6 +18,10 @@ body {
   align-items: start;
 }
 
+.textrequired {
+  margin-top: 120px;
+}
+
 .divider {
   height: 370px;
   width: 1px;
@@ -264,6 +268,10 @@ input[type="date"]:valid {
     margin-top: 5px;
 }
 
+#assignedToInitials .contact-initial {
+    margin-left: -5px;
+}
+
 .contact-initial {
     width: 35px;
     height: 35px;
@@ -276,7 +284,6 @@ input[type="date"]:valid {
     font-weight: bold;
     font-size: 14px;
     border: 2px solid white;
-    margin-left: -5px;
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
     flex-shrink: 0;
 }
@@ -349,8 +356,9 @@ input[type="date"]:valid {
   align-items: center;
   gap: 20px;
   background-color: var(--main-bg-color);
-  position: relative;
-  left: 320px;
+  position: absolute;
+  left: 1030px;
+  top: 550px;
 }
 
 .addOrClearBtn {
@@ -365,6 +373,17 @@ input[type="date"]:valid {
   cursor: pointer;
   height: 60px;
   width: 160px;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease,transform 0.05s ease;
+}
+
+.addOrClearBtn:hover {
+  border-color: 10px solid var(--light-blue);
+  color: var(--light-blue);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+#clear:hover img {
+  filter: brightness(0) saturate(100%) invert(44%) sepia(95%) saturate(2474%) hue-rotate(180deg) brightness(90%) contrast(70%);
 }
 
 .addOrClear p {
@@ -378,9 +397,29 @@ input[type="date"]:valid {
   color: white;
 }
 
+#add:hover {
+  background-color: var(--light-blue);
+}
+
 #clear img {
   width: 14px;
   height: 14px;
+}
+
+.dropdown-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  gap: 12px; /* space between initials, name, and checkbox */
+}
+
+.dropdown-checkbox .contact-name {
+  flex: 1; /* let the name take available space */
+}
+
+.dropdown-checkbox input[type="checkbox"] {
+  margin-left: auto; /* push checkbox to far right */
 }
 
 .custom-checkbox input[type="checkbox"] {

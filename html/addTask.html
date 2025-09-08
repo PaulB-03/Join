@@ -35,6 +35,9 @@
               <span id="requiredHeaders">Due date <img src="../assets/svg/required.svg" alt="" id="required"></span>
               <input class="title" id="date" type="date" tabindex="0" required>
             </div>
+              <span id="requiredHeaders" class="textrequired">
+              <img id="required" src="../assets/svg/required.svg" alt="">
+              <p>This field is required</p></span>
           </div>
               <div class="divider"></div>
           <div>
@@ -93,9 +96,6 @@
                     </div>
                   </div>
                 <div class="addedSubtaskWrapper"></div>
-                  <span id="requiredHeaders">
-                  <img id="required" src="../assets/svg/required.svg" class="prioImage" alt="">
-                  <p>This field is required</p></span>
               </div>
             </div>
           </div>
@@ -103,11 +103,11 @@
       <div class="addOrClear">
         <div id="clear" class="addOrClearBtn" onclick="clearTask()">
           <p>Clear</p>
-          <img src="../assets/svg/cancel.svg" alt="" />
+          <img src="../assets/svg/cancel.svg" alt="">
         </div>
         <button id="add" class="addOrClearBtn" type="button" onclick="createTask(event)">
           <p>Create task</p>
-          <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
+          <img src="../assets/svg/check.svg" class="createTaskCheck" alt="">
         </button>
       </div>
     </form>
