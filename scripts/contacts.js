@@ -229,23 +229,35 @@ function detailsTop(contact) {
 }
 
 // info section built from template, called by renderContactDetails
-function detailsInfo(contact) {
-  const info = createElementWith("div", "detailsSection"); // outer container
-  info.innerHTML = detailsInfoHTML(contact); // fill container with template
-  return info;
-}
-
-// html template, called by detailsInfo
 function detailsInfoHTML(contact) {
+  const phoneIsMissing = isMissingPhone(contact.phone);
+  const phoneMarkup = phoneIsMissing
+    ? `<a href="#" id="editPhoneTrigger" class="value link">add phone number</a>`
+    : `<div class="value">${contact.phone || ""}</div>`;
+
   return `
     <div class="sectionTitle">Contact Information</div>
-    <div class="infoRow"><div class="label">Email</div><a class="value link" href="mailto:${
-      contact.email
-    }">${contact.email}</a></div>
-    <div class="infoRow"><div class="label">Phone</div><div class="value">${
-      contact.phone || ""
-    }</div></div>
+    <div class="infoRow"><div class="label">Email</div>
+      <a class="value link" href="mailto:${contact.email}">${contact.email}</a>
+    </div>
+    <div class="infoRow"><div class="label">Phone</div>
+      ${phoneMarkup}
+    </div>
   `;
+}
+
+
+function detailsInfo(contact) {
+  const info = createElementWith("div", "detailsSection");
+  info.innerHTML = detailsInfoHTML(contact);
+  const trigger = info.querySelector("#editPhoneTrigger");
+  if (trigger) {
+    trigger.addEventListener("click", (e) => {
+      e.preventDefault();
+      openEdit(contact);
+    });
+  }
+  return info;
 }
 
 // load the svg file and inline it, called by actionButton
@@ -479,4 +491,11 @@ function closeEditDialog() {
   const el = document.getElementById("editOverlay");
   if (el) el.remove();
   document.body.classList.remove("modal-open");
+}
+
+function isMissingPhone(phone) {
+  return (
+    !(phone ?? "").trim() ||
+    (phone || "").trim().toLowerCase() === "add phone number"
+  );
 }
