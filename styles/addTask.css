@@ -44,14 +44,14 @@ body {
 }
 
 .inputFlexbox {
-   display: flex;
-   flex-direction: column;
-   font-size: 16px;
-   width: 440px;
-   gap: 10px;
-   flex: 1 1 calc(50% - 20px);
-   box-sizing: border-box;
-   margin: 10px;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  width: 440px;
+  gap: 10px;
+  flex: 1 1 calc(50% - 20px);
+  box-sizing: border-box;
+  margin: 10px;
 }
 
 .title {
@@ -109,7 +109,7 @@ textarea:valid {
 }
 
 #assignedToDropdownContacts:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #assignedToDropdownCategory {
@@ -255,36 +255,46 @@ textarea:valid {
 }
 
 #assignedToInitials {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
 }
 
 #assignedToInitials .contact-initial {
-    margin-left: -5px;
+  margin-left: -5px;
 }
 
 .contact-initial {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background-color: #4CAF50;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px;
-    border: 2px solid white;
-    box-shadow: 0 0 2px rgba(0,0,0,0.2);
-    flex-shrink: 0;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #4caf50;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  border: 2px solid white;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
 }
 
-.contact-initial:nth-child(1) { background-color: #f44336; }
-.contact-initial:nth-child(2) { background-color: #2196F3; }
-.contact-initial:nth-child(3) { background-color: #FF9800; }
-.contact-initial:nth-child(4) { background-color: #9C27B0; }
-.contact-initial:nth-child(5) { background-color: #4CAF50; }
+.contact-initial:nth-child(1) {
+  background-color: #f44336;
+}
+.contact-initial:nth-child(2) {
+  background-color: #2196f3;
+}
+.contact-initial:nth-child(3) {
+  background-color: #ff9800;
+}
+.contact-initial:nth-child(4) {
+  background-color: #9c27b0;
+}
+.contact-initial:nth-child(5) {
+  background-color: #4caf50;
+}
 
 #titleInput.title::placeholder {
   font-size: 16px;
@@ -347,7 +357,6 @@ textarea:valid {
   justify-content: flex-end;
   align-items: center;
   gap: 20px;
-  background-color: var(--main-bg-color);
 }
 
 .addOrClearBtn {
@@ -362,7 +371,7 @@ textarea:valid {
   cursor: pointer;
   height: 60px;
   width: 160px;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease,transform 0.05s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.05s ease;
 }
 
 .addOrClearBtn:hover {
@@ -452,8 +461,8 @@ input[type="date"]:valid {
 }
 
 .createTaskCheck {
-    height: 18px;
-    width: 18px;
+  height: 18px;
+  width: 18px;
 }
 
 .subtask-images-container {
@@ -546,27 +555,27 @@ input[type="date"]:valid {
 }
 
 .task-added-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
 }
 
 .task-added-message {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 20px 40px;
-    font-size: 24px;
-    font-weight: bold;
-    border-radius: 8px;
-    z-index: 10000;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px 40px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 8px;
+  z-index: 10000;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
