@@ -17,10 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const item = document.createElement("div");
     item.className = "subtaskItem";
     item.innerHTML = `
-      <span class="subtaskTitle">${text}</span>
+      <span class="subtaskTitle">• ${text}</span>
       <div class="subtaskActions">
-        <img src="../assets/svg/edit_black.svg" alt="Edit" class="editIcon">
-        <img src="../assets/svg/delete.svg" alt="Delete" class="deleteIcon">
+        <img src="../assets/svg/subedit.svg" alt="Edit" class="editIcon">
+        <img src="../assets/svg/subdelete.svg" alt="Delete" class="deleteIcon">
       </div>
     `;
 
@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const editActions = document.createElement("div");
       editActions.className = "subtaskActions";
       editActions.innerHTML = `
-        <img src="../assets/svg/check_2_black.svg" alt="Save" class="saveEdit">
-        <img src="../assets/svg/cancel.svg" alt="Cancel" class="cancelEdit">
+        <img src="../assets/svg/subcheck.svg" alt="Save" class="saveEdit">
+        <img src="../assets/svg/subdelete.svg" alt="Cancel" class="cancelEdit">
       `;
 
       item.insertBefore(editInput, actions);
