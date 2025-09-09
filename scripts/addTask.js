@@ -46,7 +46,21 @@ async function createTask(event) {
                 "subtasks": subtasks
             });
 
-            window.location.href = 'board.html';
+            const overlay = document.createElement('div');
+            overlay.classList.add('task-added-overlay');
+            document.body.appendChild(overlay);
+    
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = "TASK ADDED TO BOARD";
+            messageDiv.classList.add('task-added-message');
+            document.body.appendChild(messageDiv);
+            setTimeout(() => {
+                document.body.removeChild(messageDiv);
+                document.body.removeChild(overlay);
+
+                window.location.href = 'board.html';
+            }, 2000);
+
         } catch (error) {
             alert("Die Aufgabe konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.");
             console.error("Error saving task:", error);
@@ -263,12 +277,7 @@ function clearTask() {
     document.getElementById("assignedToDropdownContacts").style.backgroundColor = "white";
 
     const dropDown = document.getElementById('dropdown-list-contacts');
-    const labels = dropDown.querySelectorAll("label.custom-checkbox");
-    labels.forEach(label => {
-        label.style.color = "black";
-        const checkbox = label.querySelector("input[type='checkbox']");
-        if (checkbox) checkbox.checked = false;
-    });
+    dropDown.innerHTML = "";
 
     const subtaskInput = document.querySelector(".input-subtask");
     if (subtaskInput) {
@@ -284,8 +293,9 @@ function clearTask() {
     if (subtaskWrapper) {
         subtaskWrapper.innerHTML = "";
     }
-}
 
+    loadContacts();
+}
 
 async function loadContacts() {
     try {
@@ -295,15 +305,49 @@ async function loadContacts() {
         }
         let contacts = await response.json();
 
-        let contactList = document.getElementById("dropdown-list-contacts");
+        const contactList = document.getElementById("dropdown-list-contacts");
         contactList.innerHTML = "";
+        allContacts = [];
 
         if (contacts) {
-            Object.entries(contacts).forEach(([key, contact]) => {
-                let li = document.createElement("li");
+            Object.entries(contacts).forEach(([key, contact], index) => {
+                allContacts.push(contact.name);
+
+                const li = document.createElement("li");
                 li.classList.add("dropdown-item-contact");
-                li.textContent = contact.name;
-                li.onclick = () => saveSelectedContact(contact.name);
+
+                const label = document.createElement("label");
+                label.classList.add("dropdown-checkbox");
+
+                const initials = contact.name.split(" ").map(w => w[0]).join("").toUpperCase();
+                const initialsSpan = document.createElement("span");
+                initialsSpan.textContent = initials;
+                initialsSpan.classList.add("contact-initial");
+                initialsSpan.style.backgroundColor = getColor(index);
+
+                const nameSpan = document.createElement("span");
+                nameSpan.textContent = contact.name;
+                nameSpan.classList.add("contact-name");
+
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.checked = assignedContacts.includes(contact.name);
+
+                checkbox.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    toggleContact(contact.name);
+                });
+
+                label.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    toggleContact(contact.name);
+                });
+
+                label.appendChild(initialsSpan);
+                label.appendChild(nameSpan);
+                label.appendChild(checkbox);
+
+                li.appendChild(label);
                 contactList.appendChild(li);
             });
         }
@@ -312,53 +356,17 @@ async function loadContacts() {
     }
 }
 
-function saveSelectedContact(name) {
-    selectedContact = name;
-    let selectedSpan = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
-    selectedSpan.textContent = name;
-
-    document.getElementById("dropdown-list-contacts").style.display = "none";
-    document.querySelector("#dropdown-arrow-contacts").style.transform = "rotate(0deg)";
-
-    renderAssignedContact(name);
-}
-
-function renderContactList() {
-    const list = document.getElementById("dropdown-list-contacts");
-    list.innerHTML = "";
-    allContacts.forEach(name => {
-        const li = document.createElement("li");
-        li.textContent = name;
-        if (assignedContacts.includes(name)) {
-            li.classList.add("selected-contact");
-        }
-        li.addEventListener("click", () => toggleContact(name));
-        list.appendChild(li);
-    });
-}
-
-function renderAssignedContact(name) {
-    let initialsDiv = document.getElementById("assignedToInitials");
-    initialsDiv.style.display = "flex";
-    initialsDiv.innerHTML = "";
-
-    let initials = name.split(" ").map(w => w[0]).join("").toUpperCase();
-    let span = document.createElement("span");
-    span.textContent = initials;
-    span.classList.add("contact-initial");
-    initialsDiv.appendChild(span);
-}
-
 function toggleContact(name) {
     if (assignedContacts.includes(name)) {
         assignedContacts = assignedContacts.filter(c => c !== name);
     } else {
         assignedContacts.push(name);
     }
+
     let span = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
     span.textContent = assignedContacts.length > 0
         ? assignedContacts.join(", ")
-        : "Select contact";
+        : "Select contacts";
 
     renderAssignedContacts();
     updateDropdownHighlight();
@@ -392,10 +400,10 @@ function getColor(index) {
 
 function updateDropdownHighlight() {
     const dropDown = document.getElementById('dropdown-list-contacts');
-    const labels = dropDown.querySelectorAll("label.custom-checkbox");
+    const labels = dropDown.querySelectorAll("label.dropdown-checkbox");
 
     labels.forEach(label => {
-        const name = label.textContent.trim();
+        const name = label.querySelector("span.contact-name").textContent.trim();
         const checkbox = label.querySelector("input[type='checkbox']");
         if (assignedContacts.includes(name)) {
             checkbox.checked = true;
@@ -408,7 +416,7 @@ function updateDropdownHighlight() {
 }
 
 window.addEventListener("load", () => {
-    initContactsDropdown();
+    loadContacts();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
