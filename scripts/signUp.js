@@ -65,7 +65,7 @@ async function addUser(name, email, password) {
   if (!newKey) return false;
 
   // Add contact if user saved successfully
-  addContact({ name, email, phone });
+  await addContact({ name, email, phone });
 
   return true;
 }
