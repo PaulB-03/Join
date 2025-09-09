@@ -100,14 +100,6 @@ textarea:valid {
   background-color: rgb(232, 240, 254);
 }
 
-input[type="date"]:invalid {
-  color: var(--color-placeholder);
-}
-
-input[type="date"]:valid {
-  color: black;
-}
-
 #assignedToDropdownContacts {
   position: relative;
   border: 1px solid var(--color-icon);
@@ -408,15 +400,15 @@ input[type="date"]:valid {
   align-items: center;
   cursor: pointer;
   width: 100%;
-  gap: 12px; /* space between initials, name, and checkbox */
+  gap: 12px;
 }
 
 .dropdown-checkbox .contact-name {
-  flex: 1; /* let the name take available space */
+  flex: 1;
 }
 
 .dropdown-checkbox input[type="checkbox"] {
-  margin-left: auto; /* push checkbox to far right */
+  margin-left: auto;
 }
 
 .custom-checkbox input[type="checkbox"] {
@@ -449,6 +441,14 @@ input[type="date" i] {
 
 input[type="date" i]:valid {
   background-color: rgb(232, 240, 254);
+}
+
+input[type="date"]:invalid {
+  color: var(--color-placeholder);
+}
+
+input[type="date"]:valid {
+  color: black;
 }
 
 .createTaskCheck {

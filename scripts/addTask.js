@@ -293,7 +293,6 @@ function clearTask() {
     if (subtaskWrapper) {
         subtaskWrapper.innerHTML = "";
     }
-
     loadContacts();
 }
 
@@ -310,46 +309,46 @@ async function loadContacts() {
         allContacts = [];
 
         if (contacts) {
-            Object.entries(contacts).forEach(([key, contact], index) => {
-                allContacts.push(contact.name);
+        Object.entries(contacts).forEach(([key, contact], index) => {
+            allContacts.push(contact.name);
 
-                const li = document.createElement("li");
-                li.classList.add("dropdown-item-contact");
+            const li = document.createElement("li");
+            li.classList.add("dropdown-item-contact");
 
-                const label = document.createElement("label");
-                label.classList.add("dropdown-checkbox");
+            const label = document.createElement("label");
+            label.classList.add("dropdown-checkbox");
 
-                const initials = contact.name.split(" ").map(w => w[0]).join("").toUpperCase();
-                const initialsSpan = document.createElement("span");
-                initialsSpan.textContent = initials;
-                initialsSpan.classList.add("contact-initial");
-                initialsSpan.style.backgroundColor = getColor(index);
-
-                const nameSpan = document.createElement("span");
-                nameSpan.textContent = contact.name;
-                nameSpan.classList.add("contact-name");
-
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.checked = assignedContacts.includes(contact.name);
-
-                checkbox.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                    toggleContact(contact.name);
-                });
-
-                label.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                    toggleContact(contact.name);
-                });
-
-                label.appendChild(initialsSpan);
-                label.appendChild(nameSpan);
-                label.appendChild(checkbox);
-
-                li.appendChild(label);
-                contactList.appendChild(li);
+            label.addEventListener("click", (e) => {
+                e.stopPropagation();
             });
+
+            const initials = contact.name.split(" ").map(w => w[0]).join("").toUpperCase();
+            const initialsSpan = document.createElement("span");
+            initialsSpan.textContent = initials;
+            initialsSpan.classList.add("contact-initial");
+            initialsSpan.style.backgroundColor = getColor(index);
+
+            const nameSpan = document.createElement("span");
+            nameSpan.textContent = contact.name;
+            nameSpan.classList.add("contact-name");
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = assignedContacts.includes(contact.name);
+
+            checkbox.addEventListener("click", (e) => e.stopPropagation());
+
+            checkbox.addEventListener("change", () => {
+                toggleContact(contact.name);
+            });
+
+            label.appendChild(initialsSpan);
+            label.appendChild(nameSpan);
+            label.appendChild(checkbox);
+
+            li.appendChild(label);
+            contactList.appendChild(li);
+        });
         }
     } catch (error) {
         console.error("Could not load contacts: ", error);
