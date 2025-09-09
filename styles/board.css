@@ -133,10 +133,19 @@ a.btn:active {
   cursor: pointer;
   transition: 0.2s;
 }
+
+.add-card-btn {
+  align-items: baseline !important;
+}
+
+.col-head {
+  color: var(--board-column) !important;
+}
+
 .col-head .add-card-btn:hover {
   background: #f3f4f6;
-  color: #0f172a;
-  border-color: #0f172a;
+  color: var(--light-blue);
+  border-color: var(--light-blue);
 }
 
 .card {
