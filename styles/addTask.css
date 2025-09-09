@@ -44,14 +44,25 @@ body {
 }
 
 .inputFlexbox {
-   display: flex;
-   flex-direction: column;
-   font-size: 16px;
-   width: 440px;
-   gap: 10px;
-   flex: 1 1 calc(50% - 20px);
-   box-sizing: border-box;
-   margin: 10px;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  width: 440px;
+  gap: 10px;
+  flex: 1 1 calc(50% - 20px);
+  box-sizing: border-box;
+  margin: 10px;
+}
+
+.search {
+  border: none;
+  padding: 0px;
+  font-size: 16px;
+}
+
+.search::placeholder {
+  font-size: 16px;
+  margin-left: 5px;
 }
 
 .title {
@@ -59,7 +70,7 @@ body {
   border-radius: 10px;
   height: 40px;
   outline: none;
-  padding: 6px;
+  padding: 10px;
   font-size: 16px;
 }
 
@@ -90,14 +101,20 @@ h1 {
 
 textarea {
   height: 120px !important;
+  width: 440px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
-
 textarea:focus {
   border: 1.5px solid var(--light-blue);
 }
-
 textarea:valid {
   background-color: rgb(232, 240, 254);
+}
+@media (max-width: 480px) {
+  textarea {
+    width: 100%;
+  }
 }
 
 #assignedToDropdownContacts {
@@ -107,9 +124,22 @@ textarea:valid {
   display: flex;
   background-color: white;
 }
+#assignedToDropdownContacts .dropdown-selected {
+    width: 100%;             /* make it respect parent width */
+    display: flex;
+    align-items: center;
+    overflow: hidden;        /* hide anything that goes outside */
+}
+
+#assignedToDropdownContacts .dropdown-selected span {
+    white-space: nowrap;     /* keep text in one line */
+    overflow: hidden;        /* clip overflow */
+    text-overflow: ellipsis; /* optional: add "..." if too long */
+    flex-shrink: 1;          /* allow shrinking to fit */
+}
 
 #assignedToDropdownContacts:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #assignedToDropdownCategory {
@@ -199,7 +229,7 @@ textarea:valid {
   position: absolute;
   top: 100%;
   left: 0;
-  width: auto;
+  width: 440px;
   background-color: #fff;
   border: 1px solid var(--color-icon);
   list-style: none;
@@ -247,6 +277,7 @@ textarea:valid {
   justify-content: space-between;
   align-items: center;
   height: 30px;
+  width: 440px;
 }
 
 .dropdown-item-category:hover {
@@ -265,6 +296,7 @@ textarea:valid {
 }
 
 .contact-initial {
+    margin: 5px;
     width: 35px;
     height: 35px;
     border-radius: 50%;
@@ -273,18 +305,17 @@ textarea:valid {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
     font-size: 14px;
-    border: 2px solid white;
+    border: 1.5px solid white;
     box-shadow: 0 0 2px rgba(0,0,0,0.2);
     flex-shrink: 0;
 }
 
-.contact-initial:nth-child(1) { background-color: #f44336; }
-.contact-initial:nth-child(2) { background-color: #2196F3; }
-.contact-initial:nth-child(3) { background-color: #FF9800; }
-.contact-initial:nth-child(4) { background-color: #9C27B0; }
-.contact-initial:nth-child(5) { background-color: #4CAF50; }
+.contact-initial.more-count {
+    font-weight: bold;
+    font-size: 0.9em;
+    cursor: default;
+}
 
 #titleInput.title::placeholder {
   font-size: 16px;
@@ -324,18 +355,22 @@ textarea:valid {
 
 .prioGrade:hover {
   cursor: pointer;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
 }
 
 .redColor {
-  background-color: red;
+  background-color: #FF3D00;
+  color: var(--white);
 }
 
 .orangeColor {
-  background-color: orange;
+  background-color: #FFA800;
+  color: var(--white);
 }
 
 .greenColor {
-  background-color: green;
+  background-color: #7AE229;
+  color: var(--white);
 }
 
 .filterWhite {
@@ -347,7 +382,6 @@ textarea:valid {
   justify-content: flex-end;
   align-items: center;
   gap: 20px;
-  background-color: var(--main-bg-color);
 }
 
 .addOrClearBtn {
@@ -423,6 +457,10 @@ textarea:valid {
   padding: 10px;
 }
 
+.checkbox-svg {
+  margin-right: 15px;
+}
+
 .custom-checkbox span {
   width: 20px;
   height: 20px;
@@ -449,6 +487,20 @@ input[type="date"]:invalid {
 
 input[type="date"]:valid {
   color: black;
+}
+
+input[type="date"]:not(:focus):invalid::before {
+  content: attr(placeholder);
+  color: gray;
+}
+
+input[type="date"]::before {
+  content: attr(data-date);
+  position: absolute;
+  color: black;
+}
+input[type="date"]:focus::before {
+  content: "" !important;
 }
 
 .createTaskCheck {
@@ -569,4 +621,23 @@ input[type="date"]:valid {
     z-index: 10000;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#contact-search-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.custom-checkbox {
+    display: block;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.custom-checkbox.checked {
+    color: lightgrey;
 }

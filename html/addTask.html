@@ -52,11 +52,11 @@
             <div class="inputFlexbox">
               <span>Assigned to</span>
                 <div id="assignedToDropdownContacts" class="title" tabindex="0">
-                  <div class="dropdown-selected">
-                    <span>Select contacts</span>
-                    <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts">
-                  </div>
-                  <ul id="dropdown-list-contacts"></ul>
+                    <div class="dropdown-selected">
+                        <input class="search" type="text" id="contactSearch" placeholder="Select contacts" />
+                        <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts">
+                    </div>
+                    <ul id="dropdown-list-contacts"></ul>
                 </div>
               <div id="assignedToInitials" style="display: none"></div>
             </div>
@@ -109,6 +109,7 @@
           </div>
         </div>
       </div>
+
     </form>
     <script src="../scripts/header.js"></script>
     <script src="../scripts/logIn_Malte.js"></script>
