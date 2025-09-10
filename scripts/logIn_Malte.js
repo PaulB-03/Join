@@ -20,6 +20,8 @@ function updateHeaderAvatars() {
   };
 
   if (currentUser.type === "user") {
+    userAvatar.innerHTML = initials(currentUser);
+
     toggleElement(userAvatar, true);
     toggleElement(guestAvatar, false);
   } else if (currentUser.type === "guest") {
@@ -29,6 +31,17 @@ function updateHeaderAvatars() {
     toggleElement(userAvatar, false);
     toggleElement(guestAvatar, false);
   }
+}
+
+function initials(name) {
+  // Accepts either a string or an object with a 'name' property
+  if (typeof name === "object" && name !== null && "name" in name) {
+    name = name.name;
+  }
+  const parts = (name || "").trim().split(/\s+/);
+  const first = parts[0]?.[0] || "";
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : "";
+  return (first + last).toUpperCase();
 }
 
 function showSummaryGreeting() {
