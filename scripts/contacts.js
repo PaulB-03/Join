@@ -1,22 +1,4 @@
 
-const COLOR_VARS = [
-  "--contact-bg-blue",
-  "--contact-bg-light-blue",
-  "--contact-bg-light-green",
-  "--contact-bg-purple",
-  "--contact-bg-lilac",
-  "--contact-bg-green",
-  "--contact-bg-pink",
-  "--contact-bg-red",
-  "--contact-bg-rose",
-  "--contact-bg-peach",
-  "--contact-bg-orange",
-  "--contact-bg-light-orange",
-  "--contact-bg-dark-yellow",
-  "--contact-bg-medium-yellow",
-  "--contact-bg-yellow",
-];
-
 // conntection to databse
 const DB_ROOT =
   "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
