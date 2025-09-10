@@ -50,14 +50,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const edit = item.querySelector(".editIcon");
 
     const enterEditMode = () => {
-      item.style.backgroundColor = "#fff"; // highlight edit mode
+      item.style.backgroundColor = "#fff";
       title.style.display = "none";
 
       const editInput = document.createElement("input");
       editInput.value = title.textContent.replace(/^•\s/, "");
       editInput.className = "editInput";
 
-      // Swap icons: Delete | Save
       const editActions = document.createElement("div");
       editActions.className = "subtaskActions";
       editActions.innerHTML = `
@@ -74,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
           title.textContent = `• ${editInput.value.trim()}`;
         }
         title.style.display = "inline";
-        item.style.backgroundColor = ""; // restore background
+        item.style.backgroundColor = "";
         item.removeChild(editInput);
         item.replaceChild(actions, editActions);
       };
@@ -85,11 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
       editInput.focus();
     };
 
-    // Click on title or edit icon enters edit mode
     title.addEventListener("click", enterEditMode);
     edit.addEventListener("click", enterEditMode);
-
-    // Delete subtask in normal mode
     del.addEventListener("click", () => item.remove());
   });
 });

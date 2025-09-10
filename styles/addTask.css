@@ -615,9 +615,13 @@ input[type="date"]:focus::before {
 }
 
 .subtaskActions {
-  display: flex;
+  display: none;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+}
+
+.subtaskItem:hover .subtaskActions {
+  display: flex;
 }
 
 .subtaskActions img {

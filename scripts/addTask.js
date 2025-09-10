@@ -285,6 +285,7 @@ function clearTask() {
     selectedCategory = "";
     setText("#categoryPlaceholder", "Select task category");
     removeClasses("#assignedToDropdownCategory", "selected-red");
+    setStyle("#assignedToDropdownCategory", "backgroundColor", "white");
     document.querySelectorAll("#dropdown-list-category input[type='checkbox']").forEach(cb => cb.checked = false);
 
     assignedContacts = [];
@@ -337,7 +338,7 @@ function renderContacts(contactNames, contacts) {
         const initialsSpan = document.createElement("span");
         initialsSpan.textContent = initials;
         initialsSpan.classList.add("contact-initial");
-        initialsSpan.style.backgroundColor = getColorForName(contactEntry.name);
+        initialsSpan.style.backgroundColor = colorForName(contactEntry.name);
 
         const nameSpan = document.createElement("span");
         nameSpan.textContent = contactEntry.name;
@@ -426,7 +427,7 @@ function renderAssignedContacts() {
         let span = document.createElement("span");
         span.textContent = initials;
         span.classList.add("contact-initial");
-        span.style.backgroundColor = getColorForName(contactName);
+        span.style.backgroundColor = colorForName(contactName);
         initialsDiv.appendChild(span);
     }
 
@@ -438,22 +439,6 @@ function renderAssignedContacts() {
         moreSpan.style.backgroundColor = "#999";
         initialsDiv.appendChild(moreSpan);
     }
-}
-
-function getColorForName(name) {
-    const colors = [
-        "#FF5733", "#33FF57", "#3357FF", "#FF33A8",
-        "#FF8C33", "#33FFF5", "#8D33FF", "#FFC733",
-        "#33FF8C", "#FF3333", "#33A8FF", "#A833FF"
-    ];
-
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-        hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    const index = Math.abs(hash % colors.length);
-    return colors[index];
 }
 
 function updateDropdownHighlight() {
