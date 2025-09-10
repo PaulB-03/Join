@@ -30,7 +30,7 @@ async function loadContacts() {
   const obj = await res.json();
   contacts = Object.entries(obj ?? {}).map(([id, c]) => ({ id, ...c }));
   initContactsList();
-  loadContactsinAddTask();
+  loadContactsInAddTask();
 }
 
 // add a new contact to the database, then reload the list, called by add contact form

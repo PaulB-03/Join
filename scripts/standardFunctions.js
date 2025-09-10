@@ -20,7 +20,7 @@ function colorForName(name = "") {
 }
 
 // Modify loadContacts to store contacts globally for search render
-async function loadContactsinAddTask() {
+async function loadContactsInAddTask() {
     try {
         let response = await fetch(baseURL + "contacts.json");
         if (!response.ok) {

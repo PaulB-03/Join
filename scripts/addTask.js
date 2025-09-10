@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Modify loadContacts to store contacts globally for search render
 async function loadContacts() {
     // functionality moved to standardFunctions.js
-    loadContactsinAddTask();
+    loadContactsInAddTask();
 }
 
 function renderContacts(contactNames, contacts) {
