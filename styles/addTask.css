@@ -149,7 +149,11 @@ textarea:valid {
   border-radius: 10px;
   display: flex;
   background-color: var(--white);
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#assignedToDropdownCategory.selected {
+  background-color: rgb(232, 240, 254);
 }
 
 #assignedToDropdownCategory:hover {
@@ -164,6 +168,10 @@ textarea:valid {
 #assignedToDropdownCategory:focus-within,
 #assignedToDropdownCategory:active {
   border: 1.5px solid var(--light-blue);
+}
+
+#assignedToDropdownCategory:valid {
+  background-color: #4caf50;
 }
 
 .dropdown-selected {

@@ -509,7 +509,6 @@ function toggleCategoryDropdown() {
             paddingBottom: subtasksContainer.style.paddingBottom || "50px"
         };
     }
-
     if (dropdown.classList.contains("open")) {
         subtasksContainer.style.marginTop = "80px";
         subtasksContainer.style.paddingBottom = "50px";
@@ -522,13 +521,12 @@ function toggleCategoryDropdown() {
 function saveSelectedCategory(index) {
     const dropdown = document.getElementById("assignedToDropdownCategory");
     const categoryList = document.getElementById("dropdown-list-category");
-
     dropdown.classList.remove("open");
-
     if (subtasksContainer) {
         subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
         subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
     }
     const selectedText = categoryList.children[index].querySelector("label").textContent.trim();
     document.getElementById("categoryPlaceholder").textContent = selectedText;
+    dropdown.classList.add("selected");
 }
