@@ -62,7 +62,7 @@
             </div>
             <div class="inputFlexbox" id="category">
               <span id="requiredHeaders">Category <img src="../assets/svg/required.svg" alt="" id="required"></span>
-              <div id="assignedToDropdownCategory" class="title" tabindex="0">
+              <div id="assignedToDropdownCategory" class="title" tabindex="0" onclick="toggleCategoryDropdown()">
                 <div class="dropdown-selected" id="input-category">
                   <span id="categoryPlaceholder">Select task category</span>
                   <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks">
@@ -90,7 +90,7 @@
                 <div class="dropdown-subtasks" tabindex="0">
                   <input type="text" class="dropdown-selected input-subtask" placeholder="Add a new subtask">
                   <div class="subtask-images-container" style="display: none">
-                    <img src="../assets/svg/subdelete.svg" class="subtaskImages cancelSubtask" alt="Delete Subtask">
+                    <img src="../assets/svg/subclose.svg" class="subtaskImages cancelSubtask" alt="Delete Subtask">
                       <div class="divider1"></div>
                     <img src="../assets/svg/subcheck.svg" class="subtaskImages saveSubtask" alt="Save Subtask">
                   </div>

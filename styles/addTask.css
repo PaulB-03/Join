@@ -56,8 +56,8 @@ body {
 
 .search {
   border: none;
-  padding: 0px;
   font-size: 16px;
+  padding-left: 3px;
 }
 
 .search::placeholder {
@@ -100,21 +100,22 @@ h1 {
 }
 
 textarea {
-  height: 120px !important;
-  width: 440px;
-  max-width: 100%;
+  cursor: pointer;
+  height: 120px;
+  width: 440px !important;
+  max-height: 200px;
+  min-height: 120px;
   box-sizing: border-box;
+  resize: vertical;
+  padding: 8px;
+  overflow: auto;
 }
+
 textarea:focus {
   border: 1.5px solid var(--light-blue);
 }
 textarea:valid {
   background-color: rgb(232, 240, 254);
-}
-@media (max-width: 480px) {
-  textarea {
-    width: 100%;
-  }
 }
 
 #assignedToDropdownContacts {
@@ -125,17 +126,17 @@ textarea:valid {
   background-color: white;
 }
 #assignedToDropdownContacts .dropdown-selected {
-    width: 100%;             /* make it respect parent width */
+    width: 100%;
     display: flex;
     align-items: center;
-    overflow: hidden;        /* hide anything that goes outside */
+    overflow: hidden;
 }
 
 #assignedToDropdownContacts .dropdown-selected span {
-    white-space: nowrap;     /* keep text in one line */
-    overflow: hidden;        /* clip overflow */
-    text-overflow: ellipsis; /* optional: add "..." if too long */
-    flex-shrink: 1;          /* allow shrinking to fit */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
 }
 
 #assignedToDropdownContacts:hover {
@@ -202,7 +203,9 @@ textarea:valid {
 }
 
 #subtasks {
-  padding-bottom: 50px;
+    padding-bottom: 50px;
+    margin-top: 0px;
+    transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
 }
 
 #dropdown-arrow-contacts {
@@ -339,10 +342,15 @@ textarea:valid {
   font-size: 16px;
 }
 
+#categoryPlaceholder {
+  padding-left: 2px;
+}
+
 .input-subtask {
   width: 85%;
   border: var(--color-icon);
   outline: none;
+  padding-left: -2px;
 }
 
 .prioDivsWrapper {
@@ -445,10 +453,16 @@ textarea:valid {
   cursor: pointer;
   width: 100%;
   gap: 12px;
+  padding: 6px !important;
 }
 
 .dropdown-checkbox .contact-name {
   flex: 1;
+}
+
+.dropdown-checkbox:hover {
+  background-color: var(--main-color);
+  color: var(--white);
 }
 
 .dropdown-checkbox input[type="checkbox"] {
@@ -469,6 +483,10 @@ textarea:valid {
 
 .checkbox-svg {
   margin-right: 15px;
+}
+
+.dropdown-checkbox:hover .checkbox-svg {
+    filter: brightness(0) invert(1);
 }
 
 .custom-checkbox span {
@@ -509,6 +527,7 @@ input[type="date"]::before {
   position: absolute;
   color: black;
 }
+
 input[type="date"]:focus::before {
   content: "" !important;
 }
@@ -526,14 +545,37 @@ input[type="date"]:focus::before {
 }
 
 .subtaskImages {
-  width: 14px;
-  height: 14px;
   cursor: pointer;
   transition: transform 0.2s;
 }
 
 .subtaskImages:hover {
   transform: scale(1.2);
+}
+
+.subtask-images-container {
+  display: none;
+  gap: 8px;
+  align-items: center;
+}
+
+.subtask-images-container img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 4px;
+  transition: background 0.2s ease;
+}
+
+.subtask-images-container .divider1 {
+  width: 1px;
+  height: 24px;
+  background-color: #ccc;
+}
+
+.subtask-images-container img:hover {
+  background-color: #eee;
 }
 
 .divider1 {
@@ -585,7 +627,6 @@ input[type="date"]:focus::before {
   flex: 1;
   padding: 4px 6px;
   border: none;
-  background-color: var(--main-bg-color);
   border-radius: 4px;
   outline: none;
   font-size: 16px;
