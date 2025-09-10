@@ -127,7 +127,7 @@
 
 .contactText .contactEmail {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--color-link);
 }
 
 .detailsTop {
@@ -365,3 +365,13 @@ body.modal-open {
 .icon-user  { background-image:url("../assets/svg/person.svg"); }
 .icon-mail  { background-image:url("../assets/svg/mail.svg"); }
 .icon-phone { background-image:url("../assets/svg/phone.svg"); }
+
+#cancelAdd img {
+  width: 1em;
+  height: 1em;
+}
+
+#cancelAdd img :hover {
+  /* change color on hover to var(--light-blue) */
+  filter: brightness(0) saturate(100%) invert(44%) sepia(95%) saturate(2474%) hue-rotate(180deg) brightness(90%) contrast(70%);
+}
