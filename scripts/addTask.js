@@ -495,29 +495,40 @@ window.addEventListener('DOMContentLoaded', () => {
   dateInput.min = today;
 });
 
-let subtasksElement = null;
+let subtasksContainer = null;
 let subtasksOriginalStyles = {};
 
 function toggleCategoryDropdown() {
     const dropdown = document.getElementById("assignedToDropdownCategory");
     dropdown.classList.toggle("open");
 
-    if (!subtasksElement) {
-        subtasksElement = document.getElementById("subtasks");
-        // store original styles
+    if (!subtasksContainer) {
+        subtasksContainer = document.getElementById("subtasks");
         subtasksOriginalStyles = {
-            marginTop: subtasksElement.style.marginTop || "0px",
-            paddingBottom: subtasksElement.style.paddingBottom || "50px"
+            marginTop: subtasksContainer.style.marginTop || "0px",
+            paddingBottom: subtasksContainer.style.paddingBottom || "50px"
         };
     }
 
     if (dropdown.classList.contains("open")) {
-        // open → move down smoothly
-        subtasksElement.style.marginTop = "80px";
-        subtasksElement.style.paddingBottom = "50px"; // optional if you want same padding
+        subtasksContainer.style.marginTop = "80px";
+        subtasksContainer.style.paddingBottom = "50px";
     } else {
-        // close → return smoothly
-        subtasksElement.style.marginTop = subtasksOriginalStyles.marginTop;
-        subtasksElement.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+        subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
+        subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
     }
+}
+
+function saveSelectedCategory(index) {
+    const dropdown = document.getElementById("assignedToDropdownCategory");
+    const categoryList = document.getElementById("dropdown-list-category");
+
+    dropdown.classList.remove("open");
+
+    if (subtasksContainer) {
+        subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
+        subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+    }
+    const selectedText = categoryList.children[index].querySelector("label").textContent.trim();
+    document.getElementById("categoryPlaceholder").textContent = selectedText;
 }
