@@ -18,3 +18,38 @@ function colorForName(name = "") {
     .reduce((acc, ch) => acc + ch.codePointAt(0), 0); // sum the unicode values of each character
   return `var(${COLOR_VARS[sum % COLOR_VARS.length]})`; // use the sum from the unicode values to select a color
 }
+
+// Modify loadContacts to store contacts globally for search render
+async function loadContactsinAddTask() {
+    try {
+        let response = await fetch(baseURL + "contacts.json");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let contacts = await response.json();
+
+        window.loadedContacts = contacts; // store globally for search
+
+        allContacts = [];
+        const contactList = document.getElementById("dropdown-list-contacts");
+        contactList.innerHTML = "";
+
+        if (contacts) {
+            const sortedContacts = Object.entries(contacts).sort((a, b) => {
+                const nameA = a[1].name.toUpperCase();
+                const nameB = b[1].name.toUpperCase();
+                if (nameA < nameB) return -1;
+                if (nameA > nameB) return 1;
+                return 0;
+            });
+
+            sortedContacts.forEach(([key, contact], index) => {
+                allContacts.push(contact.name);
+            });
+
+            renderContacts(allContacts, contacts);
+        }
+    } catch (error) {
+        console.error("Could not load contacts: ", error);
+    }
+}
