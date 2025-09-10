@@ -1,4 +1,3 @@
-// import { loadContacts as loadContactsinAddTask } from "./addTask.js";
 
 const COLOR_VARS = [
   "--contact-bg-blue",
