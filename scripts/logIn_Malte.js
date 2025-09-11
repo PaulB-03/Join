@@ -20,6 +20,8 @@ function updateHeaderAvatars() {
   };
 
   if (currentUser.type === "user") {
+    userAvatar.innerHTML = initials(currentUser.name);
+
     toggleElement(userAvatar, true);
     toggleElement(guestAvatar, false);
   } else if (currentUser.type === "guest") {
