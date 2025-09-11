@@ -13,7 +13,7 @@
   margin-left: 0;
 }
 h1 {
-  font-size: 44px;
+  font-size: 61px;
   margin: 0;
 }
 
@@ -112,6 +112,7 @@ a.btn:active {
   gap: 8px;
   margin-bottom: 8px;
   font-weight: 700;
+  font-size: 20px;
 }
 .col-head .count {
   color: #6b7280;
