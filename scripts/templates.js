@@ -41,9 +41,24 @@ function renderInitials(names = []) {
   return `<div class="row"><div class="avatars">${html}</div></div>`;
 }
 
+function getPriorityIcon(prio) {
+  switch ((prio || "").toLowerCase()) {
+    case "urgent":
+      return `<img src="../assets/svg/double_arrow_red.svg" alt="Urgent" class="priority-icon" />`;
+    case "medium":
+      return `<img src="../assets/svg/double_lines.svg" alt="Medium" class="priority-icon" />`;
+    case "low":
+      return `<img src="../assets/svg/double_arrow_down.svg" alt="Low" class="priority-icon" />`;
+    default:
+      return "";
+  }
+}
+
 function taskCardInnerHtml(t, percent, doneCount, total) {
   return `
-    <span class="pill ${t.category?.toLowerCase().includes("tech") ? "tech" : "user"}">${t.category || ""}</span>
+    <span class="pill ${
+      t.category?.toLowerCase().includes("tech") ? "tech" : "user"
+    }">${t.category || ""}</span>
     <div class="task-title">${escapeHtml(t.title || "")}</div>
     <div class="task-desc">${escapeHtml(t.description || "")}</div>
     ${t.assignedContacts?.length ? renderInitials(t.assignedContacts) : ""}
@@ -54,13 +69,13 @@ function taskCardInnerHtml(t, percent, doneCount, total) {
       <div class="progress"><div class="bar" style="width:${percent}%"></div></div>
       <div class="meta">
         <span>${doneCount}/${total} Subtasks</span>
-        <span class="card-grip" aria-hidden="true">≡</span>
+        ${getPriorityIcon(t.priority)}
       </div>
     `
         : `
       <div class="meta">
         <span></span>
-        <span class="card-grip" aria-hidden="true">≡</span>
+        ${getPriorityIcon(t.priority)}
       </div>
     `
     }
@@ -72,7 +87,7 @@ function taskDetailTemplate(id, t = {}) {
   const desc = escapeHtml(t.description || "");
   const cat = escapeHtml(t.category || "Task");
   const date = escapeHtml(t.date || "-");
-  const prio = (t.priority || "medium").toLowerCase(); // low | medium | urgent
+  const prio = (t.priority || "medium").toLowerCase();
 
   const assigned =
     (t.assignedContacts || [])
@@ -94,7 +109,9 @@ function taskDetailTemplate(id, t = {}) {
         const idc = `subtask-${id}-${i}`;
         return `
         <label class="subtasks__item" for="${idc}">
-          <input type="checkbox" id="${idc}" data-sub-index="${i}" ${done ? "checked" : ""}/>
+          <input type="checkbox" id="${idc}" data-sub-index="${i}" ${
+          done ? "checked" : ""
+        }/>
           <span>${escapeHtml(txt)}</span>
         </label>`;
       })
@@ -104,16 +121,17 @@ function taskDetailTemplate(id, t = {}) {
   return `
     <div class="task-detail" data-id="${id}">
       <span class="pill">${cat}</span>
-      <h2 id="taskDetailTitle" class="task-detail__title">${title.replace(/\n/g, "<br>")}</h2>
+      <h2 id="taskDetailTitle" class="task-detail__title">${title.replace(
+        /\n/g,
+        "<br>"
+      )}</h2>
 
       ${desc ? `<p class="task-detail__desc">${desc}</p>` : ""}
 
       <dl class="task-meta">
         <dt>Due date</dt><dd>${date}</dd>
         <dt>Priority</dt>
-        <dd><span class="priority priority--${prio}">
-          <span class="priority-badge"></span>${prio.charAt(0).toUpperCase() + prio.slice(1)}
-        </span></dd>
+        <dd>${getPriorityIcon(prio)}</dd>
       </dl>
 
       <div class="task-assigned">
@@ -129,12 +147,13 @@ function taskDetailTemplate(id, t = {}) {
 
     <div class="task-actions">
       <button type="button" id="taskDelete" class="danger">
-        <img class="icon" src="../assets/svg/delete.svg" alt="" aria-hidden="true" />
+        <img class="icon" src="../../assets/svg/delete.svg" alt="Delete" />
         <span>Delete</span>
       </button>
-      <button type="button" id="taskEdit">
-        <img class="icon" src="../assets/svg/edit_black.svg" alt="" aria-hidden="true" />
-        <span>Edit</span>
+      <div class="task-divider"></div>
+      <button type="button" id="taskEdit" class="primary">
+        <img class="icon" src="../../assets/svg/edit_black.svg" alt="Edit" />
+            <span>Edit</span>
       </button>
     </div>
   `;
