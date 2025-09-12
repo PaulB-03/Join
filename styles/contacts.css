@@ -367,11 +367,17 @@ body.modal-open {
 .icon-phone { background-image:url("../assets/svg/phone.svg"); }
 
 #cancelAdd img {
-  width: 1em;
-  height: 1em;
+  width: 24px;
+  height: 24px;
 }
 
-#cancelAdd img :hover {
-  /* change color on hover to var(--light-blue) */
-  filter: brightness(0) saturate(100%) invert(44%) sepia(95%) saturate(2474%) hue-rotate(180deg) brightness(90%) contrast(70%);
+#cancelAdd {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+#cancelAdd:hover img[src$="cancel_black.svg"] {
+  content: url("../assets/svg/cancel_blue.svg");
 }

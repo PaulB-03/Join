@@ -1,3 +1,5 @@
+
+// all the colors for the contact profile pictures
 const COLOR_VARS = [
   "--contact-bg-blue",
   "--contact-bg-light-blue",
