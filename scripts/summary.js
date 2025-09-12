@@ -1,5 +1,8 @@
-function init() {
+function initForSummary() {
     includeHTML();
+    dataForSummary();
+}
+function dataForSummary() {
     getDataForTasks();
     getCurrentTime();
     showSummaryGreeting(); // function located in logIn_Malte.js and logIn.js
@@ -31,8 +34,8 @@ async function getDataForTasks() {
     const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
 
     let response = await fetch(BASE_URL + ".json");
-    responseToJson = await response.json();
-
+    responseToJson = "";
+    responseToJson =  await response.json();
     countForSummary(responseToJson);
 }
 
@@ -147,4 +150,3 @@ async function postData() {
         .then((response) => console.log(JSON.stringify(response)));
 }
 
-["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];

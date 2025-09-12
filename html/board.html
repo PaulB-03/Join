@@ -19,6 +19,7 @@
   <script src="../scripts/templates.js" defer></script>
   <script src="../scripts/board.js" defer></script>
   <script src="../scripts/addTask.js" defer></script>
+  <script src="../scripts/boardSearchbar.js"></script>
 
 </head>
 
@@ -36,7 +37,7 @@
             <circle cx="11" cy="11" r="7" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
-          <input type="search" placeholder="Find Task" />
+          <input type="search" oninput="processChanges()" id="taskSearchInput" placeholder="Find Task" />
         </div>
 
         <button type="button" id="openAddTask" class="btn" aria-label="Add task">
