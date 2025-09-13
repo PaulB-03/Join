@@ -72,7 +72,8 @@ async function addUser(name, email, password) {
 
 function showSignupScreen() {
   document.getElementById("loginScreen").classList.add("d_none");
-  document.getElementById("indexHeaderRight").classList.add("hidden");
+  document.getElementById("showSignUp").classList.add("hidden");
+  document.getElementById("showSignUpMobile").classList.add("hidden");
   document.getElementById("signupScreen").classList.remove("d_none");
 }
 
@@ -80,7 +81,8 @@ function showLoginScreen() {
   signupForm.reset(); // clear the form
   policyChecked = false;
   document.getElementById("loginScreen").classList.remove("d_none");
-  document.getElementById("indexHeaderRight").classList.remove("hidden");
+  document.getElementById("showSignUp").classList.remove("hidden");
+  document.getElementById("showSignUpMobile").classList.remove("hidden");
   document.getElementById("signupScreen").classList.add("d_none");
   document.getElementById("signupOverlay").classList.add("d_none");
   signupForm.querySelectorAll("*").forEach((el) => el.classList.remove("input-error"));

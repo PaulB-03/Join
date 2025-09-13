@@ -13,15 +13,18 @@
   </head>
   <body>
     <header class="indexHeader hidden">
-      <div class="logo"><img src="./assets/svg/favicon.svg" alt="Join-Logo" /></div>
-      <div id="indexHeaderRight" class="indexHeaderRight">
+      <div class="logo"><img src="./assets/svg/join_logo.svg" alt="Join Logo" /></div>
+      <div class="mobileLogo"><img src="./assets/svg/join_logo_small.svg" alt="Join Logo" /></div>
+      <div id="showSignUp" class="indexHeaderRight">
         <span class="font_400_20">Not a Join user?</span>
         <button onclick="showSignupScreen()" class="btn-dark font_700_16">Sign up</button>
       </div>
     </header>
 
     <main class="indexMain">
-      <img class="startLogo" style="height: 400px" src="./assets/svg/favicon.svg" alt="" />
+      <img class="startLogo" src="./assets/svg/join_logo.svg" alt="Join-Logo" />
+      <img class="startLogoMobile" src="./assets/svg/join_logo_white.svg" alt="Join-Logo" />
+      <div class="startLogoMobileBg"></div>
       <div id="signupOverlay" class="signupOverlay d_none">
         <div class="signupSuccess font_400_20">You Signed Up successfully</div>
       </div>
@@ -67,6 +70,10 @@
             <button class="btn-dark font_700_21" type="submit" id="signupBtn">Sign up</button>
           </div>
         </form>
+      </div>
+      <div id="showSignUpMobile" class="mobileSignUpChoice">
+        <span class="font_400_20">Not a Join user?</span>
+        <button onclick="showSignupScreen()" class="btn-dark font_700_16">Sign up</button>
       </div>
     </main>
     <footer class="indexFooter hidden">
