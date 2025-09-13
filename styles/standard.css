@@ -66,28 +66,28 @@ h3 {
   font-size: 27px;
 }
 
-.btn-dark {
+.btn-dark,
+.btn-white {
   border: solid 1px var(--main-color);
   border-radius: 10px;
+  padding: 10px 22px;
+  transition: ease-in-out 100ms;
+}
+
+.btn-dark {
   color: white;
   background: var(--main-color);
-  padding: 15px 24px 15px 24px;
-  transition: ease-in-out 100ms;
+}
+
+.btn-white {
+  background: white;
+  color: var(--main-color);
 }
 
 .btn-dark:hover {
   background: var(--light-blue);
   border: solid 1px var(--light-blue);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-}
-
-.btn-white {
-  border: solid 1px var(--main-color);
-  background: white;
-  color: var(--main-color);
-  border-radius: 10px;
-  padding: 15px 24px 15px 24px;
-  transition: ease-in-out 100ms;
 }
 
 .btn-white:hover {
@@ -111,7 +111,7 @@ a:hover {
 input {
   border: solid 1px var(--color-placeholder);
   border-radius: 10px;
-  padding: 12px;
+  padding: 11px;
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 22px 22px;
