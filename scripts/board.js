@@ -1,118 +1,119 @@
-document.addEventListener("DOMContentLoaded", () => initBoard());
+const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
 
-const BASE_URL =
-  "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
-const COL_TO_STATE = {
-  todo: "toDo",
-  "in-progress": "in progress",
-  "await-feedback": "await feedback",
-  done: "done",
-};
-const STATE_TO_COL = Object.fromEntries(
-  Object.entries(COL_TO_STATE).map(([c, s]) => [s, c])
-);
+const COL_TO_STATE = { todo: "toDo", "in-progress": "in progress", "await-feedback": "await feedback", done: "done" };
+const STATE_TO_COL = Object.fromEntries(Object.entries(COL_TO_STATE).map(([c, s]) => [s, c]));
 
 let dragged = null;
+let placeholder = null;
 
-async function initBoard() {
-  await renderAllTasks();
+document.addEventListener("DOMContentLoaded", init);
+
+function init() {
+  renderAllTasks();
   initDnd();
-  highlightJustCreated?.();
+  highlightNewTask();
+  bindOverlayButtons();
 }
 
-function highlightJustCreated() {
-  const params = new URLSearchParams(window.location.search);
-  const newId = params.get("newTask");
-  if (!newId) return;
-
-  const el = document.querySelector(`.task-container[data-id="${newId}"]`);
-  if (el) {
-    el.classList.add("highlight");
-    setTimeout(() => el.classList.remove("highlight"), 2000);
-  }
+function highlightNewTask() {
+  const id = new URLSearchParams(location.search).get("newTask");
+  const el = id && document.querySelector(`.task-container[data-id="${id}"]`);
+  if (!el) return;
+  el.classList.add("highlight");
+  setTimeout(() => el.classList.remove("highlight"), 2000);
 }
 
 function initDnd() {
   if (window.__dndInitialized) return;
   window.__dndInitialized = true;
+  makePlaceholder();
+  bindGlobalDrag();
+  bindColumns();
+}
 
-  document.addEventListener("dragstart", (e) => {
-    const container = e.target.closest(".task-container");
-    if (!container) return;
+function makePlaceholder() {
+  placeholder = document.createElement("div");
+  placeholder.className = "task-placeholder";
+}
 
-    dragged = container;
-    container.classList.add("is-dragging");
+function bindGlobalDrag() {
+  document.addEventListener("dragstart", onDragStart);
+  document.addEventListener("dragend", onDragEnd);
+}
 
-    const innerCard = container.querySelector(".card");
-    if (innerCard) innerCard.classList.add("is-dragging");
+function onDragStart(e) {
+  const box = e.target.closest(".task-container");
+  if (!box) return;
+  dragged = box;
+  box.classList.add("is-dragging");
+  box.querySelector(".card")?.classList.add("is-dragging");
+  e.dataTransfer?.setData("text/plain", box.dataset.id || "");
+}
 
-    if (e.dataTransfer) {
-      e.dataTransfer.effectAllowed = "move";
-      e.dataTransfer.setData("text/plain", container.dataset.id || "");
-    }
-  });
+function onDragEnd(e) {
+  const box = e.target.closest(".task-container");
+  if (!box) return;
+  box.classList.remove("is-dragging");
+  box.querySelector(".card")?.classList.remove("is-dragging");
+  document.querySelectorAll(".dropzone.is-over").forEach(z => z.classList.remove("is-over"));
+  placeholder.remove();
+  dragged = null;
+}
 
-  document.addEventListener("dragend", (e) => {
-    const container = e.target.closest(".task-container");
-    if (!container) return;
-
-    const innerCard = container.querySelector(".card");
-    if (innerCard) innerCard.classList.remove("is-dragging");
-
-    container.classList.remove("is-dragging");
-    dragged = null;
-
-    document
-      .querySelectorAll(".dropzone.is-over")
-      .forEach((z) => z.classList.remove("is-over"));
-  });
-
+function bindColumns() {
   document.querySelectorAll(".dropzone").forEach((zone) => {
-    if (zone.__dndBound) return;
-
-    zone.addEventListener("dragover", (e) => {
-      if (!dragged) return;
-      e.preventDefault();
-      zone.classList.add("is-over");
-      placeByMouse(zone, e.clientY);
-    });
-
-    zone.addEventListener("dragleave", () => {
-      zone.classList.remove("is-over");
-    });
-
-    zone.addEventListener("drop", async (e) => {
-      e.preventDefault();
-      zone.classList.remove("is-over");
-      if (!dragged) return;
-
-      placeByMouse(zone, e.clientY);
-      const newState = COL_TO_STATE[zone.id];
-      const taskId = dragged.dataset.id;
-      if (taskId && newState) {
-        await updateTaskState(taskId, newState);
-      }
-    });
-
-    zone.__dndBound = true;
+    if (zone.__bound) return;
+    zone.addEventListener("dragover", (ev) => onDragOver(ev, zone));
+    zone.addEventListener("dragleave", () => zone.classList.remove("is-over"));
+    zone.addEventListener("drop", (ev) => onDrop(ev, zone));
+    zone.__bound = true;
   });
 }
 
-function placeByMouse(container, mouseY) {
-  const others = [
-    ...container.querySelectorAll(".task-container:not(.is-dragging)"),
-  ];
-  const after = others.reduce(
-    (acc, el) => {
-      const box = el.getBoundingClientRect();
-      const offset = mouseY - box.top - box.height / 2;
-      return offset < 0 && offset > acc.offset ? { offset, el } : acc;
-    },
-    { offset: -Infinity, el: null }
-  ).el;
-  after
-    ? container.insertBefore(dragged, after)
-    : container.appendChild(dragged);
+function onDragOver(e, zone) {
+  if (!dragged) return;
+  e.preventDefault();
+  zone.classList.add("is-over");
+  insertPlaceholder(zone, e.clientY);
+}
+
+function onDrop(e, zone) {
+  e.preventDefault();
+  zone.classList.remove("is-over");
+  if (!dragged) return;
+  const prev = dragged.parentElement;
+  insertPlaceholder(zone, e.clientY);
+  placeholder.replaceWith(dragged);
+  updateTaskState(dragged.dataset.id, COL_TO_STATE[zone.id]);
+  updateEmptyState(prev);
+  updateEmptyState(zone);
+}
+
+function insertPlaceholder(container, mouseY) {
+  const items = [...container.querySelectorAll(".task-container:not(.is-dragging)")];
+  if (!container.contains(placeholder)) container.appendChild(placeholder);
+  const target = items.reduce((acc, el) => {
+    const box = el.getBoundingClientRect();
+    const off = mouseY - box.top - box.height / 2;
+    return off < 0 && off > acc.offset ? { offset: off, el } : acc;
+  }, { offset: -Infinity, el: null }).el;
+  target ? container.insertBefore(placeholder, target) : container.appendChild(placeholder);
+}
+
+function updateEmptyState(zone) {
+  if (!zone) return;
+  const hasTask = zone.querySelector(".task-container");
+  const empty = zone.querySelector(".empty");
+  if (!hasTask && !empty) {
+    const title = zone.previousElementSibling?.textContent?.trim() || "";
+    zone.innerHTML = `<div class="empty">No tasks ${title}</div>`;
+  } else if (hasTask && empty) {
+    empty.remove();
+  }
+}
+
+function updateAllEmptyStates() {
+  document.querySelectorAll(".dropzone").forEach(updateEmptyState);
 }
 
 async function updateTaskState(id, state) {
@@ -124,17 +125,18 @@ async function updateTaskState(id, state) {
 }
 
 async function fetchTasks() {
-  const res = await fetch(`${BASE_URL}/tasks.json`);
-  const data = await res.json();
+  const r = await fetch(`${BASE_URL}/tasks.json`);
+  const data = await r.json();
   if (!data) return {};
-  if (Array.isArray(data))
+  if (Array.isArray(data)) {
     return Object.fromEntries(data.map((t, i) => [i, t]).filter(([, t]) => t));
+  }
   return data;
 }
 
 async function fetchSingleTask(id) {
-  const res = await fetch(`${BASE_URL}/tasks/${id}.json`);
-  return (await res.json()) || {};
+  const r = await fetch(`${BASE_URL}/tasks/${id}.json`);
+  return (await r.json()) || {};
 }
 
 async function deleteTask(id) {
@@ -143,15 +145,22 @@ async function deleteTask(id) {
 
 async function toggleSubtaskDone(taskId, index, done) {
   const t = await fetchSingleTask(taskId);
-  const subs = Array.isArray(t.subtasks) ? t.subtasks : [];
+  const subs = normalizeSubtasks(t.subtasks);
   if (subs[index] == null) return;
+  subs[index] = toSubtask(subs[index]);
+  subs[index].done = !!done;
+  await saveSubtasks(taskId, subs);
+}
 
-  if (typeof subs[index] === "string") {
-    subs[index] = { text: subs[index], done: !!done };
-  } else {
-    subs[index].done = !!done;
-  }
+function normalizeSubtasks(subs) {
+  return Array.isArray(subs) ? subs : [];
+}
 
+function toSubtask(x) {
+  return typeof x === "string" ? { text: x, done: false } : (x || { text: "", done: false });
+}
+
+async function saveSubtasks(taskId, subs) {
   await fetch(`${BASE_URL}/tasks/${taskId}.json`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -162,269 +171,153 @@ async function toggleSubtaskDone(taskId, index, done) {
 async function renderAllTasks() {
   const tasks = await fetchTasks();
   clearColumns();
-  Object.entries(tasks).forEach(([id, t]) => appendTaskCard(id, t));
+  Object.entries(tasks).forEach(([id, t]) => addTaskCard(id, t));
+  updateAllEmptyStates();
 }
 
 function clearColumns() {
   document.querySelectorAll(".dropzone").forEach((z) => {
-    const colTitle = z.previousElementSibling?.textContent?.trim() || "";
-    z.innerHTML = `<div class="empty">No tasks ${colTitle}</div>`;
+    const title = z.previousElementSibling?.textContent?.trim() || "";
+    z.innerHTML = `<div class="empty">No tasks ${title}</div>`;
   });
 }
 
-function appendTaskCard(id, t) {
-  const colId = STATE_TO_COL[t.state] || "todo";
-  const zone = document.getElementById(colId);
+function addTaskCard(id, t) {
+  const zone = getZoneForTask(t);
   zone.querySelector(".empty")?.remove();
 
-  const wrapper = document.createElement("div");
-  wrapper.className = "task-container";
-  wrapper.dataset.id = id;
-  wrapper.draggable = true;
+  const wrap = makeTaskWrapper(id);
+  const { total, done, percent } = subtaskProgress(t.subtasks);
 
   const card = document.createElement("article");
   card.className = "card";
   card.dataset.id = id;
-  card.innerHTML = `
-    <span class="pill ${
-      t.category?.toLowerCase().includes("tech") ? "tech" : "user"
-    }">${t.category || ""}</span>
-    <div class="task-title">${escapeHtml(t.title || "")}</div>
-    <div class="task-desc">${escapeHtml(t.description || "")}</div>
-    ${t.assignedContacts?.length ? renderInitials(t.assignedContacts) : ""}
-    ${t.date ? `<div class="meta"><span>Due: ${t.date}</span></div>` : ""}
-  `;
+  card.innerHTML = taskCardInnerHtml(t, percent, done, total);
 
-  let wasDragged = false;
-  wrapper.addEventListener("dragstart", () => (wasDragged = true));
-  wrapper.addEventListener("dragend", () => {
-    setTimeout(() => (wasDragged = false), 0);
-  });
-  card.addEventListener("click", () => {
-    if (wasDragged) return;
-    openTaskDetail?.(id);
-  });
+  bindCardClickDrag(wrap, card, id);
+  wrap.appendChild(card);
+  zone.appendChild(wrap);
+}
 
-  wrapper.appendChild(card);
-  zone.appendChild(wrapper);
+function getZoneForTask(t) {
+  const colId = STATE_TO_COL[t.state] || "todo";
+  return document.getElementById(colId);
+}
+
+function makeTaskWrapper(id) {
+  const w = document.createElement("div");
+  w.className = "task-container";
+  w.dataset.id = id;
+  w.draggable = true;
+  return w;
+}
+
+function subtaskProgress(subs) {
+  const list = Array.isArray(subs) ? subs : [];
+  const total = list.length;
+  const done = list.reduce((n, s) => n + (typeof s === "object" && s?.done ? 1 : 0), 0);
+  const percent = total ? Math.round((done / total) * 100) : 0;
+  return { total, done, percent };
+}
+
+function bindCardClickDrag(wrapper, card, id) {
+  let draggedFlag = false;
+  wrapper.addEventListener("dragstart", () => (draggedFlag = true));
+  wrapper.addEventListener("dragend", () => setTimeout(() => (draggedFlag = false), 0));
+  card.addEventListener("click", () => !draggedFlag && openTaskDetail(id));
 }
 
 async function openTaskDetail(id) {
-  const overlay = document.getElementById("taskDetailOverlay");
-  const content = document.getElementById("taskDetailContent");
+  const overlay = byId("taskDetailOverlay");
+  const content = byId("taskDetailContent");
   if (!overlay || !content) return;
-
   const task = await fetchSingleTask(id);
   content.innerHTML = taskDetailTemplate(id, task);
+  wireDetailActions(overlay, content, id, task);
+  showOverlay(overlay);
+}
 
-  document
-    .getElementById("taskDetailClose")
-    ?.addEventListener("click", closeTaskDetail, { once: true });
-  overlay.addEventListener(
-    "click",
-    (e) => {
-      if (e.target === overlay) closeTaskDetail();
-    },
-    { once: true }
-  );
-
-  document.getElementById("taskDelete")?.addEventListener("click", async () => {
-    if (!confirm("Delete this task?")) return;
-    await deleteTask(id);
-    closeTaskDetail();
-    await renderAllTasks();
+function wireDetailActions(overlay, content, id, task) {
+  content.querySelectorAll('input[type="checkbox"][data-sub-index]').forEach((cb) => {
+    cb.addEventListener("change", (e) => onSubtaskToggle(id, e));
   });
-
-  document.getElementById("taskEdit")?.addEventListener("click", () => {
-    closeTaskDetail();
-    if (typeof openTaskOverlay === "function") {
-      openTaskOverlay();
-      if (typeof fillTaskFormFromExisting === "function") {
-        fillTaskFormFromExisting(id, task);
-      }
-    }
-  });
-
-  content
-    .querySelectorAll('input[type="checkbox"][data-sub-index]')
-    .forEach((cb) => {
-      cb.addEventListener("change", async (e) => {
-        const idx = parseInt(e.target.dataset.subIndex, 10);
-        await toggleSubtaskDone(id, idx, e.target.checked);
-      });
-    });
-
+  byId("taskDetailClose")?.addEventListener("click", () => closeOverlay(overlay), { once: true });
+  byId("taskDelete")?.addEventListener("click", () => onDeleteTask(id, overlay));
+  byId("taskEdit")?.addEventListener("click", () => onEditTask(id, task, overlay));
+  overlay.addEventListener("click", (e) => e.target === overlay && closeOverlay(overlay), { once: true });
   document.addEventListener("keydown", onEscCloseOnce);
+}
+
+function onSubtaskToggle(id, e) {
+  const idx = parseInt(e.target.dataset.subIndex, 10);
+  toggleSubtaskDone(id, idx, e.target.checked);
+}
+
+async function onDeleteTask(id, overlay) {
+  if (!confirm("Delete this task?")) return;
+  await deleteTask(id);
+  closeOverlay(overlay);
+  await renderAllTasks();
+  updateAllEmptyStates();
+}
+
+function onEditTask(id, task, overlay) {
+  closeOverlay(overlay);
+  if (typeof openTaskOverlay === "function") {
+    openTaskOverlay();
+    typeof fillTaskFormFromExisting === "function" && fillTaskFormFromExisting(id, task);
+  }
+}
+
+function showOverlay(overlay) {
   overlay.classList.add("open");
   overlay.setAttribute("aria-hidden", "false");
 }
 
-function closeTaskDetail() {
-  const overlay = document.getElementById("taskDetailOverlay");
-  if (!overlay) return;
+function closeOverlay(overlay) {
   overlay.classList.remove("open");
   overlay.setAttribute("aria-hidden", "true");
   document.removeEventListener("keydown", onEscCloseOnce);
 }
 
 function onEscCloseOnce(e) {
-  if (e.key === "Escape") closeTaskDetail();
+  if (e.key === "Escape") {
+    const ov = byId("taskDetailOverlay");
+    ov && closeOverlay(ov);
+  }
 }
 
-function taskDetailTemplate(id, t = {}) {
-  const title = escapeHtml(t.title || "");
-  const desc = escapeHtml(t.description || "");
-  const cat = escapeHtml(t.category || "Task");
-  const date = escapeHtml(t.date || "-");
-  const prio = (t.priority || "medium").toLowerCase(); // low | medium | urgent
-
-  const assigned =
-    (t.assignedContacts || [])
-      .map(
-        (n, i) => `
-    <div class="task-assigned__item">
-      <div class="av" style="background:${color(i)}">${initials(n)}</div>
-      <div class="task-assigned__name">${escapeHtml(n)}</div>
-    </div>
-  `
-      )
-      .join("") ||
-    `<div class="task-assigned__item" style="opacity:.6">No assignees</div>`;
-
-  const subtasks =
-    (t.subtasks || [])
-      .map((s, i) => {
-        const txt = typeof s === "string" ? s : s?.text || "";
-        const done = typeof s === "object" ? !!s?.done : false;
-        const idc = `subtask-${id}-${i}`;
-        return `
-      <label class="subtasks__item" for="${idc}">
-        <input type="checkbox" id="${idc}" data-sub-index="${i}" ${
-          done ? "checked" : ""
-        }/>
-        <span>${escapeHtml(txt)}</span>
-      </label>
-    `;
-      })
-      .join("") ||
-    `<div class="subtasks__item" style="opacity:.6">No subtasks</div>`;
-
-  return `
-    <div class="task-detail" data-id="${id}">
-      <span class="pill">${cat}</span>
-      <h2 id="taskDetailTitle" class="task-detail__title">${title.replace(
-        /\n/g,
-        "<br>"
-      )}</h2>
-
-      ${desc ? `<p class="task-detail__desc">${desc}</p>` : ""}
-
-      <dl class="task-meta">
-        <dt>Due date</dt><dd>${date}</dd>
-        <dt>Priority</dt>
-        <dd><span class="priority priority--${prio}">
-          <span class="priority-badge"></span>${
-            prio.charAt(0).toUpperCase() + prio.slice(1)
-          }
-        </span></dd>
-      </dl>
-
-      <div class="task-assigned">
-        <div class="section-title" style="font-weight:700;margin-bottom:6px;color:#6b7280">Assigned to:</div>
-        <div class="task-assigned__list">${assigned}</div>
-      </div>
-
-      <div class="subtasks">
-        <div class="section-title" style="font-weight:700;margin:14px 0 6px;color:#6b7280">Subtasks</div>
-        <div class="subtasks__list">${subtasks}</div>
-      </div>
-    </div>
-
-    <div class="task-actions">
-  <button type="button" id="taskDelete" class="danger">
-    <img class="icon" src="../assets/svg/delete.svg" alt="" aria-hidden="true" />
-    <span>Delete</span>
-  </button>
-  <button type="button" id="taskEdit">
-    <img class="icon" src="../assets/svg/edit_black.svg" alt="" aria-hidden="true" />
-    <span>Edit</span>
-  </button>
-</div>
-  `;
+function bindOverlayButtons() {
+  byId("openAddTask")?.addEventListener("click", openTaskOverlay);
+  document.querySelectorAll(".add-card-btn").forEach((b) => b.addEventListener("click", openTaskOverlay));
+  byId("closeTaskOverlay")?.addEventListener("click", closeTaskOverlay);
+  byId("cancelTask")?.addEventListener("click", closeTaskOverlay);
+  byId("taskOverlay")?.addEventListener("click", (e) => e.target.id === "taskOverlay" && closeTaskOverlay());
+  document.addEventListener("keydown", (e) => e.key === "Escape" && closeTaskOverlay());
 }
-
-function renderInitials(names = []) {
-  const html = names
-    .map(
-      (n, i) =>
-        `<div class="av" style="background:${color(i)}">${initials(n)}</div>`
-    )
-    .join("");
-  return `<div class="row"><div class="avatars">${html}</div></div>`;
-}
-
-const colors = [
-  "#f44336",
-  "#2196F3",
-  "#FF9800",
-  "#9C27B0",
-  "#4CAF50",
-  "#00BCD4",
-  "#FFC107",
-];
-const color = (i) => colors[i % colors.length];
-const initials = (n) =>
-  (n || "")
-    .trim()
-    .split(/\s+/)
-    .map((w) => w[0] || "")
-    .join("")
-    .toUpperCase();
-const escapeHtml = (s) =>
-  (s || "").replace(
-    /[&<>"']/g,
-    (m) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[
-        m
-      ])
-  );
 
 function openTaskOverlay() {
-  const ov = document.getElementById("taskOverlay");
+  const ov = byId("taskOverlay");
   if (!ov) return;
   ov.classList.add("open");
   document.body.classList.add("modal-open");
-
-  if (typeof initCategoryDropdown === "function") initCategoryDropdown();
-  if (typeof initContactsDropdown === "function") initContactsDropdown();
-  if (typeof initialiseSavePrioImg === "function") initialiseSavePrioImg();
+  initTaskFormEnhancements();
 }
 
 function closeTaskOverlay() {
-  const ov = document.getElementById("taskOverlay");
+  const ov = byId("taskOverlay");
   if (!ov) return;
   ov.classList.remove("open");
   document.body.classList.remove("modal-open");
-  if (typeof clearTask === "function") clearTask();
+  typeof clearTask === "function" && clearTask();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  document
-    .getElementById("openAddTask")
-    ?.addEventListener("click", openTaskOverlay);
-  document
-    .querySelectorAll(".add-card-btn")
-    .forEach((b) => b.addEventListener("click", openTaskOverlay));
-  document
-    .getElementById("closeTaskOverlay")
-    ?.addEventListener("click", closeTaskOverlay);
-  document
-    .getElementById("cancelTask")
-    ?.addEventListener("click", closeTaskOverlay);
-  document.getElementById("taskOverlay")?.addEventListener("click", (e) => {
-    if (e.target.id === "taskOverlay") closeTaskOverlay();
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeTaskOverlay();
-  });
-});
+function initTaskFormEnhancements() {
+  typeof initCategoryDropdown === "function" && initCategoryDropdown();
+  typeof initContactsDropdown === "function" && initContactsDropdown();
+  typeof initialiseSavePrioImg === "function" && initialiseSavePrioImg();
+}
+
+function byId(id) {
+  return document.getElementById(id);
+}

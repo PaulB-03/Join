@@ -1,173 +1,188 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Join – Board</title>
-    <link rel="shortcut icon" href="../assets/svg/favicon.svg" type="image/x-icon" />
 
-    <link rel="stylesheet" href="../styles/standard.css" />
-    <link rel="stylesheet" href="../style.css" />
-    <link rel="stylesheet" href="../styles/board.css" />
-    <link rel="stylesheet" href="../styles/addTask.css" />
-    <link rel="stylesheet" href="../styles/colors.css" />
-    <link rel="stylesheet" href="../styles/fonts.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Join – Board</title>
+  <link rel="shortcut icon" href="../assets/svg/favicon.svg" type="image/x-icon" />
 
-    <script src="../script.js"></script>
-    <script src="../scripts/board.js" defer></script>
-    <script src="../scripts/addTask.js" defer></script>
-  </head>
+  <link rel="stylesheet" href="../styles/standard.css" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="../styles/board.css" />
+  <link rel="stylesheet" href="../styles/addTask.css" />
+  <link rel="stylesheet" href="../styles/colors.css" />
+  <link rel="stylesheet" href="../styles/fonts.css" />
 
-  <body onload="includeHTML()">
-    <header id="header" class="d_none" w3-include-html="../templates/header.html"></header>
-    <aside id="sidebar" class="d_none" w3-include-html="../templates/sidebar.html"></aside>
 
-    <div class="app">
-      <div class="heading">
-        <h1>Board</h1>
-        <div class="controls">
-          <div class="search" role="search" aria-label="Find Task">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="7" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input type="search" placeholder="Find Task" />
-          </div>
+  <script src="../script.js"></script>
+  <script src="../scripts/templates.js" defer></script>
+  <script src="../scripts/board.js" defer></script>
+  <script src="../scripts/addTask.js" defer></script>
+  <script src="../scripts/boardSearchbar.js"></script>
 
-          <button type="button" id="openAddTask" class="btn" aria-label="Add task">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="12" y1="5" x2="12" y2="19" />
-              <line x1="5" y1="12" x2="19" y2="12" />
-            </svg>
-            Add task
-          </button>
-        </div>
-      </div>
+</head>
 
-      <section class="board" aria-label="Kanban Board">
-        <div class="column">
-          <div class="col-head">
-            To do
-            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
-          </div>
-          <div class="dropzone" id="todo">
-            <div class="empty">No tasks To do</div>
-          </div>
+<body onload="includeHTML()">
+  <header id="header" class="d_none" w3-include-html="../templates/header.html"></header>
+  <aside id="sidebar" class="d_none" w3-include-html="../templates/sidebar.html"></aside>
+
+  <div class="app">
+    <div class="heading">
+      <h1>Board</h1>
+      <div class="controls">
+        <div class="search" role="search" aria-label="Find Task">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input type="search" oninput="processChanges()" id="taskSearchInput" placeholder="Find Task" />
         </div>
 
-        <div class="column">
-          <div class="col-head">
-            In progress
-            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
-          </div>
-          <div class="dropzone" id="in-progress">
-            <div class="empty">No tasks In progress</div>
-          </div>
-        </div>
-
-        <div class="column">
-          <div class="col-head">
-            Await feedback
-            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
-          </div>
-          <div class="dropzone" id="await-feedback">
-            <div class="empty">No tasks Await feedback</div>
-          </div>
-        </div>
-
-        <div class="column">
-          <div class="col-head">
-            Done
-            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
-          </div>
-          <div class="dropzone" id="done">
-            <div class="empty">No tasks Done</div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div id="taskDetailOverlay" class="task-overlay" aria-hidden="true" onclick="closeTaskDetail()">
-      <div class="task-modal" role="dialog" aria-modal="true" aria-labelledby="taskDetailTitle" onclick="event.stopPropagation()">
-        <button class="task-modal__close" id="taskDetailClose" aria-label="Close">&times;</button>
-        <div id="taskDetailContent"><!-- Inhalt wird per JS gerendert --></div>
+        <button type="button" id="openAddTask" class="btn" aria-label="Add task">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          Add task
+        </button>
       </div>
     </div>
 
-    <div id="taskOverlay" class="overlay" aria-hidden="true">
-      <div class="overlay-panel task-overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
-        <button type="button" class="overlay-close" id="closeTaskOverlay" aria-label="Close">×</button>
+    <section class="board" aria-label="Kanban Board">
+      <div class="column">
+        <div class="col-head">
+          To do
+          <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+        </div>
+        <div class="dropzone" id="todo">
+          <div class="empty">No tasks To do</div>
+        </div>
+      </div>
 
-        <div class="task-overlay-inner" style="padding: 4px 4px 20px">
-          <h2 class="task-overlay-title">Add Task</h2>
+      <div class="column">
+        <div class="col-head">
+          In progress
+          <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+        </div>
+        <div class="dropzone" id="in-progress">
+          <div class="empty">No tasks In progress</div>
+        </div>
+      </div>
 
-          <form id="addTaskForm" onsubmit="createTask(event)">
-            <div class="task-grid" style="display: grid; grid-template-columns: 1fr 1px 1fr; gap: 24px; align-items: start">
-              <div class="task-col">
-                <label class="lbl">Title<span class="req">*</span></label>
-                <input class="title" id="titleInput" type="text" placeholder="Enter a title" required />
+      <div class="column">
+        <div class="col-head">
+          Await feedback
+          <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+        </div>
+        <div class="dropzone" id="await-feedback">
+          <div class="empty">No tasks Await feedback</div>
+        </div>
+      </div>
 
-                <label class="lbl">Description</label>
-                <textarea rows="5" class="title" id="descriptionInput" placeholder="Enter a Description"></textarea>
+      <div class="column">
+        <div class="col-head">
+          Done
+          <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+        </div>
+        <div class="dropzone" id="done">
+          <div class="empty">No tasks Done</div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-                <label class="lbl">Due date<span class="req">*</span></label>
-                <input class="title" id="date" type="date" required />
-              </div>
+  <div id="taskDetailOverlay" class="task-overlay" aria-hidden="true" onclick="closeTaskDetail()">
+    <div class="task-modal" role="dialog" aria-modal="true" aria-labelledby="taskDetailTitle"
+      onclick="event.stopPropagation()">
+      <button class="task-modal__close" id="taskDetailClose" aria-label="Close">&times;</button>
+      <div id="taskDetailContent"><!-- Inhalt wird per JS gerendert --></div>
+    </div>
+  </div>
 
-              <div class="task-divider"></div>
+  <div id="taskOverlay" class="overlay" aria-hidden="true">
+    <div class="overlay-panel task-overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+      <button type="button" class="overlay-close" id="closeTaskOverlay" aria-label="Close">×</button>
 
-              <div class="task-col">
-                <label class="lbl">Priority</label>
-                <div class="prioDivsWrapper">
-                  <div id="urgent" onclick="setPrioColor(0)" class="prioGrade"><span>Urgent</span><img src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="" /></div>
-                  <div id="medium" onclick="setPrioColor(1)" class="prioGrade"><span>Medium</span><img src="../assets/svg/double_lines.svg" class="prioImage" alt="" /></div>
-                  <div id="low" onclick="setPrioColor(2)" class="prioGrade"><span>Low</span><img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="" /></div>
-                </div>
+      <div class="task-overlay-inner" style="padding: 4px 4px 20px">
+        <h2 class="task-overlay-title">Add Task</h2>
 
-                <label class="lbl">Assigned to</label>
-                <div id="assignedToDropdownContacts" class="title" tabindex="0">
-                  <div class="dropdown-selected">
-                    <span>Select contacts to assign</span>
-                    <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts" />
-                  </div>
-                  <ul id="dropdown-list-contacts"></ul>
-                </div>
-                <div id="assignedToInitials" style="display: none"></div>
+        <form id="addTaskForm" onsubmit="createTask(event)">
+          <div class="task-grid"
+            style="display: grid; grid-template-columns: 1fr 1px 1fr; gap: 24px; align-items: start">
+            <div class="task-col">
+              <label class="lbl">Title<span class="req">*</span></label>
+              <input class="title" id="titleInput" type="text" placeholder="Enter a title" required />
 
-                <label class="lbl">Category<span class="req">*</span></label>
-                <div id="assignedToDropdownCategory" class="title" tabindex="0">
-                  <div class="dropdown-selected" id="input-category">
-                    <span id="categoryPlaceholder">Select task category</span>
-                    <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" />
-                  </div>
-                  <ul id="dropdown-list-category">
-                    <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
-                      <label class="custom-checkbox">Userstory <input type="checkbox" /><span style="display: none"></span> </label>
-                    </li>
-                    <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
-                      <label class="custom-checkbox">Technical Task <input type="checkbox" /><span style="display: none"></span> </label>
-                    </li>
-                  </ul>
-                </div>
+              <label class="lbl">Description</label>
+              <textarea rows="5" class="title" id="descriptionInput" placeholder="Enter a Description"></textarea>
 
-                <label class="lbl">Subtasks</label>
-                <div class="dropdown-subtasks">
-                  <input type="text" class="dropdown-selected input-subtask" placeholder="Add new subtask" />
-                </div>
-              </div>
+              <label class="lbl">Due date<span class="req">*</span></label>
+              <input class="title" id="date" type="date" required />
             </div>
 
-            <div class="task-actions">
-              <button class="btn-white" type="button" id="cancelTask">Cancel</button>
-              <button class="btn-dark" type="submit">Create Task</button>
-            </div>
+            <div class="task-divider"></div>
 
-            <div class="task-required-hint"><span class="req">*</span> This field is required</div>
-          </form>
-        </div>
+            <div class="task-col">
+              <label class="lbl">Priority</label>
+              <div class="prioDivsWrapper">
+                <div id="urgent" onclick="setPrioColor(0)" class="prioGrade"><span>Urgent</span><img
+                    src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="" /></div>
+                <div id="medium" onclick="setPrioColor(1)" class="prioGrade"><span>Medium</span><img
+                    src="../assets/svg/double_lines.svg" class="prioImage" alt="" /></div>
+                <div id="low" onclick="setPrioColor(2)" class="prioGrade"><span>Low</span><img
+                    src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="" /></div>
+              </div>
+
+              <label class="lbl">Assigned to</label>
+              <div id="assignedToDropdownContacts" class="title" tabindex="0">
+                <div class="dropdown-selected">
+                  <span>Select contacts to assign</span>
+                  <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts" />
+                </div>
+                <ul id="dropdown-list-contacts"></ul>
+              </div>
+              <div id="assignedToInitials" style="display: none"></div>
+
+              <label class="lbl">Category<span class="req">*</span></label>
+              <div id="assignedToDropdownCategory" class="title" tabindex="0">
+                <div class="dropdown-selected" id="input-category">
+                  <span id="categoryPlaceholder">Select task category</span>
+                  <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" />
+                </div>
+                <ul id="dropdown-list-category">
+                  <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
+                    <label class="custom-checkbox">Userstory <input type="checkbox" /><span
+                        style="display: none"></span> </label>
+                  </li>
+                  <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
+                    <label class="custom-checkbox">Technical Task <input type="checkbox" /><span
+                        style="display: none"></span> </label>
+                  </li>
+                </ul>
+              </div>
+
+              <label class="lbl">Subtasks</label>
+              <div class="dropdown-subtasks">
+                <input type="text" class="dropdown-selected input-subtask" placeholder="Add new subtask" />
+              </div>
+            </div>
+          </div>
+
+          <div class="task-actions">
+            <button class="btn-white" type="button" id="cancelTask">Cancel</button>
+            <button class="btn-dark" type="submit">Create Task</button>
+          </div>
+
+          <div class="task-required-hint"><span class="req">*</span> This field is required</div>
+        </form>
       </div>
     </div>
-    <script src="../scripts/logIn_Malte.js"></script>
-    <script src="../scripts/header.js"></script>
-  </body>
+  </div>
+  <script src="../scripts/logIn_Malte.js"></script>
+  <script src="../scripts/header.js"></script>
+</body>
+
 </html>

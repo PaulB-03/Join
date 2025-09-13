@@ -109,8 +109,8 @@ header {
 }
 
 .helper {
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   display: block;
   object-fit: contain;
   transition: transform 0.2s;

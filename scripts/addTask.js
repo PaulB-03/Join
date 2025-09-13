@@ -14,65 +14,126 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function createTask(event) {
     event.preventDefault();
+
     let title = document.getElementById('titleInput');
     let description = document.getElementById('descriptionInput');
     let date = document.getElementById('date');
 
-    if (title.value && description.value && date.value && selectedPrio && selectedCategory) {
-        try {
-            let tasks = await getTasks();
-            let nextIndex = 0;
-            if (tasks) {
-                const existingIndices = Object.keys(tasks)
-                    .map(key => parseInt(key))
-                    .filter(key => !isNaN(key));
-                if (existingIndices.length > 0) {
-                    nextIndex = Math.max(...existingIndices) + 1;
-                }
+    function clearErrors() {
+        [title, description, date].forEach(input => {
+            input.style.border = '';
+            const nextElem = input.nextElementSibling;
+            if (nextElem && nextElem.classList.contains('error-message')) {
+                nextElem.remove();
             }
+        });
 
-            let subtasks = Array.from(document.querySelectorAll(".subtaskTitle"))
-                                .map(el => el.textContent.trim())
-                                .filter(txt => txt !== "");
-
-            await saveTask(`tasks/${nextIndex}`, {
-                "title": title.value,
-                "description": description.value,
-                "date": date.value,
-                "state": "toDo",
-                "priority": selectedPrio,
-                "category": selectedCategory,
-                "assignedContacts": assignedContacts,
-                "subtasks": subtasks
-            });
-
-            const overlay = document.createElement('div');
-            overlay.classList.add('task-added-overlay');
-            document.body.appendChild(overlay);
-    
-            const messageDiv = document.createElement('div');
-            messageDiv.textContent = "TASK ADDED TO BOARD";
-            messageDiv.classList.add('task-added-message');
-            document.body.appendChild(messageDiv);
-            setTimeout(() => {
-                document.body.removeChild(messageDiv);
-                document.body.removeChild(overlay);
-
-                window.location.href = 'board.html';
-            }, 2000);
-
-        } catch (error) {
-            alert("Die Aufgabe konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.");
-            console.error("Error saving task:", error);
+        const prioElem = document.getElementById('priorityInput');
+        if (prioElem) {
+            prioElem.style.border = '';
+            const nextElem = prioElem.nextElementSibling;
+            if (nextElem && nextElem.classList.contains('error-message')) {
+                nextElem.remove();
+            }
         }
-    } else {
-        alert('Bitte alle Felder inkl. Priorität und Kategorie ausfüllen');
+        const categoryElem = document.getElementById('categoryInput');
+        if (categoryElem) {
+            categoryElem.style.border = '';
+            const nextElem = categoryElem.nextElementSibling;
+            if (nextElem && nextElem.classList.contains('error-message')) {
+                nextElem.remove();
+            }
+        }
+    }
+    clearErrors();
+
+    let isValid = true;
+
+    function showError(inputElem) {
+        inputElem.style.border = '2px solid red';
+        const errorMsg = document.createElement('div');
+        errorMsg.textContent = 'This field is required';
+        errorMsg.classList.add('error-message');
+        errorMsg.style.color = 'red';
+        errorMsg.style.fontSize = '0.8em';
+        errorMsg.style.marginTop = '4px';
+        inputElem.insertAdjacentElement('afterend', errorMsg);
+    }
+    if (!title.value.trim()) {
+        showError(title);
+        isValid = false;
+    }
+    if (!description.value.trim()) {
+        showError(description);
+        isValid = false;
+    }
+    if (!date.value.trim()) {
+        showError(date);
+        isValid = false;
+    }
+    if (!document.getElementById('assignedToInitials')) {
+    const contactElem = document.getElementById('assignedToDropdownContacts');
+    if (contactElem) {
+        showError(contactElem);
+    }
+    isValid = false;
+    }
+    if (!selectedCategory) {
+        const categoryElem = document.getElementById('assignedToDropdownCategory');
+        if (categoryElem) {
+            showError(categoryElem);
+        }
+        isValid = false;
+    }
+    if (!isValid) {
+        return;
+    }
+    try {
+        let tasks = await getTasks();
+        if (tasks) {
+            const existingIndices = Object.keys(tasks)
+                .map(key => parseInt(key))
+                .filter(key => !isNaN(key));
+        }
+        let subtasks = Array.from(document.querySelectorAll(".subtaskTitle"))
+                            .map(el => el.textContent.trim())
+                            .filter(txt => txt !== "");
+
+        await saveTask(`tasks`, {
+            "title": title.value,
+            "description": description.value,
+            "date": date.value,
+            "state": "toDo",
+            "priority": selectedPrio,
+            "category": selectedCategory,
+            "assignedContacts": assignedContacts,
+            "subtasks": subtasks
+        });
+
+        const overlay = document.createElement('div');
+        overlay.classList.add('task-added-overlay');
+        document.body.appendChild(overlay);
+
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = "TASK ADDED TO BOARD";
+        messageDiv.classList.add('task-added-message');
+        document.body.appendChild(messageDiv);
+        setTimeout(() => {
+            document.body.removeChild(messageDiv);
+            document.body.removeChild(overlay);
+
+            window.location.href = 'board.html';
+        }, 2000);
+
+    } catch (error) {
+        alert("Die Aufgabe konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.");
+        console.error("Error saving task:", error);
     }
 }
 
 async function saveTask(path = "", data = {}) {
     let response = await fetch(baseURL + path + ".json", {
-        method: "PUT",
+        method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
@@ -271,12 +332,29 @@ function clearTask() {
         });
     };
 
+    const clearError = (selector) => {
+        const el = document.querySelector(selector);
+        if (el) {
+            el.style.border = "";
+            const nextElem = el.nextElementSibling;
+            if (nextElem && nextElem.classList.contains('error-message')) {
+                nextElem.remove();
+            }
+        }
+    };
+
     setValue("#titleInput");
+    setValue("#descriptionInput");
+    setValue("#date");
+
     const titleInput = document.querySelector("#titleInput");
     if (titleInput) titleInput.classList.remove("filled");
 
-    setValue("#descriptionInput");
-    setValue("#date");
+    clearError("#titleInput");
+    clearError("#descriptionInput");
+    clearError("#date");
+    clearError("#assignedToDropdownContacts");
+    clearError("#assignedToDropdownCategory");
 
     removeClasses(".prioGrade", "isClicked", "redColor", "orangeColor", "greenColor", "whitePrioFont");
     removeClasses(".prioGrade .prioImage", "filterWhite");

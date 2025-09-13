@@ -1,5 +1,8 @@
-function init() {
+function initForSummary() {
     includeHTML();
+    dataForSummary();
+}
+function dataForSummary() {
     getDataForTasks();
     getCurrentTime();
     showSummaryGreeting(); // function located in logIn_Malte.js and logIn.js
@@ -31,9 +34,8 @@ async function getDataForTasks() {
     const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
 
     let response = await fetch(BASE_URL + ".json");
-    responseToJson = await response.json();
-
-    console.log(responseToJson);
+    responseToJson = "";
+    responseToJson =  await response.json();
     countForSummary(responseToJson);
 }
 
@@ -44,31 +46,28 @@ function countForSummary(responseToJson) {
     let awaitFeedbackCount = 0;
     let urgencyCount = 0;
     let datesArray = [];
-    console.log(responseToJson.tasks);
-    for (let index = 0; index < responseToJson.tasks.length; index++) {
+    let objectToArray = Object.entries(responseToJson.tasks)
 
-        if (responseToJson.tasks[index]) {
-            let status = responseToJson.tasks[index].state;
-            let urgency = responseToJson.tasks[index].priority;
+    for (let index = 0; index < objectToArray.length; index++) {
 
-            datesArray.push(responseToJson.tasks[index].date);
-            if (status == "in progress") {
-                progressCount += 1;
-            }
-            if (status == "toDo") {
-                toDoCount += 1;
-            }
-            if (status == "done") {
-                doneCount += 1;
-            }
-            if (status == "await feedback") {
-                awaitFeedbackCount += 1;
-            }
-            if (urgency == "urgent") {
-                urgencyCount += 1;
-                tasks = responseToJson.tasks;
-            }
+        let status = objectToArray[index][1].state;
+        let urgency = objectToArray[index][1].priority;
+
+        datesArray.push(objectToArray[index][1].date);
+
+        switch (status) {
+            case "in progress": progressCount++; break;
+            case "toDo": toDoCount++; break;
+            case "done": doneCount++; break;
+            case "await feedback": awaitFeedbackCount++; break;
         }
+        switch (urgency) {
+            case "urgent":
+                urgencyCount++;
+                tasks = responseToJson.tasks;
+                break;
+        }
+
 
     }
     filterNextUpcomingDeadline(datesArray, responseToJson);
@@ -151,4 +150,3 @@ async function postData() {
         .then((response) => console.log(JSON.stringify(response)));
 }
 
-["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];

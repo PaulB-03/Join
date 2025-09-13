@@ -28,7 +28,7 @@ body {
 }
 
 .bgJoin {
-  background-color: #2c3646;
+  background-color: var(--main-color);
 }
 
 .bgUrgency {
