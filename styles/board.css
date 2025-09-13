@@ -315,6 +315,31 @@ a.btn:active {
   pointer-events: none;
   transition: opacity 0.2s ease;
 }
+
+.overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.overlay-panel {
+  position: relative;
+  width: min(980px, 94vw);
+  background: #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-columns: 42% 58%;
+  transform: translateX(80px);
+  transition: transform 0.35s ease;
+  will-change: transform;
+}
+
+.overlay.open .overlay-panel {
+  transform: translateX(0);
+}
+
 #taskOverlay.overlay.open {
   opacity: 1;
   visibility: visible;
