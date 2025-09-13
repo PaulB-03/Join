@@ -7,7 +7,7 @@ const guestLoginButton = document.getElementById("guestLogin");
 guestLoginButton?.addEventListener("click", (e) => {
   e.preventDefault(); // prevent default <a> navigation if needed
   saveLoginStatus("guest");
-  window.location.href = "../html/summary.html"; // or "./html/summary.html" depending on your folder
+  window.location.href = "./html/summary.html"; // or "./html/summary.html" depending on your folder
 });
 
 document.getElementById("signinForm").addEventListener("submit", async (event) => {
@@ -41,7 +41,7 @@ document.getElementById("signinForm").addEventListener("submit", async (event) =
 
     if (foundUser) {
       saveLoginStatus("user", foundUser.name);
-      window.location.href = "../html/summary.html";
+      window.location.href = "./html/summary.html";
       console.log(foundUser.name);
     } else {
       loginError.style.visibility = "visible";
