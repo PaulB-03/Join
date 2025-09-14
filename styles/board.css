@@ -48,10 +48,21 @@ h1 {
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   opacity: 0.55;
+  padding: 4px;               
+  border-radius: 50%;           
+  transition: background 0.2s ease;
 }
+
+.search:hover svg {
+  opacity: 0.95;
+  background-color: #e4e6eb;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 .search::after {
   content: "";
   position: absolute;
