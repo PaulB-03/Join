@@ -28,9 +28,13 @@
 //}
 
 function sidebarHeaderInit() {
+  if (!localStorage.getItem("currentUser")) {
+    window.location.href = "../index.html";
+    return; // stop execution
+  }
+
   toggleSidebarAndHeader();
   updateHeaderAvatars();
-  // keep your existing link highlight
   highlightActiveLink();
 }
 
