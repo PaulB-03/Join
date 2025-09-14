@@ -340,7 +340,7 @@
   }
 
   .mobileLogo {
-    display: block;
+    display: block !important;
   }
 
   .signupReturnArrowContainer {
