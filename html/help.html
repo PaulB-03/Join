@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="../styles/help.css" />
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../styles/fonts.css" />
-    <script src="../script.js"></script>
   </head>
 
   <body onload="sidebarHeaderInit()">
     <header id="header">
       <div class="header-content" id="header">
+        <img src="../assets/svg/join_logo_small.svg" class="headerLogo" style="height: 39px" alt="Join Logo" />
         <p class="font_400_20">Kanban Projekt Management Tool</p>
         <nav id="headerNav" class="header-nav">
           <a href="../html/help.html" class="help-link" aria-label="Help">
@@ -30,6 +30,7 @@
           </div>
 
           <div id="profileMenu" class="profile-menu" style="display: none">
+            <a class="menu-item helpMobile" href="../html/Help.html">Help</a>
             <a class="menu-item" href="../html/legalNotice.html">Legal Notice</a>
             <a class="menu-item" href="../html/privacyPolicy.html">Privacy Policy</a>
             <a class="menu-item" href="../index.html" onclick="logout()">Log Out</a>
@@ -157,6 +158,8 @@
 
       <p class="enjoy">Enjoy using <a href="../index.html">Join</a>!</p>
     </main>
+    <script src="../script.js"></script>
+    <script src="../scripts/logIn_Malte.js"></script>
     <script src="../scripts/header.js"></script>
   </body>
 </html>

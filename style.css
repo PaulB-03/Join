@@ -1,6 +1,5 @@
 .sidebar {
   position: fixed;
-  top: 0;
   left: 0;
   width: 260px;
   height: 100vh;
@@ -100,6 +99,10 @@ header {
   align-items: center;
   padding-left: 380px;
   padding-right: 20px;
+}
+
+.headerLogo {
+  display: none;
 }
 
 .header-nav {
@@ -205,4 +208,84 @@ header {
 
 .header-nav .help-link {
   display: block;
+}
+
+@media (min-width: 801px) {
+  .helpMobile {
+    display: none !important;
+  }
+
+  .sidebar {
+    top: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .header-content {
+    height: 80px;
+    padding: 0;
+    margin: 0 20px;
+  }
+
+  .header-content p,
+  .helper {
+    display: none;
+  }
+
+  .headerLogo {
+    display: block;
+  }
+
+  #userAvatar,
+  #guestAvatar {
+    height: 40px;
+    width: 40px;
+  }
+
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .nav-list {
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 0 20px;
+  }
+
+  .nav-link {
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 8px;
+  }
+
+  .nav-link .icon img {
+    height: 24px;
+    width: 24px;
+  }
+
+  .nav-item {
+    border-radius: 8px;
+    height: 80px;
+    width: 76px;
+  }
+
+  .sb-header,
+  .sb-footer {
+    display: none;
+  }
+}
+
+@media (max-width: 340px) {
+  .nav-link {
+    font-size: 12px;
+  }
 }
