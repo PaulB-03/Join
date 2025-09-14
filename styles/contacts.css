@@ -97,11 +97,7 @@
 
 .contactItem.is-selected {
   background: var(--main-color) !important;
-  color: var(--white);
-}
-
-.contactItem.is-selected {
-  color: #cfe3ff;
+  color: var(--white) !important;
 }
 
 .contactItem:hover {
