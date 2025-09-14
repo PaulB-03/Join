@@ -321,3 +321,65 @@ function initTaskFormEnhancements() {
 function byId(id) {
   return document.getElementById(id);
 }
+
+const RTDB_BASE =
+  (typeof baseURL !== "undefined" && baseURL) ||
+  "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
+
+async function saveSubtasksFromOverlay(taskId) {
+  const items = Array.from(
+    document.querySelectorAll("#taskDetailOverlay .subtasks__item")
+  );
+
+  const subtasks = items.map((el) => {
+    const chk = el.querySelector('input[type="checkbox"]');
+    const txt = (el.querySelector(".txt")?.textContent || "").trim();
+    return { text: txt, done: !!chk?.checked };
+  });
+
+  const res = await fetch(`${RTDB_BASE}tasks/${taskId}/subtasks.json`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(subtasks),
+  });
+  if (!res.ok) throw new Error(`Save failed: ${res.status}`);
+
+  const done = subtasks.filter((s) => s.done).length;
+  return { done, total: subtasks.length };
+}
+
+function updateSubtaskCountersUI(taskId, done, total) {
+  const overlay = document.getElementById("taskDetailOverlay");
+  const counterInOverlay = overlay?.querySelector(".subtasks-counter");
+  if (counterInOverlay) counterInOverlay.textContent = `${done}/${total} Subtasks`;
+
+  const card = document.querySelector(`.card[data-id="${taskId}"]`) || null;
+  if (card) {
+    const meta = card.querySelector(".meta span");
+    if (meta) meta.textContent = `${done}/${total} Subtasks`;
+    const bar = card.querySelector(".progress .bar");
+    if (bar && total > 0) bar.style.width = `${Math.round((done / total) * 100)}%`;
+  }
+}
+
+document.addEventListener("change", async (e) => {
+  const cb = e.target;
+  if (!cb.matches('#taskDetailOverlay input[type="checkbox"][data-sub-index]')) return;
+
+  const detail = cb.closest(".task-detail");
+  const taskId = detail?.getAttribute("data-id");
+  if (!taskId) return;
+
+  const previous = !cb.checked;
+
+  try {
+    const { done, total } = await saveSubtasksFromOverlay(taskId);
+    updateSubtaskCountersUI(taskId, done, total);
+    document.dispatchEvent(new CustomEvent("task:updated", { detail: { taskId, done, total } }));
+  } catch (err) {
+    console.error(err);
+    cb.checked = previous;
+    alert("Konnte Subtask nicht speichern. Bitte später erneut versuchen.");
+  }
+});
+
