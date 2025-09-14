@@ -63,6 +63,21 @@ h1 {
   background-color: #cbd5e1;
 }
 
+.search input::-webkit-search-cancel-button,
+.search input::-webkit-search-decoration,
+.search input::-webkit-search-results-button,
+.search input::-webkit-search-results-decoration {
+  display: none;
+}
+
+.search input::-ms-clear,
+.search input::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+
 .btn {
   height: 40px;
   padding: 0 14px;
