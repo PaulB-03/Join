@@ -100,7 +100,7 @@
   color: var(--white);
 }
 
-.contactItem.is-selected .contactEmail {
+.contactItem.is-selected {
   color: #cfe3ff;
 }
 
