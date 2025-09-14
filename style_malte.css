@@ -60,6 +60,8 @@
   height: 120px;
   position: relative; /* wichtig, damit .logo absolut dazu positioniert */
   max-width: 1920px;
+  margin-right: auto;
+  margin-left: auto;
   display: flex;
   justify-content: flex-end; /* rechts bleibt frei */
   padding: 64px 64px 0 64px;
@@ -89,8 +91,8 @@
 
 .indexMain {
   max-width: 1896px;
-  margin-right: 12px;
-  margin-left: 12px;
+  margin-right: auto;
+  margin-left: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -235,6 +237,8 @@
 .indexFooter {
   height: 120px;
   max-width: 1920px;
+  margin-right: auto;
+  margin-left: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -292,6 +296,11 @@
 @media (max-width: 768px) {
   .indexHeaderRight {
     display: none;
+  }
+
+  .indexMain {
+    margin-right: 12px;
+    margin-left: 12px;
   }
 
   .mobileSignUpChoice {
