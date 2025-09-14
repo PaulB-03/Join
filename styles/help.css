@@ -1,4 +1,5 @@
 .helpContent {
+  position: relative;
   max-width: 1920px;
   padding: 150px 20px 64px 380px;
   line-height: 1.6;
@@ -40,9 +41,9 @@
 }
 
 .scroll-arrow {
-  position: sticky;
-  top: 20px;
-  float: right;
+  position: absolute;
+  top: 180px;
+  right: 20px;
   width: 40px;
   height: auto;
   border-radius: 50%;
@@ -74,4 +75,17 @@ ol {
   left: 0;
   font-size: 27px;
   font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .helpContent {
+    padding: 110px 20px 100px 20px;
+  }
+  .helpContent h1 {
+    font-size: 47px;
+  }
+
+  .scroll-arrow {
+    top: 120px;
+  }
 }

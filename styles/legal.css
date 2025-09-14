@@ -27,3 +27,13 @@
 .legalContent ul {
   margin-left: 24px;
 }
+
+@media (max-width: 800px) {
+  .legalContent {
+    padding: 110px 20px 100px 20px;
+  }
+
+  .legalContent h1 {
+    font-size: 47px;
+  }
+}
