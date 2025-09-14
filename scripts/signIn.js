@@ -49,7 +49,7 @@ document.getElementById("signinForm").addEventListener("submit", async (event) =
       document.getElementById("signinPassword").classList.add("input-error");
     }
   } catch (error) {
-    console.error("Error during sign in:", error);
+    console.error("Error during log in:", error);
     loginError.style.visibility = "visible";
     document.getElementById("signinEmail").classList.add("input-error");
     document.getElementById("signinPassword").classList.add("input-error");

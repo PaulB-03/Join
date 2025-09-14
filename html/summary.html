@@ -1,101 +1,158 @@
 <!DOCTYPE html>
 <html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../assets/svg/join_logo.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/summary.css" />
+    <link rel="stylesheet" href="../styles/standard.css" />
+    <link rel="stylesheet" href="../styles/colors.css" />
+    <link rel="stylesheet" href="../styles/fonts.css" />
+    <script src="../scripts/logIn_Malte.js"></script>
+    <script src="../script.js"></script>
+    <script src="../scripts/summary.js"></script>
+    <title>Join – Summary</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="shortcut icon" href="../assets/svg/favicon.svg" type="image/x-icon" />
-  <link rel="stylesheet" href="../styles/summary.css" />
-  <link rel="stylesheet" href="../styles/standard.css" />
-  <link rel="stylesheet" href="../styles/colors.css" />
-  <link rel="stylesheet" href="../styles/fonts.css" />
-  <title>Join – Summary</title>
-</head>
-
-<body onload="initForSummary()">
-  <header id="header" class="d_none" w3-include-html="../templates/header.html"></header>
-  <aside id="sidebar" class="d_none" w3-include-html="../templates/sidebar.html"></aside>
-  <section class="summarySection">
-    <div class="joinPresentationContainer">
-      <h1>Join 1323</h1>
-      <div class="divider"></div>
-      <p>Key Metrics at Glance</p>
-    </div>
-
-    <div class="summaryParentContainer">
-      <div id="summaryContainer" class="summaryContainer">
-        <div class="toDoDoneSummaryBoxes">
-          <div class="toDoDoneSummaryBox boxHover summaryBox">
-            <div class="svgImgContainerEdit bgJoin">
-              <img class="svgImgEdit" src="../assets/svg/edit.svg" alt="" />
-            </div>
-            <div class="toDoDoneSummaryTextBox">
-              <p class="summaryNumber" id="toDoNumberBox"></p>
-              <p>To-do</p>
-            </div>
+  <body onload="initForSummary()">
+    <header id="header">
+      <div class="header-content" id="header">
+        <p class="font_400_20">Kanban Projekt Management Tool</p>
+        <nav id="headerNav" class="header-nav">
+          <a href="../html/help.html" class="help-link" aria-label="Help">
+            <img class="helper" src="../assets/svg/help.svg" alt="Hilfe" />
+          </a>
+          <div id="userAvatar" class="header-avatar" title="Profil" onclick="toggleProfileMenu(event)"></div>
+          <div id="guestAvatar" class="avatar-wrapper" title="Gast" onclick="toggleProfileMenu(event)">
+            <img class="default" src="../assets/img/guest.png" alt="Gastprofil" />
+            <img class="hover" src="../assets/img/guest-hover.png" alt="Gastprofil Hover" />
           </div>
-          <div class="toDoDoneSummaryBox boxHover summaryBox">
-            <div class="svgImgContainerUrgencyCheckmark bgJoin">
-              <img class="svgImgCheck_2" src="../assets/svg/check_2.svg" alt="" />
-            </div>
-            <div class="toDoDoneSummaryTextBox">
-              <p class="summaryNumber" id="doneNumberBox"></p>
-              <p>Done</p>
-            </div>
+          <div id="profileMenu" class="profile-menu" style="display: none">
+            <a class="menu-item" href="../html/legalNotice.html">Legal Notice</a>
+            <a class="menu-item" href="../html/privacyPolicy.html">Privacy Policy</a>
+            <a class="menu-item" href="../index.html" onclick="logout()">Log Out</a>
           </div>
+        </nav>
+      </div>
+    </header>
+    <aside id="sidebar">
+      <aside class="sidebar">
+        <div class="sb-header">
+          <img class="join-logo" src="../assets/svg/join_logo_white.svg" alt="Join Logo" />
         </div>
+        <ul id="internalSidebar" class="nav-list">
+          <li class="nav-item">
+            <a class="nav-link" href="../html/summary.html">
+              <span class="icon"><img src="../assets/svg/summary.svg" alt="Summary" /></span>
+              <span>Summary</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../html/addTask.html">
+              <span class="icon"><img src="../assets/svg/add_task.svg" alt="Add Task" /></span>
+              <span>Add Task</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../html/board.html">
+              <span class="icon"><img src="../assets/svg/board.svg" alt="Board" /></span>
+              <span>Board</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../html/contacts.html">
+              <span class="icon"><img src="../assets/svg/contacts.svg" alt="Contacts" /></span>
+              <span>Contacts</span>
+            </a>
+          </li>
+        </ul>
 
-        <div class="urgencySummaryBoxes boxHover summaryBox">
-          <div class="urgencyImgTextBox">
-            <div class="svgImgContainerUrgencyCheckmark bgUrgency">
-              <img src="../assets/svg/double_arrow_up.svg" alt="" />
-            </div>
-            <div class="urgencyTextBox">
-              <p class="summaryNumber" id="urgencyCountBox">1</p>
-              <p>Urgent</p>
-            </div>
-          </div>
-          <div class="dividerUrgency"></div>
-          <div class="summaryDeadLineTextBox">
-            <p id="urgencyDeadline"></p>
-            <p>Upcoming Deadline</p>
-          </div>
+        <div class="sb-footer">
+          <a href="../html/privacyPolicy.html">Privacy Policy</a>
+          <a href="../html/legalNotice.html">Legal notice</a>
         </div>
-
-        <div class="taskSummaryBoxes">
-          <div class="numberBox boxHover summaryBox">
-            <div class="numberBoxChild">
-              <p class="summaryNumber" id="allTaskCountBox"></p>
-              <p class="numberBoxText">Task in Board</p>
-            </div>
-          </div>
-          <div class="numberBox boxHover summaryBox">
-            <div class="numberBoxChild">
-              <p class="summaryNumber" id="progressCountBox"></p>
-              <p class="numberBoxText">Task in Progress</p>
-            </div>
-          </div>
-          <div class="numberBox boxHover summaryBox">
-            <div class="numberBoxChild">
-              <p class="summaryNumber" id="awaitFreedbackCountBox"></p>
-              <p class="numberBoxText">Awaiting Feedback</p>
-            </div>
-          </div>
-        </div>
+      </aside>
+    </aside>
+    <section class="summarySection">
+      <div class="joinPresentationContainer">
+        <h1>Join 1323</h1>
+        <div class="divider"></div>
+        <p>Key Metrics at Glance</p>
       </div>
 
-      <div class="sumGreetingContainer">
-        <p class="sumGreeting"><span id="sumGreeting">Good morning</span><span id="markDestinction">,</span></p>
-        <p class="sumName" id="logInName"></p>
-      </div>
-    </div>
-  </section>
-  <script src="../script.js"></script>
-  <!-- <script src="../scripts/logIn.js"></script> -->
-  <script src="../scripts/logIn_Malte.js"></script>
-  <script src="../scripts/summary.js"></script>
-  <script src="../scripts/header.js"></script>
-  <script src="../scripts/standardFunctions.js"></script>
-</body>
+      <div class="summaryParentContainer">
+        <div id="summaryContainer" class="summaryContainer">
+          <div class="toDoDoneSummaryBoxes">
+            <div class="toDoDoneSummaryBox boxHover summaryBox">
+              <div class="svgImgContainerEdit bgJoin">
+                <img class="svgImgEdit" src="../assets/svg/edit.svg" alt="" />
+              </div>
+              <div class="toDoDoneSummaryTextBox">
+                <p class="summaryNumber" id="toDoNumberBox"></p>
+                <p>To-do</p>
+              </div>
+            </div>
+            <div class="toDoDoneSummaryBox boxHover summaryBox">
+              <div class="svgImgContainerUrgencyCheckmark bgJoin">
+                <img class="svgImgCheck_2" src="../assets/svg/check_2.svg" alt="" />
+              </div>
+              <div class="toDoDoneSummaryTextBox">
+                <p class="summaryNumber" id="doneNumberBox"></p>
+                <p>Done</p>
+              </div>
+            </div>
+          </div>
 
+          <div class="urgencySummaryBoxes boxHover summaryBox">
+            <div class="urgencyImgTextBox">
+              <div class="svgImgContainerUrgencyCheckmark bgUrgency">
+                <img src="../assets/svg/double_arrow_up.svg" alt="" />
+              </div>
+              <div class="urgencyTextBox">
+                <p class="summaryNumber" id="urgencyCountBox">1</p>
+                <p>Urgent</p>
+              </div>
+            </div>
+            <div class="dividerUrgency"></div>
+            <div class="summaryDeadLineTextBox">
+              <p id="urgencyDeadline"></p>
+              <p>Upcoming Deadline</p>
+            </div>
+          </div>
+
+          <div class="taskSummaryBoxes">
+            <div class="numberBox boxHover summaryBox">
+              <div class="numberBoxChild">
+                <p class="summaryNumber" id="allTaskCountBox"></p>
+                <p class="numberBoxText">Task in Board</p>
+              </div>
+            </div>
+            <div class="numberBox boxHover summaryBox">
+              <div class="numberBoxChild">
+                <p class="summaryNumber" id="progressCountBox"></p>
+                <p class="numberBoxText">Task in Progress</p>
+              </div>
+            </div>
+            <div class="numberBox boxHover summaryBox">
+              <div class="numberBoxChild">
+                <p class="summaryNumber" id="awaitFreedbackCountBox"></p>
+                <p class="numberBoxText">Awaiting Feedback</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sumGreetingContainer">
+          <p class="sumGreeting"><span id="sumGreeting">Good morning</span><span id="markDestinction">,</span></p>
+          <p class="sumName" id="logInName"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- <script src="../scripts/logIn.js"></script> -->
+
+    <script src="../scripts/header.js"></script>
+    <script src="../scripts/standardFunctions.js"></script>
+  </body>
 </html>

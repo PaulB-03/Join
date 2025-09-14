@@ -4,11 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join – Contacts</title>
-    <link
-      rel="shortcut icon"
-      href="../assets/svg/favicon.svg"
-      type="image/x-icon"
-    />
+    <link rel="shortcut icon" href="../assets/svg/join_logo.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../styles/standard.css" />
     <link rel="stylesheet" href="../styles/contacts.css" />
     <link rel="stylesheet" href="../styles/colors.css" />
@@ -17,22 +14,68 @@
     <script src="../scripts/contacts.js"></script>
   </head>
   <body onload="init()">
-    <header
-      id="header"
-      class="d_none"
-      w3-include-html="../templates/header.html"
-    ></header>
-    <aside
-      id="sidebar"
-      class="d_none"
-      w3-include-html="../templates/sidebar.html"
-    ></aside>
+    <header id="header">
+      <div class="header-content" id="header">
+        <p class="font_400_20">Kanban Projekt Management Tool</p>
+        <nav id="headerNav" class="header-nav">
+          <a href="../html/help.html" class="help-link" aria-label="Help">
+            <img class="helper" src="../assets/svg/help.svg" alt="Hilfe" />
+          </a>
+          <div id="userAvatar" class="header-avatar" title="Profil" onclick="toggleProfileMenu(event)"></div>
+          <div id="guestAvatar" class="avatar-wrapper" title="Gast" onclick="toggleProfileMenu(event)">
+            <img class="default" src="../assets/img/guest.png" alt="Gastprofil" />
+            <img class="hover" src="../assets/img/guest-hover.png" alt="Gastprofil Hover" />
+          </div>
+          <div id="profileMenu" class="profile-menu" style="display: none">
+            <a class="menu-item" href="../html/legalNotice.html">Legal Notice</a>
+            <a class="menu-item" href="../html/privacyPolicy.html">Privacy Policy</a>
+            <a class="menu-item" href="../index.html" onclick="logout()">Log Out</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <aside id="sidebar">
+      <aside class="sidebar">
+        <div class="sb-header">
+          <img class="join-logo" src="../assets/svg/join_logo_white.svg" alt="Join Logo" />
+        </div>
+        <ul id="internalSidebar" class="nav-list">
+          <li class="nav-item">
+            <a class="nav-link" href="../html/summary.html">
+              <span class="icon"><img src="../assets/svg/summary.svg" alt="Summary" /></span>
+              <span>Summary</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../html/addTask.html">
+              <span class="icon"><img src="../assets/svg/add_task.svg" alt="Add Task" /></span>
+              <span>Add Task</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../html/board.html">
+              <span class="icon"><img src="../assets/svg/board.svg" alt="Board" /></span>
+              <span>Board</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../html/contacts.html">
+              <span class="icon"><img src="../assets/svg/contacts.svg" alt="Contacts" /></span>
+              <span>Contacts</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sb-footer">
+          <a href="../html/privacyPolicy.html">Privacy Policy</a>
+          <a href="../html/legalNotice.html">Legal notice</a>
+        </div>
+      </aside>
+    </aside>
     <div class="contactPage">
       <div class="contactList">
         <div class="newContactBtnContainer">
-          <button id="openAddContact" class="newContactBtn" type="button">
-            Add new contact <img src="..//assets/svg/person_add.svg" alt="" />
-          </button>
+          <button id="openAddContact" class="newContactBtn" type="button">Add new contact <img src="..//assets/svg/person_add.svg" alt="" /></button>
         </div>
       </div>
       <div class="contactDetails">
@@ -43,77 +86,34 @@
       </div>
     </div>
     <div id="contactOverlay" class="overlay" aria-hidden="true">
-      <div
-        class="overlay-panel"
-        role="dialog"
-        aria-modal="true"
-        onclick="event.stopPropagation()"
-      >
+      <div class="overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
         <div class="overlay-left">
           <img src="../assets/svg/newContactForm.svg" alt="" />
         </div>
         <form id="addContactForm" class="overlay-body" novalidate>
-          <button
-            type="button"
-            id="closeAddContact"
-            class="overlay-close"
-            aria-label="Close"
-          >
-            ×
-          </button>
+          <button type="button" id="closeAddContact" class="overlay-close" aria-label="Close">×</button>
           <div class="add-contact-overlay-right">
-            <div class="avatar"><img src="../assets/svg/unknown_person.svg" alt=""></div>
+            <div class="avatar"><img src="../assets/svg/unknown_person.svg" alt="" /></div>
             <div class="add-contact-overlay-form">
               <div class="field">
-                <input
-                  id="contactName"
-                  name="name"
-                  class="has-icon icon-user"
-                  placeholder="Name"
-                  required
-                />
-                <small
-                  id="contactNameError"
-                  class="field-error"
-                  style="visibility: hidden"
-                >
-                  Please enter first & last name
-                </small>
+                <input id="contactName" name="name" class="has-icon icon-user" placeholder="Name" required />
+                <small id="contactNameError" class="field-error" style="visibility: hidden"> Please enter first & last name </small>
               </div>
 
               <div class="field">
-                <input
-                  id="contactEmail"
-                  name="email"
-                  class="has-icon icon-mail"
-                  type="email"
-                  placeholder="Email"
-                  required
-                />
-                <small
-                  id="contactEmailError"
-                  class="field-error"
-                  style="visibility: hidden"
-                >
-                  Please enter a valid email
-                </small>
+                <input id="contactEmail" name="email" class="has-icon icon-mail" type="email" placeholder="Email" required />
+                <small id="contactEmailError" class="field-error" style="visibility: hidden"> Please enter a valid email </small>
               </div>
 
               <div class="field">
                 <input id="contactPhone" name="phone" placeholder="Phone" class="has-icon icon-phone" />
-                <small
-                  id="contactPhoneError"
-                  class="field-error"
-                  style="visibility: hidden"
-                >
-                  Use digits, spaces, +, - or ()
-                </small>
+                <small id="contactPhoneError" class="field-error" style="visibility: hidden"> Use digits, spaces, +, - or () </small>
               </div>
 
               <div class="overlay-actions">
                 <button type="button" class="btn-white" id="cancelAdd">
                   Cancel
-                  <img src="../assets/svg/cancel_black.svg" alt="">
+                  <img src="../assets/svg/cancel_black.svg" alt="" />
                 </button>
                 <button type="submit" class="btn-dark">Create contact <img src="../assets/svg/check.svg" alt="" /></button>
               </div>
