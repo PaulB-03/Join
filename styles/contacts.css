@@ -237,7 +237,7 @@
   pointer-events: none;
   transition: opacity 0.2s ease;
 }
-
+/* ----------------------von arne hinzugefügt --------------------------- */
 .overlay.open {
   opacity: 1;
   visibility: visible;
@@ -246,8 +246,6 @@
 
 .overlay-panel {
   position: relative;
-  width: min(980px, 94vw);
-  height: min(560px, 90vh);
   background: #fff;
   border-radius: 24px;
   overflow: hidden;
@@ -262,6 +260,8 @@
 .overlay.open .overlay-panel {
   transform: translateX(0);
 }
+
+/* ------------------------------------------------------------------ */
 
 .overlay-left {
   background: #203047;
