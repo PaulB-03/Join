@@ -1,4 +1,4 @@
-
+let baseURL = 'https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/';
 // all the colors for the contact profile pictures
 const COLOR_VARS = [
   "--contact-bg-blue",
@@ -69,5 +69,274 @@ async function loadContactsInAddTask() {
         }
     } catch (error) {
         console.error("Could not load contacts: ", error);
+    }
+}
+
+function renderContacts(contactNames, contacts) {
+    const contactList = document.getElementById("dropdown-list-contacts");
+    contactList.innerHTML = "";
+
+    contactNames.forEach((name) => {
+        const contactEntry = Object.values(contacts).find(c => c.name === name);
+        if (!contactEntry) return;
+
+        const li = document.createElement("li");
+        li.classList.add("dropdown-item-contact");
+
+        const label = document.createElement("label");
+        label.classList.add("dropdown-checkbox");
+
+        const initials = contactEntry.name.split(" ").map(w => w[0]).join("").toUpperCase();
+        const initialsSpan = document.createElement("span");
+        initialsSpan.textContent = initials;
+        initialsSpan.classList.add("contact-initial");
+        initialsSpan.style.backgroundColor = colorForName(contactEntry.name);
+
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = contactEntry.name;
+        nameSpan.classList.add("contact-name");
+
+        const checkboxImg = document.createElement("img");
+        checkboxImg.src = assignedContacts.includes(contactEntry.name)
+            ? "../assets/svg/checked.svg"
+            : "../assets/svg/check_button.svg";
+        checkboxImg.classList.add("checkbox-svg");
+
+        label.addEventListener("click", (e) => {
+            e.stopPropagation();
+
+            const isChecked = checkboxImg.src.includes("checked.svg");
+            if (isChecked) {
+                checkboxImg.src = "../assets/svg/check_button.svg";
+            } else {
+                checkboxImg.src = "../assets/svg/checked.svg";
+            }
+
+            toggleContact(contactEntry.name);
+        });
+
+        label.appendChild(initialsSpan);
+        label.appendChild(nameSpan);
+        label.appendChild(checkboxImg);
+
+        li.appendChild(label);
+        contactList.appendChild(li);
+    });
+}
+
+let subtasksContainer = null;
+let subtasksOriginalStyles = {};
+
+function toggleCategoryDropdown() {
+    const dropdown = document.getElementById("assignedToDropdownCategory");
+    dropdown.classList.toggle("open");
+
+    if (!subtasksContainer) {
+        subtasksContainer = document.getElementById("subtasks");
+        subtasksOriginalStyles = {
+            marginTop: subtasksContainer.style.marginTop || "0px",
+            paddingBottom: subtasksContainer.style.paddingBottom || "50px"
+        };
+    }
+    if (dropdown.classList.contains("open")) {
+        subtasksContainer.style.marginTop = "80px";
+        subtasksContainer.style.paddingBottom = "50px";
+    } else {
+        subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
+        subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+    }
+}
+
+function toggleContact(name) {
+    if (assignedContacts.includes(name)) {
+        assignedContacts = assignedContacts.filter(c => c !== name);
+    } else {
+        assignedContacts.push(name);
+    }
+
+    updateDropdownText();
+    renderAssignedContacts();
+    updateDropdownHighlight();
+}
+
+function renderAssignedContacts() {
+    let initialsDiv = document.getElementById("assignedToInitials");
+    initialsDiv.innerHTML = "";
+
+    const total = assignedContacts.length;
+    if (total === 0) {
+        initialsDiv.style.display = "none";
+        return;
+    }
+
+    initialsDiv.style.display = "flex";
+
+    const maxVisible = 3;
+    const visibleCount = Math.min(total, maxVisible);
+
+    for (let i = 0; i < visibleCount; i++) {
+        let contactName = assignedContacts[i];
+        let initials = contactName.split(" ").map(w => w[0]).join("").toUpperCase();
+        let span = document.createElement("span");
+        span.textContent = initials;
+        span.classList.add("contact-initial");
+        span.style.backgroundColor = colorForName(contactName);
+        initialsDiv.appendChild(span);
+    }
+
+    if (total > maxVisible) {
+        let moreCount = total - maxVisible;
+        let moreSpan = document.createElement("span");
+        moreSpan.textContent = `+${moreCount}`;
+        moreSpan.classList.add("contact-initial", "more-count");
+        moreSpan.style.backgroundColor = "#999";
+        initialsDiv.appendChild(moreSpan);
+    }
+}
+
+function updateDropdownHighlight() {
+    const dropDown = document.getElementById('dropdown-list-contacts');
+    const labels = dropDown.querySelectorAll("label.dropdown-checkbox");
+
+    labels.forEach(label => {
+        const name = label.querySelector("span.contact-name").textContent.trim();
+        const checkboxImg = label.querySelector("img.checkbox-svg");
+        if (assignedContacts.includes(name)) {
+            checkboxImg.src = "../assets/svg/checked.svg";
+            label.style.color = "lightgrey";
+        } else {
+            checkboxImg.src = "../assets/svg/check_button.svg";
+            label.style.color = "";
+        }
+    });
+}
+
+function updateDropdownText() {
+    const span = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
+
+    if (!span) return;
+
+    if (assignedContacts.length === 0) {
+        span.textContent = "Select contacts";
+        return;
+    }
+
+    let displayed = [];
+    for (let i = 0; i < assignedContacts.length; i++) {
+        displayed.push(assignedContacts[i]);
+        span.textContent = displayed.join(", ");
+        if (span.scrollWidth > span.clientWidth) {
+            displayed.pop();
+            break;
+        }
+    }
+    span.textContent = displayed.join(", ");
+}
+
+function dropdownFunction(arrow, dropDown, select, items, onSelect) {
+    let isClicked = false;
+
+    select.addEventListener('click', (event) => {
+        event.stopPropagation();
+        arrow.style.transform = isClicked ? "translateY(-50%) rotate(0deg)" : "translateY(-50%) rotate(180deg)";
+        dropDown.style.display = isClicked ? 'none' : 'block';
+        isClicked = !isClicked;
+    });
+
+    Array.from(items).forEach(item => {
+        item.addEventListener('click', (event) => {
+            event.stopPropagation();
+            dropDown.style.display = 'none';
+            arrow.style.transform = "translateY(-50%) rotate(0deg)";
+            isClicked = false;
+
+            if (onSelect) onSelect(item);
+        });
+    });
+
+    document.body.addEventListener('click', () => {
+        if (isClicked) {
+            arrow.style.transform = "translateY(-50%) rotate(0deg)";
+            dropDown.style.display = 'none';
+            isClicked = false;
+        }
+    });
+}
+
+function saveSelectedCategory(index) {
+    const categories = ['Userstory', 'Technical Task'];
+    const placeholder = document.getElementById('categoryPlaceholder');
+    const dropdown = document.getElementById('assignedToDropdownCategory');
+    const dropdownList = document.getElementById('dropdown-list-category');
+    
+    placeholder.textContent = categories[index];
+    dropdown.classList.add('selected-red');
+    dropdownList.style.display = 'none';
+    dropdown.classList.remove('active');
+}
+
+async function initContactsDropdown() {
+    let select = document.getElementById('assignedToDropdownContacts');
+    let arrow = document.querySelector('#dropdown-arrow-contacts');
+    let dropDown = document.getElementById('dropdown-list-contacts');
+    let response = await fetch(baseURL + "contacts.json");
+    let contacts = await response.json();
+
+    allContacts = Object.values(contacts).map(contact => contact.name);
+    dropDown.innerHTML = "";
+    allContacts.forEach(name => {
+        let li = document.createElement("li");
+        li.classList.add("dropdown-item-contact");
+        let isChecked = assignedContacts.includes(name) ? "checked" : "";
+        li.innerHTML = `
+            <label class="custom-checkbox" style="display: block; padding: 5px; cursor: pointer; ${isChecked ? 'color: lightgrey;' : ''}">
+                ${name}
+                <input type="checkbox" onchange="toggleContact('${name}'); updateDropdownBackground('assignedToDropdownContacts');" ${isChecked}>
+                <span style="display:none"></span>
+            </label>
+            `;
+        dropDown.appendChild(li);
+    });
+
+    let items = document.getElementsByClassName("dropdown-item-contact");
+    dropdownFunction(arrow, dropDown, select, items, null);
+}
+
+function updateDropdownBackground(dropdownId) {
+  const dropdown = document.getElementById(dropdownId);
+  const checked = dropdown.querySelectorAll("input[type='checkbox']:checked").length > 0;
+
+  if (checked) {
+    dropdown.classList.add("selected");
+  } else {
+    dropdown.classList.remove("selected");
+  }
+}
+
+function initCategoryDropdown() {
+    let select2 = document.getElementById('assignedToDropdownCategory');
+    let arrow2 = document.querySelector('#dropdown-arrow-subtasks');
+    let dropDown2 = document.getElementById('dropdown-list-category');
+    let dropDownItem2 = document.getElementsByClassName('dropdown-item-category');
+
+    dropdownFunction(arrow2, dropDown2, select2, dropDownItem2, (item) => {
+        let name = item.textContent.trim();
+        selectedCategory = name;
+
+        document.getElementById("categoryPlaceholder").textContent = name;
+    });
+}
+
+async function getTasks() {
+    try {
+        let response = await fetch(baseURL + "tasks.json");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Could not get tasks: ", error);
+        return null;
     }
 }

@@ -5,6 +5,7 @@ const STATE_TO_COL = Object.fromEntries(Object.entries(COL_TO_STATE).map(([c, s]
 
 let dragged = null;
 let placeholder = null;
+let tasks = [];
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -269,6 +270,34 @@ function onEditTask(id, task, overlay) {
   }
 }
 
+function fillTaskFormFromExisting(id, task) {
+  byId("titleInput").value = task.title || "";
+  byId("descriptionInput").value = task.description || "";
+  byId("date").value = task.date || "";
+
+  resetPrioSelection();
+  if (task.priority) setPrioColor(task.priority);
+
+  assignedContacts = task.assignedContacts ? [...task.assignedContacts] : [];
+  renderAssignedInitials();
+
+  fillSubtasks(task.subtasks || []);
+
+  selectedCategory = task.category || "Task";
+  selectedState = task.state || "toDo";
+  assignedContacts = task.assignedContacts ? [...task.assignedContacts] : [];
+
+  renderAssignedInitials();
+  fillSubtasks(task.subtasks || []);
+  setOverlayButtonText(true);
+  toggleClearButton(true);
+  byId("add").setAttribute("data-editing-id", id);
+}
+
+function resetPrioSelection() {
+  document.querySelectorAll(".prioGrade").forEach(el => el.classList.remove("active"));
+}
+
 function showOverlay(overlay) {
   overlay.classList.add("open");
   overlay.setAttribute("aria-hidden", "false");
@@ -288,11 +317,21 @@ function onEscCloseOnce(e) {
 }
 
 function bindOverlayButtons() {
-  byId("openAddTask")?.addEventListener("click", openTaskOverlay);
-  document.querySelectorAll(".add-card-btn").forEach((b) => b.addEventListener("click", openTaskOverlay));
+  byId("openAddTask")?.addEventListener("click", () => {
+    clearTask();
+    openTaskOverlay();
+  });
+  document.querySelectorAll(".add-card-btn").forEach((b) =>
+    b.addEventListener("click", () => {
+      clearTask();
+      openTaskOverlay();
+    })
+  );
   byId("closeTaskOverlay")?.addEventListener("click", closeTaskOverlay);
   byId("cancelTask")?.addEventListener("click", closeTaskOverlay);
-  byId("taskOverlay")?.addEventListener("click", (e) => e.target.id === "taskOverlay" && closeTaskOverlay());
+  byId("taskOverlay")?.addEventListener("click", (e) =>
+    e.target.id === "taskOverlay" && closeTaskOverlay()
+  );
   document.addEventListener("keydown", (e) => e.key === "Escape" && closeTaskOverlay());
 }
 
@@ -383,3 +422,157 @@ document.addEventListener("change", async (e) => {
   }
 });
 
+function fillAssignedContacts(contacts) {
+  const initialsWrapper = byId("assignedToInitials");
+  initialsWrapper.innerHTML = "";
+  if (contacts.length) {
+    initialsWrapper.style.display = "flex";
+    contacts.forEach(c => {
+      const div = document.createElement("div");
+      div.className = "av";
+      div.style.background = color(contacts.indexOf(c));
+      div.textContent = initials(c);
+      initialsWrapper.appendChild(div);
+    });
+  } else {
+    initialsWrapper.style.display = "none";
+  }
+}
+
+function fillSubtasks(subtasks) {
+  const wrapper = document.querySelector(".addedSubtaskWrapper");
+  wrapper.innerHTML = "";
+  subtasks.forEach((s, i) => {
+    const txt = typeof s === "string" ? s : s.text;
+    const done = typeof s === "object" ? !!s.done : false;
+    const div = document.createElement("div");
+    div.className = "subtask";
+    div.innerHTML = `
+      <input type="checkbox" ${done ? "checked" : ""} disabled />
+      <span>${escapeHtml(txt)}</span>
+    `;
+    wrapper.appendChild(div);
+  });
+}
+
+async function updateTask(id) {
+  if (!id) {
+    if (typeof window.createTask === "function") {
+      window.createTask();
+    }
+    return;
+  }
+
+  const updatedTask = {
+    title: byId("titleInput").value.trim(),
+    description: byId("descriptionInput").value.trim(),
+    date: byId("date").value,
+    priority: selectedPrio,
+    assignedContacts: assignedContacts,
+    subtasks: getSubtasksFromForm(),
+    state: selectedState,
+    category: selectedCategory
+  };
+
+  try {
+    await fetch(`${RTDB_BASE}tasks/${id}.json`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedTask)
+    });
+
+    closeOverlay(document.querySelector(".overlay"));
+    await renderAllTasks();
+
+  } catch (err) {
+    console.error("Error updating task:", err);
+    alert("Failed to update task. Please try again.");
+  }
+}
+
+function renderUpdatedTask(id, task) {
+  const oldCard = document.querySelector(`.task-card[data-id="${id}"]`);
+  if (oldCard) oldCard.remove();
+  const columnId = task.state === "toDo" ? "todo"
+                 : task.state === "inProgress" ? "inprogress"
+                 : "done";
+  const column = document.getElementById(columnId);
+  if (!column) return;
+
+  const card = document.createElement("div");
+  card.className = "task-card";
+  card.dataset.id = id;
+  card.innerHTML = `
+    <h3>${escapeHtml(task.title)}</h3>
+    <p>${escapeHtml(task.description)}</p>
+    <small>${task.date}</small>
+  `;
+  column.appendChild(card);
+}
+
+function renderAssignedInitials() {
+  const wrapper = document.getElementById("assignedToInitials");
+  wrapper.innerHTML = "";
+  if (assignedContacts.length > 0) {
+    wrapper.style.display = "flex";
+    assignedContacts.forEach((c, i) => {
+      const div = document.createElement("div");
+      div.className = "av";
+      div.style.background = color(i);
+      div.textContent = initials(c);
+      wrapper.appendChild(div);
+    });
+  } else {
+    wrapper.style.display = "none";
+  }
+}
+
+function toggleContact(name) {
+  if (!assignedContacts.includes(name)) {
+    assignedContacts.push(name);
+  } else {
+    assignedContacts = assignedContacts.filter(c => c !== name);
+  }
+  renderAssignedInitials();
+}
+
+function setOverlayButtonText(isEditing) {
+  const btn = byId("add");
+  if (!btn) return;
+  btn.textContent = "";
+
+  const text = document.createElement("p");
+  text.textContent = isEditing ? "OK" : "Create";
+
+  const img = document.createElement("img");
+  img.src = isEditing ? "../assets/svg/check.svg" : "../assets/svg/check.svg";
+  img.className = isEditing ? "createTaskCheck" : "createTaskCheck";
+  img.alt = "";
+
+  btn.appendChild(text);
+  btn.appendChild(img);
+}
+
+function toggleClearButton(isEditing) {
+  const clearBtn = byId("clear");
+  if (!clearBtn) return;
+  clearBtn.style.display = isEditing ? "none" : "inline-flex";
+}
+
+byId("openAddTask")?.addEventListener("click", () => {
+  clearTask();
+  openTaskOverlay();
+  setOverlayButtonText(false);
+  toggleClearButton(false);
+});
+
+async function handleAddOrEditTask(event) {
+  if (event) event.preventDefault();
+  const editingId = byId("add").getAttribute("data-editing-id");
+  if (editingId) {
+    await updateTask(editingId);
+    byId("add").removeAttribute("data-editing-id");
+  } else {
+    await createTask();
+  }
+}

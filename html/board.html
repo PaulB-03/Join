@@ -16,7 +16,7 @@
     <script src="../script.js"></script>
     <script src="../scripts/boardSearchbar.js"></script>
     <script src="../scripts/standardFunctions.js"></script>
-    
+    <script src="../scripts/subTask.js"></script>   
   </head>
 
   <body onload="sidebarHeaderInit()">
@@ -162,7 +162,7 @@
             <div class="addTaskWrapper">
               <div>
                 <div class="inputFlexbox">
-                  <span id="requiredHeaders">Title</span>
+                  <span id="requiredHeaders">Title<img src="../assets/svg/required.svg" alt="" id="required" required /></span>
                   <input class="title" id="titleInput" type="text" placeholder="Enter a title" />
                 </div>
                 <div class="inputFlexbox">
@@ -170,9 +170,16 @@
                   <textarea rows="5" cols="50" class="title" id="descriptionInput" type="text" placeholder="Enter description" required></textarea>
                 </div>
                 <div class="inputFlexbox">
-                  <span id="requiredHeaders">Due date</span>
+                  <span id="requiredHeaders">Due date <img src="../assets/svg/required.svg" alt="" id="required" /></span>
                   <input class="title" id="date" type="date" tabindex="0" required />
                 </div>
+                <span id="requiredHeaders" class="textrequired">
+                  <img id="required" src="../assets/svg/required.svg" alt="" />
+                  <p>This field is required</p></span
+                >
+              </div>
+              <div class="divider"></div>
+              <div>
                 <div class="inputFlexbox">
                   <span>Priority</span>
                   <div class="prioDivsWrapper">
@@ -192,6 +199,31 @@
                   </div>
                   <div id="assignedToInitials" style="display: none"></div>
                 </div>
+                <div class="inputFlexbox" id="category">
+                  <span id="requiredHeaders">Category <img src="../assets/svg/required.svg" alt="" id="required" /></span>
+                  <div id="assignedToDropdownCategory" class="title" tabindex="0" onclick="toggleCategoryDropdown()">
+                    <div class="dropdown-selected" id="input-category">
+                      <span id="categoryPlaceholder">Select task category</span>
+                      <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" />
+                    </div>
+                    <ul id="dropdown-list-category">
+                      <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
+                        <label for="checkbox-1" class="custom-checkbox">
+                          Userstory
+                          <input type="checkbox" required />
+                          <span style="display: none"></span>
+                        </label>
+                      </li>
+                      <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
+                        <label for="checkbox-2" class="custom-checkbox">
+                          Technical Task
+                          <input type="checkbox" required />
+                          <span style="display: none"></span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
                 <div class="inputFlexbox" id="subtasks">
                   <span>Subtasks</span>
                   <div class="dropdown-subtasks" tabindex="0">
@@ -205,8 +237,12 @@
                   <div class="addedSubtaskWrapper"></div>
                 </div>
                 <div class="addOrClear">
-                  <button id="add" class="addOrClearBtn" type="button" onclick="createTask(event)">
-                    <p>OK</p>
+                  <div id="clear" class="addOrClearBtn" onclick="clearTask()">
+                    <p>Clear</p>
+                    <img src="../assets/svg/cancel.svg" alt="" />
+                  </div>
+                  <button id="add" class="addOrClearBtn" type="button" onclick="handleAddOrEditTask(event)">
+                    <p>Create task</p>
                     <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
                   </button>
                 </div>
