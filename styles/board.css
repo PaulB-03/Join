@@ -855,4 +855,16 @@ body.modal-open {
 
 #taskOverlay .overlay-panel {
   transform: none !important;
+  display:block;
+  width: 550px;
+  overflow-y: auto;
+}
+
+#taskOverlay.edit-mode .divider,
+#taskOverlay.edit-mode .textrequired,
+#taskOverlay.edit-mode #category {
+  display: none;
+}
+#taskOverlay.edit-mode .overlay-panel::-webkit-scrollbar {
+  display: none;
 }

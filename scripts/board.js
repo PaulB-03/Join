@@ -263,10 +263,25 @@ async function onDeleteTask(id, overlay) {
 }
 
 function onEditTask(id, task, overlay) {
+  // close the task detail overlay
   closeOverlay(overlay);
+
   if (typeof openTaskOverlay === "function") {
     openTaskOverlay();
-    typeof fillTaskFormFromExisting === "function" && fillTaskFormFromExisting(id, task);
+
+    // add edit-mode class to hide divider/required/category
+    const formOverlay = byId("taskOverlay");
+    formOverlay.classList.add("edit-mode");
+
+    // attach editing id to button + update button text
+    const addButton = byId("add");
+    addButton.setAttribute("data-editing-id", id);
+    addButton.querySelector("p").textContent = "Save changes";
+
+    // fill form fields
+    if (typeof fillTaskFormFromExisting === "function") {
+      fillTaskFormFromExisting(id, task);
+    }
   }
 }
 
@@ -338,8 +353,17 @@ function bindOverlayButtons() {
 function openTaskOverlay() {
   const ov = byId("taskOverlay");
   if (!ov) return;
+
+  ov.style.display = "flex";
   ov.classList.add("open");
+  ov.classList.remove("edit-mode");
+
   document.body.classList.add("modal-open");
+
+  const addButton = byId("add");
+  addButton.removeAttribute("data-editing-id");
+  addButton.querySelector("p").textContent = "Create task";
+  clearTask();
   initTaskFormEnhancements();
 }
 
@@ -568,10 +592,15 @@ byId("openAddTask")?.addEventListener("click", () => {
 
 async function handleAddOrEditTask(event) {
   if (event) event.preventDefault();
-  const editingId = byId("add").getAttribute("data-editing-id");
+  const addButton = byId("add");
+  const editingId = addButton.getAttribute("data-editing-id");
+
   if (editingId) {
     await updateTask(editingId);
-    byId("add").removeAttribute("data-editing-id");
+
+    addButton.removeAttribute("data-editing-id");
+    addButton.querySelector("p").textContent = "Create task";
+    byId("taskOverlay").classList.remove("edit-mode");
   } else {
     await createTask();
   }
