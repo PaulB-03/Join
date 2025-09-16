@@ -208,6 +208,20 @@ a.btn:active {
   justify-content: space-between;
   margin-top: 12px;
 }
+.av {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  border: 1px solid white;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
 .avatars {
   display: flex;
   align-items: center;
@@ -856,7 +870,7 @@ body.modal-open {
 #taskOverlay .overlay-panel {
   transform: none !important;
   display:block;
-  width: 550px;
+  width: 530px;
   overflow-y: auto;
 }
 
@@ -865,6 +879,19 @@ body.modal-open {
 #taskOverlay.edit-mode #category {
   display: none;
 }
+#taskOverlay.edit-mode textarea:valid,
+#taskOverlay.edit-mode input {
+  background-color: white;
+}
+
 #taskOverlay.edit-mode .overlay-panel::-webkit-scrollbar {
+  display: none;
+}
+
+#taskOverlay .overlay-panel {
+  overflow-y: auto;
+}
+
+#taskOverlay .overlay-panel::-webkit-scrollbar {
   display: none;
 }

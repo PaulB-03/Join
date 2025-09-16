@@ -263,22 +263,18 @@ async function onDeleteTask(id, overlay) {
 }
 
 function onEditTask(id, task, overlay) {
-  // close the task detail overlay
   closeOverlay(overlay);
 
   if (typeof openTaskOverlay === "function") {
     openTaskOverlay();
 
-    // add edit-mode class to hide divider/required/category
     const formOverlay = byId("taskOverlay");
     formOverlay.classList.add("edit-mode");
 
-    // attach editing id to button + update button text
     const addButton = byId("add");
     addButton.setAttribute("data-editing-id", id);
     addButton.querySelector("p").textContent = "Save changes";
 
-    // fill form fields
     if (typeof fillTaskFormFromExisting === "function") {
       fillTaskFormFromExisting(id, task);
     }
