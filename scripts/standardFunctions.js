@@ -153,7 +153,6 @@ function toggleContact(name) {
     } else {
         assignedContacts.push(name);
     }
-
     updateDropdownText();
     renderAssignedContacts();
     updateDropdownHighlight();
@@ -339,4 +338,17 @@ async function getTasks() {
         console.error("Could not get tasks: ", error);
         return null;
     }
+}
+
+function saveSelectedCategory(index) {
+    const dropdown = document.getElementById("assignedToDropdownCategory");
+    const categoryList = document.getElementById("dropdown-list-category");
+    dropdown.classList.remove("open");
+    if (subtasksContainer) {
+        subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
+        subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+    }
+    const selectedText = categoryList.children[index].querySelector("label").textContent.trim();
+    document.getElementById("categoryPlaceholder").textContent = selectedText;
+    dropdown.classList.add("selected");
 }

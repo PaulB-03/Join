@@ -547,15 +547,6 @@ function renderAssignedInitials() {
   }
 }
 
-function toggleContact(name) {
-  if (!assignedContacts.includes(name)) {
-    assignedContacts.push(name);
-  } else {
-    assignedContacts = assignedContacts.filter(c => c !== name);
-  }
-  renderAssignedInitials();
-}
-
 function setOverlayButtonText(isEditing) {
   const btn = byId("add");
   if (!btn) return;
@@ -601,3 +592,14 @@ async function handleAddOrEditTask(event) {
     await createTask();
   }
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  const dateInput = document.getElementById('date');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.min = today;
+  dateInput.addEventListener('click', () => {
+    if (typeof dateInput.showPicker === 'function') {
+      dateInput.showPicker();
+    }
+  });
+});

@@ -269,7 +269,6 @@ function removePrioImgColor(prioRef, prioImg) {
 }
 
 async function createTask() {
-
     let title = document.getElementById('titleInput');
     let description = document.getElementById('descriptionInput');
     let date = document.getElementById('date');
@@ -483,19 +482,6 @@ function clearTask() {
         loadContacts();
     }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("contactSearch").addEventListener("input", function () {
-        const query = this.value.toLowerCase();
-
-        const filteredContacts = allContacts.filter(name => name.toLowerCase().includes(query));
-
-        if (window.loadedContacts) {
-            renderContacts(filteredContacts, window.loadedContacts);
-        }
-    });
-    loadContacts();
-});
 
 async function loadContacts() {
     loadContactsInAddTask();
