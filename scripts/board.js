@@ -315,8 +315,10 @@ function showOverlay(overlay) {
 }
 
 function closeOverlay(overlay) {
+  if (!overlay) return;
   overlay.classList.remove("open");
   overlay.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
   document.removeEventListener("keydown", onEscCloseOnce);
 }
 
@@ -462,16 +464,17 @@ function fillAssignedContacts(contacts) {
 function fillSubtasks(subtasks) {
   const wrapper = document.querySelector(".addedSubtaskWrapper");
   wrapper.innerHTML = "";
-  subtasks.forEach((s, i) => {
-    const txt = typeof s === "string" ? s : s.text;
+
+  subtasks.forEach((s) => {
+    let txt = typeof s === "string" ? s : s.text;
+
+    // Remove leading bullet in edit mode
+    if (document.getElementById("taskOverlay").classList.contains("edit-mode")) {
+      txt = txt.replace(/^•\s*/, "");
+    }
+
     const done = typeof s === "object" ? !!s.done : false;
-    const div = document.createElement("div");
-    div.className = "subtask";
-    div.innerHTML = `
-      <input type="checkbox" ${done ? "checked" : ""} disabled />
-      <span>${escapeHtml(txt)}</span>
-    `;
-    wrapper.appendChild(div);
+    wrapper.appendChild(createSubtaskElement(txt, done));
   });
 }
 
