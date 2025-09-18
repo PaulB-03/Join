@@ -1,5 +1,6 @@
 function initForSummary() {
   sidebarHeaderInit();
+  boxListener()
   dataForSummary();
 }
 function dataForSummary() {
@@ -82,7 +83,6 @@ function filterNextUpcomingDeadline(datesArray, responseToJson) {
   let nextUpcomingDeadlineArray = datesArray.filter(verifyTheRightDate);
   let sortedArray = nextUpcomingDeadlineArray.sort();
   let nextUpcomingDeadline = sortedArray[0]
-  console.log(sortedArray[0]);
 
   getDateFromDataBankAndChangeFormat(nextUpcomingDeadline, responseToJson);
 }
@@ -148,12 +148,13 @@ function calcAllTasksInBoard(progressCount, toDoCount, doneCount, awaitFeedbackC
 
   return allTaskCount;
 }
-
-const summaryBoxes = document.getElementsByClassName("summaryBox");
-for (let index = 0; index < summaryBoxes.length; index++) {
-  summaryBoxes[index].addEventListener("click", () => {
-    window.location.href = "../html/board.html";
-  });
+function boxListener() {
+  const summaryBoxes = document.getElementsByClassName("summaryBox");
+  for (let index = 0; index < summaryBoxes.length; index++) {
+    summaryBoxes[index].addEventListener("click", () => {
+      window.location.href = "../html/board.html";
+    });
+  }
 }
 
 async function postData() {
