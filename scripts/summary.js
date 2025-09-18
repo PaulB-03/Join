@@ -10,7 +10,6 @@ function dataForSummary() {
 
 function getCurrentTime() {
   const now = new Date();
-  const day = now.getDay();
   const hours = now.getHours();
   const minutes = now.getMinutes();
 
@@ -80,17 +79,34 @@ function countForSummary(responseToJson) {
 }
 
 function filterNextUpcomingDeadline(datesArray, responseToJson) {
-  datesArray.sort();
-  let nextUpcomingDeadline = datesArray[0];
+  let nextUpcomingDeadlineArray = datesArray.filter(verifyTheRightDate);
+  let sortedArray = nextUpcomingDeadlineArray.sort();
+  let nextUpcomingDeadline = sortedArray[0]
+  console.log(sortedArray[0]);
 
   getDateFromDataBankAndChangeFormat(nextUpcomingDeadline, responseToJson);
+}
+
+function verifyTheRightDate(date) {
+  const now = new Date();
+  const nowDay = now.getDate();
+  const nowYear = now.getFullYear();
+  let nowMonth = now.getMonth() + 1;
+  let formatedDate
+
+  if (nowMonth < 10) {
+    formatedDate = nowYear + "-" + "0" + nowMonth + "-" + nowDay
+  } else {
+    formatedDate = nowYear + "-" + nowMonth + "-" + nowDay
+  }
+  return date >= formatedDate
 }
 
 function getDateFromDataBankAndChangeFormat(deadLineDate) {
   let date = new Date(deadLineDate);
   let calculatedMonth = date.getMonth();
   let year = date.getFullYear();
-  let day = date.getDay();
+  let day = date.getDate();
   let newFormat = responseToJson.months[calculatedMonth] + " " + day + ", " + year;
   changeInnerHtmlForDeadline(newFormat);
 }
