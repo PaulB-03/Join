@@ -44,17 +44,15 @@ function countForSummary(responseToJson) {
   let toDoCount = 0;
   let doneCount = 0;
   let awaitFeedbackCount = 0;
-  let urgencyCount = 0;
   let datesArray = [];
   let objectToArray = Object.entries(responseToJson.tasks);
 
   for (let index = 0; index < objectToArray.length; index++) {
-    let status = objectToArray[index][1].state;
-    let urgency = objectToArray[index][1].priority;
+    let taskState = objectToArray[index][1].state;
 
-    datesArray.push(objectToArray[index][1].date);
+    checkSate(datesArray, taskState, index, objectToArray)
 
-    switch (status) {
+    switch (taskState) {
       case "in progress":
         progressCount++;
         break;
@@ -68,23 +66,45 @@ function countForSummary(responseToJson) {
         awaitFeedbackCount++;
         break;
     }
-    switch (urgency) {
-      case "urgent":
-        urgencyCount++;
-        tasks = responseToJson.tasks;
-        break;
-    }
   }
   filterNextUpcomingDeadline(datesArray, responseToJson);
-  changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount, urgencyCount);
+  changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount);
+}
+
+function checkSate(datesArray, taskState, index, objectToArray) {
+  if ("done" == taskState) {
+    if (datesArray.length > 0) {
+      return
+    }
+    return datesArray.push("Nothing to worry")
+  } else {
+    datesArray.push(objectToArray[index][1].date);
+    return datesArray
+  }
 }
 
 function filterNextUpcomingDeadline(datesArray, responseToJson) {
   let nextUpcomingDeadlineArray = datesArray.filter(verifyTheRightDate);
   let sortedArray = nextUpcomingDeadlineArray.sort();
   let nextUpcomingDeadline = sortedArray[0]
-
+  countNextDeadlineDate(sortedArray)
   getDateFromDataBankAndChangeFormat(nextUpcomingDeadline, responseToJson);
+}
+
+function countNextDeadlineDate(sortedArray) {
+  let deadLineCount = 0
+  for (let index = 0; index < sortedArray.length; index++) {
+    if (sortedArray[0] == sortedArray[index] && sortedArray[0] !== "Nothing to worry") {
+      deadLineCount++
+    }
+  }
+  changeInnerHTMlOfUrgencyBox(deadLineCount)
+}
+
+function changeInnerHTMlOfUrgencyBox(deadLineCount) {
+  let urgencyCountHTml = document.getElementById("urgencyCountBox");
+  urgencyCountHTml.innerHTML = "";
+  urgencyCountHTml.innerHTML = deadLineCount;
 }
 
 function verifyTheRightDate(date) {
@@ -103,11 +123,16 @@ function verifyTheRightDate(date) {
 }
 
 function getDateFromDataBankAndChangeFormat(deadLineDate) {
-  let date = new Date(deadLineDate);
-  let calculatedMonth = date.getMonth();
-  let year = date.getFullYear();
-  let day = date.getDate();
-  let newFormat = responseToJson.months[calculatedMonth] + " " + day + ", " + year;
+  let newFormat
+  if (deadLineDate !== "Nothing to worry") {
+    let date = new Date(deadLineDate);
+    let calculatedMonth = date.getMonth();
+    let year = date.getFullYear();
+    let day = date.getDate();
+    newFormat = responseToJson.months[calculatedMonth] + " " + day + ", " + year;
+  } else {
+    newFormat = deadLineDate
+  }
   changeInnerHtmlForDeadline(newFormat);
 }
 
@@ -133,10 +158,6 @@ function changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeed
   let awaitFreedbackCountHTml = document.getElementById("awaitFreedbackCountBox");
   awaitFreedbackCountHTml.innerHTML = "";
   awaitFreedbackCountHTml.innerHTML = awaitFeedbackCount;
-
-  let urgencyCountHTml = document.getElementById("urgencyCountBox");
-  urgencyCountHTml.innerHTML = "";
-  urgencyCountHTml.innerHTML = urgencyCount;
 
   let allTaskCount = document.getElementById("allTaskCountBox");
   allTaskCount.innerHTML = "";
