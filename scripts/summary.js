@@ -40,57 +40,104 @@ async function getDataForTasks() {
 }
 
 function countForSummary(responseToJson) {
-  let progressCount = 0;
-  let toDoCount = 0;
-  let doneCount = 0;
-  let awaitFeedbackCount = 0;
-  let datesArray = [];
+  let countStatesObj = {
+    "progressCount": 0,
+    "toDoCount": 0,
+    "doneCount": 0,
+    "awaitFeedbackCount": 0,
+  }
+  let datesObject = {
+    "dates": [],
+    "prioritys": [],
+  };
   let objectToArray = Object.entries(responseToJson.tasks);
 
   for (let index = 0; index < objectToArray.length; index++) {
     let taskState = objectToArray[index][1].state;
 
-    checkState(datesArray, taskState, index, objectToArray)
+    checkState(datesObject, taskState, index, objectToArray)
 
     switch (taskState) {
       case "in progress":
-        progressCount++;
+        countStatesObj.progressCount++;
         break;
       case "toDo":
-        toDoCount++;
+        countStatesObj.toDoCount++;
         break;
       case "done":
-        doneCount++;
+        countStatesObj.doneCount++;
         break;
       case "await feedback":
-        awaitFeedbackCount++;
+        countStatesObj.awaitFeedbackCount++;
         break;
     }
   }
-  deadLineCountNull(datesArray)
-  filterNextUpcomingDeadline(datesArray, responseToJson);
-  changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount);
+  getHighestValue(datesObject)
+  stringIfNoDateFound(datesObject)
+  filterNextUpcomingDeadline(datesObject, responseToJson);
+  changeInnerHtmlOfSummary(countStatesObj);
 }
 
-function deadLineCountNull(datesArray) {
-  if (datesArray.length <= 1) {
+function stringIfNoDateFound(datesObject) {
+  if (datesObject.dates.length <= 1) {
     return datesArray.push("Nothing to worry")
   }
 }
 
-function checkState(datesArray, taskState, index, objectToArray) {
-  if ("done" == taskState) {
-    return
-  } else {
-    // let priority = 
-    let dateToPush = objectToArray[index][1].date
-    datesArray.push(dateToPush)
-    return datesArray
+function getHighestValue(datesObject) {
+  let priorityArray = datesObject.prioritys
+  let numberArray = []
+  for (let index = 0; index < priorityArray.length; index++) {
+    let priority = priorityArray[index]
+    switch (priority) {
+      case "urgent":
+        numberArray.push(1)
+        break
+      case "medium":
+        numberArray.push(2)
+        break
+      case "low":
+        numberArray.push(3)
+        break
+    }
+  }
+  sortNumberArray(numberArray)
+}
+
+function sortNumberArray(numberArray) {
+  let sortedArray = numberArray.sort()
+  let highesValue = sortedArray[0]
+  changeUrgencyImg(highesValue)
+}
+
+function changeUrgencyImg(highesValue) {
+  // let urgencyImg = document.getElementById('urgencyImg').src
+  switch (highesValue) {
+    case 1:
+      console.log("rot = src = ../assets/svg/double_arrow_up.svg");
+      break
+    case 2:
+      console.log("orange  = src = ../assets/svg/double_lines.svg");
+      break
+    case 3:
+      console.log("grün  = src = ../assets/svg/double_arrow_down.svg");
+      break
   }
 }
 
-function filterNextUpcomingDeadline(datesArray, responseToJson) {
-  let nextUpcomingDeadlineArray = datesArray.filter(verifyTheRightDate);
+function checkState(datesObject, taskState, index, objectToArray) {
+  if ("done" == taskState) {
+    return
+  } else {
+    let dateToPush = objectToArray[index][1].date
+    datesObject.dates.push(dateToPush)
+    datesObject.prioritys.push(objectToArray[index][1].priority)
+    return datesObject
+  }
+}
+
+function filterNextUpcomingDeadline(datesObject, responseToJson) {
+  let nextUpcomingDeadlineArray = datesObject.dates.filter(verifyTheRightDate);
   let sortedArray = nextUpcomingDeadlineArray.sort();
   let nextUpcomingDeadline = sortedArray[0]
   countNextDeadlineDate(sortedArray)
@@ -148,30 +195,30 @@ function changeInnerHtmlForDeadline(nextUpcomingDeadline) {
   urgencyDeadlineDate.innerHTML = nextUpcomingDeadline;
 }
 
-function changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount, urgencyCount) {
+function changeInnerHtmlOfSummary(countStatesObj) {
   let toDoNumberHTml = document.getElementById("toDoNumberBox");
   toDoNumberHTml.innerHTML = "";
-  toDoNumberHTml.innerHTML = toDoCount;
+  toDoNumberHTml.innerHTML = countStatesObj.toDoCount;
 
   let doneNumberHTml = document.getElementById("doneNumberBox");
   doneNumberHTml.innerHTML = "";
-  doneNumberHTml.innerHTML = doneCount;
+  doneNumberHTml.innerHTML = countStatesObj.doneCount;
 
   let progressCountHTml = document.getElementById("progressCountBox");
   progressCountHTml.innerHTML = "";
-  progressCountHTml.innerHTML = progressCount;
+  progressCountHTml.innerHTML = countStatesObj.progressCount;
 
   let awaitFreedbackCountHTml = document.getElementById("awaitFreedbackCountBox");
   awaitFreedbackCountHTml.innerHTML = "";
-  awaitFreedbackCountHTml.innerHTML = awaitFeedbackCount;
+  awaitFreedbackCountHTml.innerHTML = countStatesObj.awaitFeedbackCount;
 
   let allTaskCount = document.getElementById("allTaskCountBox");
   allTaskCount.innerHTML = "";
-  allTaskCount.innerHTML = calcAllTasksInBoard(progressCount, toDoCount, doneCount, awaitFeedbackCount);
+  allTaskCount.innerHTML = calcAllTasksInBoard(countStatesObj);
 }
 
-function calcAllTasksInBoard(progressCount, toDoCount, doneCount, awaitFeedbackCount) {
-  let allTaskCount = progressCount + toDoCount + doneCount + awaitFeedbackCount;
+function calcAllTasksInBoard(countStatesObj) {
+  let allTaskCount = countStatesObj.progressCount + countStatesObj.toDoCount + countStatesObj.doneCount + countStatesObj.awaitFeedbackCount;
 
   return allTaskCount;
 }
