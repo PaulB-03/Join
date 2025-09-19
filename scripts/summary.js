@@ -50,7 +50,7 @@ function countForSummary(responseToJson) {
   for (let index = 0; index < objectToArray.length; index++) {
     let taskState = objectToArray[index][1].state;
 
-    checkSate(datesArray, taskState, index, objectToArray)
+    checkState(datesArray, taskState, index, objectToArray)
 
     switch (taskState) {
       case "in progress":
@@ -67,18 +67,24 @@ function countForSummary(responseToJson) {
         break;
     }
   }
+  deadLineCountNull(datesArray)
   filterNextUpcomingDeadline(datesArray, responseToJson);
   changeInnerHtmlOfSummary(progressCount, toDoCount, doneCount, awaitFeedbackCount);
 }
 
-function checkSate(datesArray, taskState, index, objectToArray) {
-  if ("done" == taskState) {
-    if (datesArray.length > 0) {
-      return
-    }
+function deadLineCountNull(datesArray) {
+  if (datesArray.length <= 1) {
     return datesArray.push("Nothing to worry")
+  }
+}
+
+function checkState(datesArray, taskState, index, objectToArray) {
+  if ("done" == taskState) {
+    return
   } else {
-    datesArray.push(objectToArray[index][1].date);
+    // let priority = 
+    let dateToPush = objectToArray[index][1].date
+    datesArray.push(dateToPush)
     return datesArray
   }
 }
