@@ -88,7 +88,7 @@ function countForSummary(responseToJson) {
 function stringIfNoDateFound(datesObject) {
   // If no deadline found, push "Nothing to worry"
   if (datesObject.dates.length <= 1) {
-    return datesArray.push("Nothing to worry")
+    return datesObject.dates.push("Nothing to worry")
   }
 }
 
