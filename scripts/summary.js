@@ -80,7 +80,6 @@ function countForSummary(responseToJson) {
         break;
     }
   }
-  getHighestValue(datesObject)
   stringIfNoDateFound(datesObject)
   filterNextUpcomingDeadline(datesObject, responseToJson);
   changeInnerHtmlOfSummary(countStatesObj);
@@ -93,25 +92,35 @@ function stringIfNoDateFound(datesObject) {
   }
 }
 
-function getHighestValue(datesObject) {
+function getHighestValue(datesObject, nextUpcomingDeadline) {
   // Converts priority strings to numbers and sorts them
+  filterIrrelevantPrioritys(datesObject, nextUpcomingDeadline)
   let priorityArray = datesObject.prioritys
   let numberArray = []
   for (let index = 0; index < priorityArray.length; index++) {
     let priority = priorityArray[index]
     switch (priority) {
-      case "urgent":
-        numberArray.push(1)
-        break
-      case "medium":
-        numberArray.push(2)
-        break
-      case "low":
-        numberArray.push(3)
-        break
+      case "urgent": numberArray.push(1); break;
+      case "medium": numberArray.push(2); break;
+      case "low": numberArray.push(3); break;
     }
   }
   sortNumberArray(numberArray)
+}
+
+function filterIrrelevantPrioritys(datesObject, nextUpcomingDeadline) {
+  for (let index = 0; index < datesObject.dates.length; index++) {
+
+    let dateToFilter = new Date(datesObject.dates[index])
+    let nextDeadline = new Date(nextUpcomingDeadline)
+
+    if (dateToFilter < nextDeadline || dateToFilter > nextDeadline) {
+      datesObject.dates.splice(index, 1)
+      datesObject.prioritys.splice(index, 1)
+      index = -1
+    }
+  }
+  return datesObject
 }
 
 function sortNumberArray(numberArray) {
@@ -153,16 +162,19 @@ function filterNextUpcomingDeadline(datesObject, responseToJson) {
   let nextUpcomingDeadlineArray = datesObject.dates.filter(verifyTheRightDate);
   let sortedArray = nextUpcomingDeadlineArray.sort();
   let nextUpcomingDeadline = sortedArray[0]
-  countNextDeadlineDate(sortedArray)
+  countNextDeadlineDate(sortedArray, datesObject)
+  getHighestValue(datesObject, nextUpcomingDeadline)
   getDateFromDataBankAndChangeFormat(nextUpcomingDeadline, responseToJson);
 }
 
-function countNextDeadlineDate(sortedArray) {
+function countNextDeadlineDate(sortedArray, datesObject) {
   // Counts how many tasks share the same nearest deadline
   let deadLineCount = 0
   for (let index = 0; index < sortedArray.length; index++) {
     if (sortedArray[0] == sortedArray[index] && sortedArray[0] !== "Nothing to worry") {
       deadLineCount++
+    } else {
+      console.log(sortedArray[index]);
     }
   }
   changeInnerHTMlOfUrgencyBox(deadLineCount)
@@ -223,7 +235,7 @@ function changeInnerHtmlOfSummary(countStatesObj) {
     hTmlId.innerHTML = "";
     hTmlId.innerHTML = objectToArray[index][1];
   }
-  
+
   let allTaskCount = document.getElementById("allTaskCountBox");
   allTaskCount.innerHTML = "";
   allTaskCount.innerHTML = calcAllTasksInBoard(countStatesObj);
