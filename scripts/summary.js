@@ -252,19 +252,3 @@ function boxListener() {
     });
   }
 }
-
-async function postData() {
-  // Saves month names into the database (PUT request)
-  const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/months.json";
-
-  let response = await fetch(BASE_URL, {
-    method: "PUT",
-    headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]),
-  })
-    .then((response) => response.json())
-    .then((response) => console.log(JSON.stringify(response)));
-}
