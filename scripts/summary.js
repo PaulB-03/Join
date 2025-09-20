@@ -215,22 +215,15 @@ function changeInnerHtmlForDeadline(nextUpcomingDeadline) {
 
 function changeInnerHtmlOfSummary(countStatesObj) {
   // Updates task counts in summary boxes
-  let toDoNumberHTml = document.getElementById("toDoNumberBox");
-  toDoNumberHTml.innerHTML = "";
-  toDoNumberHTml.innerHTML = countStatesObj.toDoCount;
+  let idArray = ["progressCountBox", "toDoNumberBox", "doneNumberBox", "awaitFreedbackCountBox"]
+  let objectToArray = Object.entries(countStatesObj)
 
-  let doneNumberHTml = document.getElementById("doneNumberBox");
-  doneNumberHTml.innerHTML = "";
-  doneNumberHTml.innerHTML = countStatesObj.doneCount;
-
-  let progressCountHTml = document.getElementById("progressCountBox");
-  progressCountHTml.innerHTML = "";
-  progressCountHTml.innerHTML = countStatesObj.progressCount;
-
-  let awaitFreedbackCountHTml = document.getElementById("awaitFreedbackCountBox");
-  awaitFreedbackCountHTml.innerHTML = "";
-  awaitFreedbackCountHTml.innerHTML = countStatesObj.awaitFeedbackCount;
-
+  for (let index = 0; index < idArray.length; index++) {
+    let hTmlId = document.getElementById(`${idArray[index]}`);
+    hTmlId.innerHTML = "";
+    hTmlId.innerHTML = objectToArray[index][1];
+  }
+  
   let allTaskCount = document.getElementById("allTaskCountBox");
   allTaskCount.innerHTML = "";
   allTaskCount.innerHTML = calcAllTasksInBoard(countStatesObj);
