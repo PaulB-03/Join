@@ -120,16 +120,16 @@ function sortNumberArray(numberArray) {
 
 function changeUrgencyImg(highesValue) {
   // filter which urgency image should be displayed
-  let deadLineNameBox = document.getElementById('deadLineNameBox')
+  let urgencyImg = document.getElementById('urgencyImg')
   switch (highesValue) {
     case 1:
-      console.log("red = src = ../assets/svg/double_arrow_up.svg");
+      urgencyImg.src = "../assets/svg/double_arrow_up.svg"
       break
     case 2:
-      console.log("orange = src = ../assets/svg/double_lines.svg");
+      urgencyImg.src = "../assets/svg/double_lines.svg"
       break
     case 3:
-      console.log("green = src = ../assets/svg/double_arrow_down.svg");
+      urgencyImg.src = "../assets/svg/double_arrow_down.svg"
       break
   }
 }
@@ -163,9 +163,9 @@ function filterNextUpcomingDeadline(datesObject, responseToJson) {
 
 function changeHtmlForMissedDeadlines() {
   // changes Html Text in DeadlineBox p element
-  let deadLineNameBox = document.getElementById('deadLineNameBox')
-  deadLineNameBox.innerHTML = "";
-  deadLineNameBox.innerHTML = "Missed Deadline"
+  let deadLineText = document.getElementById('deadLineText')
+  deadLineText.innerHTML = "";
+  deadLineText.innerHTML = "Missed Deadline"
 }
 
 function missedDeadlineCall(nextUpcomingDeadlineArray, datesObject) {
