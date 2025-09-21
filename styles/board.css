@@ -832,6 +832,40 @@ body.modal-open {
   background-color: #d1d5db;
 }
 
+#taskOverlay .overlay-panel {
+  transform: none !important;
+  display: block;
+  width: 1080px;
+  overflow-y: auto;
+}
+
+#taskOverlay .overlay-panel::-webkit-scrollbar {
+  display: none;
+}
+
+#taskOverlay.edit-mode .overlay-panel {
+  width: 530px;
+}
+
+#taskOverlay.edit-mode .divider,
+#taskOverlay.edit-mode .textrequired,
+#taskOverlay.edit-mode #category {
+  display: none;
+}
+
+#taskOverlay.edit-mode textarea:valid,
+#taskOverlay.edit-mode input {
+  background-color: white;
+}
+
+/* #taskOverlay.edit-mode .subtasks__item input[type="checkbox"] {
+  display: none;
+}
+
+#taskOverlay.edit-mode .subtasks__item .txt {
+  margin-left: 0;
+} */
+
 @media (max-width: 1280px) {
   .board {
     grid-template-columns: repeat(3, 1fr);
