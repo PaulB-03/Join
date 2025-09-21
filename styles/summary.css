@@ -74,6 +74,26 @@ body {
   color: white;
 }
 
+.summaryBox:active {
+  color: black;
+  background: white;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+  .summarySvgContainer {
+    background-color: var(--main-color);
+  }
+  .editIcon {
+    content: url("../assets/svg/edit.svg");
+  }
+  .checkIcon {
+    content: url("../assets/svg/check_2.svg");
+  }
+
+  .summaryText {
+    color: black;
+  }
+}
+
 .editIcon {
   content: url("../assets/svg/edit.svg");
 }
