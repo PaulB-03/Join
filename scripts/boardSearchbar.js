@@ -32,7 +32,8 @@ async function getSingleTask(idArray) {
     let taskArray = []
     for (let index = 0; index < idArray.length; index++) {
         let singletask = await fetchSingleTask(idArray[index])
-        taskArray.push(singletask)
+        let id = idArray[index]
+        taskArray[id] = singletask
     }
    renderFoundTasks(taskArray)
 }
