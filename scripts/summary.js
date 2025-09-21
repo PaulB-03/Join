@@ -62,37 +62,25 @@ function countForSummary(responseToJson) {
 
   for (let index = 0; index < objectToArray.length; index++) {
     let taskState = objectToArray[index][1].state;
-
     checkState(datesObject, taskState, index, objectToArray)
-
     switch (taskState) {
-      case "in progress":
-        countStatesObj.progressCount++;
-        break;
-      case "toDo":
-        countStatesObj.toDoCount++;
-        break;
-      case "done":
-        countStatesObj.doneCount++;
-        break;
-      case "await feedback":
-        countStatesObj.awaitFeedbackCount++;
-        break;
+      case "in progress": countStatesObj.progressCount++; break;
+      case "toDo": countStatesObj.toDoCount++; break;
+      case "done": countStatesObj.doneCount++; break;
+      case "await feedback": countStatesObj.awaitFeedbackCount++; break;
     }
   }
-  stringIfNoDateFound(datesObject)
+
   filterNextUpcomingDeadline(datesObject, responseToJson);
   changeInnerHtmlOfSummary(countStatesObj);
 }
 
-function stringIfNoDateFound(datesObject) {
+function stringIfNoDateFound(nextUpcomingDeadlineArray) {
   // If no deadline found, push "Nothing to worry"
-  if (datesObject.dates.length <= 1) {
-    return datesObject.dates.push("Nothing to worry")
-  }
+  return nextUpcomingDeadlineArray.push("Nothing to worry")
 }
 
-function getHighestValue(datesObject, nextUpcomingDeadline) {
+function getHighestPriority(datesObject, nextUpcomingDeadline) {
   // Converts priority strings to numbers and sorts them
   filterIrrelevantPrioritys(datesObject, nextUpcomingDeadline)
   let priorityArray = datesObject.prioritys
@@ -109,8 +97,8 @@ function getHighestValue(datesObject, nextUpcomingDeadline) {
 }
 
 function filterIrrelevantPrioritys(datesObject, nextUpcomingDeadline) {
+  // filters and cuts out the unnecessary prioritys
   for (let index = 0; index < datesObject.dates.length; index++) {
-
     let dateToFilter = new Date(datesObject.dates[index])
     let nextDeadline = new Date(nextUpcomingDeadline)
 
@@ -132,6 +120,7 @@ function sortNumberArray(numberArray) {
 
 function changeUrgencyImg(highesValue) {
   // filter which urgency image should be displayed
+  let deadLineNameBox = document.getElementById('deadLineNameBox')
   switch (highesValue) {
     case 1:
       console.log("red = src = ../assets/svg/double_arrow_up.svg");
@@ -158,23 +147,38 @@ function checkState(datesObject, taskState, index, objectToArray) {
 }
 
 function filterNextUpcomingDeadline(datesObject, responseToJson) {
-  // Filters for next upcoming deadline
+  // Filters for next upcoming deadline and for missed deadLines
   let nextUpcomingDeadlineArray = datesObject.dates.filter(verifyTheRightDate);
+  if (nextUpcomingDeadlineArray.length == 0 && datesObject.dates.length == 0) {
+    stringIfNoDateFound(nextUpcomingDeadlineArray)
+  } else if (nextUpcomingDeadlineArray.length == 0 && datesObject.dates.length > 0) {
+    nextUpcomingDeadlineArray = missedDeadlineCall(nextUpcomingDeadlineArray, datesObject)
+  }
   let sortedArray = nextUpcomingDeadlineArray.sort();
   let nextUpcomingDeadline = sortedArray[0]
   countNextDeadlineDate(sortedArray, datesObject)
-  getHighestValue(datesObject, nextUpcomingDeadline)
+  getHighestPriority(datesObject, nextUpcomingDeadline)
   getDateFromDataBankAndChangeFormat(nextUpcomingDeadline, responseToJson);
 }
 
-function countNextDeadlineDate(sortedArray, datesObject) {
+function changeHtmlForMissedDeadlines() {
+  // changes Html Text in DeadlineBox p element
+  let deadLineNameBox = document.getElementById('deadLineNameBox')
+  deadLineNameBox.innerHTML = "";
+  deadLineNameBox.innerHTML = "Missed Deadline"
+}
+
+function missedDeadlineCall(nextUpcomingDeadlineArray, datesObject) {
+  changeHtmlForMissedDeadlines()
+  return nextUpcomingDeadlineArray = datesObject.dates
+}
+
+function countNextDeadlineDate(sortedArray) {
   // Counts how many tasks share the same nearest deadline
   let deadLineCount = 0
   for (let index = 0; index < sortedArray.length; index++) {
     if (sortedArray[0] == sortedArray[index] && sortedArray[0] !== "Nothing to worry") {
       deadLineCount++
-    } else {
-      console.log(sortedArray[index]);
     }
   }
   changeInnerHTMlOfUrgencyBox(deadLineCount)
