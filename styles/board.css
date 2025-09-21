@@ -32,7 +32,6 @@ h1 {
   gap: 12px;
 }
 
-/* 🔍 Suchfeld */
 .search {
   position: relative;
   width: 260px;
@@ -152,7 +151,6 @@ a.btn:active {
   font-weight: 600;
 }
 
-/* 📦 Board */
 .board {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -160,7 +158,6 @@ a.btn:active {
   align-items: start;
 }
 
-/* 📌 Spaltenkopf */
 .col-head {
   display: flex;
   align-items: center;
@@ -203,7 +200,6 @@ a.btn:active {
   background: transparent !important;
 }
 
-/* 🗂️ Task-Karte */
 .card {
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -257,7 +253,6 @@ a.btn:active {
   margin-top: 12px;
 }
 
-/* 👤 Avatare */
 .av {
   width: 35px;
   height: 35px;
@@ -311,7 +306,6 @@ a.btn:active {
   background: #ec4899;
 }
 
-/* 📊 Progress Bar */
 .progress {
   background: #eef0f5;
   height: 6px;
@@ -344,7 +338,6 @@ a.btn:active {
   border-radius: 12px;
 }
 
-/* 🔄 Drag & Drop */
 .task-container {
   position: relative;
   display: block;
@@ -382,7 +375,6 @@ a.btn:active {
   cursor: grabbing;
 }
 
-/* ⚙️ Add Task Form */
 #addTaskForm {
   position: static;
   padding: 0;
@@ -393,7 +385,6 @@ body.modal-open {
   overflow: hidden;
 }
 
-/* 🟰 Card Grip */
 .card .card-grip {
   font-weight: 700;
   opacity: 0.6;
@@ -416,7 +407,6 @@ body.modal-open {
   opacity: 1;
 }
 
-/* 📝 Task Detail */
 #taskDetailContent {
   overflow: auto;
 }
@@ -528,7 +518,6 @@ body.modal-open {
   font-size: 13px;
 }
 
-/* ✅ Subtasks */
 .subtasks__item {
   display: flex;
   align-items: center;
@@ -590,7 +579,6 @@ body.modal-open {
   display: inline-block;
 }
 
-/* ⚡ Task Actions */
 .task-actions {
   display: flex;
   align-items: center;
