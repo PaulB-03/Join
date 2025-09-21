@@ -247,14 +247,14 @@ a.btn:active {
 .avatars .av {
   width: 22px;
   height: 22px;
-  border-radius: 999px;
+  border-radius: 100%;
   display: grid;
   place-items: center;
   font-size: 10px;
   font-weight: 800;
   color: #fff;
   margin-right: -6px;
-  border: 2px solid #fff;
+  border: 1px solid #fff;
 }
 
 .av.orange {
@@ -759,10 +759,7 @@ body.modal-open {
 }
 
 .subtasks__item input[type="checkbox"]:focus-visible + .cb--unchecked,
-.subtasks__item
-  input[type="checkbox"]:focus-visible
-  + .cb--unchecked
-  + .cb--checked {
+.subtasks__item input[type="checkbox"]:focus-visible + .cb--unchecked + .cb--checked {
   outline: 2px solid #2563eb;
   outline-offset: 2px;
   border-radius: 4px;
