@@ -135,7 +135,6 @@ function taskCardInnerHtml(t, percent, doneCount, total) {
     </span>
     <div class="task-title">${escapeHtml(t.title || "")}</div>
     <div class="task-desc">${escapeHtml(t.description || "")}</div>
-    ${t.assignedContacts?.length ? renderInitials(t.assignedContacts) : ""}
 
     ${
       total
@@ -143,18 +142,36 @@ function taskCardInnerHtml(t, percent, doneCount, total) {
       <div class="progress"><div class="bar" style="width:${percent}%"></div></div>
       <div class="meta">
         <span>${doneCount}/${total} Subtasks</span>
-        ${getPriorityBadge(t.priority)}
+        <span></span> <!-- Platzhalter: KEINE Prio mehr hier -->
       </div>
     `
         : `
       <div class="meta">
         <span></span>
-        ${getPriorityBadge(t.priority)}
+        <span></span> <!-- weiterhin leer, Prio kommt unten bei Avataren -->
       </div>
     `
     }
+
+    ${renderAvatarsWithPriority(t.assignedContacts || [], t.priority)}
   `;
 }
+
+function renderAvatarsWithPriority(names = [], prio) {
+  const avatars = names
+    .map((n, i) => `<div class="av" style="background:${color(i)}">${initials(n)}</div>`)
+    .join("");
+  const prioIcon = getPriorityIcon(prio); // <— nur das Icon
+
+  return `
+    <div class="row">
+      <div class="avatars">${avatars}</div>
+      <div class="priority-slot">${prioIcon || ""}</div>
+    </div>
+  `;
+}
+
+
 
 function taskDetailTemplate(id, t = {}) {
   const title = escapeHtml(t.title || "");
