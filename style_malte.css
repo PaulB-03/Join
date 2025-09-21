@@ -85,8 +85,10 @@
   z-index: 1001;
 }
 
-.indexHeaderRight span {
-  margin-right: 20px;
+.indexHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .indexMain {

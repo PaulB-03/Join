@@ -1,225 +1,363 @@
-/* ------------------------------------------ general---------------------------------- */
-
 body {
-  background-color: #f6f7f9;
+  background-color: var(--main-bg-color);
+}
+
+.summaryText {
+  color: var(--main-color);
 }
 
 .summarySection {
   max-width: 1920px;
-  padding: 150px 20px 64px 380px;
-  line-height: 1.6;
-  width: clamp(1920px, 100%, 1920px);
-  line-height: 1.2;
+  padding-top: 150px;
+  padding-left: 380px; /* initial spacing for sidebar */
+  transition: padding-left 0.3s ease; /* smooth shrink */
+}
+
+.summaryContent {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.summaryHeadline {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+.summaryInfoTiles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  flex: 1 1 560px;
+  max-width: 560px;
+  min-width: 300px;
 }
 
 .summaryBox {
-  border-left: 1px solid #8080802e;
-  border-right: 1px solid #8080802e;
-  background-color: #ffffff;
-  box-shadow: 0px 0px 4px 0px rgba(0 0 0 / 0.1);
   display: flex;
-  justify-content: center;
   align-items: center;
-  border-radius: 25px;
+  justify-content: center;
+  padding: 16px;
+  gap: 20px;
+  background: white;
+  height: 168px;
+  width: 264px;
+  border-radius: 30px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: 100ms ease-in-out;
 }
 
-.summarySection img {
+.summaryTasks {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
-.bgJoin {
+.summaryToDo {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.summaryBox:hover {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  transform: scale(1.02);
+  background-color: var(--main-color);
+  color: white;
+}
+
+.summaryBox:hover .summaryText {
+  color: white;
+}
+
+.editIcon {
+  content: url("../assets/svg/edit.svg");
+}
+
+.checkIcon {
+  content: url("../assets/svg/check_2.svg");
+}
+
+.summaryBox:hover .editIcon {
+  content: url("../assets/svg/edit_black.svg");
+}
+
+.summaryBox:hover .checkIcon {
+  content: url("../assets/svg/check_2_black.svg");
+}
+
+.summaryBox:hover .summarySvgContainer {
+  background-color: white;
+}
+
+.summaryUrgencyBox {
+  justify-content: space-between;
+  width: 560px;
+}
+
+.urgencyBox {
+  display: flex;
+  align-items: center;
+  width: 234px;
+  justify-content: center;
+  gap: 24px;
+}
+
+.summaryDeadline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 50%;
+  padding-left: 18px;
+}
+
+.taskBox {
+  flex-direction: column;
+  width: 168px;
+}
+
+.summarySvgContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 69px;
+  height: 69px;
   background-color: var(--main-color);
 }
 
-.bgUrgency {
-  background-color: #ff3d00;
+.urgencySvgContainer {
+  background-color: var(--button-urgent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
 }
 
-.summaryNumber {
-  font-size: 64px;
-  font-weight: 600;
+.summaryCount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   text-align: center;
 }
 
+.summaryGreetingContainer {
+  display: flex;
+  flex-direction: column;
+}
+
 .divider {
-  background-color: #29abe2;
+  background-color: var(--light-blue);
   width: 3px;
   height: 59px;
   border-radius: 10px;
 }
 
-.boxHover:hover {
-  transition: 0.2s;
-  transform: scale(1.05);
-  cursor: pointer;
-  background-color: #2a3547;
-  color: white;
-  box-shadow: 0px 4px 4px 0px rgba(0 0 0 / 0.25);
+.divider_mobile {
+  background: var(--light-blue);
+  height: 3px;
+  width: 90px;
+  border-radius: 10px;
 }
-
-.boxHover:hover .bgJoin {
-  background-color: white;
-}
-
-.boxHover:hover .svgImgContainerEdit .svgImgEdit {
-  content: url("../assets/svg/edit_black.svg");
-}
-
-.boxHover:hover .svgImgContainerUrgencyCheckmark .svgImgCheck_2 {
-  content: url("../assets/svg/check_2_black.svg");
-}
-
-/* -----------------------------summaryParentContainer------------------------------------ */
-
-.summaryParentContainer {
-  display: flex;
-  align-items: center;
-}
-
-.summaryContainer {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, 1fr);
-  gap: 20px;
-}
-
-/* -------------------------------joinPresentationContainer------------------------ */
-
-.joinPresentationContainer {
-  display: flex;
-  align-items: center;
-  width: 625px;
-  gap: 25px;
-  margin-bottom: 35px;
-  margin-top: 50px;
-}
-
-.joinPresentationContainer h1 {
-  font-size: 61px;
-}
-
-.joinPresentationContainer p {
-  font-size: 27px;
-}
-
-/* --------------------------------------------------- toDoDoneSummaryBoxes---------------------------- */
-
-.toDoDoneSummaryBoxes {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 18px;
-}
-
-.svgImgContainerUrgencyCheckmark {
-  display: flex;
-  align-items: center;
-  border-radius: 50%;
-  width: 69px;
-  height: 69px;
-  padding: 15px;
-}
-
-.svgImgContainerEdit {
-  display: flex;
-  align-items: center;
-  border-radius: 50%;
-  width: 69px;
-  height: 69px;
-  padding: 20px;
-}
-
-.toDoDoneSummaryBox {
-  gap: 10px;
-  padding: 19px 38px;
-  width: 264px;
-  height: 100%;
-}
-
-.toDoDoneSummaryTextBox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-size: 20px;
-}
-
-/* ---------------------------------------- urgencySummaryBoxes------------------- */
 
 .dividerUrgency {
-  background-color: #dcdcdc;
+  height: 100px;
   width: 2px;
-  height: 102px;
-}
-
-.urgencySummaryBoxes {
-  padding: 28px 48px;
-  gap: 50px;
-}
-
-.urgencyImgTextBox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 18px;
-}
-
-.urgencyTextBox {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.summaryDeadLineTextBox p:first-child {
-  margin-bottom: 13px;
-  font-size: 21px;
-  font-weight: 700;
-}
-
-.summaryDeadLineTextBox p:nth-child(2) {
-  font-size: 16px;
-  font-weight: 400;
-}
-
-/* ------------------------------- taskSummaryBoxes------------------------------- */
-
-.taskSummaryBoxes {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 13px;
-}
-
-.numberBox {
-  padding: 15px;
-  width: 168px;
-  height: 168px;
-}
-
- .numberBoxChild {
-  line-height: 1.2;
- }
-
-.numberBoxText {
-  font-size: 20px;
-  text-align: center;
+  background: var(--color-placeholder);
 }
 
 /* -----------------greeting and Name----------------------------------- */
 
 .sumGreetingContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 364px;
+  min-width: 150px;
   margin-left: 60px;
-  line-height: 1.2;
+  transition: margin-left 0.3s ease; /* smooth shrink */
 }
 
-.sumGreetingContainer p:first-child {
+.sumGreeting span {
   font-size: 47px;
   font-weight: 500;
 }
 
-.sumGreetingContainer p:nth-child(2) {
-  font-size: 64px;
+.sumName {
   font-weight: 700;
-  color: #2ca9e1;
+  color: var(--light-blue);
+}
+
+@media (max-width: 1480px) {
+  .sumGreetingContainer {
+    margin-left: 6px;
+  }
+}
+
+@media (max-width: 1400px) {
+  .summarySection {
+    padding-left: 300px; /* reduce padding */
+  }
+}
+
+@media (max-width: 1280px) {
+  .summarySection {
+    padding-left: 280px;
+  }
+
+  .sumGreetingContainer {
+    display: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .summaryHeadline h1 {
+    font-size: 47px;
+  }
+}
+
+@media (min-width: 860px) {
+  .divider_mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .summaryHeadline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .divider {
+    display: none;
+  }
+}
+
+@media (max-width: 850px) {
+  main {
+    display: flex;
+    justify-content: center;
+  }
+  .summarySection {
+    padding-top: 120px;
+    padding-left: 0;
+  }
+
+  .summaryInfoTiles {
+    flex: 1 1 100%;
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 590px) {
+  .summaryInfoTiles {
+    max-width: 396px;
+    gap: 24px;
+  }
+  .summaryBox {
+    gap: 10px;
+    height: 110px;
+    width: 186px;
+    border-radius: 20px;
+  }
+
+  .summaryBox img {
+    height: 20px;
+  }
+
+  .summarySvgContainer,
+  .urgencySvgContainer {
+    height: 40px;
+    width: 40px;
+  }
+
+  .summaryCount {
+    gap: 0;
+  }
+
+  .summaryUrgencyBox {
+    width: 396px;
+  }
+
+  .urgencyBox {
+    width: 186px;
+    gap: 18px;
+  }
+
+  .dividerUrgency {
+    height: 70px;
+  }
+
+  .summaryDeadline {
+    width: 60%;
+    padding-right: 0;
+  }
+
+  .urgencyDate {
+    font-size: 16px !important;
+  }
+
+  .taskBox {
+    width: 116px;
+    gap: 0px;
+  }
+}
+
+@media (max-width: 420px) {
+  main {
+    font-size: 12px !important;
+  }
+
+  .summaryHeadline {
+    gap: 10px;
+  }
+
+  .summaryInfoTiles {
+    max-width: 296px;
+    gap: 18px;
+  }
+
+  .summaryBox {
+    height: 86px;
+    width: 144px;
+  }
+
+  .summaryUrgencyBox {
+    width: 296px;
+  }
+
+  .urgencyBox {
+    width: 144px;
+    gap: 12px;
+  }
+
+  .dividerUrgency {
+    height: 56px;
+  }
+
+  .summaryDeadline {
+    gap: 0;
+    width: 60%;
+    padding-right: 0;
+  }
+
+  .deadlineText {
+    font-size: 13px;
+  }
+
+  .urgencyDate {
+    font-size: 14px !important;
+  }
+
+  .taskBox {
+    width: 116px;
+  }
 }

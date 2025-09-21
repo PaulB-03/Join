@@ -19,7 +19,7 @@
     <header id="header">
       <div class="header-content" id="header">
         <img src="../assets/svg/join_logo_small.svg" class="headerLogo" style="height: 39px" alt="Join Logo" />
-        <h6>Kanban Projekt Management Tool</h6>
+        <p class="font_400_20">Kanban Projekt Management Tool</p>
         <nav id="headerNav" class="header-nav">
           <a href="../html/help.html" class="help-link" aria-label="Help">
             <img class="helper" src="../assets/svg/help.svg" alt="Hilfe" />
@@ -78,70 +78,77 @@
 
     <main>
       <section class="summarySection">
-        <div class="summaryHeadline">
+        <div class="joinPresentationContainer">
           <h1>Join 1323</h1>
           <div class="divider"></div>
-          <h4 class="summaryText">Key Metrics at Glance</h4>
-          <div class="divider_mobile"></div>
+          <p>Key Metrics at Glance</p>
         </div>
-        <div id="summaryContainer" class="summaryContent">
-          <div class="summaryInfoTiles">
-            <div class="summaryToDo">
-              <div class="summaryBox">
-                <div class="summarySvgContainer">
-                  <img class="editIcon" src="../assets/svg/edit.svg" alt="" />
+
+        <div class="summaryParentContainer">
+          <div id="summaryContainer" class="summaryContainer">
+            <div class="toDoDoneSummaryBoxes">
+              <div class="toDoDoneSummaryBox boxHover summaryBox">
+                <div class="svgImgContainerEdit bgJoin">
+                  <img class="svgImgEdit" src="../assets/svg/edit.svg" alt="" />
                 </div>
-                <div class="summaryCount">
-                  <h2 id="toDoNumberBox"></h2>
-                  <h6 class="summaryText font_400_20">To-do</h6>
+                <div class="toDoDoneSummaryTextBox">
+                  <p class="summaryNumber" id="toDoNumberBox"></p>
+                  <p>To-do</p>
                 </div>
               </div>
-              <div class="summaryBox">
-                <div class="summarySvgContainer">
-                  <img class="checkIcon" src="../assets/svg/check_2.svg" alt="" />
+              <div class="toDoDoneSummaryBox boxHover summaryBox">
+                <div class="svgImgContainerUrgencyCheckmark bgJoin">
+                  <img class="svgImgCheck_2" src="../assets/svg/check_2.svg" alt="" />
                 </div>
-                <div class="summaryCount">
-                  <h2 id="doneNumberBox"></h2>
-                  <h6 class="summaryText">Done</h6>
+                <div class="toDoDoneSummaryTextBox">
+                  <p class="summaryNumber" id="doneNumberBox"></p>
+                  <p>Done</p>
                 </div>
               </div>
             </div>
 
-            <div class="summaryBox summaryUrgencyBox">
-              <div class="urgencyBox">
-                <div class="urgencySvgContainer">
-                  <img id="urgencyImg" src="../assets/svg/double_arrow_up.svg" alt="" />
+            <div class="urgencySummaryBoxes boxHover summaryBox">
+              <div class="urgencyImgTextBox">
+                <div class="svgImgContainerUrgencyCheckmark bgUrgency">
+                  <img src="../assets/svg/double_arrow_up.svg" alt="" />
                 </div>
-                <div class="summaryCount">
-                  <h2 id="urgencyCountBox"></h2>
-                  <span class="summaryText">Urgent</span>
+                <div class="urgencyTextBox">
+                  <p class="summaryNumber" id="urgencyCountBox">1</p>
+                  <p>Urgent</p>
                 </div>
               </div>
               <div class="dividerUrgency"></div>
-              <div class="summaryDeadline">
-                <span id="urgencyDeadline" class="summaryText font_700_21 urgencyDate"></span>
-                <span class="summaryText deadlineText">Upcoming Deadline</span>
+              <div class="summaryDeadLineTextBox">
+                <p id="urgencyDeadline"></p>
+                <p>Upcoming Deadline</p>
               </div>
             </div>
 
-            <div class="summaryTasks">
-              <div class="summaryBox taskBox summaryCount">
-                <h2 id="allTaskCountBox"></h2>
-                <h6 class="summaryText">Tasks in Board</h6>
+            <div class="taskSummaryBoxes">
+              <div class="numberBox boxHover summaryBox">
+                <div class="numberBoxChild">
+                  <p class="summaryNumber" id="allTaskCountBox"></p>
+                  <p class="numberBoxText">Task in Board</p>
+                </div>
               </div>
-              <div class="summaryBox taskBox summaryCount">
-                <h2 id="progressCountBox"></h2>
-                <h6 class="summaryText">Tasks in Progress</h6>
+              <div class="numberBox boxHover summaryBox">
+                <div class="numberBoxChild">
+                  <p class="summaryNumber" id="progressCountBox"></p>
+                  <p class="numberBoxText">Task in Progress</p>
+                </div>
               </div>
-              <div class="summaryBox taskBox summaryCount">
-                <h2 id="awaitFreedbackCountBox"></h2>
-                <h6 class="summaryText">Awaiting Feedback</h6>
+              <div class="numberBox boxHover summaryBox">
+                <div class="numberBoxChild">
+                  <p class="summaryNumber" id="awaitFreedbackCountBox"></p>
+                  <p class="numberBoxText">Awaiting Feedback</p>
+                </div>
               </div>
             </div>
           </div>
+
           <div class="sumGreetingContainer">
             <p class="sumGreeting"><span id="sumGreeting">Good morning</span><span id="markDestinction">,</span></p>
-            <h2 class="sumName" id="logInName"></h2>
+            <p class="sumName" id="logInName"></p>
           </div>
         </div>
       </section>

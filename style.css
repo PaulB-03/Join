@@ -210,7 +210,7 @@ header {
   display: block;
 }
 
-@media (min-width: 801px) {
+@media (min-width: 851px) {
   .helpMobile {
     display: none !important;
   }
@@ -220,14 +220,14 @@ header {
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 850px) {
   .header-content {
     height: 80px;
     padding: 0;
     margin: 0 20px;
   }
 
-  .header-content p,
+  .header-content h6,
   .helper {
     display: none;
   }
