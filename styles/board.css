@@ -52,8 +52,8 @@ h1 {
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   opacity: 0.55;
   padding: 4px;
   border-radius: 50%;
@@ -75,6 +75,7 @@ h1 {
   width: 1px;
   height: 18px;
   background-color: #cbd5e1;
+  margin: 0 10px;
 }
 
 .search input::-webkit-search-cancel-button,
@@ -93,7 +94,7 @@ h1 {
 
 .btn {
   height: 40px;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 20px;
   display: inline-flex;
   align-items: center;
@@ -168,7 +169,7 @@ a.btn:active {
 }
 
 .add-card-btn {
-  align-items: baseline !important;
+  background: transparent !important;
 }
 
 .card {
@@ -176,7 +177,7 @@ a.btn:active {
   border: 1px solid #e5e7eb;
   border-radius: 16px;
   padding: 14px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 0px 10px 3px #00000014;
   transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
   cursor: pointer;
   margin-bottom: 12px;
