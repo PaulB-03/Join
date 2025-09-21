@@ -21,10 +21,10 @@
   }
 
   .heading {
+    position: relative;
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    margin: 12px 0 16px;
+    align-items: stretch;
   }
 
   .app h1 {
@@ -32,8 +32,11 @@
   }
 
   .controls {
+    position: static;
     width: 100%;
     gap: 8px;
+    margin-top: 52px;
+    padding-top: 0;
   }
 
   .search {
@@ -48,8 +51,25 @@
     right: 8px;
   }
 
-  .btn {
+  .btn#openAddTask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 40px;
+    border-radius: 8px;
+    justify-content: center;
+    font-size: 0;
+    display: inline-flex !important;
+  }
+
+  .btn#openAddTask .btn-text {
     display: none;
+  }
+
+  .btn#openAddTask .icon-add {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
   }
 }
 
