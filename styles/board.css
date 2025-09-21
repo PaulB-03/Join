@@ -300,15 +300,13 @@ a.btn:active {
 }
 
 .empty {
-  border: 1.5px dashed #d6dae2;
-  background: #fafbff;
-  color: #9aa3b2;
+  border: 1px dashed var(--color-icon);
+  background: var(--empty-category);
+  color: var(--color-icon);
   display: grid;
   place-items: center;
   height: 50px;
   border-radius: 12px;
-  font-size: 13px;
-  font-weight: 600;
 }
 
 .task-container {
