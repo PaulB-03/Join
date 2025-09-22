@@ -294,6 +294,7 @@ textarea:valid {
 .dropdown-item-category:hover {
   background-color: var(--main-color);
   color: var(--white);
+  border-radius: 10px;
 }
 
 #assignedToInitials {
