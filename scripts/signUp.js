@@ -25,19 +25,16 @@ function checkIndexPosition(users) {
 // 3. Save new user to database
 async function saveNewUser(newUser, nextIndex) {
   const newKey = `user${nextIndex}`;
-
   const response = await fetch(`${BASE_URL}/users/${newKey}.json`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newUser),
   });
-
   if (!response.ok) {
     const errorText = await response.text();
     console.error("error saving:", response.status, errorText);
     return null;
   }
-
   console.log(`User added as ${newKey}`);
   return newKey;
 }
@@ -46,27 +43,16 @@ async function saveNewUser(newUser, nextIndex) {
 async function addUser(name, email, password) {
   let phone = "add phone number";
   const newUser = { name, email, password };
-
-  // Load existing users
-  const res = await fetch(`${BASE_URL}/users.json`);
+  const res = await fetch(`${BASE_URL}/users.json`); // Load existing users
   const users = await res.json();
-  console.log(users);
-
-  // Check for existing user
   if (checkForUser(users, email)) {
+    // Check for existing user
     return false;
   }
-
-  // Determine next index
-  const nextIndex = checkIndexPosition(users);
-
-  // Save new user
-  const newKey = await saveNewUser(newUser, nextIndex);
+  const nextIndex = checkIndexPosition(users); // Determine next index
+  const newKey = await saveNewUser(newUser, nextIndex); // Save new user
   if (!newKey) return false;
-
-  // Add contact if user saved successfully
-  await addContact({ name, email, phone });
-
+  await addContact({ name, email, phone }); // Add contact if user saved successfully
   return true;
 }
 
@@ -143,12 +129,16 @@ function togglePasswordVisibilityOnClick(input, state) {
       input.classList.remove("formVisibilityIcon");
       input.classList.add("formVisibilityOffIcon");
     } else {
-      input.type = "text";
-      input.classList.remove("formVisibilityOffIcon");
-      input.classList.add("formVisibilityIcon");
+      makePasswordVisible(input);
     }
     state.visible = !state.visible;
   });
+}
+
+function makePasswordVisible(input) {
+  input.type = "text";
+  input.classList.remove("formVisibilityOffIcon");
+  input.classList.add("formVisibilityIcon");
 }
 
 function setupPasswordInput(input) {

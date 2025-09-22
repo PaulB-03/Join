@@ -14,11 +14,9 @@ function updateHeaderAvatars() {
   const currentUser = loadLoginStatus();
   const userAvatar = document.querySelector("#header #userAvatar");
   const guestAvatar = document.querySelector("#header #guestAvatar");
-
   const toggleElement = (element, shouldShow) => {
     if (element) element.style.display = shouldShow ? "flex" : "none";
   };
-
   if (currentUser.type === "user") {
     userAvatar.innerHTML = initials(currentUser.name);
 
