@@ -641,3 +641,14 @@ body.modal-open {
   height: 24px;
   background-color: #d1d5db;
 }
+
+.empty-state {
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  background: #fafafa;
+  color: #555;
+  border-radius: 8px;
+  font-size: 14px;
+  margin: 8px 0 0;
+}
+

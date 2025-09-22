@@ -1,81 +1,84 @@
-
 async function findTask() {
-    let taskToFind = document.getElementById('taskSearchInput').value
-    let toLowerCaseValue = taskToFind.toLowerCase();
-    let capiFirstletter = capitalizeFirstLetter(taskToFind)
-    let tasks = await getTasks();
-    let arrayForFiltering = changeObjectToArray(tasks)
-    let foundTasksArray = []
-    let valuesToFind = [capiFirstletter, toLowerCaseValue]
-
-    if (taskToFind.length > 1 && isNaN(taskToFind)) {
-        for (let index = 0; index < valuesToFind.length; index++) {
-            let foundTasks = filterArray(valuesToFind[index], arrayForFiltering)
-            foundTasks.forEach(element => foundTasksArray.push(element));
-        }
-        getIdsOfTasks(foundTasksArray)
-    } else {
-        init()
-    }
+  const q = document.getElementById('taskSearchInput').value.trim();
+  if (q.length <= 1 || !isNaN(q)) { hideNoResults(); init(); return; }
+  const tasks = await getTasks();
+  const pool = changeObjectToArray(tasks);
+  const keys = [capitalizeFirstLetter(q), q.toLowerCase()];
+  const found = keys.flatMap(k => filterArray(k, pool));
+  const unique = [...new Set(found)];
+  if (unique.length === 0) { renderFoundTasks({}); return; }
+  getIdsOfTasks(unique);
 }
 
 function getIdsOfTasks(foundTasksArray) {
-    let idArray = []
-    for (let index = 0; index < foundTasksArray.length; index++) {
-        let id = getLastElement(foundTasksArray, index)
-        idArray.push(id)
-    }
-    getSingleTask(idArray)
+  const idArray = [];
+  for (let i = 0; i < foundTasksArray.length; i++) {
+    idArray.push(getLastElement(foundTasksArray, i));
+  }
+  getSingleTask(idArray);
 }
 
 async function getSingleTask(idArray) {
-    let taskArray = []
-    for (let index = 0; index < idArray.length; index++) {
-        let singletask = await fetchSingleTask(idArray[index])
-        let id = idArray[index]
-        taskArray[id] = singletask
-    }
-   renderFoundTasks(taskArray)
+  const taskArray = [];
+  for (let i = 0; i < idArray.length; i++) {
+    const id = idArray[i];
+    const single = await fetchSingleTask(id);
+    taskArray[id] = single;
+  }
+  renderFoundTasks(taskArray);
 }
 
 async function renderFoundTasks(taskArray) {
-    clearColumns();
-    Object.entries(taskArray).forEach(([id, t]) => addTaskCard(id, t));
-    updateAllEmptyStates();
+  clearColumns();
+  const has = taskArray && Object.keys(taskArray).length > 0;
+  if (!has) { showNoResults('Keine Ergebnisse gefunden.'); updateAllEmptyStates(); return; }
+  Object.entries(taskArray).forEach(([id, t]) => addTaskCard(id, t));
+  hideNoResults();
+  updateAllEmptyStates();
 }
 
 function filterArray(value, arrayForFiltering) {
-    let foundtasks = arrayForFiltering.filter(name => name.includes(value))
-    return foundtasks
+  return arrayForFiltering.filter(txt => txt.includes(value));
 }
 
 function capitalizeFirstLetter(val) {
-    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+  const s = String(val);
+  return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 function getLastElement(arr, index) {
-    return arr[index].split(",").pop();
+  return arr[index].split(",").pop();
 }
 
 function debounce(func, timeout = 1000) {
-    let timer;
-    return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => { func.apply(this, args); }, timeout);
-    };
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), timeout);
+  };
 }
 
 let processChanges = debounce(() => findTask());
 
 function changeObjectToArray(tasksResponse) {
-    let objectToArray = Object.entries(tasksResponse)
+  const entries = Object.entries(tasksResponse);
+  const out = [];
+  for (let i = 0; i < entries.length; i++) {
+    const [id, t] = entries[i];
+    out.push(`${t.title}, ${t.description}, ${t.assignedContacts},${id}`);
+  }
+  return out;
+}
 
-    let arrayForFiltering = []
+function showNoResults(msg) {
+  const box = document.getElementById('search-empty-state');
+  if (!box) return;
+  box.textContent = msg || 'Keine Ergebnisse gefunden.';
+  box.classList.remove('d_none');
+}
 
-    for (let index = 0; index < objectToArray.length; index++) {
-
-        arrayForFiltering.push(objectToArray[index][1].title + ", " + objectToArray[index][1].description + ", " + objectToArray[index][1].assignedContacts + "," + `${objectToArray[index][0]}`)
-
-    }
-    return arrayForFiltering
+function hideNoResults() {
+  const box = document.getElementById('search-empty-state');
+  if (!box) return;
+  box.classList.add('d_none');
 }
