@@ -15,6 +15,10 @@ body {
   background-color: var(--main-bg-color);
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
 .d_none {
   display: none !important;
 }
