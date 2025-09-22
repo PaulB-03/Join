@@ -357,4 +357,11 @@
   .signupReturnArrowContainer {
     left: 16px;
   }
+
+  .signupSuccess {
+    font-size: 14px;
+    width: 259px;
+    height: 60px;
+    transform: translateY(33vh);
+  }
 }
