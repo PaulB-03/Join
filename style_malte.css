@@ -365,3 +365,35 @@
     transform: translateY(33vh);
   }
 }
+
+@media (max-height: 741px) {
+  .indexMain {
+    padding-bottom: 30px;
+  }
+
+  .mobileLogo {
+    top: 18px;
+    left: 18px;
+  }
+
+  .mobileLogo img {
+    width: 40px;
+  }
+
+  .loginContainer {
+    padding: 20px 0 20px 0;
+  }
+
+  .mobileSignUpChoice {
+    top: 84%;
+  }
+
+  .inputGroup {
+    padding: 0px 16px;
+  }
+
+  .signupContainer {
+    padding: 12px 0;
+    margin-top: 40px;
+  }
+}

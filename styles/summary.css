@@ -332,7 +332,7 @@ body {
   }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 410px) {
   main {
     font-size: 12px !important;
   }
