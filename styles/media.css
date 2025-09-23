@@ -110,11 +110,6 @@
     font-size: 11px;
   }
 
-  .task-detail {
-    padding: 24px 28px 8px 28px;
-    width: 280px;
-    height: auto;
-  }
 }
 
 @media (max-width: 860px) {
@@ -129,6 +124,38 @@
   }
 }
 
+@media (max-width: 550px) {
+  #taskOverlay .task-overlay-panel {
+    max-width: 300px;
+    padding: 8px;
+  }
+  element.style {
+    padding: 4px 20px 20px;
+}
+
+#taskOverlay .overlay-close {
+    right: 20px;
+  }
+
+  #taskOverlay
+  .prioDivsWrapper {
+    max-width: 230px;
+    padding: auto;
+  }
+
+  .inputFlexbox {
+    max-width: 230px;
+  }
+
+  .title {
+    max-width: 230px;
+  }
+
+  .task-detail {
+    max-width: 300px;
+    height: auto;
+  }
+}
 /* @media (max-width: 430px) {
   .board {
     grid-template-columns: 1fr;

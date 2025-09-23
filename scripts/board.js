@@ -330,16 +330,20 @@ function onEscCloseOnce(e) {
 }
 
 function bindOverlayButtons() {
-  byId("openAddTask")?.addEventListener("click", () => {
-    clearTask();
-    openTaskOverlay();
-  });
+  // DEAKTIVIERT: Overlay über Top-Button #openAddTask öffnen
+  // byId("openAddTask")?.addEventListener("click", () => {
+  //   clearTask();
+  //   openTaskOverlay();
+  // });
+
+  // Overlay weiterhin für die kleinen Plus-Buttons in den Spalten
   document.querySelectorAll(".add-card-btn").forEach((b) =>
     b.addEventListener("click", () => {
       clearTask();
       openTaskOverlay();
     })
   );
+
   byId("closeTaskOverlay")?.addEventListener("click", closeTaskOverlay);
   byId("cancelTask")?.addEventListener("click", closeTaskOverlay);
   byId("taskOverlay")?.addEventListener("click", (e) =>
@@ -573,12 +577,13 @@ function toggleClearButton(isEditing) {
   clearBtn.style.display = isEditing ? "none" : "inline-flex";
 }
 
-byId("openAddTask")?.addEventListener("click", () => {
-  clearTask();
-  openTaskOverlay();
-  setOverlayButtonText(false);
-  toggleClearButton(false);
-});
+// DEAKTIVIERT: Zweiter Listener, der das Overlay über #openAddTask öffnet
+// byId("openAddTask")?.addEventListener("click", () => {
+//   clearTask();
+//   openTaskOverlay();
+//   setOverlayButtonText(false);
+//   toggleClearButton(false);
+// });
 
 async function handleAddOrEditTask(event) {
   if (event) event.preventDefault();
