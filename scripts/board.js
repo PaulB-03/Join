@@ -330,13 +330,19 @@ function onEscCloseOnce(e) {
 }
 
 function bindOverlayButtons() {
-  // DEAKTIVIERT: Overlay über Top-Button #openAddTask öffnen
-  // byId("openAddTask")?.addEventListener("click", () => {
-  //   clearTask();
-  //   openTaskOverlay();
-  // });
+  byId("openAddTask")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    const MOBILE_BREAKPOINT = 820;
+    if (window.innerWidth <= MOBILE_BREAKPOINT) {
+      window.location.href = "../html/addTask.html"; // gleiche Schreibweise wie in der Sidebar
+    } else {
+      clearTask();
+      openTaskOverlay();
+      setOverlayButtonText(false);
+      toggleClearButton(false);
+    }
+  });
 
-  // Overlay weiterhin für die kleinen Plus-Buttons in den Spalten
   document.querySelectorAll(".add-card-btn").forEach((b) =>
     b.addEventListener("click", () => {
       clearTask();
@@ -472,7 +478,6 @@ function fillSubtasks(subtasks) {
   subtasks.forEach((s) => {
     let txt = typeof s === "string" ? s : s.text;
 
-    // Remove leading bullet in edit mode
     if (document.getElementById("taskOverlay").classList.contains("edit-mode")) {
       txt = txt.replace(/^•\s*/, "");
     }
@@ -576,14 +581,6 @@ function toggleClearButton(isEditing) {
   if (!clearBtn) return;
   clearBtn.style.display = isEditing ? "none" : "inline-flex";
 }
-
-// DEAKTIVIERT: Zweiter Listener, der das Overlay über #openAddTask öffnet
-// byId("openAddTask")?.addEventListener("click", () => {
-//   clearTask();
-//   openTaskOverlay();
-//   setOverlayButtonText(false);
-//   toggleClearButton(false);
-// });
 
 async function handleAddOrEditTask(event) {
   if (event) event.preventDefault();
