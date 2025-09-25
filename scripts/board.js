@@ -5,15 +5,18 @@ const STATE_TO_COL = Object.fromEntries(Object.entries(COL_TO_STATE).map(([c, s]
 
 let dragged = null;
 let placeholder = null;
-let tasks = [];
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", () => {
+  init();
+  bindOverlayButtons();
+  mountSubtaskCheckboxListener();
+  mountDatePickerMinToday();
+});
 
 function init() {
   renderAllTasks();
   initDnd();
   highlightNewTask();
-  bindOverlayButtons();
 }
 
 function highlightNewTask() {
@@ -117,6 +120,13 @@ function updateAllEmptyStates() {
   document.querySelectorAll(".dropzone").forEach(updateEmptyState);
 }
 
+function clearColumns() {
+  document.querySelectorAll(".dropzone").forEach((z) => {
+    const title = z.previousElementSibling?.textContent?.trim() || "";
+    z.innerHTML = `<div class="empty">No tasks ${title}</div>`;
+  });
+}
+
 async function updateTaskState(id, state) {
   await fetch(`${BASE_URL}/tasks/${id}.json`, {
     method: "PATCH",
@@ -125,7 +135,7 @@ async function updateTaskState(id, state) {
   });
 }
 
-async function fetchTasks() {
+  async function fetchTasks() {
   const r = await fetch(`${BASE_URL}/tasks.json`);
   const data = await r.json();
   if (!data) return {};
@@ -135,16 +145,16 @@ async function fetchTasks() {
   return data;
 }
 
-async function fetchSingleTask(id) {
+  async function fetchSingleTask(id) {
   const r = await fetch(`${BASE_URL}/tasks/${id}.json`);
   return (await r.json()) || {};
 }
 
-async function deleteTask(id) {
+  async function deleteTask(id) {
   await fetch(`${BASE_URL}/tasks/${id}.json`, { method: "DELETE" });
 }
 
-async function toggleSubtaskDone(taskId, index, done) {
+  async function toggleSubtaskDone(taskId, index, done) {
   const t = await fetchSingleTask(taskId);
   const subs = normalizeSubtasks(t.subtasks);
   if (subs[index] == null) return;
@@ -169,18 +179,11 @@ async function saveSubtasks(taskId, subs) {
   });
 }
 
-async function renderAllTasks() {
+  async function renderAllTasks() {
   const tasks = await fetchTasks();
   clearColumns();
   Object.entries(tasks).forEach(([id, t]) => addTaskCard(id, t));
   updateAllEmptyStates();
-}
-
-function clearColumns() {
-  document.querySelectorAll(".dropzone").forEach((z) => {
-    const title = z.previousElementSibling?.textContent?.trim() || "";
-    z.innerHTML = `<div class="empty">No tasks ${title}</div>`;
-  });
 }
 
 function addTaskCard(id, t) {
@@ -193,7 +196,8 @@ function addTaskCard(id, t) {
   const card = document.createElement("article");
   card.className = "card";
   card.dataset.id = id;
-  card.innerHTML = taskCardInnerHtml(t, percent, done, total);
+
+  card.innerHTML = window.taskCardInnerHtml(t, percent, done, total);
 
   bindCardClickDrag(wrap, card, id);
   wrap.appendChild(card);
@@ -228,383 +232,10 @@ function bindCardClickDrag(wrapper, card, id) {
   card.addEventListener("click", () => !draggedFlag && openTaskDetail(id));
 }
 
-async function openTaskDetail(id) {
-  const overlay = byId("taskDetailOverlay");
-  const content = byId("taskDetailContent");
-  if (!overlay || !content) return;
-  const task = await fetchSingleTask(id);
-  content.innerHTML = taskDetailTemplate(id, task);
-  wireDetailActions(overlay, content, id, task);
-  showOverlay(overlay);
-}
-
-function wireDetailActions(overlay, content, id, task) {
-  content.querySelectorAll('input[type="checkbox"][data-sub-index]').forEach((cb) => {
-    cb.addEventListener("change", (e) => onSubtaskToggle(id, e));
-  });
-  byId("taskDetailClose")?.addEventListener("click", () => closeOverlay(overlay), { once: true });
-  byId("taskDelete")?.addEventListener("click", () => onDeleteTask(id, overlay));
-  byId("taskEdit")?.addEventListener("click", () => onEditTask(id, task, overlay));
-  overlay.addEventListener("click", (e) => e.target === overlay && closeOverlay(overlay), { once: true });
-  document.addEventListener("keydown", onEscCloseOnce);
-}
-
-function onSubtaskToggle(id, e) {
-  const idx = parseInt(e.target.dataset.subIndex, 10);
-  toggleSubtaskDone(id, idx, e.target.checked);
-}
-
-async function onDeleteTask(id, overlay) {
-  if (!confirm("Delete this task?")) return;
-  await deleteTask(id);
-  closeOverlay(overlay);
-  await renderAllTasks();
-  updateAllEmptyStates();
-}
-
-function onEditTask(id, task, overlay) {
-  closeOverlay(overlay);
-
-  if (typeof openTaskOverlay === "function") {
-    openTaskOverlay();
-
-    const formOverlay = byId("taskOverlay");
-    formOverlay.classList.add("edit-mode");
-
-    const addButton = byId("add");
-    addButton.setAttribute("data-editing-id", id);
-    addButton.querySelector("p").textContent = "Save changes";
-
-    if (typeof fillTaskFormFromExisting === "function") {
-      fillTaskFormFromExisting(id, task);
-    }
-  }
-}
-
-function fillTaskFormFromExisting(id, task) {
-  byId("titleInput").value = task.title || "";
-  byId("descriptionInput").value = task.description || "";
-  byId("date").value = task.date || "";
-
-  resetPrioSelection();
-  if (task.priority) setPrioColor(task.priority);
-
-  assignedContacts = task.assignedContacts ? [...task.assignedContacts] : [];
-  renderAssignedInitials();
-
-  fillSubtasks(task.subtasks || []);
-
-  selectedCategory = task.category || "Task";
-  selectedState = task.state || "toDo";
-  assignedContacts = task.assignedContacts ? [...task.assignedContacts] : [];
-
-  renderAssignedInitials();
-  fillSubtasks(task.subtasks || []);
-  setOverlayButtonText(true);
-  toggleClearButton(true);
-  byId("add").setAttribute("data-editing-id", id);
-}
-
-function resetPrioSelection() {
-  document.querySelectorAll(".prioGrade").forEach(el => el.classList.remove("active"));
-}
-
-function showOverlay(overlay) {
-  overlay.classList.add("open");
-  overlay.setAttribute("aria-hidden", "false");
-}
-
-function closeOverlay(overlay) {
-  if (!overlay) return;
-  overlay.classList.remove("open");
-  overlay.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("modal-open");
-  document.removeEventListener("keydown", onEscCloseOnce);
-}
-
-function onEscCloseOnce(e) {
-  if (e.key === "Escape") {
-    const ov = byId("taskDetailOverlay");
-    ov && closeOverlay(ov);
-  }
-}
-
-function bindOverlayButtons() {
-  byId("openAddTask")?.addEventListener("click", (e) => {
-    e.preventDefault();
-    const MOBILE_BREAKPOINT = 820;
-    if (window.innerWidth <= MOBILE_BREAKPOINT) {
-      window.location.href = "../html/addTask.html"; // gleiche Schreibweise wie in der Sidebar
-    } else {
-      clearTask();
-      openTaskOverlay();
-      setOverlayButtonText(false);
-      toggleClearButton(false);
-    }
-  });
-
-  document.querySelectorAll(".add-card-btn").forEach((b) =>
-    b.addEventListener("click", () => {
-      clearTask();
-      openTaskOverlay();
-    })
-  );
-
-  byId("closeTaskOverlay")?.addEventListener("click", closeTaskOverlay);
-  byId("cancelTask")?.addEventListener("click", closeTaskOverlay);
-  byId("taskOverlay")?.addEventListener("click", (e) =>
-    e.target.id === "taskOverlay" && closeTaskOverlay()
-  );
-  document.addEventListener("keydown", (e) => e.key === "Escape" && closeTaskOverlay());
-}
-
-function openTaskOverlay() {
-  const ov = byId("taskOverlay");
-  if (!ov) return;
-
-  ov.style.display = "flex";
-  ov.classList.add("open");
-  ov.classList.remove("edit-mode");
-
-  document.body.classList.add("modal-open");
-
-  const addButton = byId("add");
-  addButton.removeAttribute("data-editing-id");
-  addButton.querySelector("p").textContent = "Create task";
-  clearTask();
-  initTaskFormEnhancements();
-}
-
-function closeTaskOverlay() {
-  const ov = byId("taskOverlay");
-  if (!ov) return;
-  ov.classList.remove("open");
-  document.body.classList.remove("modal-open");
-  typeof clearTask === "function" && clearTask();
-}
-
-function initTaskFormEnhancements() {
-  typeof initCategoryDropdown === "function" && initCategoryDropdown();
-  typeof initContactsDropdown === "function" && initContactsDropdown();
-  typeof initialiseSavePrioImg === "function" && initialiseSavePrioImg();
-}
-
-function byId(id) {
-  return document.getElementById(id);
-}
-
-const RTDB_BASE =
-  (typeof baseURL !== "undefined" && baseURL) ||
-  "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
-
-async function saveSubtasksFromOverlay(taskId) {
-  const items = Array.from(
-    document.querySelectorAll("#taskDetailOverlay .subtasks__item")
-  );
-
-  const subtasks = items.map((el) => {
-    const chk = el.querySelector('input[type="checkbox"]');
-    const txt = (el.querySelector(".txt")?.textContent || "").trim();
-    return { text: txt, done: !!chk?.checked };
-  });
-
-  const res = await fetch(`${RTDB_BASE}tasks/${taskId}/subtasks.json`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(subtasks),
-  });
-  if (!res.ok) throw new Error(`Save failed: ${res.status}`);
-
-  const done = subtasks.filter((s) => s.done).length;
-  return { done, total: subtasks.length };
-}
-
-function updateSubtaskCountersUI(taskId, done, total) {
-  const overlay = document.getElementById("taskDetailOverlay");
-  const counterInOverlay = overlay?.querySelector(".subtasks-counter");
-  if (counterInOverlay) counterInOverlay.textContent = `${done}/${total} Subtasks`;
-
-  const card = document.querySelector(`.card[data-id="${taskId}"]`) || null;
-  if (card) {
-    const meta = card.querySelector(".meta span");
-    if (meta) meta.textContent = `${done}/${total} Subtasks`;
-    const bar = card.querySelector(".progress .bar");
-    if (bar && total > 0) bar.style.width = `${Math.round((done / total) * 100)}%`;
-  }
-}
-
-document.addEventListener("change", async (e) => {
-  const cb = e.target;
-  if (!cb.matches('#taskDetailOverlay input[type="checkbox"][data-sub-index]')) return;
-
-  const detail = cb.closest(".task-detail");
-  const taskId = detail?.getAttribute("data-id");
-  if (!taskId) return;
-
-  const previous = !cb.checked;
-
-  try {
-    const { done, total } = await saveSubtasksFromOverlay(taskId);
-    updateSubtaskCountersUI(taskId, done, total);
-    document.dispatchEvent(new CustomEvent("task:updated", { detail: { taskId, done, total } }));
-  } catch (err) {
-    console.error(err);
-    cb.checked = previous;
-    alert("Konnte Subtask nicht speichern. Bitte später erneut versuchen.");
-  }
-});
-
-function fillAssignedContacts(contacts) {
-  const initialsWrapper = byId("assignedToInitials");
-  initialsWrapper.innerHTML = "";
-  if (contacts.length) {
-    initialsWrapper.style.display = "flex";
-    contacts.forEach(c => {
-      const div = document.createElement("div");
-      div.className = "av";
-      div.style.background = color(contacts.indexOf(c));
-      div.textContent = initials(c);
-      initialsWrapper.appendChild(div);
-    });
-  } else {
-    initialsWrapper.style.display = "none";
-  }
-}
-
-function fillSubtasks(subtasks) {
-  const wrapper = document.querySelector(".addedSubtaskWrapper");
-  wrapper.innerHTML = "";
-
-  subtasks.forEach((s) => {
-    let txt = typeof s === "string" ? s : s.text;
-
-    if (document.getElementById("taskOverlay").classList.contains("edit-mode")) {
-      txt = txt.replace(/^•\s*/, "");
-    }
-
-    const done = typeof s === "object" ? !!s.done : false;
-    wrapper.appendChild(createSubtaskElement(txt, done));
-  });
-}
-
-async function updateTask(id) {
-  if (!id) {
-    if (typeof window.createTask === "function") {
-      window.createTask();
-    }
-    return;
-  }
-
-  const updatedTask = {
-    title: byId("titleInput").value.trim(),
-    description: byId("descriptionInput").value.trim(),
-    date: byId("date").value,
-    priority: selectedPrio,
-    assignedContacts: assignedContacts,
-    subtasks: getSubtasksFromForm(),
-    state: selectedState,
-    category: selectedCategory
-  };
-
-  try {
-    await fetch(`${RTDB_BASE}tasks/${id}.json`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedTask)
-    });
-
-    closeOverlay(document.querySelector(".overlay"));
-    await renderAllTasks();
-
-  } catch (err) {
-    console.error("Error updating task:", err);
-    alert("Failed to update task. Please try again.");
-  }
-}
-
-function renderUpdatedTask(id, task) {
-  const oldCard = document.querySelector(`.task-card[data-id="${id}"]`);
-  if (oldCard) oldCard.remove();
-  const columnId = task.state === "toDo" ? "todo"
-                 : task.state === "inProgress" ? "inprogress"
-                 : "done";
-  const column = document.getElementById(columnId);
-  if (!column) return;
-
-  const card = document.createElement("div");
-  card.className = "task-card";
-  card.dataset.id = id;
-  card.innerHTML = `
-    <h3>${escapeHtml(task.title)}</h3>
-    <p>${escapeHtml(task.description)}</p>
-    <small>${task.date}</small>
-  `;
-  column.appendChild(card);
-}
-
-function renderAssignedInitials() {
-  const wrapper = document.getElementById("assignedToInitials");
-  wrapper.innerHTML = "";
-  if (assignedContacts.length > 0) {
-    wrapper.style.display = "flex";
-    assignedContacts.forEach((c, i) => {
-      const div = document.createElement("div");
-      div.className = "av";
-      div.style.background = color(i);
-      div.textContent = initials(c);
-      wrapper.appendChild(div);
-    });
-  } else {
-    wrapper.style.display = "none";
-  }
-}
-
-function setOverlayButtonText(isEditing) {
-  const btn = byId("add");
-  if (!btn) return;
-  btn.textContent = "";
-
-  const text = document.createElement("p");
-  text.textContent = isEditing ? "OK" : "Create";
-
-  const img = document.createElement("img");
-  img.src = isEditing ? "../assets/svg/check.svg" : "../assets/svg/check.svg";
-  img.className = isEditing ? "createTaskCheck" : "createTaskCheck";
-  img.alt = "";
-
-  btn.appendChild(text);
-  btn.appendChild(img);
-}
-
-function toggleClearButton(isEditing) {
-  const clearBtn = byId("clear");
-  if (!clearBtn) return;
-  clearBtn.style.display = isEditing ? "none" : "inline-flex";
-}
-
-async function handleAddOrEditTask(event) {
-  if (event) event.preventDefault();
-  const addButton = byId("add");
-  const editingId = addButton.getAttribute("data-editing-id");
-
-  if (editingId) {
-    await updateTask(editingId);
-
-    addButton.removeAttribute("data-editing-id");
-    addButton.querySelector("p").textContent = "Create task";
-    byId("taskOverlay").classList.remove("edit-mode");
-  } else {
-    await createTask();
-  }
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  const dateInput = document.getElementById('date');
-  const today = new Date().toISOString().split('T')[0];
-  dateInput.min = today;
-  dateInput.addEventListener('click', () => {
-    if (typeof dateInput.showPicker === 'function') {
-      dateInput.showPicker();
-    }
-  });
+window.Board = Object.assign(window.Board || {}, {
+  renderAllTasks,
+  fetchTasks,
+  fetchSingleTask,
+  deleteTask,
+  toggleSubtaskDone
 });
