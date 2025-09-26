@@ -137,10 +137,10 @@ function changeUrgencyImg(highesValue) {
       urgencyImg.src = "../assets/svg/double_arrow_up.svg"
       break
     case 2:
-      urgencyImg.src = "../assets/svg/double_lines.svg"
+      urgencyImg.src = "../assets/svg/double_lines_white.svg"
       break
     case 3:
-      urgencyImg.src = "../assets/svg/double_arrow_down.svg"
+      urgencyImg.src = "../assets/svg/double_arrow_down_white.svg"
       break
   }
 }
