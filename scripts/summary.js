@@ -115,7 +115,18 @@ function sortNumberArray(numberArray) {
   // Sorts numbers and gets the highest priority
   let sortedArray = numberArray.sort()
   let highesValue = sortedArray[0]
+  changeBackgroundColorOfUrgencyImg(sortedArray[0])
   changeUrgencyImg(highesValue)
+}
+
+function changeBackgroundColorOfUrgencyImg(highesValue) {
+  let urgencyImgContainer = document.getElementById('urgencyImgContainer')
+
+  switch (highesValue) {
+    case 1: urgencyImgContainer.style = "background-color:  var(--button-urgent)"; break;
+    case 2: urgencyImgContainer.style = "background-color:  var(--button-medium)"; break;
+    case 3: urgencyImgContainer.style = "background-color:  var(--button-low)"; break;
+  }
 }
 
 function changeUrgencyImg(highesValue) {
