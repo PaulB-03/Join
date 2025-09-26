@@ -186,7 +186,7 @@ header {
   background: var(--main-color);
   color: #fff;
   border-radius: 16px 0 16px 16px;
-  padding: 8px 0;
+  padding: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   z-index: 50;
 }
@@ -196,14 +196,14 @@ header {
   padding: 12px;
   font-size: 16px;
   line-height: 24px;
-  color: #fff;
+  color: var(--sidebar-icon);
   text-align: left;
 }
 
 .profile-menu .menu-item:hover {
   background: var(--color-sidebar-hover);
-  margin-left: 12px;
-  margin-right: 12px;
+
+  font-weight: 400;
 }
 
 .header-nav .help-link {
