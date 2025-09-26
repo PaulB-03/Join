@@ -148,6 +148,16 @@ function selectContact(row, contact) {
   document.querySelectorAll(".contactItem.is-selected").forEach((el) => el.classList.remove("is-selected")); // clear any previous selection
   row.classList.add("is-selected"); // mark this row
   renderContactDetails(contact); // show details on the right
+
+  if (window.innerWidth <= 905) {
+    document.querySelector(".contactDetails")?.classList.add("show");
+    document.querySelector(".contactList")?.classList.add("hide");
+  }
+}
+
+function backToList() { //nur für mobile Ansicht um von den Details zurück zur Liste zu kommen
+  document.querySelector(".contactDetails")?.classList.remove("show");
+  document.querySelector(".contactList")?.classList.remove("hide");
 }
 
 function renderContactDetails(contact) {

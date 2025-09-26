@@ -143,7 +143,7 @@
   font-weight: 700;
   font-size: 32px;
   border: #fff 2px solid;
-  box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .detailsName {
@@ -358,9 +358,15 @@ body.modal-open {
   padding-right: 44px;
 }
 
-.icon-user  { background-image:url("../assets/svg/person.svg"); }
-.icon-mail  { background-image:url("../assets/svg/mail.svg"); }
-.icon-phone { background-image:url("../assets/svg/phone.svg"); }
+.icon-user {
+  background-image: url("../assets/svg/person.svg");
+}
+.icon-mail {
+  background-image: url("../assets/svg/mail.svg");
+}
+.icon-phone {
+  background-image: url("../assets/svg/phone.svg");
+}
 
 #cancelAdd img {
   width: 24px;
@@ -376,4 +382,26 @@ body.modal-open {
 
 #cancelAdd:hover img[src$="cancel_black.svg"] {
   content: url("../assets/svg/cancel_blue.svg");
+}
+
+.backToListBtn {
+  display: none;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+}
+
+.backToListBtn:hover {
+  background: #d3d3d4;
+  border-radius: 8px;
+}
+
+.backToListBtn img {
+  width: 24px;
+  height: 24px;
+}
+
+.contactDetailsHeader .header-small {
+  display: none;
 }

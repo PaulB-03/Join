@@ -1,1 +1,72 @@
 /* ToDO */
+
+@media (max-width: 1210px) {
+  .contactDetails {
+    width: 550px;
+  }
+
+  .contactDetailsHeader img {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1095px) {
+  .contactDetailsBody {
+    padding: 16px 20px;
+  }
+}
+
+@media (max-width: 1025px) {
+  .detailsName {
+    font-size: 35px;
+  }
+
+  .detailsAvatar {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 975px) {
+  .contactPage {
+    padding-right: 0px;
+  }
+}
+
+@media (max-width: 905px) {
+  .contactDetails {
+    display: none;
+  }
+
+  .backToListBtn {
+    display: block;
+  }
+
+  .contactList {
+    width: 100%;
+    border-right: none;
+  }
+
+  .contactDetails.show {
+    display: flex;
+    width: 100%;
+  }
+
+  .contactList.hide {
+    display: none;
+  }
+
+  .contactDetailsHeader {
+    justify-content: space-between;
+  }
+
+  .contactDetailsHeader .header-large {
+    display: none;
+  }
+
+  .contactDetailsHeader .header-small {
+    display: block;
+    width: 213px;
+    height: 104px;
+  }
+}
