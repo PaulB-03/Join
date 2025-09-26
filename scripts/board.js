@@ -1,11 +1,3 @@
-/* ==============================
-   Board Logic (Vanilla JS + RTDB Live Sync)
-   Voraussetzungen:
-   - Firebase SDK (compat) ist in der HTML eingebunden und initialisiert:
-     firebase-app-compat.js, firebase-database-compat.js, firebase.initializeApp(...)
-     window.rtdb = firebase.database();
-   ============================== */
-
 const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
 
 const COL_TO_STATE = {
@@ -21,10 +13,9 @@ const STATE_TO_COL = Object.fromEntries(
 let dragged = null;
 let placeholder = null;
 
-// --- Live Sync (Realtime lesen) ---
 let __liveBound = false;
 let __tasksRef = null;
-const __localEdits = new Set(); // unterdrückt Doppel-Render nach eigenem Drag-Drop
+const __localEdits = new Set(); 
 
 document.addEventListener("DOMContentLoaded", () => {
   init();
@@ -117,7 +108,6 @@ async function onDrop(e, zone) {
 
   const prevParent = dragged.parentElement;
 
-  // Visuelles Einfügen (optimistic)
   insertPlaceholder(zone, e.clientY);
   placeholder.replaceWith(dragged);
 
@@ -127,7 +117,6 @@ async function onDrop(e, zone) {
     updateEmptyState(zone);
   } catch (err) {
     console.error(err);
-    // Rollback ins alte Eltern-Element
     prevParent.appendChild(dragged);
     updateEmptyState(prevParent);
     updateEmptyState(zone);
@@ -148,10 +137,6 @@ function insertPlaceholder(container, mouseY) {
   ).el;
   target ? container.insertBefore(placeholder, target) : container.appendChild(placeholder);
 }
-
-/* ==============================
-   Leere-Zustände / Spaltenpflege
-   ============================== */
 
 function updateEmptyState(zone) {
   if (!zone) return;
@@ -176,14 +161,8 @@ function clearColumns() {
   });
 }
 
-/* ==============================
-   Serverzugriffe (REST)
-   ============================== */
-
 async function updateTaskState(id, state) {
-  // Optimistic UI: Merken, dass die Änderung von mir stammt
   __localEdits.add(id);
-  // etwas großzügiger, um langsame Netze abzudecken
   setTimeout(() => __localEdits.delete(id), 1500);
 
   const res = await fetch(`${BASE_URL}/tasks/${id}.json`, {
@@ -245,10 +224,6 @@ async function saveSubtasks(taskId, subs) {
   });
   if (!r.ok) throw new Error(`PATCH subtasks failed: ${r.status}`);
 }
-
-/* ==============================
-   Rendern
-   ============================== */
 
 async function renderAllTasks() {
   const tasks = await fetchTasks();
