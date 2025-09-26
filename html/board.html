@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,18 +14,43 @@
   <link rel="stylesheet" href="../styles/colors.css" />
   <link rel="stylesheet" href="../styles/fonts.css" />
 
+  <!-- Firebase (Compat) VOR board.js laden und initialisieren -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script>
+    // TODO: Echte Config aus der Firebase Console eintragen
+    const firebaseConfig = {
+      apiKey: "…",
+      authDomain: "…",
+      databaseURL: "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "…",
+      storageBucket: "…",
+      messagingSenderId: "…",
+      appId: "…"
+    };
+    firebase.initializeApp(firebaseConfig);
+    window.rtdb = firebase.database();
+  </script>
+
   <script src="../scripts/templates.js" defer></script>
   <script src="../scripts/boardOverlay.js" defer></script>
   <script src="../scripts/board.js" defer></script>
-  <script src="../script.js"></script>
-  <script src="../scripts/boardSearchbar.js"></script>
-  <script src="../scripts/standardFunctions.js"></script>
-  <script src="../scripts/subTask.js"></script>
+  <script src="../script.js" defer></script>
+  <script src="../scripts/boardSearchbar.js" defer></script>
+  <script src="../scripts/standardFunctions.js" defer></script>
+  <script src="../scripts/subTask.js" defer></script>
+
+  <noscript>
+    <style>.app { display:none; }</style>
+    <div style="padding:1rem; background:#fff3cd; color:#664d03;">
+      JavaScript ist deaktiviert. Bitte aktivieren, um das Board zu nutzen.
+    </div>
+  </noscript>
 </head>
 
 <body onload="sidebarHeaderInit()">
   <header id="header">
-    <div class="header-content" id="header">
+    <div class="header-content">
       <img src="../assets/svg/join_logo_small.svg" class="headerLogo" style="height: 39px" alt="Join Logo" />
       <h6>Kanban Projekt Management Tool</h6>
       <nav id="headerNav" class="header-nav">
@@ -47,6 +71,7 @@
       </nav>
     </div>
   </header>
+
   <aside id="sidebar">
     <aside class="sidebar">
       <div class="sb-header">
@@ -89,12 +114,13 @@
     <div class="heading">
       <h1>Board</h1>
       <div class="controls">
-        <div id="search-empty-state" class="empty-state d_none" role="status" aria-live="polite">Keine Ergebnisse
-          gefunden.</div>
+        <div id="search-empty-state" class="empty-state d_none" role="status" aria-live="polite">
+          Keine Ergebnisse gefunden.
+        </div>
 
         <div class="search" role="search" aria-label="Find Task">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="7" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
@@ -102,9 +128,9 @@
         </div>
 
         <button type="button" id="openAddTask" class="btn btn-dark" aria-label="Add task">
-            <span class="btn-text">Add task</span>
-            <img src="../assets/svg/add.svg" alt="" class="icon-add" aria-hidden="true" />
-          </button>
+          <span class="btn-text">Add task</span>
+          <img src="../assets/svg/add.svg" alt="" class="icon-add" aria-hidden="true" />
+        </button>
       </div>
     </div>
 
@@ -153,7 +179,7 @@
 
   <div id="taskDetailOverlay" class="task-overlay">
     <div class="task-modal" role="dialog" aria-modal="true" aria-labelledby="taskDetailTitle"
-      onclick="event.stopPropagation()">
+         onclick="event.stopPropagation()">
       <button class="task-modal__close" id="taskDetailClose" aria-label="Close">&times;</button>
       <div id="taskDetailContent"><!-- Inhalt wird per JS gerendert --></div>
     </div>
@@ -168,17 +194,20 @@
           <div class="addTaskWrapper">
             <div>
               <div class="inputFlexbox">
-                <span id="requiredHeaders">Title<img src="../assets/svg/required.svg" alt="" id="required"
-                    required /></span>
+                <span id="requiredHeaders">Title
+                  <img src="../assets/svg/required.svg" alt="" id="required" required />
+                </span>
                 <input class="title" id="titleInput" type="text" placeholder="Enter a title" />
               </div>
               <div class="inputFlexbox">
                 <span>Description</span>
                 <textarea rows="5" cols="50" class="title" id="descriptionInput" type="text"
-                  placeholder="Enter description" required></textarea>
+                          placeholder="Enter description" required></textarea>
               </div>
               <div class="inputFlexbox">
-                <span id="requiredHeaders">Due date <img src="../assets/svg/required.svg" alt="" id="required" /></span>
+                <span id="requiredHeaders">Due date
+                  <img src="../assets/svg/required.svg" alt="" id="required" />
+                </span>
                 <input class="title" id="date" type="date" tabindex="0" required />
               </div>
               <span id="requiredHeaders" class="textrequired">
@@ -191,12 +220,18 @@
               <div class="inputFlexbox">
                 <span>Priority</span>
                 <div class="prioDivsWrapper">
-                  <div id="urgent" onclick="setPrioColor(0)" class="prioGrade"><span>Urgent</span> <img
-                      src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="red" /></div>
-                  <div id="medium" onclick="setPrioColor(1)" class="prioGrade"><span>Medium</span> <img
-                      src="../assets/svg/double_lines.svg" class="prioImage" alt="orange" /></div>
-                  <div id="low" onclick="setPrioColor(2)" class="prioGrade"><span>Low</span> <img
-                      src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="green" /></div>
+                  <div id="urgent" onclick="setPrioColor(0)" class="prioGrade">
+                    <span>Urgent</span>
+                    <img src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="red" />
+                  </div>
+                  <div id="medium" onclick="setPrioColor(1)" class="prioGrade">
+                    <span>Medium</span>
+                    <img src="../assets/svg/double_lines.svg" class="prioImage" alt="orange" />
+                  </div>
+                  <div id="low" onclick="setPrioColor(2)" class="prioGrade">
+                    <span>Low</span>
+                    <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="green" />
+                  </div>
                 </div>
               </div>
               <div class="inputFlexbox">
@@ -211,7 +246,9 @@
                 <div id="assignedToInitials" style="display: none"></div>
               </div>
               <div class="inputFlexbox" id="category">
-                <span id="requiredHeaders">Category <img src="../assets/svg/required.svg" alt="" id="required" /></span>
+                <span id="requiredHeaders">Category
+                  <img src="../assets/svg/required.svg" alt="" id="required" />
+                </span>
                 <div id="assignedToDropdownCategory" class="title" tabindex="0" onclick="toggleCategoryDropdown()">
                   <div class="dropdown-selected" id="input-category">
                     <span id="categoryPlaceholder">Select task category</span>
@@ -264,8 +301,8 @@
       </div>
     </div>
   </div>
-  <script src="../scripts/logIn_Malte.js"></script>
-  <script src="../scripts/header.js"></script>
-</body>
 
+  <script src="../scripts/logIn_Malte.js" defer></script>
+  <script src="../scripts/header.js" defer></script>
+</body>
 </html>

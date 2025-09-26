@@ -115,7 +115,18 @@ function sortNumberArray(numberArray) {
   // Sorts numbers and gets the highest priority
   let sortedArray = numberArray.sort()
   let highesValue = sortedArray[0]
+  changeBackgroundColorOfUrgencyImg(sortedArray[0])
   changeUrgencyImg(highesValue)
+}
+
+function changeBackgroundColorOfUrgencyImg(highesValue) {
+  let urgencyImgContainer = document.getElementById('urgencyImgContainer')
+
+  switch (highesValue) {
+    case 1: urgencyImgContainer.style = "background-color:  var(--button-urgent)"; break;
+    case 2: urgencyImgContainer.style = "background-color:  var(--button-medium)"; break;
+    case 3: urgencyImgContainer.style = "background-color:  var(--button-low)"; break;
+  }
 }
 
 function changeUrgencyImg(highesValue) {
@@ -126,10 +137,10 @@ function changeUrgencyImg(highesValue) {
       urgencyImg.src = "../assets/svg/double_arrow_up.svg"
       break
     case 2:
-      urgencyImg.src = "../assets/svg/double_lines.svg"
+      urgencyImg.src = "../assets/svg/double_lines_white.svg"
       break
     case 3:
-      urgencyImg.src = "../assets/svg/double_arrow_down.svg"
+      urgencyImg.src = "../assets/svg/double_arrow_down_white.svg"
       break
   }
 }
