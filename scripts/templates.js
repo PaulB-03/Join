@@ -139,16 +139,22 @@ function taskCardInnerHtml(t, percent, doneCount, total) {
     ${
       total
         ? `
-      <div class="progress"><div class="bar" style="width:${percent}%"></div></div>
-      <div class="meta">
-        <span>${doneCount}/${total} Subtasks</span>
-        <span></span> <!-- Platzhalter: KEINE Prio mehr hier -->
+      <div class="meta-container">
+        <div class="progress">
+          <div class="bar" style="width:${percent}%"></div>
+        </div>
+        <div class="meta">
+          <span>${doneCount}/${total} Subtasks</span>
+          <span></span> <!-- Platzhalter -->
+        </div>
       </div>
     `
         : `
-      <div class="meta">
-        <span></span>
-        <span></span> <!-- weiterhin leer, Prio kommt unten bei Avataren -->
+      <div class="meta-container">
+        <div class="meta">
+          <span></span>
+          <span></span>
+        </div>
       </div>
     `
     }
@@ -156,6 +162,7 @@ function taskCardInnerHtml(t, percent, doneCount, total) {
     ${renderAvatarsWithPriority(t.assignedContacts || [], t.priority)}
   `;
 }
+
 
 function renderAvatarsWithPriority(names = [], prio) {
   const avatars = names
