@@ -1,6 +1,7 @@
 
 function initForSummary() {
   // Initializes the summary page (sidebar, box listeners, load data)
+  greetingOverlayMobile()
   sidebarHeaderInit();
   boxListener()
   dataForSummary();
@@ -271,4 +272,28 @@ function boxListener() {
       window.location.href = "../html/board.html";
     });
   }
+}
+
+function greetingOverlayMobile() {
+  if (window.innerWidth <= 850) {
+    changeHTMLOfGreetingContainer()
+  } else {
+    resetHTMLOfGreetingContainer()
+  }
+}
+
+function resetHTMLOfGreetingContainer() {
+  let sumGreetingContainer = document.getElementById('sumGreetingContainer')
+  let summarySection = document.getElementById('summarySection')
+
+  sumGreetingContainer.style.cssText = ""
+  summarySection.style.cssText = ""
+}
+
+function changeHTMLOfGreetingContainer() {
+  let sumGreetingContainer = document.getElementById('sumGreetingContainer')
+  let summarySection = document.getElementById('summarySection')
+
+  sumGreetingContainer.style.cssText = "display: flex; justify-content: center; align-items: center; position: absolute;top: 0; left: 0; background-color: #f6f7f9; width: 100%;  height: 100%;"
+  summarySection.style.cssText = "padding-left: 0"
 }
