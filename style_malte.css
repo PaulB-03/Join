@@ -311,10 +311,6 @@
 }
 
 @media (max-width: 496px) {
-  .startLogo {
-    display: none;
-  }
-
   .startLogoMobile,
   .startLogoMobileBg {
     display: block;
