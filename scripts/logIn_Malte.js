@@ -87,6 +87,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 function logoutUser() {
+  localStorage.removeItem("showedOnce");
   localStorage.removeItem("currentUser");
   document.getElementById("profileMenu").style.display = "none";
   window.location.href = "../index.html";
