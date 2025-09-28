@@ -13,7 +13,7 @@ const signinPassword = document.getElementById("signinPassword");
 const signupName = document.getElementById("signupName");
 const nameError = document.getElementById("nameError");
 
-const signupEmail = document.getElementById("signupEmail").value.toLowerCase();
+const signupEmail = document.getElementById("signupEmail");
 const emailError = document.getElementById("emailError");
 
 const signupPassword = document.getElementById("signupPassword");
@@ -35,7 +35,7 @@ const updateFieldError = (isValid, inputElement, errorElement) => {
 
 const validateSignupForm = () => {
   const isNameValid = nameRegex.test(signupName.value);
-  const isEmailValid = emailRegex.test(signupEmail);
+  const isEmailValid = emailRegex.test(signupEmail.value.toLowerCase());
   const doPasswordsMatch = signupPassword.value && signupPassword.value === confirmPassword.value;
   // Use helper for each field
   updateFieldError(isNameValid, signupName, nameError);
@@ -59,7 +59,7 @@ signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   if (!validateSignupForm()) return;
   const name = signupName.value;
-  const email = signupEmail;
+  const email = signupEmail.value.toLowerCase();
   const password = signupPassword.value;
   try {
     await signupProcess(name, email, password);

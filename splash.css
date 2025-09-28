@@ -358,7 +358,10 @@
     font-size: 14px;
     width: 259px;
     height: 60px;
-    transform: translateY(33vh);
+  }
+
+  .signupOverlay.show .signupSuccess {
+    transform: translateY(25vh);
   }
 }
 
