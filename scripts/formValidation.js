@@ -6,14 +6,14 @@ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const signupForm = document.getElementById("signUpForm");
 const signinForm = document.getElementById("signinForm");
 
-const signinEmail = document.getElementById("signinEmail");
+const signinEmail = document.getElementById("signinEmail").value.toLowerCase();
 const loginError = document.getElementById("loginError");
 const signinPassword = document.getElementById("signinPassword");
 
 const signupName = document.getElementById("signupName");
 const nameError = document.getElementById("nameError");
 
-const signupEmail = document.getElementById("signupEmail");
+const signupEmail = document.getElementById("signupEmail").value.toLowerCase();
 const emailError = document.getElementById("emailError");
 
 const signupPassword = document.getElementById("signupPassword");
@@ -35,7 +35,7 @@ const updateFieldError = (isValid, inputElement, errorElement) => {
 
 const validateSignupForm = () => {
   const isNameValid = nameRegex.test(signupName.value);
-  const isEmailValid = emailRegex.test(signupEmail.value);
+  const isEmailValid = emailRegex.test(signupEmail);
   const doPasswordsMatch = signupPassword.value && signupPassword.value === confirmPassword.value;
   // Use helper for each field
   updateFieldError(isNameValid, signupName, nameError);
@@ -59,7 +59,7 @@ signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   if (!validateSignupForm()) return;
   const name = signupName.value;
-  const email = signupEmail.value;
+  const email = signupEmail;
   const password = signupPassword.value;
   try {
     await signupProcess(name, email, password);

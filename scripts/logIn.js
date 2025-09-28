@@ -46,28 +46,6 @@ function showSummaryGreeting() {
   }
 }
 
-function waitForHeaderAndUpdateAvatars() {
-  const headerReady = document.querySelector("#header #userAvatar, #header #guestAvatar");
-  if (headerReady) {
-    updateHeaderAvatars();
-  } else {
-    setTimeout(waitForHeaderAndUpdateAvatars, 50);
-  }
-}
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   waitForHeaderAndUpdateAvatars();
-//   showSummaryGreeting();
-//
-//   const loginButton = document.getElementById("loginBtn");
-//
-//   loginButton?.addEventListener("click", (e) => {
-//     e.preventDefault();
-//     saveLoginStatus("user", "Sofia Müller");
-//     window.location.href = "./html/summary.html";
-//   });
-// });
-
 function toggleProfileMenu(e) {
   e.stopPropagation();
   const menu = document.getElementById("profileMenu");
@@ -86,9 +64,9 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-function logoutUser() {
-  localStorage.removeItem("showedOnce");
-  localStorage.removeItem("currentUser");
-  document.getElementById("profileMenu").style.display = "none";
-  window.location.href = "../index.html";
-}
+// function logoutUser() {
+//   localStorage.removeItem("showedOnce");
+//   localStorage.removeItem("currentUser");
+//   document.getElementById("profileMenu").style.display = "none";
+//   window.location.href = "../index.html";
+// }

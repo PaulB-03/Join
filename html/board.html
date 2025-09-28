@@ -1,310 +1,310 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Join – Board</title>
-  <link rel="shortcut icon" href="../assets/svg/join_logo.svg" type="image/x-icon" />
-  <link rel="stylesheet" href="../styles/standard.css" />
-  <link rel="stylesheet" href="../style.css" />
-  <link rel="stylesheet" href="../styles/board.css" />
-  <link rel="stylesheet" href="../styles/boardOverlay.css" />
-  <link rel="stylesheet" href="../styles/media.css" />
-  <link rel="stylesheet" href="../styles/addTask.css" />
-  <link rel="stylesheet" href="../styles/colors.css" />
-  <link rel="stylesheet" href="../styles/fonts.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Join – Board</title>
+    <link rel="shortcut icon" href="../assets/svg/join_logo.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="../styles/standard.css" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/board.css" />
+    <link rel="stylesheet" href="../styles/boardOverlay.css" />
+    <link rel="stylesheet" href="../styles/media.css" />
+    <link rel="stylesheet" href="../styles/addTask.css" />
+    <link rel="stylesheet" href="../styles/colors.css" />
+    <link rel="stylesheet" href="../styles/fonts.css" />
 
-  <!-- Firebase (Compat) VOR board.js laden und initialisieren -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script>
-    // TODO: Echte Config aus der Firebase Console eintragen
-    const firebaseConfig = {
-      apiKey: "…",
-      authDomain: "…",
-      databaseURL: "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "…",
-      storageBucket: "…",
-      messagingSenderId: "…",
-      appId: "…"
-    };
-    firebase.initializeApp(firebaseConfig);
-    window.rtdb = firebase.database();
-  </script>
+    <!-- Firebase (Compat) VOR board.js laden und initialisieren -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script>
+      // TODO: Echte Config aus der Firebase Console eintragen
+      const firebaseConfig = {
+        apiKey: "…",
+        authDomain: "…",
+        databaseURL: "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "…",
+        storageBucket: "…",
+        messagingSenderId: "…",
+        appId: "…",
+      };
+      firebase.initializeApp(firebaseConfig);
+      window.rtdb = firebase.database();
+    </script>
 
-  <script src="../scripts/templates.js" defer></script>
-  <script src="../scripts/boardOverlay.js" defer></script>
-  <script src="../scripts/board.js" defer></script>
-  <script src="../script.js" defer></script>
-  <script src="../scripts/boardSearchbar.js" defer></script>
-  <script src="../scripts/standardFunctions.js" defer></script>
-  <script src="../scripts/subTask.js" defer></script>
+    <script src="../scripts/templates.js" defer></script>
+    <script src="../scripts/boardOverlay.js" defer></script>
+    <script src="../scripts/board.js" defer></script>
+    <script src="../script.js" defer></script>
+    <script src="../scripts/boardSearchbar.js" defer></script>
+    <script src="../scripts/standardFunctions.js" defer></script>
+    <script src="../scripts/subTask.js" defer></script>
 
-  <noscript>
-    <style>.app { display:none; }</style>
-    <div style="padding:1rem; background:#fff3cd; color:#664d03;">
-      JavaScript ist deaktiviert. Bitte aktivieren, um das Board zu nutzen.
-    </div>
-  </noscript>
-</head>
+    <noscript>
+      <style>
+        .app {
+          display: none;
+        }
+      </style>
+      <div style="padding: 1rem; background: #fff3cd; color: #664d03">JavaScript ist deaktiviert. Bitte aktivieren, um das Board zu nutzen.</div>
+    </noscript>
+  </head>
 
-<body onload="sidebarHeaderInit()">
-  <header id="header">
-    <div class="header-content">
-      <img src="../assets/svg/join_logo_small.svg" class="headerLogo" style="height: 39px" alt="Join Logo" />
-      <h6>Kanban Projekt Management Tool</h6>
-      <nav id="headerNav" class="header-nav">
-        <a href="../html/help.html" class="help-link" aria-label="Help">
-          <img class="helper" src="../assets/svg/help.svg" alt="Hilfe" />
-        </a>
-        <div id="userAvatar" class="header-avatar" title="Profil" onclick="toggleProfileMenu(event)"></div>
-        <div id="guestAvatar" class="avatar-wrapper" title="Gast" onclick="toggleProfileMenu(event)">
-          <img class="default" src="../assets/img/guest.png" alt="Gastprofil" />
-          <img class="hover" src="../assets/img/guest-hover.png" alt="Gastprofil Hover" />
-        </div>
-        <div id="profileMenu" class="profile-menu" style="display: none">
-          <a class="menu-item helpMobile" href="../html/help.html">Help</a>
-          <a class="menu-item" href="../html/legalNotice.html">Legal Notice</a>
-          <a class="menu-item" href="../html/privacyPolicy.html">Privacy Policy</a>
-          <a class="menu-item" href="../index.html" onclick="logout()">Log Out</a>
-        </div>
-      </nav>
-    </div>
-  </header>
-
-  <aside id="sidebar">
-    <aside class="sidebar">
-      <div class="sb-header">
-        <img class="join-logo" src="../assets/svg/join_logo_white.svg" alt="Join Logo" />
+  <body onload="sidebarHeaderInit()">
+    <header id="header">
+      <div class="header-content">
+        <img src="../assets/svg/join_logo_small.svg" class="headerLogo" style="height: 39px" alt="Join Logo" />
+        <h6>Kanban Projekt Management Tool</h6>
+        <nav id="headerNav" class="header-nav">
+          <a href="../html/help.html" class="help-link" aria-label="Help">
+            <img class="helper" src="../assets/svg/help.svg" alt="Hilfe" />
+          </a>
+          <div id="userAvatar" class="header-avatar" title="Profil" onclick="toggleProfileMenu(event)"></div>
+          <div id="guestAvatar" class="avatar-wrapper" title="Gast" onclick="toggleProfileMenu(event)">
+            <img class="default" src="../assets/img/guest.png" alt="Gastprofil" />
+            <img class="hover" src="../assets/img/guest-hover.png" alt="Gastprofil Hover" />
+          </div>
+          <div id="profileMenu" class="profile-menu" style="display: none">
+            <a class="menu-item helpMobile" href="../html/help.html">Help</a>
+            <a class="menu-item" href="../html/legalNotice.html">Legal Notice</a>
+            <a class="menu-item" href="../html/privacyPolicy.html">Privacy Policy</a>
+            <a class="menu-item" href="../index.html" onclick="logout()">Log Out</a>
+          </div>
+        </nav>
       </div>
-      <ul id="internalSidebar" class="nav-list">
-        <li class="nav-item">
-          <a class="nav-link" href="../html/summary.html">
-            <span class="icon"><img src="../assets/svg/summary.svg" alt="Summary" /></span>
-            <span>Summary</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="../html/addTask.html">
-            <span class="icon"><img src="../assets/svg/add_task.svg" alt="Add Task" /></span>
-            <span>Add Task</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="../html/board.html">
-            <span class="icon"><img src="../assets/svg/board.svg" alt="Board" /></span>
-            <span>Board</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="../html/contacts.html">
-            <span class="icon"><img src="../assets/svg/contacts.svg" alt="Contacts" /></span>
-            <span>Contacts</span>
-          </a>
-        </li>
-      </ul>
-      <div class="sb-footer">
-        <a href="../html/privacyPolicy.html">Privacy Policy</a>
-        <a href="../html/legalNotice.html">Legal notice</a>
-      </div>
+    </header>
+
+    <aside id="sidebar">
+      <aside class="sidebar">
+        <div class="sb-header">
+          <img class="join-logo" src="../assets/svg/join_logo_white.svg" alt="Join Logo" />
+        </div>
+        <ul id="internalSidebar" class="nav-list">
+          <li class="nav-item">
+            <a class="nav-link" href="../html/summary.html">
+              <span class="icon"><img src="../assets/svg/summary.svg" alt="Summary" /></span>
+              <span>Summary</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../html/addTask.html">
+              <span class="icon"><img src="../assets/svg/add_task.svg" alt="Add Task" /></span>
+              <span>Add Task</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../html/board.html">
+              <span class="icon"><img src="../assets/svg/board.svg" alt="Board" /></span>
+              <span>Board</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../html/contacts.html">
+              <span class="icon"><img src="../assets/svg/contacts.svg" alt="Contacts" /></span>
+              <span>Contacts</span>
+            </a>
+          </li>
+        </ul>
+        <div class="sb-footer">
+          <a href="../html/privacyPolicy.html">Privacy Policy</a>
+          <a href="../html/legalNotice.html">Legal notice</a>
+        </div>
+      </aside>
     </aside>
-  </aside>
 
-  <div class="app">
-    <div class="heading">
-      <h1>Board</h1>
-      <div class="controls">
-        <div id="search-empty-state" class="empty-state d_none" role="status" aria-live="polite">
-          Keine Ergebnisse gefunden.
+    <div class="app">
+      <div class="heading">
+        <h1>Board</h1>
+        <div class="controls">
+          <div id="search-empty-state" class="empty-state d_none" role="status" aria-live="polite">Keine Ergebnisse gefunden.</div>
+
+          <div class="search" role="search" aria-label="Find Task">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input type="search" oninput="processChanges()" id="taskSearchInput" placeholder="Find Task" />
+          </div>
+
+          <button type="button" id="openAddTask" class="btn btn-dark" aria-label="Add task">
+            <span class="btn-text">Add task</span>
+            <img src="../assets/svg/add.svg" alt="" class="icon-add" aria-hidden="true" />
+          </button>
         </div>
-
-        <div class="search" role="search" aria-label="Find Task">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="11" cy="11" r="7" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-          <input type="search" oninput="processChanges()" id="taskSearchInput" placeholder="Find Task" />
-        </div>
-
-        <button type="button" id="openAddTask" class="btn btn-dark" aria-label="Add task">
-          <span class="btn-text">Add task</span>
-          <img src="../assets/svg/add.svg" alt="" class="icon-add" aria-hidden="true" />
-        </button>
       </div>
-    </div>
 
-    <section class="board-viewport" aria-label="Board-Viewport">
-      <section class="board" aria-label="Kanban Board">
-        <div class="column">
-          <div class="col-head">
-            To do
-            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+      <section class="board-viewport" aria-label="Board-Viewport">
+        <section class="board" aria-label="Kanban Board">
+          <div class="column">
+            <div class="col-head">
+              To do
+              <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+            </div>
+            <div class="dropzone" id="todo">
+              <div class="empty">No tasks To do</div>
+            </div>
           </div>
-          <div class="dropzone" id="todo">
-            <div class="empty">No tasks To do</div>
-          </div>
-        </div>
 
-        <div class="column">
-          <div class="col-head">
-            In progress
-            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+          <div class="column">
+            <div class="col-head">
+              In progress
+              <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+            </div>
+            <div class="dropzone" id="in-progress">
+              <div class="empty">No tasks In progress</div>
+            </div>
           </div>
-          <div class="dropzone" id="in-progress">
-            <div class="empty">No tasks In progress</div>
-          </div>
-        </div>
 
-        <div class="column">
-          <div class="col-head">
-            Await feedback
-            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+          <div class="column">
+            <div class="col-head">
+              Await feedback
+              <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+            </div>
+            <div class="dropzone" id="await-feedback">
+              <div class="empty">No tasks Await feedback</div>
+            </div>
           </div>
-          <div class="dropzone" id="await-feedback">
-            <div class="empty">No tasks Await feedback</div>
-          </div>
-        </div>
 
-        <div class="column">
-          <div class="col-head">
-            Done
-            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+          <div class="column">
+            <div class="col-head">
+              Done
+              <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+            </div>
+            <div class="dropzone" id="done">
+              <div class="empty">No tasks Done</div>
+            </div>
           </div>
-          <div class="dropzone" id="done">
-            <div class="empty">No tasks Done</div>
-          </div>
-        </div>
+        </section>
       </section>
-    </section>
-  </div>
-
-  <div id="taskDetailOverlay" class="task-overlay">
-    <div class="task-modal" role="dialog" aria-modal="true" aria-labelledby="taskDetailTitle"
-         onclick="event.stopPropagation()">
-      <button class="task-modal__close" id="taskDetailClose" aria-label="Close">&times;</button>
-      <div id="taskDetailContent"><!-- Inhalt wird per JS gerendert --></div>
     </div>
-  </div>
 
-  <div id="taskOverlay" class="overlay" aria-hidden="true">
-    <div class="overlay-panel task-overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
-      <button type="button" class="overlay-close" id="closeTaskOverlay" aria-label="Close">×</button>
-
-      <div class="task-overlay-inner" style="padding: 4px 4px 20px">
-        <form class="overlay">
-          <div class="addTaskWrapper">
-            <div>
-              <div class="inputFlexbox">
-                <span id="requiredHeaders">Title
-                  <img src="../assets/svg/required.svg" alt="" id="required" required />
-                </span>
-                <input class="title" id="titleInput" type="text" placeholder="Enter a title" />
-              </div>
-              <div class="inputFlexbox">
-                <span>Description</span>
-                <textarea rows="5" cols="50" class="title" id="descriptionInput" type="text"
-                          placeholder="Enter description" required></textarea>
-              </div>
-              <div class="inputFlexbox">
-                <span id="requiredHeaders">Due date
-                  <img src="../assets/svg/required.svg" alt="" id="required" />
-                </span>
-                <input class="title" id="date" type="date" tabindex="0" required />
-              </div>
-              <span id="requiredHeaders" class="textrequired">
-                <img id="required" src="../assets/svg/required.svg" alt="" />
-                <p>This field is required</p>
-              </span>
-            </div>
-            <div class="divider"></div>
-            <div>
-              <div class="inputFlexbox">
-                <span>Priority</span>
-                <div class="prioDivsWrapper">
-                  <div id="urgent" onclick="setPrioColor(0)" class="prioGrade">
-                    <span>Urgent</span>
-                    <img src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="red" />
-                  </div>
-                  <div id="medium" onclick="setPrioColor(1)" class="prioGrade">
-                    <span>Medium</span>
-                    <img src="../assets/svg/double_lines.svg" class="prioImage" alt="orange" />
-                  </div>
-                  <div id="low" onclick="setPrioColor(2)" class="prioGrade">
-                    <span>Low</span>
-                    <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="green" />
-                  </div>
-                </div>
-              </div>
-              <div class="inputFlexbox">
-                <span>Assigned to</span>
-                <div id="assignedToDropdownContacts" class="title" tabindex="0">
-                  <div class="dropdown-selected">
-                    <input class="search" type="text" id="contactSearch" placeholder="Select contacts" />
-                    <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts" />
-                  </div>
-                  <ul id="dropdown-list-contacts"></ul>
-                </div>
-                <div id="assignedToInitials" style="display: none"></div>
-              </div>
-              <div class="inputFlexbox" id="category">
-                <span id="requiredHeaders">Category
-                  <img src="../assets/svg/required.svg" alt="" id="required" />
-                </span>
-                <div id="assignedToDropdownCategory" class="title" tabindex="0" onclick="toggleCategoryDropdown()">
-                  <div class="dropdown-selected" id="input-category">
-                    <span id="categoryPlaceholder">Select task category</span>
-                    <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" />
-                  </div>
-                  <ul id="dropdown-list-category">
-                    <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
-                      <label for="checkbox-1" class="custom-checkbox">
-                        Userstory
-                        <input type="checkbox" required />
-                        <span style="display: none"></span>
-                      </label>
-                    </li>
-                    <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
-                      <label for="checkbox-2" class="custom-checkbox">
-                        Technical Task
-                        <input type="checkbox" required />
-                        <span style="display: none"></span>
-                      </label>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="inputFlexbox" id="subtasks">
-                <span>Subtasks</span>
-                <div class="dropdown-subtasks" tabindex="0">
-                  <input type="text" class="dropdown-selected input-subtask" placeholder="Add a new subtask" />
-                  <div class="subtask-images-container" style="display: none">
-                    <img src="../assets/svg/subclose.svg" class="subtaskImages cancelSubtask" alt="Delete Subtask" />
-                    <div class="divider1"></div>
-                    <img src="../assets/svg/subcheck.svg" class="subtaskImages saveSubtask" alt="Save Subtask" />
-                  </div>
-                </div>
-                <div class="addedSubtaskWrapper"></div>
-              </div>
-              <div class="addOrClear">
-                <div id="clear" class="addOrClearBtn" onclick="clearTask()">
-                  <p>Cancel</p>
-                  <img src="../assets/svg/cancel.svg" alt="" />
-                </div>
-                <button id="add" class="addOrClearBtn" type="button" onclick="handleAddOrEditTask(event)">
-                  <p>Create Task</p>
-                  <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
-                </button>
-              </div>
-              <div id="taskError" class="error-message"></div>
-            </div>
-          </div>
-        </form>
+    <div id="taskDetailOverlay" class="task-overlay">
+      <div class="task-modal" role="dialog" aria-modal="true" aria-labelledby="taskDetailTitle" onclick="event.stopPropagation()">
+        <button class="task-modal__close" id="taskDetailClose" aria-label="Close">&times;</button>
+        <div id="taskDetailContent"><!-- Inhalt wird per JS gerendert --></div>
       </div>
     </div>
-  </div>
 
-  <script src="../scripts/logIn.js" defer></script>
-  <script src="../scripts/header.js" defer></script>
-</body>
+    <div id="taskOverlay" class="overlay" aria-hidden="true">
+      <div class="overlay-panel task-overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+        <button type="button" class="overlay-close" id="closeTaskOverlay" aria-label="Close">×</button>
+
+        <div class="task-overlay-inner" style="padding: 4px 4px 20px">
+          <form class="overlay">
+            <div class="addTaskWrapper">
+              <div>
+                <div class="inputFlexbox">
+                  <span id="requiredHeaders"
+                    >Title
+                    <img src="../assets/svg/required.svg" alt="" id="required" required />
+                  </span>
+                  <input class="title" id="titleInput" type="text" placeholder="Enter a title" />
+                </div>
+                <div class="inputFlexbox">
+                  <span>Description</span>
+                  <textarea rows="5" cols="50" class="title" id="descriptionInput" type="text" placeholder="Enter description" required></textarea>
+                </div>
+                <div class="inputFlexbox">
+                  <span id="requiredHeaders"
+                    >Due date
+                    <img src="../assets/svg/required.svg" alt="" id="required" />
+                  </span>
+                  <input class="title" id="date" type="date" tabindex="0" required />
+                </div>
+                <span id="requiredHeaders" class="textrequired">
+                  <img id="required" src="../assets/svg/required.svg" alt="" />
+                  <p>This field is required</p>
+                </span>
+              </div>
+              <div class="divider"></div>
+              <div>
+                <div class="inputFlexbox">
+                  <span>Priority</span>
+                  <div class="prioDivsWrapper">
+                    <div id="urgent" onclick="setPrioColor(0)" class="prioGrade">
+                      <span>Urgent</span>
+                      <img src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="red" />
+                    </div>
+                    <div id="medium" onclick="setPrioColor(1)" class="prioGrade">
+                      <span>Medium</span>
+                      <img src="../assets/svg/double_lines.svg" class="prioImage" alt="orange" />
+                    </div>
+                    <div id="low" onclick="setPrioColor(2)" class="prioGrade">
+                      <span>Low</span>
+                      <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="green" />
+                    </div>
+                  </div>
+                </div>
+                <div class="inputFlexbox">
+                  <span>Assigned to</span>
+                  <div id="assignedToDropdownContacts" class="title" tabindex="0">
+                    <div class="dropdown-selected">
+                      <input class="search" type="text" id="contactSearch" placeholder="Select contacts" />
+                      <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts" />
+                    </div>
+                    <ul id="dropdown-list-contacts"></ul>
+                  </div>
+                  <div id="assignedToInitials" style="display: none"></div>
+                </div>
+                <div class="inputFlexbox" id="category">
+                  <span id="requiredHeaders"
+                    >Category
+                    <img src="../assets/svg/required.svg" alt="" id="required" />
+                  </span>
+                  <div id="assignedToDropdownCategory" class="title" tabindex="0" onclick="toggleCategoryDropdown()">
+                    <div class="dropdown-selected" id="input-category">
+                      <span id="categoryPlaceholder">Select task category</span>
+                      <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" />
+                    </div>
+                    <ul id="dropdown-list-category">
+                      <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
+                        <label for="checkbox-1" class="custom-checkbox">
+                          Userstory
+                          <input type="checkbox" required />
+                          <span style="display: none"></span>
+                        </label>
+                      </li>
+                      <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
+                        <label for="checkbox-2" class="custom-checkbox">
+                          Technical Task
+                          <input type="checkbox" required />
+                          <span style="display: none"></span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="inputFlexbox" id="subtasks">
+                  <span>Subtasks</span>
+                  <div class="dropdown-subtasks" tabindex="0">
+                    <input type="text" class="dropdown-selected input-subtask" placeholder="Add a new subtask" />
+                    <div class="subtask-images-container" style="display: none">
+                      <img src="../assets/svg/subclose.svg" class="subtaskImages cancelSubtask" alt="Delete Subtask" />
+                      <div class="divider1"></div>
+                      <img src="../assets/svg/subcheck.svg" class="subtaskImages saveSubtask" alt="Save Subtask" />
+                    </div>
+                  </div>
+                  <div class="addedSubtaskWrapper"></div>
+                </div>
+                <div class="addOrClear">
+                  <div id="clear" class="addOrClearBtn" onclick="clearTask()">
+                    <p>Cancel</p>
+                    <img src="../assets/svg/cancel.svg" alt="" />
+                  </div>
+                  <button id="add" class="addOrClearBtn" type="button" onclick="handleAddOrEditTask(event)">
+                    <p>Create Task</p>
+                    <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
+                  </button>
+                </div>
+                <div id="taskError" class="error-message"></div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="../scripts/logIn.js" defer></script>
+    <script src="../scripts/header.js" defer></script>
+  </body>
 </html>

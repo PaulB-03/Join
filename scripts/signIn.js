@@ -13,7 +13,7 @@ guestLoginButton?.addEventListener("click", (e) => {
 document.getElementById("signinForm").addEventListener("submit", async (event) => {
   event.preventDefault(); // stop the form from reloading the page
 
-  const signinEmail = document.getElementById("signinEmail").value.trim();
+  const signinEmail = document.getElementById("signinEmail").value.toLowerCase();
   const signinPassword = document.getElementById("signinPassword").value.trim();
 
   try {

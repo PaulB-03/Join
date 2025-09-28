@@ -32,10 +32,9 @@ function sidebarHeaderInit() {
     window.location.href = "../index.html";
     return; // stop execution
   }
-
-  toggleSidebarAndHeader();
   updateHeaderAvatars();
   highlightActiveLink();
+  toggleSidebarAndHeader();
 }
 
 function toggleSidebarAndHeader() {
@@ -43,25 +42,30 @@ function toggleSidebarAndHeader() {
   const internalSidebar = document.getElementById("internalSidebar");
   const externalSidebar = document.getElementById("externalSidebar");
   const headerNav = document.getElementById("headerNav");
-
   if (!internalSidebar || !externalSidebar) return;
-
   if (!currentUser.type) {
-    // storage empty → show external sidebar
-    externalSidebar.classList.remove("d_none");
-    internalSidebar.classList.add("d_none");
-    headerNav.style.visibility = "hidden";
+    showExternalSidebar(externalSidebar, internalSidebar, headerNav);
   } else {
-    // guest OR user with name → show internal sidebar
-    internalSidebar.classList.remove("d_none");
-    externalSidebar.classList.add("d_none");
-    headerNav.style.visibility = "show";
+    showInternalSidebar(externalSidebar, internalSidebar, headerNav);
   }
+}
+
+function showExternalSidebar(externalSidebar, internalSidebar, headerNav) {
+  // storage empty → show external sidebar
+  externalSidebar.classList.remove("d_none");
+  internalSidebar.classList.add("d_none");
+  headerNav.style.visibility = "hidden";
+}
+
+function showInternalSidebar(externalSidebar, internalSidebar, headerNav) {
+  // guest OR user with name → show internal sidebar
+  internalSidebar.classList.remove("d_none");
+  externalSidebar.classList.add("d_none");
+  headerNav.style.visibility = "show";
 }
 
 function highlightActiveLink() {
   const currentPath = location.pathname.replace(/\/+$/, "") || "/";
-
   document.querySelectorAll(".nav-link.active").forEach((el) => el.classList.remove("active"));
 
   document.querySelectorAll(".nav-link").forEach((link) => {
@@ -72,25 +76,26 @@ function highlightActiveLink() {
     }
   });
 }
+
 (function enableDropzoneDragScrollSafe() {
-  const THRESHOLD = 6; 
+  const THRESHOLD = 6;
 
   function isInteractive(el) {
     return !!el.closest('button, a, input, textarea, select, [contenteditable=""], .add-card-btn');
   }
 
   function isCard(el) {
-    return !!el.closest('.card, .task-container');
+    return !!el.closest(".card, .task-container");
   }
 
-  document.querySelectorAll('.dropzone').forEach((zone) => {
+  document.querySelectorAll(".dropzone").forEach((zone) => {
     let isMouseDown = false;
     let isScrolling = false;
     let startX = 0;
     let startScrollLeft = 0;
     let originTarget = null;
 
-    zone.addEventListener('mousedown', (e) => {
+    zone.addEventListener("mousedown", (e) => {
       if (e.button !== 0) return;
 
       originTarget = e.target;
@@ -102,7 +107,7 @@ function highlightActiveLink() {
       }
 
       isMouseDown = true;
-      isScrolling = false; 
+      isScrolling = false;
       startX = e.clientX;
       startScrollLeft = zone.scrollLeft;
     });
@@ -113,10 +118,10 @@ function highlightActiveLink() {
         ev.stopPropagation();
         ev.preventDefault();
       };
-      zone.addEventListener('click', suppress, { capture: true, once: true });
+      zone.addEventListener("click", suppress, { capture: true, once: true });
     }
 
-    zone.addEventListener('mousemove', (e) => {
+    zone.addEventListener("mousemove", (e) => {
       if (!isMouseDown) return;
 
       const dx = e.clientX - startX;
@@ -125,7 +130,7 @@ function highlightActiveLink() {
 
       if (!isScrolling) {
         isScrolling = true;
-        zone.classList.add('drag-scroll');
+        zone.classList.add("drag-scroll");
       }
 
       e.preventDefault();
@@ -134,16 +139,16 @@ function highlightActiveLink() {
 
     function endDrag() {
       if (isMouseDown) {
-        maybeSuppressClickOnce(); 
+        maybeSuppressClickOnce();
       }
       isMouseDown = false;
       isScrolling = false;
-      zone.classList.remove('drag-scroll');
+      zone.classList.remove("drag-scroll");
       originTarget = null;
     }
 
-    zone.addEventListener('mouseup', endDrag);
-    zone.addEventListener('mouseleave', endDrag);
-    document.addEventListener('mouseup', endDrag, { capture: true });
+    zone.addEventListener("mouseup", endDrag);
+    zone.addEventListener("mouseleave", endDrag);
+    document.addEventListener("mouseup", endDrag, { capture: true });
   });
 })();
