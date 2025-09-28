@@ -173,6 +173,10 @@ input:focus {
   h4 {
     font-size: 20px;
   }
+
+  h6 {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 450px) {
@@ -188,9 +192,5 @@ input:focus {
 
   h3 {
     font-size: 24px;
-  }
-
-  h6 {
-    font-size: 14px;
   }
 }
