@@ -10,21 +10,29 @@ function loadLoginStatus() {
   }
 }
 
-function updateHeaderAvatars() {
-  const currentUser = loadLoginStatus();
+function toggleElement(element, shouldShow) {
+  if (element) element.style.display = shouldShow ? "flex" : "none";
+}
+
+function showUserAvatar(userAvatar, guestAvatar, name) {
+  if (userAvatar) userAvatar.innerHTML = initials(name);
+  toggleElement(userAvatar, true);
+  toggleElement(guestAvatar, false);
+}
+
+function showGuestAvatar(userAvatar, guestAvatar) {
+  toggleElement(userAvatar, false);
+  toggleElement(guestAvatar, true);
+}
+
+function updateHeaderAvatars(currentUser) {
   const userAvatar = document.querySelector("#header #userAvatar");
   const guestAvatar = document.querySelector("#header #guestAvatar");
-  const toggleElement = (element, shouldShow) => {
-    if (element) element.style.display = shouldShow ? "flex" : "none";
-  };
-  if (currentUser.type === "user") {
-    userAvatar.innerHTML = initials(currentUser.name);
 
-    toggleElement(userAvatar, true);
-    toggleElement(guestAvatar, false);
+  if (currentUser.type === "user") {
+    showUserAvatar(userAvatar, guestAvatar, currentUser.name);
   } else if (currentUser.type === "guest") {
-    toggleElement(userAvatar, false);
-    toggleElement(guestAvatar, true);
+    showGuestAvatar(userAvatar, guestAvatar);
   } else {
     toggleElement(userAvatar, false);
     toggleElement(guestAvatar, false);

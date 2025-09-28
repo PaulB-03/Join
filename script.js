@@ -32,13 +32,13 @@ function sidebarHeaderInit() {
     window.location.href = "../index.html";
     return; // stop execution
   }
-  updateHeaderAvatars();
+  const currentUser = loadLoginStatus();
+  updateHeaderAvatars(currentUser);
   highlightActiveLink();
-  toggleSidebarAndHeader();
+  toggleSidebarAndHeader(currentUser);
 }
 
 function toggleSidebarAndHeader() {
-  const currentUser = loadLoginStatus();
   const internalSidebar = document.getElementById("internalSidebar");
   const externalSidebar = document.getElementById("externalSidebar");
   const headerNav = document.getElementById("headerNav");
