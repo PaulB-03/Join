@@ -62,11 +62,9 @@ function toggleSidebarAndHeader() {
 function highlightActiveLink() {
   const currentPath = location.pathname.replace(/\/+$/, "") || "/";
 
-  // Entferne alte Marker
   document.querySelectorAll(".nav-link.active").forEach((el) => el.classList.remove("active"));
 
   document.querySelectorAll(".nav-link").forEach((link) => {
-    // benutze href-Attribut und resolve relativ zum origin
     const href = link.getAttribute("href") || link.href;
     const linkPath = new URL(href, location.origin).pathname.replace(/\/+$/, "") || "/";
     if (linkPath === currentPath) {
@@ -75,10 +73,9 @@ function highlightActiveLink() {
   });
 }
 (function enableDropzoneDragScrollSafe() {
-  const THRESHOLD = 6; // erst ab 6px Bewegung wird gescrollt (darunter: normaler Klick/Drag)
+  const THRESHOLD = 6; 
 
   function isInteractive(el) {
-    // Alles, worauf ein „echter“ Klick/Drag gehen könnte (Buttons, Inputs, Links etc.)
     return !!el.closest('button, a, input, textarea, select, [contenteditable=""], .add-card-btn');
   }
 
@@ -94,12 +91,10 @@ function highlightActiveLink() {
     let originTarget = null;
 
     zone.addEventListener('mousedown', (e) => {
-      // Nur linke Maustaste
       if (e.button !== 0) return;
 
       originTarget = e.target;
 
-      // NICHT scrollen, wenn auf Karte oder interaktivem Element geklickt wurde → DnD darf übernehmen
       if (isCard(originTarget) || isInteractive(originTarget)) {
         isMouseDown = false;
         isScrolling = false;
@@ -107,12 +102,11 @@ function highlightActiveLink() {
       }
 
       isMouseDown = true;
-      isScrolling = false; // wird erst nach THRESHOLD aktiv
+      isScrolling = false; 
       startX = e.clientX;
       startScrollLeft = zone.scrollLeft;
     });
 
-    // Wichtig: Nur wenn wir wirklich scrollen, unterdrücken wir Clicks
     function maybeSuppressClickOnce() {
       if (!isScrolling) return;
       const suppress = (ev) => {
@@ -127,23 +121,20 @@ function highlightActiveLink() {
 
       const dx = e.clientX - startX;
 
-      // Noch unterhalb des Schwellwerts? Nichts tun → lässt DnD/Klick zu
       if (!isScrolling && Math.abs(dx) < THRESHOLD) return;
 
-      // Ab hier sind wir im „scroll“-Modus
       if (!isScrolling) {
         isScrolling = true;
         zone.classList.add('drag-scroll');
       }
 
-      // Jetzt aktiv Scrollen und Default nur im Scroll-Modus verhindern
       e.preventDefault();
       zone.scrollLeft = startScrollLeft - dx;
     });
 
     function endDrag() {
       if (isMouseDown) {
-        maybeSuppressClickOnce(); // verhindert "Geisterklick", aber nur wenn gescrollt wurde
+        maybeSuppressClickOnce(); 
       }
       isMouseDown = false;
       isScrolling = false;
@@ -153,8 +144,6 @@ function highlightActiveLink() {
 
     zone.addEventListener('mouseup', endDrag);
     zone.addEventListener('mouseleave', endDrag);
-
-    // Falls irgendwo außerhalb losgelassen wird
     document.addEventListener('mouseup', endDrag, { capture: true });
   });
 })();
