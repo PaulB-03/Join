@@ -168,7 +168,7 @@ function renderAvatarsWithPriority(names = [], prio) {
   const avatars = names
     .map((n, i) => `<div class="av" style="background:${color(i)}">${initials(n)}</div>`)
     .join("");
-  const prioIcon = getPriorityIcon(prio); // <— nur das Icon
+  const prioIcon = getPriorityIcon(prio); 
 
   return `
     <div class="row">

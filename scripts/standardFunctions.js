@@ -352,3 +352,17 @@ function saveSelectedCategory(index) {
     document.getElementById("categoryPlaceholder").textContent = selectedText;
     dropdown.classList.add("selected");
 }
+
+async function loadContactsInAddTask() {
+    try {
+      const r = await fetch(baseURL + "contacts.json");
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const contacts = await r.json();
+      const list = document.getElementById("dropdown-list-contacts");
+      if (!contacts || !list) return;
+      window.loadedContacts = contacts; list.innerHTML = "";
+      allContacts = Object.values(contacts).map(c=>c.name).filter(Boolean).sort((a,b)=>a.localeCompare(b));
+      renderContacts(allContacts, contacts);
+    } catch (e) { console.error("Could not load contacts:", e); }
+  }
+  

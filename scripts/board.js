@@ -25,13 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function init() {
-  // 1) Initial einmal rendern (First Paint)
   await renderAllTasks();
-  // 2) Live-Updates aktivieren
   startLiveSync();
-  // 3) Drag & Drop
   initDnd();
-  // 4) Neue Task (optional) hervorheben
   highlightNewTask();
 }
 
@@ -42,10 +38,6 @@ function highlightNewTask() {
   el.classList.add("highlight");
   setTimeout(() => el.classList.remove("highlight"), 2000);
 }
-
-/* ==============================
-   Drag & Drop
-   ============================== */
 
 function initDnd() {
   if (window.__dndInitialized) return;
@@ -120,7 +112,6 @@ async function onDrop(e, zone) {
     prevParent.appendChild(dragged);
     updateEmptyState(prevParent);
     updateEmptyState(zone);
-    alert("Konnte Status nicht speichern. Karte wurde zurückgesetzt.");
   }
 }
 

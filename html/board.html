@@ -134,46 +134,48 @@
       </div>
     </div>
 
-    <section class="board" aria-label="Kanban Board">
-      <div class="column">
-        <div class="col-head">
-          To do
-          <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+    <section class="board-viewport" aria-label="Board-Viewport">
+      <section class="board" aria-label="Kanban Board">
+        <div class="column">
+          <div class="col-head">
+            To do
+            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+          </div>
+          <div class="dropzone" id="todo">
+            <div class="empty">No tasks To do</div>
+          </div>
         </div>
-        <div class="dropzone" id="todo">
-          <div class="empty">No tasks To do</div>
-        </div>
-      </div>
 
-      <div class="column">
-        <div class="col-head">
-          In progress
-          <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+        <div class="column">
+          <div class="col-head">
+            In progress
+            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+          </div>
+          <div class="dropzone" id="in-progress">
+            <div class="empty">No tasks In progress</div>
+          </div>
         </div>
-        <div class="dropzone" id="in-progress">
-          <div class="empty">No tasks In progress</div>
-        </div>
-      </div>
 
-      <div class="column">
-        <div class="col-head">
-          Await feedback
-          <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+        <div class="column">
+          <div class="col-head">
+            Await feedback
+            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+          </div>
+          <div class="dropzone" id="await-feedback">
+            <div class="empty">No tasks Await feedback</div>
+          </div>
         </div>
-        <div class="dropzone" id="await-feedback">
-          <div class="empty">No tasks Await feedback</div>
-        </div>
-      </div>
 
-      <div class="column">
-        <div class="col-head">
-          Done
-          <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+        <div class="column">
+          <div class="col-head">
+            Done
+            <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+          </div>
+          <div class="dropzone" id="done">
+            <div class="empty">No tasks Done</div>
+          </div>
         </div>
-        <div class="dropzone" id="done">
-          <div class="empty">No tasks Done</div>
-        </div>
-      </div>
+      </section>
     </section>
   </div>
 
@@ -286,11 +288,11 @@
               </div>
               <div class="addOrClear">
                 <div id="clear" class="addOrClearBtn" onclick="clearTask()">
-                  <p>Clear</p>
+                  <p>Cancel</p>
                   <img src="../assets/svg/cancel.svg" alt="" />
                 </div>
                 <button id="add" class="addOrClearBtn" type="button" onclick="handleAddOrEditTask(event)">
-                  <p>Create task</p>
+                  <p>Create Task</p>
                   <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
                 </button>
               </div>
@@ -302,7 +304,7 @@
     </div>
   </div>
 
-  <script src="../scripts/logIn_Malte.js" defer></script>
+  <script src="../scripts/logIn.js" defer></script>
   <script src="../scripts/header.js" defer></script>
 </body>
 </html>
