@@ -74,3 +74,87 @@ function highlightActiveLink() {
     }
   });
 }
+(function enableDropzoneDragScrollSafe() {
+  const THRESHOLD = 6; // erst ab 6px Bewegung wird gescrollt (darunter: normaler Klick/Drag)
+
+  function isInteractive(el) {
+    // Alles, worauf ein „echter“ Klick/Drag gehen könnte (Buttons, Inputs, Links etc.)
+    return !!el.closest('button, a, input, textarea, select, [contenteditable=""], .add-card-btn');
+  }
+
+  function isCard(el) {
+    return !!el.closest('.card, .task-container');
+  }
+
+  document.querySelectorAll('.dropzone').forEach((zone) => {
+    let isMouseDown = false;
+    let isScrolling = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let originTarget = null;
+
+    zone.addEventListener('mousedown', (e) => {
+      // Nur linke Maustaste
+      if (e.button !== 0) return;
+
+      originTarget = e.target;
+
+      // NICHT scrollen, wenn auf Karte oder interaktivem Element geklickt wurde → DnD darf übernehmen
+      if (isCard(originTarget) || isInteractive(originTarget)) {
+        isMouseDown = false;
+        isScrolling = false;
+        return;
+      }
+
+      isMouseDown = true;
+      isScrolling = false; // wird erst nach THRESHOLD aktiv
+      startX = e.clientX;
+      startScrollLeft = zone.scrollLeft;
+    });
+
+    // Wichtig: Nur wenn wir wirklich scrollen, unterdrücken wir Clicks
+    function maybeSuppressClickOnce() {
+      if (!isScrolling) return;
+      const suppress = (ev) => {
+        ev.stopPropagation();
+        ev.preventDefault();
+      };
+      zone.addEventListener('click', suppress, { capture: true, once: true });
+    }
+
+    zone.addEventListener('mousemove', (e) => {
+      if (!isMouseDown) return;
+
+      const dx = e.clientX - startX;
+
+      // Noch unterhalb des Schwellwerts? Nichts tun → lässt DnD/Klick zu
+      if (!isScrolling && Math.abs(dx) < THRESHOLD) return;
+
+      // Ab hier sind wir im „scroll“-Modus
+      if (!isScrolling) {
+        isScrolling = true;
+        zone.classList.add('drag-scroll');
+      }
+
+      // Jetzt aktiv Scrollen und Default nur im Scroll-Modus verhindern
+      e.preventDefault();
+      zone.scrollLeft = startScrollLeft - dx;
+    });
+
+    function endDrag() {
+      if (isMouseDown) {
+        maybeSuppressClickOnce(); // verhindert "Geisterklick", aber nur wenn gescrollt wurde
+      }
+      isMouseDown = false;
+      isScrolling = false;
+      zone.classList.remove('drag-scroll');
+      originTarget = null;
+    }
+
+    zone.addEventListener('mouseup', endDrag);
+    zone.addEventListener('mouseleave', endDrag);
+
+    // Falls irgendwo außerhalb losgelassen wird
+    document.addEventListener('mouseup', endDrag, { capture: true });
+  });
+})();
