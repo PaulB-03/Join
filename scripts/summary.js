@@ -288,7 +288,7 @@ function fadeOutGreetingOverlay() {
   let sumGreetingContainer = document.getElementById('sumGreetingContainer')
   let summarySection = document.getElementById('summarySection')
 
-  sumGreetingContainer.style.cssText = "transition: opacity 0.5s ease; opacity: 0.0; display: flex; justify-content: center; align-items: center; position: absolute;top: 0; left: 0; background-color: #f6f7f9; width: 100%;  height: 100%;"
+  sumGreetingContainer.style.cssText = "transition: opacity 0.7s ease; opacity: 0.0; display: flex; justify-content: center; align-items: center; position: absolute;top: 0; left: 0; background-color: var(--main-bg-color); width: 100%;  height: 100%;"
 
   summarySection.style.cssText = ""
 }
