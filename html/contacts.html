@@ -127,6 +127,22 @@
         </form>
       </div>
     </div>
+    <button id="openAddContactFab" class="addContactFab" type="button" aria-label="Add new contact">
+      <img src="../assets/svg/person_add.svg" alt="" />
+    </button>
+    <div class="contactActionsFab" id="contactActionsFab" aria-live="polite">
+      <button id="contactActionsToggle" class="fab-main" type="button" aria-expanded="false" aria-controls="contactActionsMenu" aria-label="Open contact actions">
+        <img src="../assets/svg/more_vert.svg" alt="" />
+      </button>
+      <div id="contactActionsMenu" class="fab-menu" role="menu" aria-hidden="true">
+        <button id="fabEdit" class="fab-item" type="button" role="menuitem">
+          <span class="icon"><img src="../assets/svg/edit_blue.svg" alt="" /></span> Edit
+        </button>
+        <button id="fabDelete" class="fab-item" type="button" role="menuitem">
+          <span class="icon"><img src="../assets/svg/delete.svg" alt="" /></span> Delete
+        </button>
+      </div>
+    </div>
     <script src="../scripts/logIn.js"></script>
     <script src="../scripts/header.js"></script>
     <script src="../scripts/standardFunctions.js"></script>
