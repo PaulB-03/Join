@@ -1,5 +1,13 @@
 function byId(id) { return document.getElementById(id); }
 
+(function(){
+  if (typeof window.color !== "function") {
+    const __PALETTE = ["#f44336","#2196F3","#FF9800","#9C27B0","#4CAF50","#00BCD4","#FFC107"];
+    window.color = function(i){ return __PALETTE[i % __PALETTE.length]; };
+  }
+})();
+
+
 const RTDB_BASE =
   (typeof baseURL !== "undefined" && baseURL) ||
   "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -321,8 +329,22 @@ function renderAssignedInitials() {
 
 function mountDatePickerMinToday() {
   window.addEventListener('DOMContentLoaded', () => {
-    const input = byId('date'); if (!input) return;
+    const input = byId('date');
+    if (!input) return;
+
     input.min = new Date().toISOString().split('T')[0];
-    input.addEventListener('click', () => input.showPicker?.());
+
+    const tryOpenPicker = () => {
+      try {
+        const ua = navigator.userActivation;
+        const hasActivation = ua && (ua.isActive || ua.hasBeenActive);
+        if (typeof input.showPicker === 'function' && hasActivation) {
+          input.showPicker();
+        }
+      } catch (e) {
+      }
+    };
+
+    input.addEventListener('pointerdown', tryOpenPicker);
   });
 }

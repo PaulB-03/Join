@@ -83,20 +83,20 @@
         <div>
           <div class="inputFlexbox">
             <span id="requiredHeaders">Title<img src="../assets/svg/required.svg" alt="" id="required" required /></span>
-            <input class="title" id="titleInput" type="text" placeholder="Enter a title" />
+            <input class="title" id="titleInput" name="title" type="text" placeholder="Enter a title" />
           </div>
           <div class="inputFlexbox">
             <span>Description</span>
-            <textarea rows="5" cols="50" class="title" id="descriptionInput" type="text" placeholder="Enter description" required></textarea>
+            <textarea rows="5" cols="50" class="title" id="descriptionInput" name="description" placeholder="Enter description" required></textarea>
           </div>
           <div class="inputFlexbox">
             <span id="requiredHeaders">Due date <img src="../assets/svg/required.svg" alt="" id="required" /></span>
-            <input class="title" id="date" type="date" tabindex="0" required />
+            <input class="title" id="date" name="date" type="date" tabindex="0" required />
           </div>
           <span id="requiredHeaders" class="textrequired">
             <img id="required" src="../assets/svg/required.svg" alt="" />
-            <p>This field is required</p></span
-          >
+            <p>This field is required</p>
+          </span>
         </div>
         <div class="divider"></div>
         <div>
@@ -112,7 +112,7 @@
             <span>Assigned to</span>
             <div id="assignedToDropdownContacts" class="title" tabindex="0">
               <div class="dropdown-selected">
-                <input class="search" type="text" id="contactSearch" placeholder="Select contacts" />
+                <input class="search" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts" />
                 <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts" />
               </div>
               <ul id="dropdown-list-contacts"></ul>
@@ -128,16 +128,16 @@
               </div>
               <ul id="dropdown-list-category">
                 <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
-                  <label for="checkbox-1" class="custom-checkbox">
+                  <label class="custom-checkbox">
                     Userstory
-                    <input type="checkbox" required />
+                    <input type="checkbox" id="category-userstory" name="category" value="Userstory" required />
                     <span style="display: none"></span>
                   </label>
                 </li>
                 <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
-                  <label for="checkbox-2" class="custom-checkbox">
+                  <label class="custom-checkbox">
                     Technical Task
-                    <input type="checkbox" required />
+                    <input type="checkbox" id="category-technical" name="category" value="Technical Task" required />
                     <span style="display: none"></span>
                   </label>
                 </li>
@@ -147,7 +147,7 @@
           <div class="inputFlexbox" id="subtasks">
             <span>Subtasks</span>
             <div class="dropdown-subtasks" tabindex="0">
-              <input type="text" class="dropdown-selected input-subtask" placeholder="Add a new subtask" />
+              <input type="text" class="dropdown-selected input-subtask" id="subtaskInput" name="subtask" placeholder="Add a new subtask" />
               <div class="subtask-images-container" style="display: none">
                 <img src="../assets/svg/subclose.svg" class="subtaskImages cancelSubtask" alt="Delete Subtask" />
                 <div class="divider1"></div>
