@@ -128,18 +128,19 @@ async function createTask() {
       const messageDiv = document.createElement('div');
       messageDiv.classList.add('task-added-message');
 
-      // Add text
       const textSpan = document.createElement('span');
       textSpan.textContent = "TASK ADDED TO BOARD";
+      textSpan.style.verticalAlign = "middle";
       messageDiv.appendChild(textSpan);
 
-      // Add the board.svg image
       const img = document.createElement('img');
-      img.src = "../assets/svg/board.svg"; // adjust path if needed
+      img.src = "../assets/svg/board.svg";
       img.alt = "Board icon";
-      img.style.width = "24px";        // adjust size
+      img.style.width = "24px";
       img.style.height = "24px";
-      img.style.marginLeft = "8px";    // spacing from text
+      img.style.display = "inline-block";
+      img.style.marginLeft = "10px";
+      img.style.verticalAlign = "middle";
       messageDiv.appendChild(img);
 
       document.body.appendChild(messageDiv);
