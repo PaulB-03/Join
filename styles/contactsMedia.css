@@ -69,4 +69,26 @@
     width: 213px;
     height: 104px;
   }
+
+  .newContactBtnContainer {
+    display: none;
+  }
+
+  .addContactFab {
+    display: inline-flex;
+  }
+
+  .contact-action-buttons,
+  .editContactBtn,
+  .deleteContactBtn {
+    display: none !important;
+  }
+
+  .showing-details .contactActionsFab {
+    display: block;
+  }
+
+  .detailsActions {
+    display: none !important;
+  }
 }
