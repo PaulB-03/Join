@@ -311,10 +311,13 @@ function fillSubtasks(subtasks) {
   wrap.innerHTML = "";
   subtasks.forEach(s => {
     let txt = typeof s === "string" ? s : s.text;
-    if (byId("taskOverlay").classList.contains("edit-mode")) txt = txt.replace(/^•\s*/, "");
-    wrap.appendChild(createSubtaskElement(txt, !!(typeof s === "object" && s.done)));
+    txt = txt.replace(/^•\s*/, ""); // always remove leading bullet
+    wrap.appendChild(
+      createSubtaskElement(txt, !!(typeof s === "object" && s.done))
+    );
   });
 }
+
 
 function renderAssignedInitials() {
   const w = byId("assignedToInitials"); w.innerHTML = "";

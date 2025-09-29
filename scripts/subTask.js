@@ -41,7 +41,7 @@ window.createSubtaskElement = function (text) {
   const item = document.createElement("div");
   item.className = "subtaskItem";
   item.innerHTML = `
-    <span class="subtaskTitle">• ${escapeHtml(text)}</span>
+    <span class="subtaskTitle">${escapeHtml(text)}</span>
     <div class="subtaskActions">
       <img src="../assets/svg/subedit.svg" alt="Edit" class="editIcon">
       <div class="divider1"></div>
@@ -59,7 +59,7 @@ window.createSubtaskElement = function (text) {
     title.style.display = "none";
 
     const editInput = document.createElement("input");
-    editInput.value = title.textContent.replace(/^•\s/, "");
+    editInput.value = title.textContent.trim();
     editInput.className = "editInput";
 
     const editActions = document.createElement("div");
@@ -75,7 +75,7 @@ window.createSubtaskElement = function (text) {
 
     const exitEdit = (save) => {
       if (save && editInput.value.trim()) {
-        title.textContent = `• ${escapeHtml(editInput.value.trim())}`;
+        title.textContent = escapeHtml(editInput.value.trim());
       }
       title.style.display = "inline";
       item.style.backgroundColor = "";
