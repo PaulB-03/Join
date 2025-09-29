@@ -203,19 +203,24 @@ function toggleClearButton(isEditing) {
   c.style.display = isEditing ? "none" : "inline-flex";
 }
 
-function handleAddOrEditTask(e) {
-  e && e.preventDefault();
-  const btn = byId("add");
-  const id = btn.getAttribute("data-editing-id");
-  if (id) return saveEditFlow(btn, id);
-  return createTask();
+async function handleAddOrEditTask(e) {
+    e && e.preventDefault();
+    const btn = byId("add");
+    const id = btn.getAttribute("data-editing-id");
+
+    if (id) {
+        await saveEditFlow(btn, id);
+    } else {
+        await createTask();
+    }
+    window.location.href = "board.html";
 }
 
 async function saveEditFlow(btn, id) {
-  await updateTask(id);
-  btn.removeAttribute("data-editing-id");
-  btn.querySelector("p").textContent = "Create task";
-  byId("taskOverlay").classList.remove("edit-mode");
+    await updateTask(id);
+    btn.removeAttribute("data-editing-id");
+    btn.querySelector("p").textContent = "Create task";
+    byId("taskOverlay").classList.remove("edit-mode");
 }
 
 async function updateTask(id) {

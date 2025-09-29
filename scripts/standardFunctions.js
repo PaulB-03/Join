@@ -72,6 +72,20 @@ async function loadContactsInAddTask() {
     }
 }
 
+async function getTasks() {
+    try {
+        let response = await fetch(baseURL + "tasks.json");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Could not get tasks: ", error);
+        return null;
+    }
+}
+
 function renderContacts(contactNames, contacts) {
     const contactList = document.getElementById("dropdown-list-contacts");
     contactList.innerHTML = "";
@@ -138,6 +152,7 @@ function toggleCategoryDropdown() {
             paddingBottom: subtasksContainer.style.paddingBottom || "50px"
         };
     }
+
     if (dropdown.classList.contains("open")) {
         subtasksContainer.style.marginTop = "80px";
         subtasksContainer.style.paddingBottom = "50px";
@@ -146,6 +161,59 @@ function toggleCategoryDropdown() {
         subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
     }
 }
+
+function initCategoryDropdown() {
+    const dropdown = document.getElementById('assignedToDropdownCategory');
+    const arrow = document.getElementById('dropdown-arrow-subtasks');
+    const dropdownList = document.getElementById('dropdown-list-category');
+    const items = dropdownList.getElementsByClassName('dropdown-item-category');
+
+    let isOpen = false;
+
+    dropdown.addEventListener('click', (event) => {
+        event.stopPropagation();
+        isOpen = !isOpen;
+        dropdown.classList.toggle('open', isOpen);
+        arrow.style.transform = isOpen ? "translateY(-50%) rotate(180deg)" : "translateY(-50%) rotate(0deg)";
+    });
+
+    Array.from(items).forEach((item, index) => {
+        item.addEventListener('click', (event) => {
+            event.stopPropagation();
+            selectCategory(index);
+            isOpen = false;
+            dropdown.classList.remove('open');
+            arrow.style.transform = "translateY(-50%) rotate(0deg)";
+        });
+    });
+
+    document.addEventListener('click', () => {
+        if (isOpen) {
+            dropdown.classList.remove('open');
+            arrow.style.transform = "translateY(-50%) rotate(0deg)";
+            isOpen = false;
+        }
+    });
+}
+
+function selectCategory(index) {
+    const categories = ['Userstory', 'Technical Task'];
+    const dropdown = document.getElementById("assignedToDropdownCategory");
+    const placeholder = document.getElementById("categoryPlaceholder");
+
+    selectedCategory = categories[index];
+    placeholder.textContent = selectedCategory;
+    dropdown.classList.add('selected-red');
+
+    if (subtasksContainer) {
+        subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
+        subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initCategoryDropdown();
+});
 
 function toggleContact(name) {
     if (assignedContacts.includes(name)) {
@@ -266,12 +334,14 @@ function saveSelectedCategory(index) {
     const categories = ['Userstory', 'Technical Task'];
     const placeholder = document.getElementById('categoryPlaceholder');
     const dropdown = document.getElementById('assignedToDropdownCategory');
-    const dropdownList = document.getElementById('dropdown-list-category');
-    
     placeholder.textContent = categories[index];
+    selectedCategory = categories[index];
     dropdown.classList.add('selected-red');
-    dropdownList.style.display = 'none';
-    dropdown.classList.remove('active');
+    dropdown.classList.remove('open');
+    if (subtasksContainer) {
+        subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
+        subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+    }
 }
 
 function updateDropdownBackground(dropdownId) {
@@ -285,33 +355,6 @@ function updateDropdownBackground(dropdownId) {
   }
 }
 
-function initCategoryDropdown() {
-    let select2 = document.getElementById('assignedToDropdownCategory');
-    let arrow2 = document.querySelector('#dropdown-arrow-subtasks');
-    let dropDown2 = document.getElementById('dropdown-list-category');
-    let dropDownItem2 = document.getElementsByClassName('dropdown-item-category');
-
-    dropdownFunction(arrow2, dropDown2, select2, dropDownItem2, (item) => {
-        let name = item.textContent.trim();
-        selectedCategory = name;
-
-        document.getElementById("categoryPlaceholder").textContent = name;
-    });
-}
-
-async function getTasks() {
-    try {
-        let response = await fetch(baseURL + "tasks.json");
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        let data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Could not get tasks: ", error);
-        return null;
-    }
-}
 
 function saveSelectedCategory(index) {
     const dropdown = document.getElementById("assignedToDropdownCategory");
@@ -337,5 +380,31 @@ async function loadContactsInAddTask() {
       allContacts = Object.values(contacts).map(c=>c.name).filter(Boolean).sort((a,b)=>a.localeCompare(b));
       renderContacts(allContacts, contacts);
     } catch (e) { console.error("Could not load contacts:", e); }
-  }
-  
+}
+
+async function initContactsDropdown() {
+  let select = document.getElementById('assignedToDropdownContacts');
+  let arrow = document.querySelector('#dropdown-arrow-contacts');
+  let dropDown = document.getElementById('dropdown-list-contacts');
+  let response = await fetch(baseURL + "contacts.json");
+  let contacts = await response.json();
+
+  allContacts = Object.values(contacts).map(contact => contact.name);
+  dropDown.innerHTML = "";
+  allContacts.forEach(name => {
+      let li = document.createElement("li");
+      li.classList.add("dropdown-item-contact");
+      let isChecked = assignedContacts.includes(name) ? "checked" : "";
+      li.innerHTML = `
+          <label class="custom-checkbox" style="display: block; padding: 5px; cursor: pointer; ${isChecked ? 'color: lightgrey;' : ''}">
+              ${name}
+              <input type="checkbox" onchange="toggleContact('${name}'); updateDropdownBackground('assignedToDropdownContacts');" ${isChecked}>
+              <span style="display:none"></span>
+          </label>
+          `;
+      dropDown.appendChild(li);
+  });
+
+  let items = document.getElementsByClassName("dropdown-item-contact");
+  dropdownFunction(arrow, dropDown, select, items, null);
+}

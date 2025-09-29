@@ -197,33 +197,6 @@ function taskDetailTemplate(id, t = {}) {
   `;
 }
 
-async function initContactsDropdown() {
-  let select = document.getElementById('assignedToDropdownContacts');
-  let arrow = document.querySelector('#dropdown-arrow-contacts');
-  let dropDown = document.getElementById('dropdown-list-contacts');
-  let response = await fetch(baseURL + "contacts.json");
-  let contacts = await response.json();
-
-  allContacts = Object.values(contacts).map(contact => contact.name);
-  dropDown.innerHTML = "";
-  allContacts.forEach(name => {
-      let li = document.createElement("li");
-      li.classList.add("dropdown-item-contact");
-      let isChecked = assignedContacts.includes(name) ? "checked" : "";
-      li.innerHTML = `
-          <label class="custom-checkbox" style="display: block; padding: 5px; cursor: pointer; ${isChecked ? 'color: lightgrey;' : ''}">
-              ${name}
-              <input type="checkbox" onchange="toggleContact('${name}'); updateDropdownBackground('assignedToDropdownContacts');" ${isChecked}>
-              <span style="display:none"></span>
-          </label>
-          `;
-      dropDown.appendChild(li);
-  });
-
-  let items = document.getElementsByClassName("dropdown-item-contact");
-  dropdownFunction(arrow, dropDown, select, items, null);
-}
-
 window.renderInitials = renderInitials;
 window.getPriorityIcon = getPriorityIcon;
 window.getPriorityBadge = getPriorityBadge;

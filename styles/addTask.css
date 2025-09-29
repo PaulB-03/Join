@@ -75,8 +75,8 @@ body {
   font-size: 16px;
 }
 
-.title.filled {
-  background-color: rgb(232, 240, 254);
+#titleInput:not(:placeholder-shown) {
+    background-color: rgb(232, 240, 254);
 }
 
 .title:focus {
@@ -266,6 +266,10 @@ textarea:valid {
   margin: 0;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 998;
+}
+
+#assignedToDropdownCategory.open #dropdown-list-category {
+  display: block;
 }
 
 #dropdown-list-contacts::-webkit-scrollbar {

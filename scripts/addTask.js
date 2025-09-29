@@ -126,9 +126,24 @@ async function createTask() {
       document.body.appendChild(overlay);
 
       const messageDiv = document.createElement('div');
-      messageDiv.textContent = "TASK ADDED TO BOARD";
       messageDiv.classList.add('task-added-message');
+
+      // Add text
+      const textSpan = document.createElement('span');
+      textSpan.textContent = "TASK ADDED TO BOARD";
+      messageDiv.appendChild(textSpan);
+
+      // Add the board.svg image
+      const img = document.createElement('img');
+      img.src = "../assets/svg/board.svg"; // adjust path if needed
+      img.alt = "Board icon";
+      img.style.width = "24px";        // adjust size
+      img.style.height = "24px";
+      img.style.marginLeft = "8px";    // spacing from text
+      messageDiv.appendChild(img);
+
       document.body.appendChild(messageDiv);
+
       setTimeout(() => {
           document.body.removeChild(messageDiv);
           document.body.removeChild(overlay);
@@ -266,4 +281,40 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   dateInput.addEventListener('pointerdown', tryOpenPicker, { passive: true });
+});
+
+function initContactsDropdownInput() {
+    const select = document.getElementById('assignedToDropdownContacts');
+    const arrow = document.getElementById('dropdown-arrow-contacts');
+    const dropDown = document.getElementById('dropdown-list-contacts');
+    const items = dropDown.getElementsByClassName('dropdown-item-contact');
+
+    let isOpen = false;
+
+    select.addEventListener('click', (event) => {
+        event.stopPropagation();
+        isOpen = !isOpen;
+        dropDown.style.display = isOpen ? 'block' : 'none';
+        arrow.style.transform = isOpen ? "translateY(-50%) rotate(180deg)" : "translateY(-50%) rotate(0deg)";
+    });
+
+    document.addEventListener('click', () => {
+        if (isOpen) {
+            dropDown.style.display = 'none';
+            arrow.style.transform = "translateY(-50%) rotate(0deg)";
+            isOpen = false;
+        }
+    });
+    Array.from(items).forEach(item => {
+        item.addEventListener('click', (event) => {
+            event.stopPropagation();
+            isOpen = false;
+            dropDown.style.display = 'none';
+            arrow.style.transform = "translateY(-50%) rotate(0deg)";
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initContactsDropdownInput();
 });
