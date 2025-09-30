@@ -207,11 +207,12 @@ async function handleAddOrEditTask(e) {
   e && e.preventDefault();
 
   const btn = byId("add");
-  const id = btn.getAttribute("data-editing-id");
+  const id  = btn.getAttribute("data-editing-id");
   const isAddTaskStandalone = /\/html\/addTask\.html$/.test(location.pathname);
 
   if (id) {
     await saveEditFlow(btn, id);
+    return;
   } else {
     await createTask();
 
