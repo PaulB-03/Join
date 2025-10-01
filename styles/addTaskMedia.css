@@ -118,6 +118,7 @@
     }
     .addTaskWrapper {
         gap: 10px;
+        justify-content: center;
     }
     input[type="text"] {
         font-size: 12px;
