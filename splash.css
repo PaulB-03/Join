@@ -77,6 +77,10 @@
   height: auto;
 }
 
+.logo {
+  display: block;
+}
+
 .mobileLogo {
   display: none;
   position: absolute;
@@ -311,6 +315,10 @@
 }
 
 @media (max-width: 496px) {
+  .startLogo {
+    display: none !important;
+  }
+
   .startLogoMobile,
   .startLogoMobileBg {
     display: block;
@@ -347,7 +355,7 @@
   }
 
   .mobileLogo {
-    display: block !important;
+    display: block;
   }
 
   .signupReturnArrowContainer {
