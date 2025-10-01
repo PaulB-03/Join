@@ -1,14 +1,22 @@
 body {
+  margin: 0;
   overflow: hidden;
   background-color: var(--main-bg-color);
   height: 100%;
+  box-sizing: border-box;
   overflow: scroll;
   overflow-x: hidden;
 }
 
-.requiredAsterisk {
-  color: var(--form-error);
-  vertical-align: text-top;
+#required {
+  width: 10px;
+}
+
+#requiredHeaders {
+  gap: 2px;
+  display: flex;
+  align-items: start;
+  font-size: 20px;
 }
 
 .textrequired {
@@ -21,6 +29,10 @@ body {
   background-color: #ccc;
 }
 
+.blueFrame {
+  border-color: var(--light-blue);
+}
+
 .addTaskWrapper {
   display: flex;
   flex-wrap: wrap;
@@ -29,21 +41,22 @@ body {
   gap: 40px;
   max-width: 1280px;
   flex-direction: row;
+  box-sizing: border-box;
   padding: 0 0 16px 16px;
-}
-
-.addTaskWrapper h6 {
-  color: var(--main-color);
 }
 
 .inputFlexbox {
   display: flex;
   flex-direction: column;
-  font-size: 16px;
   width: 440px;
   gap: 10px;
   flex: 1 1 calc(50% - 20px);
+  box-sizing: border-box;
   margin: 10px;
+}
+
+.description, .prio, .assigned, .sub {
+  font-size: 20px;
 }
 
 .search {
@@ -57,9 +70,30 @@ body {
   margin-left: 5px;
 }
 
+.title {
+  border: 1px solid var(--color-placeholder);
+  border-radius: 10px;
+  height: 40px;
+  outline: none;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#titleInput:not(:placeholder-shown) {
+    background-color: rgb(232, 240, 254);
+}
+
+.title:focus {
+  border-color: var(--light-blue);
+}
+
+.title::placeholder {
+  color: var(--color-placeholder);
+}
+
 form {
   max-width: 1920px;
-  padding: 150px 20px 64px 380px;
+  padding: 150px 20px 64px 360px;
   position: absolute;
 }
 
@@ -70,39 +104,48 @@ h1 {
 }
 
 textarea {
-  appearance: none; /* modern browsers */
-  -webkit-appearance: none; /* Safari/Chrome */
+  appearance: none;             /* modern browsers */
+  -webkit-appearance: none;     /* Safari/Chrome */
   -moz-appearance: none;
   height: 120px;
   width: 440px !important;
   max-height: 200px;
   min-height: 120px;
-  resize: vertical;
+  resize: none;
   padding: 8px;
   overflow: auto;
-  background-image: url(../assets/svg/Recurso.svg);
-  background-position: right 10px bottom;
+  background-image: url("../assets/svg/Recurso.svg");
+  background-repeat: no-repeat; 
+  background-position: right 4px bottom 4px;
+  background-size: 16px 16px;
+}
+
+textarea:focus {
+  border: 1.5px solid var(--light-blue);
+}
+textarea:valid {
+  background-color: rgb(232, 240, 254);
 }
 
 #assignedToDropdownContacts {
   position: relative;
-  border: 1px solid var(--color-icon);
+  border: 1px solid var(--color-placeholder);
   border-radius: 10px;
   display: flex;
   background-color: white;
 }
 #assignedToDropdownContacts .dropdown-selected {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
 }
 
 #assignedToDropdownContacts .dropdown-selected span {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-shrink: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
 }
 
 #assignedToDropdownContacts:hover {
@@ -138,6 +181,11 @@ textarea {
 
 #assignedToDropdownCategory:valid {
   background-color: #4caf50;
+}
+
+input#contactSearch.search::placeholder {
+  font-size: 20px;
+  color: black;
 }
 
 .dropdown-selected {
@@ -177,9 +225,9 @@ textarea {
 }
 
 #subtasks {
-  padding-bottom: 50px;
-  margin-top: 0px;
-  transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
+    padding-bottom: 50px;
+    margin-top: 0px;
+    transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
 }
 
 #dropdown-arrow-contacts {
@@ -206,9 +254,9 @@ textarea {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 440px;
+  width: 438px;
   background-color: #fff;
-  border: 1px solid var(--color-icon);
+  border: 1px solid white;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -219,19 +267,20 @@ textarea {
 }
 
 #dropdown-list-category {
-  border-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   display: none;
   position: absolute;
-  top: 100%;
+  top: 90%;
   left: 0;
-  width: auto;
+  width: 438px;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid white;
   list-style: none;
   padding: 0;
   margin: 0;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 998;
+  z-index: 1;
 }
 
 #assignedToDropdownCategory.open #dropdown-list-category {
@@ -240,6 +289,7 @@ textarea {
 
 #dropdown-list-contacts::-webkit-scrollbar {
   width: 8px;
+  display: none;
 }
 
 #dropdown-list-contacts::-webkit-scrollbar-thumb {
@@ -274,7 +324,7 @@ textarea {
 }
 
 #assignedToInitials .contact-initial {
-  margin-left: -5px;
+  margin-left: 8px;
 }
 
 .contact-initial {
@@ -293,7 +343,11 @@ textarea {
 }
 
 #titleInput.title::placeholder {
-  font-size: 16px;
+  font-size: 20px;
+}
+
+#descriptionInput.title::placeholder {
+  font-size: 20px;
 }
 
 .dropdown-selected.input-subtask::placeholder {
@@ -302,6 +356,7 @@ textarea {
 
 #categoryPlaceholder {
   padding-left: 2px;
+  font-size: 20px;
 }
 
 .input-subtask {
@@ -317,16 +372,15 @@ textarea {
 }
 
 .prioGrade {
-  border: none;
+  border: 1px solid var(--color-placeholder);
   border-radius: 10px;
   background-color: var(--white);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   height: 56px;
   width: 136px;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .prioGrade:hover {
@@ -334,33 +388,23 @@ textarea {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.prioGrade:active {
-  box-shadow: none;
+.prioGrade span {
+  font-size: 20px;
 }
 
 .redColor {
-  background-color: var(--button-urgent);
-  h6 {
-    color: white;
-  }
+  background-color: #FF3D00;
+  color: var(--white);
 }
 
 .orangeColor {
-  background-color: var(--button-medium);
-  h6 {
-    color: white;
-  }
+  background-color: #FFA800;
+  color: var(--white);
 }
 
 .greenColor {
-  background-color: var(--button-low);
-  h6 {
-    color: white;
-  }
-}
-
-.removeHoverEffect:hover {
-  box-shadow: none;
+  background-color: #7AE229;
+  color: var(--white);
 }
 
 .filterWhite {
@@ -451,6 +495,8 @@ textarea {
   justify-content: space-between;
   width: 100%;
   padding: 10px;
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .checkbox-svg {
@@ -458,7 +504,7 @@ textarea {
 }
 
 .dropdown-checkbox:hover .checkbox-svg {
-  filter: brightness(0) invert(1);
+    filter: brightness(0) invert(1);
 }
 
 .custom-checkbox span {
@@ -483,6 +529,7 @@ input[type="date" i]:valid {
 
 input[type="date"]:invalid {
   color: var(--color-placeholder);
+  font-size: 20px;
 }
 
 input[type="date"]:valid {

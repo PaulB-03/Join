@@ -83,37 +83,46 @@
       <div class="addTaskWrapper">
         <div>
           <div class="inputFlexbox">
-            <span id="requiredHeaders">Title<img src="../assets/svg/required.svg" alt="" id="required" required /></span>
-            <input class="title" id="titleInput" name="title" type="text" placeholder="Enter a title" />
+            <h6>Title<sub class="requiredAsterisk">*</sub></h6>
+            <input class="input" id="titleInput" name="title" type="text" placeholder="Enter a title" />
+            <p class="errors">This field is required</p>
           </div>
           <div class="inputFlexbox">
-            <span>Description</span>
-            <textarea rows="5" cols="50" class="title" id="descriptionInput" name="description" placeholder="Enter description" required></textarea>
+            <h6>Description</h6>
+            <textarea rows="5" cols="50" class="input" id="descriptionInput" name="description" placeholder="Enter description" required></textarea>
           </div>
           <div class="inputFlexbox">
-            <span id="requiredHeaders">Due date <img src="../assets/svg/required.svg" alt="" id="required" /></span>
-            <input class="title" id="date" name="date" type="date" tabindex="0" required />
+            <h6>Due date<sub class="requiredAsterisk">*</sub></h6>
+            <input class="input" id="date" name="date" type="date" tabindex="0" required />
+            <p class="errors">This field is required</p>
           </div>
-          <span id="requiredHeaders" class="textrequired">
-            <img id="required" src="../assets/svg/required.svg" alt="" />
-            <p>This field is required</p>
-          </span>
+
+          <p class="textrequired"><sub class="requiredAsterisk">*</sub>This field is required</p>
         </div>
         <div class="divider"></div>
         <div>
           <div class="inputFlexbox">
-            <span>Priority</span>
+            <h6>Priority</h6>
             <div class="prioDivsWrapper">
-              <div id="urgent" onclick="setPrioColor(0)" class="prioGrade"><span>Urgent</span> <img src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="red" /></div>
-              <div id="medium" onclick="setPrioColor(1)" class="prioGrade"><span>Medium</span> <img src="../assets/svg/double_lines.svg" class="prioImage" alt="orange" /></div>
-              <div id="low" onclick="setPrioColor(2)" class="prioGrade"><span>Low</span> <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="green" /></div>
+              <div id="urgent" onclick="setPrioColor(0)" class="prioGrade">
+                <h6>Urgent</h6>
+                <img src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="red" />
+              </div>
+              <div id="medium" onclick="setPrioColor(1)" class="prioGrade">
+                <h6>Medium</h6>
+                <img src="../assets/svg/double_lines.svg" class="prioImage" alt="orange" />
+              </div>
+              <div id="low" onclick="setPrioColor(2)" class="prioGrade">
+                <h6>Low</h6>
+                <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="green" />
+              </div>
             </div>
           </div>
           <div class="inputFlexbox">
-            <span>Assigned to</span>
-            <div id="assignedToDropdownContacts" class="title" tabindex="0">
+            <h6>Assigned to</h6>
+            <div id="assignedToDropdownContacts" class="input" tabindex="0">
               <div class="dropdown-selected">
-                <input class="search" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts" />
+                <input class="search input" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts" />
                 <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts" />
               </div>
               <ul id="dropdown-list-contacts"></ul>
@@ -121,10 +130,10 @@
             <div id="assignedToInitials" style="display: none"></div>
           </div>
           <div class="inputFlexbox" id="category">
-            <span id="requiredHeaders">Category <img src="../assets/svg/required.svg" alt="" id="required" /></span>
-            <div id="assignedToDropdownCategory" class="title" tabindex="0" onclick="toggleCategoryDropdown()">
+            <h6 id="requiredHeaders">Category<sub class="requiredAsterisk">*</sub></h6>
+            <div id="assignedToDropdownCategory" class="input" tabindex="0" onclick="toggleCategoryDropdown()">
               <div class="dropdown-selected" id="input-category">
-                <span id="categoryPlaceholder">Select task category</span>
+                <h6 id="categoryPlaceholder">Select task category</h6>
                 <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" />
               </div>
               <ul id="dropdown-list-category">
@@ -146,7 +155,7 @@
             </div>
           </div>
           <div class="inputFlexbox" id="subtasks">
-            <span>Subtasks</span>
+            <h6>Subtasks</h6>
             <div class="dropdown-subtasks" tabindex="0">
               <input type="text" class="dropdown-selected input-subtask" id="subtaskInput" name="subtask" placeholder="Add a new subtask" />
               <div class="subtask-images-container" style="display: none">

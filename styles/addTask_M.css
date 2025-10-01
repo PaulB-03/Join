@@ -1,21 +1,14 @@
 body {
-  margin: 0;
   overflow: hidden;
   background-color: var(--main-bg-color);
   height: 100%;
-  box-sizing: border-box;
   overflow: scroll;
   overflow-x: hidden;
 }
 
-#required {
-  width: 6px;
-}
-
-#requiredHeaders {
-  gap: 2px;
-  display: flex;
-  align-items: start;
+.requiredAsterisk {
+  color: var(--form-error);
+  vertical-align: text-top;
 }
 
 .textrequired {
@@ -28,10 +21,6 @@ body {
   background-color: #ccc;
 }
 
-.blueFrame {
-  border-color: var(--light-blue);
-}
-
 .addTaskWrapper {
   display: flex;
   flex-wrap: wrap;
@@ -40,8 +29,11 @@ body {
   gap: 40px;
   max-width: 1280px;
   flex-direction: row;
-  box-sizing: border-box;
   padding: 0 0 16px 16px;
+}
+
+.addTaskWrapper h6 {
+  color: var(--main-color);
 }
 
 .inputFlexbox {
@@ -51,7 +43,6 @@ body {
   width: 440px;
   gap: 10px;
   flex: 1 1 calc(50% - 20px);
-  box-sizing: border-box;
   margin: 10px;
 }
 
@@ -64,27 +55,6 @@ body {
 .search::placeholder {
   font-size: 16px;
   margin-left: 5px;
-}
-
-.title {
-  border: 1px solid var(--color-icon);
-  border-radius: 10px;
-  height: 40px;
-  outline: none;
-  padding: 10px;
-  font-size: 16px;
-}
-
-#titleInput:not(:placeholder-shown) {
-    background-color: rgb(232, 240, 254);
-}
-
-.title:focus {
-  border-color: var(--light-blue);
-}
-
-.title::placeholder {
-  color: var(--color-placeholder);
 }
 
 form {
@@ -100,22 +70,18 @@ h1 {
 }
 
 textarea {
-  cursor: pointer;
+  appearance: none; /* modern browsers */
+  -webkit-appearance: none; /* Safari/Chrome */
+  -moz-appearance: none;
   height: 120px;
   width: 440px !important;
   max-height: 200px;
   min-height: 120px;
-  box-sizing: border-box;
   resize: vertical;
   padding: 8px;
   overflow: auto;
-}
-
-textarea:focus {
-  border: 1.5px solid var(--light-blue);
-}
-textarea:valid {
-  background-color: rgb(232, 240, 254);
+  background-image: url(../assets/svg/Recurso.svg);
+  background-position: right 10px bottom;
 }
 
 #assignedToDropdownContacts {
@@ -126,17 +92,17 @@ textarea:valid {
   background-color: white;
 }
 #assignedToDropdownContacts .dropdown-selected {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
 #assignedToDropdownContacts .dropdown-selected span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-shrink: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
 }
 
 #assignedToDropdownContacts:hover {
@@ -211,9 +177,9 @@ textarea:valid {
 }
 
 #subtasks {
-    padding-bottom: 50px;
-    margin-top: 0px;
-    transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
+  padding-bottom: 50px;
+  margin-top: 0px;
+  transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
 }
 
 #dropdown-arrow-contacts {
@@ -330,12 +296,8 @@ textarea:valid {
   font-size: 16px;
 }
 
-#descriptionInput.title::placeholder {
-  font-size: 16px;
-}
-
 .dropdown-selected.input-subtask::placeholder {
-  font-size: 16px;
+  font-size: 20px;
 }
 
 #categoryPlaceholder {
@@ -355,15 +317,16 @@ textarea:valid {
 }
 
 .prioGrade {
-  border: 1px solid var(--color-icon);
+  border: none;
   border-radius: 10px;
   background-color: var(--white);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
   height: 56px;
   width: 136px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .prioGrade:hover {
@@ -371,19 +334,33 @@ textarea:valid {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
+.prioGrade:active {
+  box-shadow: none;
+}
+
 .redColor {
-  background-color: #FF3D00;
-  color: var(--white);
+  background-color: var(--button-urgent);
+  h6 {
+    color: white;
+  }
 }
 
 .orangeColor {
-  background-color: #FFA800;
-  color: var(--white);
+  background-color: var(--button-medium);
+  h6 {
+    color: white;
+  }
 }
 
 .greenColor {
-  background-color: #7AE229;
-  color: var(--white);
+  background-color: var(--button-low);
+  h6 {
+    color: white;
+  }
+}
+
+.removeHoverEffect:hover {
+  box-shadow: none;
 }
 
 .filterWhite {
@@ -481,7 +458,7 @@ textarea:valid {
 }
 
 .dropdown-checkbox:hover .checkbox-svg {
-    filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
 }
 
 .custom-checkbox span {
