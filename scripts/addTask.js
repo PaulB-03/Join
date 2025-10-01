@@ -288,17 +288,13 @@ window.addEventListener("DOMContentLoaded", () => {
   const today = new Date().toISOString().split("T")[0];
   dateInput.min = today;
 
-  const tryOpenPicker = () => {
-    try {
-      const ua = navigator.userActivation;
-      const hasActivation = ua && (ua.isActive || ua.hasBeenActive);
-      if (typeof dateInput.showPicker === "function" && hasActivation) {
-        dateInput.showPicker();
-      }
-    } catch (e) {}
+  const openDatePicker = (event) => {
+    if (typeof dateInput.showPicker === "function") {
+      dateInput.showPicker();
+    }
   };
-
-  dateInput.addEventListener("pointerdown", tryOpenPicker, { passive: true });
+  dateInput.addEventListener("mousedown", openDatePicker);
+  dateInput.addEventListener("touchend", openDatePicker, { passive: true });
 });
 
 function initContactsDropdownInput() {
