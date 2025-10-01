@@ -38,30 +38,31 @@ function sidebarHeaderInit() {
   toggleSidebarAndHeader(currentUser);
 }
 
-function toggleSidebarAndHeader() {
-  const internalSidebar = document.getElementById("internalSidebar");
-  const externalSidebar = document.getElementById("externalSidebar");
-  const headerNav = document.getElementById("headerNav");
-  if (!internalSidebar || !externalSidebar) return;
-  if (!currentUser.type) {
-    showExternalSidebar(externalSidebar, internalSidebar, headerNav);
-  } else {
-    showInternalSidebar(externalSidebar, internalSidebar, headerNav);
-  }
+function getCurrentUser() {
+  try { return JSON.parse(localStorage.getItem("currentUser") || "{}"); }
+  catch { return {}; }
 }
 
-function showExternalSidebar(externalSidebar, internalSidebar, headerNav) {
-  // storage empty → show external sidebar
-  externalSidebar.classList.remove("d_none");
-  internalSidebar.classList.add("d_none");
+function toggleSidebarAndHeader(user) {
+  const internal = document.getElementById("internalSidebar");
+  const external = document.getElementById("externalSidebar");
+  const headerNav = document.getElementById("headerNav");
+  if (!internal || !external || !headerNav) return;
+  const u = user ?? getCurrentUser();
+  if (!u.type) showExternalSidebar(external, internal, headerNav);
+  else showInternalSidebar(external, internal, headerNav);
+}
+
+function showExternalSidebar(external, internal, headerNav) {
+  external.classList.remove("d_none");
+  internal.classList.add("d_none");
   headerNav.style.visibility = "hidden";
 }
 
-function showInternalSidebar(externalSidebar, internalSidebar, headerNav) {
-  // guest OR user with name → show internal sidebar
-  internalSidebar.classList.remove("d_none");
-  externalSidebar.classList.add("d_none");
-  headerNav.style.visibility = "show";
+function showInternalSidebar(external, internal, headerNav) {
+  internal.classList.remove("d_none");
+  external.classList.add("d_none");
+  headerNav.style.visibility = "visible"; // statt "show"
 }
 
 function highlightActiveLink() {

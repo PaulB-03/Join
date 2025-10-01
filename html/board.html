@@ -30,14 +30,13 @@
       window.rtdb = firebase.database();
     </script>
 
-    <!-- Skripte: Reihenfolge wie gehabt -->
+    <script src="../scripts/standardFunctions.js" defer></script>
     <script src="../scripts/addTask.js" defer></script>
     <script src="../scripts/templates.js" defer></script>
     <script src="../scripts/boardOverlay.js" defer></script>
     <script src="../scripts/board.js" defer></script>
     <script src="../script.js" defer></script>
     <script src="../scripts/boardSearchbar.js" defer></script>
-    <script src="../scripts/standardFunctions.js" defer></script>
     <script src="../scripts/subTask.js" defer></script>
 
     <noscript>
@@ -124,7 +123,6 @@
               <circle cx="11" cy="11" r="7"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <!-- name ergänzt -->
             <input type="search" oninput="processChanges()" id="taskSearchInput" name="taskSearch"
                    placeholder="Find Task" />
           </div>
@@ -181,7 +179,6 @@
       </section>
     </div>
 
-    <!-- Task-Detail Overlay -->
     <div id="taskDetailOverlay" class="task-overlay">
       <div class="task-modal" role="dialog" aria-modal="true" aria-labelledby="taskDetailTitle"
            onclick="event.stopPropagation()">
@@ -190,7 +187,6 @@
       </div>
     </div>
 
-    <!-- Add/Edit Task Overlay -->
     <div id="taskOverlay" class="overlay" aria-hidden="true">
       <div class="overlay-panel task-overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
         <button type="button" class="overlay-close" id="closeTaskOverlay" aria-label="Close">×</button>
@@ -204,13 +200,11 @@
                     Title
                     <img src="../assets/svg/required.svg" alt="" id="required" />
                   </span>
-                  <!-- name ergänzt -->
                   <input class="title" id="titleInput" name="title" type="text" placeholder="Enter a title" />
                 </div>
 
                 <div class="inputFlexbox">
                   <span>Description</span>
-                  <!-- name ergänzt -->
                   <textarea rows="5" cols="50" class="title" id="descriptionInput" name="description"
                             placeholder="Enter description" required></textarea>
                 </div>
@@ -220,7 +214,6 @@
                     Due date
                     <img src="../assets/svg/required.svg" alt="" id="required" />
                   </span>
-                  <!-- name ergänzt -->
                   <input class="title" id="date" name="date" type="date" tabindex="0" required />
                 </div>
 
@@ -255,7 +248,6 @@
                   <span>Assigned to</span>
                   <div id="assignedToDropdownContacts" class="title" tabindex="0">
                     <div class="dropdown-selected">
-                      <!-- name ergänzt -->
                       <input class="search" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts" />
                       <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts" alt="" />
                     </div>
@@ -276,7 +268,6 @@
                     </div>
                     <ul id="dropdown-list-category">
                       <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
-                        <!-- label umschließt input, daher kein for nötig; id+name+value ergänzt -->
                         <label class="custom-checkbox">
                           Userstory
                           <input type="checkbox" id="category-userstory" name="category" value="Userstory" />
@@ -297,7 +288,6 @@
                 <div class="inputFlexbox" id="subtasks">
                   <span>Subtasks</span>
                   <div class="dropdown-subtasks" tabindex="0">
-                    <!-- name & id ergänzt -->
                     <input type="text" class="dropdown-selected input-subtask" id="subtaskInput"
                            name="subtask" placeholder="Add a new subtask" />
                     <div class="subtask-images-container" style="display:none">

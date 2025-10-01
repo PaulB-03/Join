@@ -34,15 +34,15 @@ h1 {
 
 .search {
   position: relative;
-  width: 260px;
+  width: 280px;
 }
 
 .search input {
   width: 100%;
   height: 40px;
   padding: 0 20px;
-  border-radius: 12px;
-  border: 1px solid var(--color-placeholder);
+  border-radius: 8px;
+  border: 1px solid var(--main-color-dark);
   background: var(--white);
   color: var(--main-color-dark);
 }
@@ -176,14 +176,14 @@ a.btn:active {
 .col-head .add-card-btn {
   display: inline-flex;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   margin-left: auto;
-  border: 2px solid var(--color-icon);
+  border: 2px solid var(--main-color-dark);
   border-radius: 6px;
   font-size: 16px;
   font-weight: 700;
-  color: var(--color-icon);
+  color: var(--main-color-dark);
   background: var(--white);
   cursor: pointer;
   transition: 0.2s;

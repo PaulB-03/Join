@@ -233,8 +233,6 @@ function addTaskCard(id, t) {
   const card = document.createElement("article");
   card.className = "card";
   card.dataset.id = id;
-
-  // Erwartet: window.taskCardInnerHtml(t, percent, done, total) liefert HTML
   card.innerHTML = window.taskCardInnerHtml(t, percent, done, total);
 
   bindCardClickDrag(wrap, card, id);

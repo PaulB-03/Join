@@ -206,35 +206,37 @@ function initCategoryDropdown() {
     const dropdown = document.getElementById('assignedToDropdownCategory');
     const arrow = document.getElementById('dropdown-arrow-subtasks');
     const dropdownList = document.getElementById('dropdown-list-category');
+  
+    if (!dropdown || !arrow || !dropdownList) return;
+  
     const items = dropdownList.getElementsByClassName('dropdown-item-category');
-
     let isOpen = false;
-
+  
     dropdown.addEventListener('click', (event) => {
-        event.stopPropagation();
-        isOpen = !isOpen;
-        dropdown.classList.toggle('open', isOpen);
-        arrow.style.transform = isOpen ? "translateY(-50%) rotate(180deg)" : "translateY(-50%) rotate(0deg)";
+      event.stopPropagation();
+      isOpen = !isOpen;
+      dropdown.classList.toggle('open', isOpen);
+      arrow.style.transform = isOpen ? "translateY(-50%) rotate(180deg)" : "translateY(-50%) rotate(0deg)";
     });
-
+  
     Array.from(items).forEach((item, index) => {
-        item.addEventListener('click', (event) => {
-            event.stopPropagation();
-            selectCategory(index);
-            isOpen = false;
-            dropdown.classList.remove('open');
-            arrow.style.transform = "translateY(-50%) rotate(0deg)";
-        });
+      item.addEventListener('click', (event) => {
+        event.stopPropagation();
+        selectCategory(index);
+        isOpen = false;
+        dropdown.classList.remove('open');
+        arrow.style.transform = "translateY(-50%) rotate(0deg)";
+      });
     });
-
+  
     document.addEventListener('click', () => {
-        if (isOpen) {
-            dropdown.classList.remove('open');
-            arrow.style.transform = "translateY(-50%) rotate(0deg)";
-            isOpen = false;
-        }
+      if (isOpen) {
+        dropdown.classList.remove('open');
+        arrow.style.transform = "translateY(-50%) rotate(0deg)";
+        isOpen = false;
+      }
     });
-}
+  }
 
 function selectCategory(index) {
     const categories = ['Userstory', 'Technical Task'];
