@@ -12,7 +12,7 @@ body {
   width: 10px;
 }
 
-#requiredHeaders {
+#requiredHeaders, #requiredHead {
   gap: 2px;
   display: flex;
   align-items: start;
@@ -696,4 +696,11 @@ input[type="date"]:focus::before {
   z-index: 10000;
   text-align: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#requiredHeaders {
+  display: flex;
+}
+#requiredHeadersMobile {
+  display: none;
 }

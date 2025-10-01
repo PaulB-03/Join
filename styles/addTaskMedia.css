@@ -1,10 +1,22 @@
 @media (max-width: 1410px) {
-  .divider {
+    body::-webkit-scrollbar {
         display: none;
-  }
-  .textrequired {
+    } 
+    .divider {
+        display: none;
+    }
+    .textrequired {
         margin-top: 0px;
-  }
+    }
+    #requiredHeaders {
+        display: none;
+    }
+    #requiredHeadersMobile {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 8px 0;
+    }
 }
 
 @media (max-width: 850px) {
@@ -15,7 +27,6 @@
     form {
         padding-left: 5px;
         padding-top: 140px;
-        overflow: scroll;
         position: unset;
     }
     .inputFlexbox {
@@ -24,8 +35,16 @@
     .title {
         width: 300px;
     }
-    #requiredHeaders, .description, .prio, .assigned, .sub {
+    #requiredHead, .description, .prio, .assigned, .sub {
         font-size: 14px;
+    }
+    #requiredHeadersMobile {
+        gap: 2px;
+        display: flex;
+        align-items: start;
+    }
+    #required {
+        width: 8px;
     }
     textarea {
         width: 300px !important;
@@ -96,5 +115,8 @@
     }
     .dropdown-item-category {
         width: 300px;
+    }
+    .addTaskWrapper {
+        gap: 10px;
     }
 }
