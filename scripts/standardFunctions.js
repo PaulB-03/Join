@@ -412,7 +412,6 @@ function updateDropdownBackground(dropdownId) {
   }
 }
 
-
 function saveSelectedCategory(index) {
     const dropdown = document.getElementById("assignedToDropdownCategory");
     const categoryList = document.getElementById("dropdown-list-category");
@@ -440,28 +439,99 @@ async function loadContactsInAddTask() {
 }
 
 async function initContactsDropdown() {
-  let select = document.getElementById('assignedToDropdownContacts');
-  let arrow = document.querySelector('#dropdown-arrow-contacts');
-  let dropDown = document.getElementById('dropdown-list-contacts');
-  let response = await fetch(baseURL + "contacts.json");
-  let contacts = await response.json();
+    let select = document.getElementById("assignedToDropdownContacts");
+    let arrow = document.querySelector("#dropdown-arrow-contacts");
+    let dropDown = document.getElementById("dropdown-list-contacts");
 
-  allContacts = Object.values(contacts).map(contact => contact.name);
-  dropDown.innerHTML = "";
-  allContacts.forEach(name => {
-      let li = document.createElement("li");
-      li.classList.add("dropdown-item-contact");
-      let isChecked = assignedContacts.includes(name) ? "checked" : "";
-      li.innerHTML = `
-          <label class="custom-checkbox" style="display: block; padding: 5px; cursor: pointer; ${isChecked ? 'color: lightgrey;' : ''}">
-              ${name}
-              <input type="checkbox" onchange="toggleContact('${name}'); updateDropdownBackground('assignedToDropdownContacts');" ${isChecked}>
-              <span style="display:none"></span>
-          </label>
-          `;
-      dropDown.appendChild(li);
-  });
+    // Fetch contacts
+    let response = await fetch(baseURL + "contacts.json");
+    let contacts = await response.json();
 
-  let items = document.getElementsByClassName("dropdown-item-contact");
-  dropdownFunction(arrow, dropDown, select, items, null);
+    allContacts = Object.values(contacts).map(contact => contact.name);
+    dropDown.innerHTML = "";
+
+    allContacts.forEach((name, index) => {
+        const contactEntry = Object.values(contacts).find(c => c.name === name);
+        if (!contactEntry) return;
+
+        const li = document.createElement("li");
+        li.classList.add("dropdown-item-contact");
+
+        const label = document.createElement("label");
+        label.classList.add("dropdown-checkbox");
+
+        // Avatar initials
+        const initials = contactEntry.name
+            .split(" ")
+            .map(w => w[0])
+            .join("")
+            .toUpperCase();
+
+        const initialsDiv = document.createElement("div");
+        initialsDiv.textContent = initials;
+        initialsDiv.classList.add("contact-initial");
+        initialsDiv.style.backgroundColor = colorForName(contactEntry.name);
+
+        // Name span
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = contactEntry.name;
+        nameSpan.classList.add("contact-name");
+
+        // Checkbox icon
+        const checkboxImg = document.createElement("img");
+        checkboxImg.src = assignedContacts.includes(contactEntry.name)
+            ? "../assets/svg/checked.svg"
+            : "../assets/svg/check_button.svg";
+        checkboxImg.classList.add("checkbox-svg");
+
+        // Toggle click event
+        label.addEventListener("click", (e) => {
+            e.stopPropagation();
+
+            const isChecked = checkboxImg.src.includes("checked.svg");
+            if (isChecked) {
+                checkboxImg.src = "../assets/svg/check_button.svg";
+            } else {
+                checkboxImg.src = "../assets/svg/checked.svg";
+            }
+
+            toggleContact(contactEntry.name);
+            updateDropdownBackground("assignedToDropdownContacts");
+        });
+
+        // Assemble label
+        label.appendChild(initialsDiv);
+        label.appendChild(nameSpan);
+        label.appendChild(checkboxImg);
+
+        li.appendChild(label);
+        dropDown.appendChild(li);
+    });
+
+    // Re-init dropdown behavior
+    let items = document.getElementsByClassName("dropdown-item-contact");
+    dropdownFunction(arrow, dropDown, select, items, null);
+}
+
+async function handleAddOrEditTask(e) {
+    e && e.preventDefault();
+
+    const btn = byId("add");
+    const id = btn.getAttribute("data-editing-id");
+    const isAddTaskStandalone = /\/html\/addTask\.html$/.test(location.pathname);
+
+    if (id) {
+        await saveEditFlow(btn, id);
+        return;
+    } else {
+        await createTask();
+
+        if (isAddTaskStandalone) {
+            location.href = "board.html";
+        } else {
+            closeTaskOverlay();
+            await window.Board?.renderAllTasks?.();
+            window.Board?.updateAllEmptyStates?.();
+        }
+    }
 }

@@ -206,41 +206,45 @@ function toggleClearButton(isEditing) {
 async function handleAddOrEditTask(e) {
   e && e.preventDefault();
 
-  const btn = byId("add");
+  const btn = document.getElementById("add");
   const id  = btn.getAttribute("data-editing-id");
-  const isAddTaskStandalone = /\/html\/addTask\.html$/.test(location.pathname);
 
   if (id) {
     await saveEditFlow(btn, id);
-    return;
   } else {
-    await createTask();
-
-    if (isAddTaskStandalone) {
-      location.href = "board.html";
+    if (typeof window.createTask === "function") {
+      await window.createTask();
     } else {
-      closeTaskOverlay();
-      await window.Board?.renderAllTasks?.();
-      window.Board?.updateAllEmptyStates?.();
+      console.error("createTask function not found!");
     }
   }
 }
 
 async function saveEditFlow(btn, id) {
-    await updateTask(id);
+    const isAddTaskStandalone = /\/html\/addTask\.html$/.test(location.pathname);
+    await updateTask(id, isAddTaskStandalone, !isAddTaskStandalone);
     btn.removeAttribute("data-editing-id");
     btn.querySelector("p").textContent = "Create task";
     byId("taskOverlay").classList.remove("edit-mode");
 }
 
-async function updateTask(id) {
+async function updateTask(id, navigateToBoard = false, closeOverlayAfterUpdate = false) {
   if (!id) { if (typeof window.createTask === "function") window.createTask(); return; }
   const payload = buildUpdatedTask();
   try {
     await putTask(id, payload);
-    closeOverlay(document.querySelector(".overlay"));
+    
+    if (closeOverlayAfterUpdate) {
+      closeOverlay(document.querySelector(".overlay"));
+    }
+    
     await window.Board?.renderAllTasks?.();
-    await openTaskDetail(id);                 
+
+    if (navigateToBoard) {
+      location.href = "board.html";
+    } else if (!closeOverlayAfterUpdate) {
+      await openTaskDetail(id);                 
+    }
   } catch (err) {
     console.error("Error updating task:", err);
     alert("Failed to update task. Please try again.");
@@ -332,7 +336,6 @@ function fillSubtasks(subtasks) {
     );
   });
 }
-
 
 function renderAssignedInitials() {
   const w = byId("assignedToInitials"); w.innerHTML = "";

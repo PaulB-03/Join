@@ -125,4 +125,7 @@
     .title {
         font-size: 12px;
     }
+    #assignedToInitials {
+        gap: 5px;
+    }
 }
