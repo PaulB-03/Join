@@ -534,6 +534,7 @@ input[type="date"]:invalid {
 
 input[type="date"]:valid {
   color: black;
+  font-size: 20px;
 }
 
 input[type="date"]:not(:focus):invalid::before {
