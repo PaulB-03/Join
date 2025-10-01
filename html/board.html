@@ -197,7 +197,7 @@
             <div class="addTaskWrapper">
               <div>
                 <div class="inputFlexbox">
-                  <span id="requiredHeaders">
+                  <span id="requiredHead">
                     Title
                     <img src="../assets/svg/required.svg" alt="" id="required" />
                   </span>
@@ -205,20 +205,20 @@
                 </div>
 
                 <div class="inputFlexbox">
-                  <span>Description</span>
+                  <span class="description">Description</span>
                   <textarea rows="5" cols="50" class="title" id="descriptionInput" name="description"
                             placeholder="Enter description" required></textarea>
                 </div>
 
                 <div class="inputFlexbox">
-                  <span id="requiredHeaders">
+                  <span id="requiredHead">
                     Due date
                     <img src="../assets/svg/required.svg" alt="" id="required" />
                   </span>
                   <input class="title" id="date" name="date" type="date" tabindex="0" required />
                 </div>
 
-                <span id="requiredHeaders" class="textrequired" aria-live="polite">
+                <span id="requiredHead" class="textrequired" aria-live="polite">
                   <img id="required" src="../assets/svg/required.svg" alt="" />
                   <p>This field is required</p>
                 </span>
@@ -228,7 +228,7 @@
 
               <div>
                 <div class="inputFlexbox">
-                  <span>Priority</span>
+                  <span class="prio">Priority</span>
                   <div class="prioDivsWrapper" role="group" aria-label="Priority">
                     <div id="urgent" onclick="setPrioColor(0)" class="prioGrade">
                       <span>Urgent</span>
@@ -246,7 +246,7 @@
                 </div>
 
                 <div class="inputFlexbox">
-                  <span>Assigned to</span>
+                  <span class="assigned">Assigned to</span>
                   <div id="assignedToDropdownContacts" class="title" tabindex="0">
                     <div class="dropdown-selected">
                       <input class="search" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts" />
@@ -287,7 +287,7 @@
                 </div>
 
                 <div class="inputFlexbox" id="subtasks">
-                  <span>Subtasks</span>
+                  <span class="sub">Subtasks</span>
                   <div class="dropdown-subtasks" tabindex="0">
                     <input type="text" class="dropdown-selected input-subtask" id="subtaskInput"
                            name="subtask" placeholder="Add a new subtask" />
