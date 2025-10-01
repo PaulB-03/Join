@@ -80,7 +80,7 @@ body {
 }
 
 #titleInput:not(:placeholder-shown) {
-    background-color: rgb(232, 240, 254);
+  background-color: rgb(232, 240, 254);
 }
 
 .title:focus {
@@ -135,17 +135,17 @@ textarea:valid {
   background-color: white;
 }
 #assignedToDropdownContacts .dropdown-selected {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
 #assignedToDropdownContacts .dropdown-selected span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-shrink: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
 }
 
 #assignedToDropdownContacts:hover {

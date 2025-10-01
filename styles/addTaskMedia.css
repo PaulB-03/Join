@@ -1,0 +1,100 @@
+@media (max-width: 1410px) {
+  .divider {
+        display: none;
+  }
+  .textrequired {
+        margin-top: 0px;
+  }
+}
+
+@media (max-width: 850px) {
+    h1 {
+        margin-left: 30px;
+        top: 120px;
+    }
+    form {
+        padding-left: 5px;
+        padding-top: 140px;
+        overflow: scroll;
+        position: unset;
+    }
+    .inputFlexbox {
+        width: auto;
+    }
+    .title {
+        width: 300px;
+    }
+    #requiredHeaders, .description, .prio, .assigned, .sub {
+        font-size: 14px;
+    }
+    textarea {
+        width: 300px !important;
+    }
+    .prioDivsWrapper {
+        width: 300px;
+        gap: 10px;
+        justify-content: flex-start;
+    }
+    .prioGrade {
+        width: 100px;
+        height: 35px;
+    }
+    .prioGrade span {
+        font-size: 14px;
+    }
+    .prioImage {
+        width: 15px;
+    }
+    .dropdown-subtasks {
+        width: 300px;
+    }
+    .addOrClear {
+        justify-content: center;
+        width: 320px;
+        font-size: 16px;
+        gap: 5px;
+    }
+    .addOrClearBtn {
+        width: 140px;
+        height: 50px;
+    }
+    .addOrClear p {
+        font-size: 14px;
+    }
+    input#contactSearch.search::placeholder {
+        font-size: 12px;
+    }
+    #titleInput.title::placeholder {
+        font-size: 12px;
+    }
+    #descriptionInput.title::placeholder {
+        font-size: 12px;
+    }
+    .dropdown-selected.input-subtask::placeholder {
+        font-size: 12px;
+    }
+    #categoryPlaceholder {
+        font-size: 12px;
+    }
+    input[type="date"]:invalid {
+        font-size: 12px;
+    }
+    input[type="date"]:valid {
+        font-size: 12px;
+    }
+    #dropdown-list-contacts {
+        width: 300px;
+    }
+    #dropdown-list-category {
+        width: 300px;
+    }
+    .custom-checkbox {
+        font-size: 12px;
+    }
+    #subtasks {
+        padding-bottom: 20px;
+    }
+    .dropdown-item-category {
+        width: 300px;
+    }
+}
