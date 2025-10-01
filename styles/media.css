@@ -157,7 +157,7 @@
   }
 
   #taskOverlay .overlay-close {
-    right: 20px;
+    right: 8px;
   }
 
   #taskOverlay .prioDivsWrapper {
@@ -175,5 +175,11 @@
   .task-detail {
     max-width: 300px;
     height: auto;
+  }
+}
+
+@media (max-width: 850px) {
+  .dropdown-subtasks {
+    width: 220px !important;
   }
 }

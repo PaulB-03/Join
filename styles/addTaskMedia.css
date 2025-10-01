@@ -119,4 +119,10 @@
     .addTaskWrapper {
         gap: 10px;
     }
+    input[type="text"] {
+        font-size: 12px;
+    }
+    .title {
+        font-size: 12px;
+    }
 }
