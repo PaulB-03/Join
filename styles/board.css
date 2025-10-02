@@ -5,6 +5,9 @@
 .app {
   max-width: 1920px;
   padding: 150px 20px 64px 380px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .app h1 {
@@ -346,7 +349,7 @@ a.btn:active {
   color: var(--color-icon);
   display: grid;
   place-items: center;
-  height: 50px;
+  height: auto;
   border-radius: 12px;
 }
 
@@ -666,8 +669,16 @@ body.modal-open {
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  flex: 1 1 auto; 
+  min-height: 0;
 }
 
 .board-viewport::-webkit-scrollbar {
   display: none;
+}
+
+.column {
+  display: flex;   
+  flex-direction: column; 
+  min-height: 0;          
 }

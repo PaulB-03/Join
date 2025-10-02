@@ -131,7 +131,7 @@ function bindOverlayButtons() {
 
 function onOpenAddClick(e) {
   e.preventDefault();
-  if (window.innerWidth <= 820) return location.assign("../html/addTask.html");
+  if (window.innerWidth <= 1100) return location.assign("../html/addTask.html");
   clearTask(); openTaskOverlay(); setOverlayButtonText(false); toggleClearButton(false);
 }
 
