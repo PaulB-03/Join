@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../styles/boardOverlay.css" />
     <link rel="stylesheet" href="../styles/media.css" />
     <link rel="stylesheet" href="../styles/addTask.css" />
-    <link rel="stylesheet" href="../styles/addTaskMedia.css">
+    <link rel="stylesheet" href="../styles/addTaskMedia.css" />
     <link rel="stylesheet" href="../styles/colors.css" />
     <link rel="stylesheet" href="../styles/fonts.css" />
 
@@ -41,17 +41,19 @@
     <script src="../scripts/subTask.js" defer></script>
 
     <noscript>
-      <style>.app{display:none;}</style>
-      <div style="padding:1rem;background:#fff3cd;color:#664d03">
-        JavaScript ist deaktiviert. Bitte aktivieren, um das Board zu nutzen.
-      </div>
+      <style>
+        .app {
+          display: none;
+        }
+      </style>
+      <div style="padding: 1rem; background: #fff3cd; color: #664d03">JavaScript ist deaktiviert. Bitte aktivieren, um das Board zu nutzen.</div>
     </noscript>
   </head>
 
   <body onload="sidebarHeaderInit()">
     <header id="header">
       <div class="header-content">
-        <img src="../assets/svg/join_logo_small.svg" class="headerLogo" style="height:39px" alt="Join Logo" />
+        <img src="../assets/svg/join_logo_small.svg" class="headerLogo" style="height: 39px" alt="Join Logo" />
         <h6>Kanban Projekt Management Tool</h6>
         <nav id="headerNav" class="header-nav">
           <a href="../html/help.html" class="help-link" aria-label="Help">
@@ -62,7 +64,7 @@
             <img class="default" src="../assets/img/guest.png" alt="Gastprofil" />
             <img class="hover" src="../assets/img/guest-hover.png" alt="Gastprofil Hover" />
           </div>
-          <div id="profileMenu" class="profile-menu" style="display:none">
+          <div id="profileMenu" class="profile-menu" style="display: none">
             <a class="menu-item helpMobile" href="../html/help.html">Help</a>
             <a class="menu-item" href="../html/legalNotice.html">Legal Notice</a>
             <a class="menu-item" href="../html/privacyPolicy.html">Privacy Policy</a>
@@ -114,18 +116,14 @@
       <div class="heading">
         <h1>Board</h1>
         <div class="controls">
-          <div id="search-empty-state" class="empty-state d_none" role="status" aria-live="polite">
-            Keine Ergebnisse gefunden.
-          </div>
+          <div id="search-empty-state" class="empty-state d_none" role="status" aria-live="polite">Keine Ergebnisse gefunden.</div>
 
           <div class="search" role="search" aria-label="Find Task">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="11" cy="11" r="7"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="search" oninput="processChanges()" id="taskSearchInput" name="taskSearch"
-                   placeholder="Find Task" />
+            <input type="search" oninput="processChanges()" id="taskSearchInput" name="taskSearch" placeholder="Find Task" />
           </div>
 
           <button type="button" id="openAddTask" class="btn btn-dark" aria-label="Add task">
@@ -181,8 +179,7 @@
     </div>
 
     <div id="taskDetailOverlay" class="task-overlay">
-      <div class="task-modal" role="dialog" aria-modal="true" aria-labelledby="taskDetailTitle"
-           onclick="event.stopPropagation()">
+      <div class="task-modal" role="dialog" aria-modal="true" aria-labelledby="taskDetailTitle" onclick="event.stopPropagation()">
         <button class="task-modal__close" id="taskDetailClose" aria-label="Close">&times;</button>
         <div id="taskDetailContent"><!-- Inhalt wird per JS gerendert --></div>
       </div>
@@ -206,8 +203,7 @@
 
                 <div class="inputFlexbox">
                   <span class="description">Description</span>
-                  <textarea rows="5" cols="50" class="title" id="descriptionInput" name="description"
-                            placeholder="Enter description" required></textarea>
+                  <textarea rows="5" cols="50" class="title" id="descriptionInput" name="description" placeholder="Enter description" required></textarea>
                 </div>
 
                 <div class="inputFlexbox">
@@ -289,9 +285,8 @@
                 <div class="inputFlexbox" id="subtasks">
                   <span class="sub">Subtasks</span>
                   <div class="dropdown-subtasks" tabindex="0">
-                    <input type="text" class="dropdown-selected input-subtask" id="subtaskInput"
-                           name="subtask" placeholder="Add a new subtask" />
-                    <div class="subtask-images-container" style="display:none">
+                    <input type="text" class="dropdown-selected input-subtask" id="subtaskInput" name="subtask" placeholder="Add a new subtask" />
+                    <div class="subtask-images-container" style="display: none">
                       <img src="../assets/svg/subclose.svg" class="subtaskImages cancelSubtask" alt="Delete Subtask" />
                       <div class="divider1"></div>
                       <img src="../assets/svg/subcheck.svg" class="subtaskImages saveSubtask" alt="Save Subtask" />

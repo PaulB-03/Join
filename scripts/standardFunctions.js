@@ -1,4 +1,4 @@
-let baseURL = 'https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/';
+let baseURL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
 // all the colors for the contact profile pictures
 const COLOR_VARS = [
   "--contact-bg-blue",
@@ -17,7 +17,6 @@ const COLOR_VARS = [
   "--contact-bg-medium-yellow",
   "--contact-bg-yellow",
 ];
-
 
 // call this function with a name (string of first and last name) to get the initials
 // gets the initials for the profile picture,  called by contactRow
@@ -39,366 +38,372 @@ function colorForName(name = "") {
 
 // Modify loadContacts to store contacts globally for search render
 async function loadContactsInAddTask() {
-    try {
-        let response = await fetch(baseURL + "contacts.json");
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        let contacts = await response.json();
-
-        window.loadedContacts = contacts; // store globally for search
-
-        allContacts = [];
-        const contactList = document.getElementById("dropdown-list-contacts");
-        contactList.innerHTML = "";
-
-        if (contacts) {
-            const sortedContacts = Object.entries(contacts).sort((a, b) => {
-                const nameA = a[1].name.toUpperCase();
-                const nameB = b[1].name.toUpperCase();
-                if (nameA < nameB) return -1;
-                if (nameA > nameB) return 1;
-                return 0;
-            });
-
-            sortedContacts.forEach(([key, contact], index) => {
-                allContacts.push(contact.name);
-            });
-
-            renderContacts(allContacts, contacts);
-        }
-    } catch (error) {
-        console.error("Could not load contacts: ", error);
+  try {
+    let response = await fetch(baseURL + "contacts.json");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-}
+    let contacts = await response.json();
 
-async function getTasks() {
-    try {
-        let response = await fetch(baseURL + "tasks.json");
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        let data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Could not get tasks: ", error);
-        return null;
-    }
-}
+    window.loadedContacts = contacts; // store globally for search
 
-function renderContacts(contactNames, contacts) {
+    allContacts = [];
     const contactList = document.getElementById("dropdown-list-contacts");
     contactList.innerHTML = "";
 
-    contactNames.forEach((name) => {
-        const contactEntry = Object.values(contacts).find(c => c.name === name);
-        if (!contactEntry) return;
+    if (contacts) {
+      const sortedContacts = Object.entries(contacts).sort((a, b) => {
+        const nameA = a[1].name.toUpperCase();
+        const nameB = b[1].name.toUpperCase();
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        return 0;
+      });
 
-        const li = document.createElement("li");
-        li.classList.add("dropdown-item-contact");
+      sortedContacts.forEach(([key, contact], index) => {
+        allContacts.push(contact.name);
+      });
 
-        const label = document.createElement("label");
-        label.classList.add("dropdown-checkbox");
+      renderContacts(allContacts, contacts);
+    }
+  } catch (error) {
+    console.error("Could not load contacts: ", error);
+  }
+}
 
-        const initials = contactEntry.name.split(" ").map(w => w[0]).join("").toUpperCase();
-        const initialsSpan = document.createElement("span");
-        initialsSpan.textContent = initials;
-        initialsSpan.classList.add("contact-initial");
-        initialsSpan.style.backgroundColor = colorForName(contactEntry.name);
+async function getTasks() {
+  try {
+    let response = await fetch(baseURL + "tasks.json");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    let data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Could not get tasks: ", error);
+    return null;
+  }
+}
 
-        const nameSpan = document.createElement("span");
-        nameSpan.textContent = contactEntry.name;
-        nameSpan.classList.add("contact-name");
+function renderContacts(contactNames, contacts) {
+  const contactList = document.getElementById("dropdown-list-contacts");
+  contactList.innerHTML = "";
 
-        const checkboxImg = document.createElement("img");
-        checkboxImg.src = assignedContacts.includes(contactEntry.name)
-            ? "../assets/svg/checked.svg"
-            : "../assets/svg/check_button.svg";
-        checkboxImg.classList.add("checkbox-svg");
+  contactNames.forEach((name) => {
+    const contactEntry = Object.values(contacts).find((c) => c.name === name);
+    if (!contactEntry) return;
 
-        label.addEventListener("click", (e) => {
-            e.stopPropagation();
+    const li = document.createElement("li");
+    li.classList.add("dropdown-item-contact");
 
-            const isChecked = checkboxImg.src.includes("checked.svg");
-            if (isChecked) {
-                checkboxImg.src = "../assets/svg/check_button.svg";
-            } else {
-                checkboxImg.src = "../assets/svg/checked.svg";
-            }
+    const label = document.createElement("label");
+    label.classList.add("dropdown-checkbox");
 
-            toggleContact(contactEntry.name);
-        });
+    const initials = contactEntry.name
+      .split(" ")
+      .map((w) => w[0])
+      .join("")
+      .toUpperCase();
+    const initialsSpan = document.createElement("span");
+    initialsSpan.textContent = initials;
+    initialsSpan.classList.add("contact-initial");
+    initialsSpan.style.backgroundColor = colorForName(contactEntry.name);
 
-        label.appendChild(initialsSpan);
-        label.appendChild(nameSpan);
-        label.appendChild(checkboxImg);
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = contactEntry.name;
+    nameSpan.classList.add("contact-name");
 
-        li.appendChild(label);
-        contactList.appendChild(li);
+    const checkboxImg = document.createElement("img");
+    checkboxImg.src = assignedContacts.includes(contactEntry.name) ? "../assets/svg/checked.svg" : "../assets/svg/check_button.svg";
+    checkboxImg.classList.add("checkbox-svg");
+
+    label.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const isChecked = checkboxImg.src.includes("checked.svg");
+      if (isChecked) {
+        checkboxImg.src = "../assets/svg/check_button.svg";
+      } else {
+        checkboxImg.src = "../assets/svg/checked.svg";
+      }
+
+      toggleContact(contactEntry.name);
     });
+
+    label.appendChild(initialsSpan);
+    label.appendChild(nameSpan);
+    label.appendChild(checkboxImg);
+
+    li.appendChild(label);
+    contactList.appendChild(li);
+  });
 }
 
 let subtasksContainer = null;
 let subtasksOriginalStyles = {};
 
 function toggleCategoryDropdown() {
-    const dropdown = document.getElementById("assignedToDropdownCategory");
-    dropdown.classList.toggle("open");
+  const dropdown = document.getElementById("assignedToDropdownCategory");
+  dropdown.classList.toggle("open");
 
-    if (!subtasksContainer) {
-        subtasksContainer = document.getElementById("subtasks");
-        subtasksOriginalStyles = {
-            marginTop: subtasksContainer.style.marginTop || "0px",
-            paddingBottom: subtasksContainer.style.paddingBottom || "50px"
-        };
-    }
+  if (!subtasksContainer) {
+    subtasksContainer = document.getElementById("subtasks");
+    subtasksOriginalStyles = {
+      marginTop: subtasksContainer.style.marginTop || "0px",
+      paddingBottom: subtasksContainer.style.paddingBottom || "50px",
+    };
+  }
 
-    if (dropdown.classList.contains("open")) {
-        subtasksContainer.style.marginTop = "80px";
-        subtasksContainer.style.paddingBottom = "50px";
-    } else {
-        subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
-        subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
-    }
+  if (dropdown.classList.contains("open")) {
+    subtasksContainer.style.marginTop = "80px";
+    subtasksContainer.style.paddingBottom = "50px";
+  } else {
+    subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
+    subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+  }
 }
 
 let categoryContainer, categoryOriginalStyles;
 
 function toggleAssignedDropdown(event) {
-    const dropdown = document.getElementById("assignedToDropdownContacts");
-    dropdown.classList.toggle("open");
-    event.stopPropagation();
+  const dropdown = document.getElementById("assignedToDropdownContacts");
+  dropdown.classList.toggle("open");
+  event.stopPropagation();
 
-    if (!subtasksContainer) {
-        subtasksContainer = document.getElementById("subtasks");
-        if (subtasksContainer) {
-            subtasksOriginalStyles = {
-                marginTop: subtasksContainer.style.marginTop || "0px",
-                paddingBottom: subtasksContainer.style.paddingBottom || "50px"
-            };
-        }
+  if (!subtasksContainer) {
+    subtasksContainer = document.getElementById("subtasks");
+    if (subtasksContainer) {
+      subtasksOriginalStyles = {
+        marginTop: subtasksContainer.style.marginTop || "0px",
+        paddingBottom: subtasksContainer.style.paddingBottom || "50px",
+      };
     }
+  }
 
-    if (!categoryContainer) {
-        categoryContainer = document.getElementById("category");
-        if (categoryContainer) {
-            categoryOriginalStyles = {
-                marginTop: categoryContainer.style.marginTop || "0px"
-            };
-        }
+  if (!categoryContainer) {
+    categoryContainer = document.getElementById("category");
+    if (categoryContainer) {
+      categoryOriginalStyles = {
+        marginTop: categoryContainer.style.marginTop || "0px",
+      };
     }
+  }
 
-    if (dropdown.classList.contains("open")) {
-        if (categoryContainer) categoryContainer.style.marginTop = "220px";
-        if (subtasksContainer) {
-            subtasksContainer.style.marginTop = "20px";
-            subtasksContainer.style.paddingBottom = "50px";
-        }
-    } else {
-        resetAssignedDropdown();
+  if (dropdown.classList.contains("open")) {
+    if (categoryContainer) categoryContainer.style.marginTop = "220px";
+    if (subtasksContainer) {
+      subtasksContainer.style.marginTop = "20px";
+      subtasksContainer.style.paddingBottom = "50px";
     }
+  } else {
+    resetAssignedDropdown();
+  }
 }
 
 document.addEventListener("click", function (event) {
-    const dropdown = document.getElementById("assignedToDropdownContacts");
-    if (!dropdown) return;
+  const dropdown = document.getElementById("assignedToDropdownContacts");
+  if (!dropdown) return;
 
-    if (dropdown.classList.contains("open") && !dropdown.contains(event.target)) {
-        dropdown.classList.remove("open");
-        resetAssignedDropdown();
-    }
+  if (dropdown.classList.contains("open") && !dropdown.contains(event.target)) {
+    dropdown.classList.remove("open");
+    resetAssignedDropdown();
+  }
 });
 
 function resetAssignedDropdown() {
-    if (categoryContainer) categoryContainer.style.marginTop = categoryOriginalStyles.marginTop;
-    if (subtasksContainer) {
-        subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
-        subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
-    }
+  if (categoryContainer) categoryContainer.style.marginTop = categoryOriginalStyles.marginTop;
+  if (subtasksContainer) {
+    subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
+    subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+  }
 }
 
 function initCategoryDropdown() {
-    const dropdown = document.getElementById('assignedToDropdownCategory');
-    const arrow = document.getElementById('dropdown-arrow-subtasks');
-    const dropdownList = document.getElementById('dropdown-list-category');
-  
-    if (!dropdown || !arrow || !dropdownList) return;
-  
-    const items = dropdownList.getElementsByClassName('dropdown-item-category');
-    let isOpen = false;
-  
-    dropdown.addEventListener('click', (event) => {
+  const dropdown = document.getElementById("assignedToDropdownCategory");
+  const arrow = document.getElementById("dropdown-arrow-subtasks");
+  const dropdownList = document.getElementById("dropdown-list-category");
+
+  if (!dropdown || !arrow || !dropdownList) return;
+
+  const items = dropdownList.getElementsByClassName("dropdown-item-category");
+  let isOpen = false;
+
+  dropdown.addEventListener("click", (event) => {
+    event.stopPropagation();
+    isOpen = !isOpen;
+    dropdown.classList.toggle("open", isOpen);
+    arrow.style.transform = isOpen ? "translateY(-50%) rotate(180deg)" : "translateY(-50%) rotate(0deg)";
+  });
+
+  Array.from(items).forEach((item, index) => {
+    item.addEventListener("click", (event) => {
       event.stopPropagation();
-      isOpen = !isOpen;
-      dropdown.classList.toggle('open', isOpen);
-      arrow.style.transform = isOpen ? "translateY(-50%) rotate(180deg)" : "translateY(-50%) rotate(0deg)";
+      selectCategory(index);
+      isOpen = false;
+      dropdown.classList.remove("open");
+      arrow.style.transform = "translateY(-50%) rotate(0deg)";
     });
-  
-    Array.from(items).forEach((item, index) => {
-      item.addEventListener('click', (event) => {
-        event.stopPropagation();
-        selectCategory(index);
-        isOpen = false;
-        dropdown.classList.remove('open');
-        arrow.style.transform = "translateY(-50%) rotate(0deg)";
-      });
-    });
-  
-    document.addEventListener('click', () => {
-      if (isOpen) {
-        dropdown.classList.remove('open');
-        arrow.style.transform = "translateY(-50%) rotate(0deg)";
-        isOpen = false;
-      }
-    });
-  }
+  });
 
-function selectCategory(index) {
-    const categories = ['Userstory', 'Technical Task'];
-    const dropdown = document.getElementById("assignedToDropdownCategory");
-    const placeholder = document.getElementById("categoryPlaceholder");
-
-    selectedCategory = categories[index];
-    placeholder.textContent = selectedCategory;
-    dropdown.classList.add('selected-red');
-
-    if (subtasksContainer) {
-        subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
-        subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+  document.addEventListener("click", () => {
+    if (isOpen) {
+      dropdown.classList.remove("open");
+      arrow.style.transform = "translateY(-50%) rotate(0deg)";
+      isOpen = false;
     }
+  });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    initCategoryDropdown();
+function selectCategory(index) {
+  const categories = ["Userstory", "Technical Task"];
+  const dropdown = document.getElementById("assignedToDropdownCategory");
+  const placeholder = document.getElementById("categoryPlaceholder");
+
+  selectedCategory = categories[index];
+  placeholder.textContent = selectedCategory;
+  dropdown.classList.add("selected-red");
+
+  if (subtasksContainer) {
+    subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
+    subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initCategoryDropdown();
 });
 
 function toggleContact(name) {
-    if (assignedContacts.includes(name)) {
-        assignedContacts = assignedContacts.filter(c => c !== name);
-    } else {
-        assignedContacts.push(name);
-    }
-    updateDropdownText();
-    renderAssignedContacts();
-    updateDropdownHighlight();
+  if (assignedContacts.includes(name)) {
+    assignedContacts = assignedContacts.filter((c) => c !== name);
+  } else {
+    assignedContacts.push(name);
+  }
+  updateDropdownText();
+  renderAssignedContacts();
+  updateDropdownHighlight();
 }
 
 function renderAssignedContacts() {
-    let initialsDiv = document.getElementById("assignedToInitials");
-    initialsDiv.innerHTML = "";
+  let initialsDiv = document.getElementById("assignedToInitials");
+  initialsDiv.innerHTML = "";
 
-    const total = assignedContacts.length;
-    if (total === 0) {
-        initialsDiv.style.display = "none";
-        return;
-    }
+  const total = assignedContacts.length;
+  if (total === 0) {
+    initialsDiv.style.display = "none";
+    return;
+  }
 
-    initialsDiv.style.display = "flex";
+  initialsDiv.style.display = "flex";
 
-    const maxVisible = 3;
-    const visibleCount = Math.min(total, maxVisible);
+  const maxVisible = 3;
+  const visibleCount = Math.min(total, maxVisible);
 
-    for (let i = 0; i < visibleCount; i++) {
-        let contactName = assignedContacts[i];
-        let initials = contactName.split(" ").map(w => w[0]).join("").toUpperCase();
-        let span = document.createElement("span");
-        span.textContent = initials;
-        span.classList.add("contact-initial");
-        span.style.backgroundColor = colorForName(contactName);
-        initialsDiv.appendChild(span);
-    }
+  for (let i = 0; i < visibleCount; i++) {
+    let contactName = assignedContacts[i];
+    let initials = contactName
+      .split(" ")
+      .map((w) => w[0])
+      .join("")
+      .toUpperCase();
+    let span = document.createElement("span");
+    span.textContent = initials;
+    span.classList.add("contact-initial");
+    span.style.backgroundColor = colorForName(contactName);
+    initialsDiv.appendChild(span);
+  }
 
-    if (total > maxVisible) {
-        let moreCount = total - maxVisible;
-        let moreSpan = document.createElement("span");
-        moreSpan.textContent = `+${moreCount}`;
-        moreSpan.classList.add("contact-initial", "more-count");
-        moreSpan.style.backgroundColor = "#999";
-        initialsDiv.appendChild(moreSpan);
-    }
+  if (total > maxVisible) {
+    let moreCount = total - maxVisible;
+    let moreSpan = document.createElement("span");
+    moreSpan.textContent = `+${moreCount}`;
+    moreSpan.classList.add("contact-initial", "more-count");
+    moreSpan.style.backgroundColor = "#999";
+    initialsDiv.appendChild(moreSpan);
+  }
 }
 
 function updateDropdownHighlight() {
-    const dropDown = document.getElementById('dropdown-list-contacts');
-    const labels = dropDown.querySelectorAll("label.dropdown-checkbox");
+  const dropDown = document.getElementById("dropdown-list-contacts");
+  const labels = dropDown.querySelectorAll("label.dropdown-checkbox");
 
-    labels.forEach(label => {
-        const name = label.querySelector("span.contact-name").textContent.trim();
-        const checkboxImg = label.querySelector("img.checkbox-svg");
-        if (assignedContacts.includes(name)) {
-            checkboxImg.src = "../assets/svg/checked.svg";
-            label.style.color = "lightgrey";
-        } else {
-            checkboxImg.src = "../assets/svg/check_button.svg";
-            label.style.color = "";
-        }
-    });
+  labels.forEach((label) => {
+    const name = label.querySelector("span.contact-name").textContent.trim();
+    const checkboxImg = label.querySelector("img.checkbox-svg");
+    if (assignedContacts.includes(name)) {
+      checkboxImg.src = "../assets/svg/checked.svg";
+      label.style.color = "lightgrey";
+    } else {
+      checkboxImg.src = "../assets/svg/check_button.svg";
+      label.style.color = "";
+    }
+  });
 }
 
 function updateDropdownText() {
-    const span = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
+  const span = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
 
-    if (!span) return;
+  if (!span) return;
 
-    if (assignedContacts.length === 0) {
-        span.textContent = "Select contacts";
-        return;
-    }
+  if (assignedContacts.length === 0) {
+    span.textContent = "Select contacts";
+    return;
+  }
 
-    let displayed = [];
-    for (let i = 0; i < assignedContacts.length; i++) {
-        displayed.push(assignedContacts[i]);
-        span.textContent = displayed.join(", ");
-        if (span.scrollWidth > span.clientWidth) {
-            displayed.pop();
-            break;
-        }
-    }
+  let displayed = [];
+  for (let i = 0; i < assignedContacts.length; i++) {
+    displayed.push(assignedContacts[i]);
     span.textContent = displayed.join(", ");
+    if (span.scrollWidth > span.clientWidth) {
+      displayed.pop();
+      break;
+    }
+  }
+  span.textContent = displayed.join(", ");
 }
 
 function dropdownFunction(arrow, dropDown, select, items, onSelect) {
-    let isClicked = false;
+  let isClicked = false;
 
-    select.addEventListener('click', (event) => {
-        event.stopPropagation();
-        arrow.style.transform = isClicked ? "translateY(-50%) rotate(0deg)" : "translateY(-50%) rotate(180deg)";
-        dropDown.style.display = isClicked ? 'none' : 'block';
-        isClicked = !isClicked;
+  select.addEventListener("click", (event) => {
+    event.stopPropagation();
+    arrow.style.transform = isClicked ? "translateY(-50%) rotate(0deg)" : "translateY(-50%) rotate(180deg)";
+    dropDown.style.display = isClicked ? "none" : "block";
+    isClicked = !isClicked;
+  });
+
+  Array.from(items).forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.stopPropagation();
+      dropDown.style.display = "none";
+      arrow.style.transform = "translateY(-50%) rotate(0deg)";
+      isClicked = false;
+
+      if (onSelect) onSelect(item);
     });
+  });
 
-    Array.from(items).forEach(item => {
-        item.addEventListener('click', (event) => {
-            event.stopPropagation();
-            dropDown.style.display = 'none';
-            arrow.style.transform = "translateY(-50%) rotate(0deg)";
-            isClicked = false;
-
-            if (onSelect) onSelect(item);
-        });
-    });
-
-    document.body.addEventListener('click', () => {
-        if (isClicked) {
-            arrow.style.transform = "translateY(-50%) rotate(0deg)";
-            dropDown.style.display = 'none';
-            isClicked = false;
-        }
-    });
+  document.body.addEventListener("click", () => {
+    if (isClicked) {
+      arrow.style.transform = "translateY(-50%) rotate(0deg)";
+      dropDown.style.display = "none";
+      isClicked = false;
+    }
+  });
 }
 
 function saveSelectedCategory(index) {
-    const categories = ['Userstory', 'Technical Task'];
-    const placeholder = document.getElementById('categoryPlaceholder');
-    const dropdown = document.getElementById('assignedToDropdownCategory');
-    placeholder.textContent = categories[index];
-    selectedCategory = categories[index];
-    dropdown.classList.add('selected-red');
-    dropdown.classList.remove('open');
-    if (subtasksContainer) {
-        subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
-        subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
-    }
+  const categories = ["Userstory", "Technical Task"];
+  const placeholder = document.getElementById("categoryPlaceholder");
+  const dropdown = document.getElementById("assignedToDropdownCategory");
+  placeholder.textContent = categories[index];
+  selectedCategory = categories[index];
+  dropdown.classList.add("selected-red");
+  dropdown.classList.remove("open");
+  if (subtasksContainer) {
+    subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
+    subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+  }
 }
 
 function updateDropdownBackground(dropdownId) {
@@ -413,125 +418,129 @@ function updateDropdownBackground(dropdownId) {
 }
 
 function saveSelectedCategory(index) {
-    const dropdown = document.getElementById("assignedToDropdownCategory");
-    const categoryList = document.getElementById("dropdown-list-category");
-    dropdown.classList.remove("open");
-    if (subtasksContainer) {
-        subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
-        subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
-    }
-    const selectedText = categoryList.children[index].querySelector("label").textContent.trim();
-    document.getElementById("categoryPlaceholder").textContent = selectedText;
-    dropdown.classList.add("selected");
+  const dropdown = document.getElementById("assignedToDropdownCategory");
+  const categoryList = document.getElementById("dropdown-list-category");
+  dropdown.classList.remove("open");
+  if (subtasksContainer) {
+    subtasksContainer.style.marginTop = subtasksOriginalStyles.marginTop;
+    subtasksContainer.style.paddingBottom = subtasksOriginalStyles.paddingBottom;
+  }
+  const selectedText = categoryList.children[index].querySelector("label").textContent.trim();
+  document.getElementById("categoryPlaceholder").textContent = selectedText;
+  dropdown.classList.add("selected");
 }
 
 async function loadContactsInAddTask() {
-    try {
-      const r = await fetch(baseURL + "contacts.json");
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      const contacts = await r.json();
-      const list = document.getElementById("dropdown-list-contacts");
-      if (!contacts || !list) return;
-      window.loadedContacts = contacts; list.innerHTML = "";
-      allContacts = Object.values(contacts).map(c=>c.name).filter(Boolean).sort((a,b)=>a.localeCompare(b));
-      renderContacts(allContacts, contacts);
-    } catch (e) { console.error("Could not load contacts:", e); }
+  try {
+    const r = await fetch(baseURL + "contacts.json");
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const contacts = await r.json();
+    const list = document.getElementById("dropdown-list-contacts");
+    if (!contacts || !list) return;
+    window.loadedContacts = contacts;
+    list.innerHTML = "";
+    allContacts = Object.values(contacts)
+      .map((c) => c.name)
+      .filter(Boolean)
+      .sort((a, b) => a.localeCompare(b));
+    renderContacts(allContacts, contacts);
+  } catch (e) {
+    console.error("Could not load contacts:", e);
+  }
 }
 
 async function initContactsDropdown() {
-    let select = document.getElementById("assignedToDropdownContacts");
-    let arrow = document.querySelector("#dropdown-arrow-contacts");
-    let dropDown = document.getElementById("dropdown-list-contacts");
+  let select = document.getElementById("assignedToDropdownContacts");
+  let arrow = document.querySelector("#dropdown-arrow-contacts");
+  let dropDown = document.getElementById("dropdown-list-contacts");
 
-    // Fetch contacts
-    let response = await fetch(baseURL + "contacts.json");
-    let contacts = await response.json();
+  // Fetch contacts
+  let response = await fetch(baseURL + "contacts.json");
+  let contacts = await response.json();
 
-    allContacts = Object.values(contacts).map(contact => contact.name);
-    dropDown.innerHTML = "";
+  allContacts = Object.values(contacts).map((contact) => contact.name);
+  dropDown.innerHTML = "";
 
-    allContacts.forEach((name, index) => {
-        const contactEntry = Object.values(contacts).find(c => c.name === name);
-        if (!contactEntry) return;
+  allContacts.forEach((name, index) => {
+    const contactEntry = Object.values(contacts).find((c) => c.name === name);
+    if (!contactEntry) return;
 
-        const li = document.createElement("li");
-        li.classList.add("dropdown-item-contact");
+    const li = document.createElement("li");
+    li.classList.add("dropdown-item-contact");
 
-        const label = document.createElement("label");
-        label.classList.add("dropdown-checkbox");
+    const label = document.createElement("label");
+    label.classList.add("dropdown-checkbox");
 
-        // Avatar initials
-        const initials = contactEntry.name
-            .split(" ")
-            .map(w => w[0])
-            .join("")
-            .toUpperCase();
+    // Avatar initials
+    const initials = contactEntry.name
+      .split(" ")
+      .map((w) => w[0])
+      .join("")
+      .toUpperCase();
 
-        const initialsDiv = document.createElement("div");
-        initialsDiv.textContent = initials;
-        initialsDiv.classList.add("contact-initial");
-        initialsDiv.style.backgroundColor = colorForName(contactEntry.name);
+    const initialsDiv = document.createElement("div");
+    initialsDiv.textContent = initials;
+    initialsDiv.classList.add("contact-initial");
+    initialsDiv.style.backgroundColor = colorForName(contactEntry.name);
 
-        // Name span
-        const nameSpan = document.createElement("span");
-        nameSpan.textContent = contactEntry.name;
-        nameSpan.classList.add("contact-name");
+    // Name span
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = contactEntry.name;
+    nameSpan.classList.add("contact-name");
 
-        // Checkbox icon
-        const checkboxImg = document.createElement("img");
-        checkboxImg.src = assignedContacts.includes(contactEntry.name)
-            ? "../assets/svg/checked.svg"
-            : "../assets/svg/check_button.svg";
-        checkboxImg.classList.add("checkbox-svg");
+    // Checkbox icon
+    const checkboxImg = document.createElement("img");
+    checkboxImg.src = assignedContacts.includes(contactEntry.name) ? "../assets/svg/checked.svg" : "../assets/svg/check_button.svg";
+    checkboxImg.classList.add("checkbox-svg");
 
-        // Toggle click event
-        label.addEventListener("click", (e) => {
-            e.stopPropagation();
+    // Toggle click event
+    label.addEventListener("click", (e) => {
+      e.stopPropagation();
 
-            const isChecked = checkboxImg.src.includes("checked.svg");
-            if (isChecked) {
-                checkboxImg.src = "../assets/svg/check_button.svg";
-            } else {
-                checkboxImg.src = "../assets/svg/checked.svg";
-            }
+      const isChecked = checkboxImg.src.includes("checked.svg");
+      if (isChecked) {
+        checkboxImg.src = "../assets/svg/check_button.svg";
+      } else {
+        checkboxImg.src = "../assets/svg/checked.svg";
+      }
 
-            toggleContact(contactEntry.name);
-            updateDropdownBackground("assignedToDropdownContacts");
-        });
-
-        // Assemble label
-        label.appendChild(initialsDiv);
-        label.appendChild(nameSpan);
-        label.appendChild(checkboxImg);
-
-        li.appendChild(label);
-        dropDown.appendChild(li);
+      toggleContact(contactEntry.name);
+      updateDropdownBackground("assignedToDropdownContacts");
     });
 
-    // Re-init dropdown behavior
-    let items = document.getElementsByClassName("dropdown-item-contact");
-    dropdownFunction(arrow, dropDown, select, items, null);
+    // Assemble label
+    label.appendChild(initialsDiv);
+    label.appendChild(nameSpan);
+    label.appendChild(checkboxImg);
+
+    li.appendChild(label);
+    dropDown.appendChild(li);
+  });
+
+  // Re-init dropdown behavior
+  let items = document.getElementsByClassName("dropdown-item-contact");
+  dropdownFunction(arrow, dropDown, select, items, null);
 }
 
 async function handleAddOrEditTask(e) {
-    e && e.preventDefault();
+  e && e.preventDefault();
 
-    const btn = byId("add");
-    const id = btn.getAttribute("data-editing-id");
-    const isAddTaskStandalone = /\/html\/addTask\.html$/.test(location.pathname);
+  const btn = byId("add");
+  const id = btn.getAttribute("data-editing-id");
+  const isAddTaskStandalone = /\/html\/addTask\.html$/.test(location.pathname);
 
-    if (id) {
-        await saveEditFlow(btn, id);
-        return;
+  if (id) {
+    await saveEditFlow(btn, id);
+    return;
+  } else {
+    await createTask();
+
+    if (isAddTaskStandalone) {
+      location.href = "board.html";
     } else {
-        await createTask();
-
-        if (isAddTaskStandalone) {
-            location.href = "board.html";
-        } else {
-            closeTaskOverlay();
-            await window.Board?.renderAllTasks?.();
-            window.Board?.updateAllEmptyStates?.();
-        }
+      closeTaskOverlay();
+      await window.Board?.renderAllTasks?.();
+      window.Board?.updateAllEmptyStates?.();
     }
+  }
 }

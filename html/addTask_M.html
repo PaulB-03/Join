@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -91,9 +91,9 @@
             <h6>Description</h6>
             <textarea rows="5" cols="50" class="input" id="descriptionInput" name="description" placeholder="Enter description" required></textarea>
           </div>
-          <div class="inputFlexbox">
+          <div onclick="flatpickr()" class="inputFlexbox">
             <h6>Due date<sub class="requiredAsterisk">*</sub></h6>
-            <input class="input" id="date" name="date" type="date" tabindex="0" required />
+            <input class="input" id="date" name="date" type="text" placeholder="dd/mm/yyyy" required />
             <p class="errors">This field is required</p>
           </div>
 
