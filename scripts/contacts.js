@@ -357,7 +357,8 @@ function editOverlayHTML() {
   return `
     <div class="overlay-panel" role="dialog" aria-modal="true">
       <div class="overlay-left">
-        <img src="../assets/svg/editContactForm.svg" alt="Edit contact artwork" />
+        <img src="../assets/svg/editContactForm.svg" alt="Edit contact artwork" id="editContactImgDesktop" />
+        <img src="../assets/svg/editContactFormMobile.svg" alt="Edit contact artwork" id="editContactImgMobile" />
       </div>
 
       <form id="editContactForm" class="overlay-body" novalidate>

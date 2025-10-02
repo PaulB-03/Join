@@ -328,6 +328,12 @@ body {
   }
 }
 
+@media (max-width: 450px) {
+  .sumGreeting span {
+    font-size: 38px;
+  }
+}
+
 @media (max-width: 410px) {
   main {
     font-size: 12px !important;
