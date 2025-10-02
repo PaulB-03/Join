@@ -276,7 +276,7 @@ function boxListener() {
 
 function greetingOverlayMobile() {
   let showedOnce = getLocalLocalStorageItem("showedOnce", "true")
-  if (window.innerWidth <= 850 && !showedOnce) {
+  if (window.innerWidth <= 1280 && !showedOnce) {
     changeHTMLOfGreetingContainer()
     setTimeout(fadeOutGreetingOverlay, 1000)
   } else {
