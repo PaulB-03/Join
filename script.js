@@ -40,10 +40,19 @@ function sidebarHeaderInit() {
     || document.body?.dataset.public === "true"; 
 
   if (!isPublic && !localStorage.getItem("currentUser")) {
-    const toIndex = currentPath.startsWith("/html/") ? "../index.html" : "./index.html";
-    window.location.href = toIndex;
-    return;
-  }
+    const path = window.location.pathname;
+    const exceptions = ["/Join/html/legalNotice.html", "/Join/html/privacyPolicy.html"];
+    if (!exceptions.includes(path)) {
+        let toIndex;
+        if (path.includes("/html/")) {
+            toIndex = "../index.html";  
+        } else {
+            toIndex = "./index.html";   
+        }
+        window.location.href = toIndex;
+        return;
+    }
+}
   const currentUser = loadLoginStatus();
   updateHeaderAvatars(currentUser);
   highlightActiveLink();
