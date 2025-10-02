@@ -148,6 +148,7 @@
 
 .detailsName {
   font-size: 40px;
+  font-weight: bold;
 }
 
 .detailsActions {
@@ -238,6 +239,7 @@
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  z-index: 6002;
 }
 
 .overlay-panel {
@@ -258,7 +260,7 @@
 }
 
 .overlay-left {
-  background: #203047;
+  background: #2a3647;
 }
 
 .overlay-left > img {
@@ -423,6 +425,7 @@ body.modal-open {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  z-index: 6000;
 }
 
 .addContactFab:active {
@@ -439,6 +442,7 @@ body.modal-open {
   position: fixed;
   right: 24px;
   bottom: 24px;
+  z-index: 6001;
 }
 
 .fab-main {
