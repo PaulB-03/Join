@@ -28,9 +28,21 @@
 //}
 
 function sidebarHeaderInit() {
-  if (!localStorage.getItem("currentUser")) {
-    window.location.href = "../index.html";
-    return; // stop execution
+  const PUBLIC_PAGES = new Set([
+    "/", "/index.html",
+    "/html/privacyPolicy.html",
+    "/html/legalNotice.html"
+  ]);
+
+  const currentPath = location.pathname.replace(/\/+$/, "") || "/";
+
+  const isPublic = PUBLIC_PAGES.has(currentPath)
+    || document.body?.dataset.public === "true"; 
+
+  if (!isPublic && !localStorage.getItem("currentUser")) {
+    const toIndex = currentPath.startsWith("/html/") ? "../index.html" : "./index.html";
+    window.location.href = toIndex;
+    return;
   }
   const currentUser = loadLoginStatus();
   updateHeaderAvatars(currentUser);
