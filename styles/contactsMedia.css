@@ -91,4 +91,106 @@
   .detailsActions {
     display: none !important;
   }
+
+  .overlay-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #addContactDesktopOverlay {
+    display: none;
+  }
+
+  #addContactMobileOverlay {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-bottom: 16px;
+    height: 352px;
+  }
+
+  #cancelAdd {
+    display: none;
+  }
+
+  .overlay-actions {
+    justify-content: center;
+    margin-top: 0px;
+    gap: 0px;
+  }
+
+  .overlay-close {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    color: white;
+  }
+
+  .add-contact-overlay-right {
+    flex-direction: column;
+  }
+
+  .avatar {
+    position: absolute;
+    top: 300px;
+    justify-self: center;
+    margin: 0;
+    border: 0;
+  }
+
+  .avatar img {
+    opacity: 1;
+  }
+
+  .overlay-body {
+    padding-top: 64px;
+    height: 408px;
+  }
+
+  .add-contact-overlay-form {
+    gap: 8px;
+  }
+
+  .overlay-left img {
+    height: 352px;
+  }
+
+  #editContactImgMobile {
+    display: block;
+  }
+
+  #editContactImgDesktop {
+    display: none;
+  }
+
+  #editContactForm {
+    height: 408px;
+    padding: 0;
+    .add-contact-overlay-form {
+      gap: 16px !important;
+    }
+  }
+
+  .overlay {
+    .detailsAvatar {
+      width: 120px;
+      height: 120px;
+      position: absolute;
+      top: 300px;
+      justify-self: center;
+      margin: 0;
+      border: 3px solid white;
+      box-shadow: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .overlay-actions {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 850px) {
+  .contactPage {
+    padding-left: 0px;
+  }
 }
