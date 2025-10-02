@@ -16,7 +16,7 @@ let __lastActive = null;
 
 function firstFocusable(root = document) {
   return root.querySelector(
-    '[autofocus], button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]'
+    '[autofocus], button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
   );
 }
 
@@ -221,29 +221,42 @@ async function handleAddOrEditTask(e) {
 }
 
 async function saveEditFlow(btn, id) {
-    const isAddTaskStandalone = /\/html\/addTask\.html$/.test(location.pathname);
-    await updateTask(id, isAddTaskStandalone, !isAddTaskStandalone);
-    btn.removeAttribute("data-editing-id");
-    btn.querySelector("p").textContent = "Create task";
-    byId("taskOverlay").classList.remove("edit-mode");
+  const isAddTaskStandalone = /\/html\/addTask\.html$/.test(location.pathname);
+  const shouldReopenDetail  = !isAddTaskStandalone; 
+
+  await updateTask(
+    id,isAddTaskStandalone, true, shouldReopenDetail
+  );
+
+  btn.removeAttribute("data-editing-id");
+  setOverlayButtonText(false);
+  byId("taskOverlay").classList.remove("edit-mode");
 }
 
-async function updateTask(id, navigateToBoard = false, closeOverlayAfterUpdate = false) {
+async function updateTask(
+  id,
+  navigateToBoard = false,
+  closeTaskOverlayAfterUpdate = false,
+  reopenDetail = false
+) {
   if (!id) { if (typeof window.createTask === "function") window.createTask(); return; }
   const payload = buildUpdatedTask();
   try {
     await putTask(id, payload);
-    
-    if (closeOverlayAfterUpdate) {
-      closeOverlay(document.querySelector(".overlay"));
+
+    if (closeTaskOverlayAfterUpdate) {
+      closeOverlay(byId("taskOverlay"));
     }
-    
+
     await window.Board?.renderAllTasks?.();
 
     if (navigateToBoard) {
       location.href = "board.html";
-    } else if (!closeOverlayAfterUpdate) {
-      await openTaskDetail(id);                 
+      return;
+    }
+
+    if (reopenDetail) {
+      await openTaskDetail(id);
     }
   } catch (err) {
     console.error("Error updating task:", err);
