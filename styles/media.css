@@ -29,7 +29,7 @@
 
 @media (max-width: 820px) {
   .app {
-    padding: 96px 16px 120px 16px; 
+    padding: 96px 16px 120px 16px;
     max-width: 100%;
   }
 
@@ -196,5 +196,23 @@
   }
   .dropzone {
     min-height: 160px;
+  }
+}
+
+@media (max-width: 920px) {
+  .board-viewport {
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+  }
+
+  .column {
+    scroll-snap-align: start;
+    min-height: 0;
+  }
+  .board-slider-nav {
+    display: none;
+  }
+  .board-slider-nav button {
+    display: none;
   }
 }

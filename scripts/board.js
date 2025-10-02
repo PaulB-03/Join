@@ -1,5 +1,3 @@
-// board.js (bereinigt, Funktionen ≤ 14 Zeilen)
-
 const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
 
 const COL_TO_STATE = {
@@ -25,8 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
   mountSubtaskCheckboxListener();
   mountDatePickerMinToday();
 });
-
-/* ------------------------------ Boot & DnD ------------------------------ */
 
 async function init() {
   await renderAllTasks();
@@ -104,8 +100,6 @@ function onDragOver(e, zone) {
   insertPlaceholder(zone, e.clientY);
 }
 
-/* ---------------------------- DnD: Drop Flow ---------------------------- */
-
 function insertDraggedInto(zone, mouseY) {
   insertPlaceholder(zone, mouseY);
   placeholder.replaceWith(dragged);
@@ -148,8 +142,6 @@ function insertPlaceholder(container, mouseY) {
   target ? container.insertBefore(placeholder, target) : container.appendChild(placeholder);
 }
 
-/* --------------------------- Empty-State Utils -------------------------- */
-
 function updateEmptyState(zone) {
   if (!zone) return;
   const hasTask = zone.querySelector(".task-container");
@@ -172,8 +164,6 @@ function clearColumns() {
     z.innerHTML = `<div class="empty">No tasks ${title}</div>`;
   });
 }
-
-/* ------------------------------- API ------------------------------------ */
 
 async function updateTaskState(id, state) {
   __localEdits.add(id);
@@ -234,8 +224,6 @@ async function saveSubtasks(taskId, subs) {
   if (!r.ok) throw new Error(`PATCH subtasks failed: ${r.status}`);
 }
 
-/* --------------------------- Rendering / Cards -------------------------- */
-
 async function renderAllTasks() {
   const tasks = await fetchTasks();
   clearColumns();
@@ -288,8 +276,6 @@ function bindCardClickDrag(wrapper, card, id) {
   wrapper.addEventListener("dragend", () => setTimeout(() => (draggedFlag = false), 0));
   card.addEventListener("click", () => !draggedFlag && openTaskDetail(id));
 }
-
-/* ----------------------------- Live Sync -------------------------------- */
 
 function startLiveSync() {
   if (__liveBound) return;
@@ -356,8 +342,6 @@ function removeTaskCard(id) {
 window.addEventListener("beforeunload", () => {
   try { __tasksRef?.off(); } catch (e) {}
 });
-
-/* ------------------------------ Exports ---------------------------------- */
 
 window.Board = Object.assign(window.Board || {}, {
   renderAllTasks,
