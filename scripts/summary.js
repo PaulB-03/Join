@@ -1,21 +1,20 @@
-
+// Initializes the summary page (sidebar, box listeners, load data)
 function initForSummary() {
-  // Initializes the summary page (sidebar, box listeners, load data)
   greetingOverlayMobile()
   sidebarHeaderInit();
   boxListener()
   dataForSummary();
 }
 
+// Loads task data, gets current time, and shows greeting
 function dataForSummary() {
-  // Loads task data, gets current time, and shows greeting
   getDataForTasks();
   getCurrentTime();
   showSummaryGreeting(); // comes from logIn_Malte.js and logIn.js
 }
 
+// Gets current time and updates greeting
 function getCurrentTime() {
-  // Gets current time and updates greeting
   const now = new Date();
   const hours = now.getHours();
   const minutes = now.getMinutes();
@@ -23,8 +22,8 @@ function getCurrentTime() {
   changeInnerHtmlOfSummaryGreeting(hours + "." + minutes);
 }
 
+// Displays greeting depending on the current hour
 function changeInnerHtmlOfSummaryGreeting(hours) {
-  // Displays greeting depending on the current hour
   let sumGreeting = document.getElementById("sumGreeting");
   sumGreeting.innerHTML = "";
 
@@ -37,8 +36,8 @@ function changeInnerHtmlOfSummaryGreeting(hours) {
   }
 }
 
+// Fetches Data from Firebase
 async function getDataForTasks() {
-  // Fetches Data from Firebase
   const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
 
   let response = await fetch(BASE_URL + ".json");
@@ -47,8 +46,8 @@ async function getDataForTasks() {
   countForSummary(responseToJson);
 }
 
+// Counts how many tasks are in each state + handles deadlines
 function countForSummary(responseToJson) {
-  // Counts how many tasks are in each state + handles deadlines
   let countStatesObj = {
     "progressCount": 0,
     "toDoCount": 0,
@@ -76,15 +75,15 @@ function countForSummary(responseToJson) {
   changeInnerHtmlOfSummary(countStatesObj);
 }
 
+// If no deadline found, push "Nothing to worry"
 function stringIfNoDateFound(nextUpcomingDeadlineArray) {
-  // If no deadline found, push "Nothing to worry"
-  urgencyImgContainer.style = "background-color:  var(--button-low)";
+  urgencyImgContainer.style = "background-color:  var(--button-low)"
   urgencyImg.src = "../assets/svg/check_2.svg"
   return nextUpcomingDeadlineArray.push("Nothing to worry")
 }
 
+// Converts priority strings to numbers and sorts them
 function getHighestPriority(datesObject, nextUpcomingDeadline) {
-  // Converts priority strings to numbers and sorts them
   filterIrrelevantPrioritys(datesObject, nextUpcomingDeadline)
   let priorityArray = datesObject.prioritys
   let numberArray = []
@@ -99,8 +98,8 @@ function getHighestPriority(datesObject, nextUpcomingDeadline) {
   sortNumberArray(numberArray)
 }
 
+// filters and cuts out the unnecessary prioritys
 function filterIrrelevantPrioritys(datesObject, nextUpcomingDeadline) {
-  // filters and cuts out the unnecessary prioritys
   for (let index = 0; index < datesObject.dates.length; index++) {
     let dateToFilter = new Date(datesObject.dates[index])
     let nextDeadline = new Date(nextUpcomingDeadline)
@@ -114,14 +113,15 @@ function filterIrrelevantPrioritys(datesObject, nextUpcomingDeadline) {
   return datesObject
 }
 
+// Sorts numbers and gets the highest priority
 function sortNumberArray(numberArray) {
-  // Sorts numbers and gets the highest priority
   let sortedArray = numberArray.sort()
   let highesValue = sortedArray[0]
   changeBackgroundColorOfUrgencyImg(sortedArray[0])
   changeUrgencyImg(highesValue)
 }
 
+// Changes background color of urgency image based on priority value
 function changeBackgroundColorOfUrgencyImg(highesValue) {
   let urgencyImgContainer = document.getElementById('urgencyImgContainer')
 
@@ -132,8 +132,8 @@ function changeBackgroundColorOfUrgencyImg(highesValue) {
   }
 }
 
+// Updates the urgency image depending on the numeric priority
 function changeUrgencyImg(highesValue) {
-  // filter which urgency image should be displayed
   let urgencyImg = document.getElementById('urgencyImg')
   switch (highesValue) {
     case 1:
@@ -148,8 +148,8 @@ function changeUrgencyImg(highesValue) {
   }
 }
 
+// Push task’s date and priority if it's not "done"
 function checkState(datesObject, taskState, index, objectToArray) {
-  // Push task’s date and priority if it's not "done"
   if ("done" == taskState) {
     return
   } else {
@@ -160,8 +160,8 @@ function checkState(datesObject, taskState, index, objectToArray) {
   }
 }
 
+// Filters for next upcoming deadline and for missed deadLines
 function filterNextUpcomingDeadline(datesObject, responseToJson) {
-  // Filters for next upcoming deadline and for missed deadLines
   let nextUpcomingDeadlineArray = datesObject.dates.filter(verifyTheRightDate);
   if (nextUpcomingDeadlineArray.length == 0 && datesObject.dates.length == 0) {
     stringIfNoDateFound(nextUpcomingDeadlineArray)
@@ -175,20 +175,21 @@ function filterNextUpcomingDeadline(datesObject, responseToJson) {
   getDateFromDataBankAndChangeFormat(nextUpcomingDeadline, responseToJson);
 }
 
+// changes Html Text in DeadlineBox p element
 function changeHtmlForMissedDeadlines() {
-  // changes Html Text in DeadlineBox p element
   let deadLineText = document.getElementById('deadLineText')
   deadLineText.innerHTML = "";
   deadLineText.innerHTML = "Missed Deadline"
 }
 
+// handles missed deadlines by setting HTML
 function missedDeadlineCall(nextUpcomingDeadlineArray, datesObject) {
   changeHtmlForMissedDeadlines()
   return nextUpcomingDeadlineArray = datesObject.dates
 }
 
+// Counts how many tasks share the same nearest deadline
 function countNextDeadlineDate(sortedArray) {
-  // Counts how many tasks share the same nearest deadline
   let deadLineCount = 0
   for (let index = 0; index < sortedArray.length; index++) {
     if (sortedArray[0] == sortedArray[index] && sortedArray[0] !== "Nothing to worry") {
@@ -198,15 +199,15 @@ function countNextDeadlineDate(sortedArray) {
   changeInnerHTMlOfUrgencyBox(deadLineCount)
 }
 
+// Updates the deadline count in the urgency box
 function changeInnerHTMlOfUrgencyBox(deadLineCount) {
-  // Updates the deadline count in the urgency box
   let urgencyCountHTml = document.getElementById("urgencyCountBox");
   urgencyCountHTml.innerHTML = "";
   urgencyCountHTml.innerHTML = deadLineCount;
 }
 
+// Checks if a date is today or in the future
 function verifyTheRightDate(date) {
-  // Checks if a date is today or in the future
   const now = new Date();
   const nowDay = now.getDate();
   const nowYear = now.getFullYear();
@@ -221,8 +222,8 @@ function verifyTheRightDate(date) {
   return date >= formatedDate
 }
 
+// Converts deadline into "Month Day, Year" format
 function getDateFromDataBankAndChangeFormat(deadLineDate) {
-  // Converts deadline into "Month Day, Year" format
   let newFormat
   if (deadLineDate !== "Nothing to worry") {
     let date = new Date(deadLineDate);
@@ -236,15 +237,15 @@ function getDateFromDataBankAndChangeFormat(deadLineDate) {
   changeInnerHtmlForDeadline(newFormat);
 }
 
+// Updates deadline text in the urgency box
 function changeInnerHtmlForDeadline(nextUpcomingDeadline) {
-  // Updates deadline text in the urgency box
   let urgencyDeadlineDate = document.getElementById("urgencyDeadline");
   urgencyDeadlineDate.innerHTML = "";
   urgencyDeadlineDate.innerHTML = nextUpcomingDeadline;
 }
 
+// Updates task counts in summary boxes
 function changeInnerHtmlOfSummary(countStatesObj) {
-  // Updates task counts in summary boxes
   let idArray = ["progressCountBox", "toDoNumberBox", "doneNumberBox", "awaitFreedbackCountBox"]
   let objectToArray = Object.entries(countStatesObj)
 
@@ -259,15 +260,14 @@ function changeInnerHtmlOfSummary(countStatesObj) {
   allTaskCount.innerHTML = calcAllTasksInBoard(countStatesObj);
 }
 
+// Returns total number of tasks
 function calcAllTasksInBoard(countStatesObj) {
-  // Returns total number of tasks
   let allTaskCount = countStatesObj.progressCount + countStatesObj.toDoCount + countStatesObj.doneCount + countStatesObj.awaitFeedbackCount;
-
   return allTaskCount;
 }
 
+// Adds click event to summary boxes -> redirects to board.html
 function boxListener() {
-  // Adds click event to summary boxes -> redirects to board.html
   const summaryBoxes = document.getElementsByClassName("summaryBox");
   for (let index = 0; index < summaryBoxes.length; index++) {
     summaryBoxes[index].addEventListener("click", () => {
@@ -276,6 +276,7 @@ function boxListener() {
   }
 }
 
+// Shows or resets greeting overlay on mobile
 function greetingOverlayMobile() {
   let showedOnce = getLocalLocalStorageItem("showedOnce", "true")
   if (window.innerWidth <= 1280 && !showedOnce) {
@@ -286,6 +287,7 @@ function greetingOverlayMobile() {
   }
 }
 
+// Fades out greeting overlay after delay
 function fadeOutGreetingOverlay() {
   let sumGreetingContainer = document.getElementById('sumGreetingContainer')
   let summarySection = document.getElementById('summarySection')
@@ -295,6 +297,7 @@ function fadeOutGreetingOverlay() {
   summarySection.style.cssText = ""
 }
 
+// Resets inline styles of greeting overlay and summary section
 function resetHTMLOfGreetingContainer() {
   let sumGreetingContainer = document.getElementById('sumGreetingContainer')
   let summarySection = document.getElementById('summarySection')
@@ -304,6 +307,7 @@ function resetHTMLOfGreetingContainer() {
   summarySection.style.cssText = ""
 }
 
+// Applies mobile greeting overlay styles and sets localStorage flag
 function changeHTMLOfGreetingContainer() {
   let sumGreetingContainer = document.getElementById('sumGreetingContainer')
   let summarySection = document.getElementById('summarySection')
@@ -314,10 +318,12 @@ function changeHTMLOfGreetingContainer() {
   setLocalStorageItem("showedOnce", "true")
 }
 
+// Saves a key/value pair to localStorage
 function setLocalStorageItem(key, value) {
   localStorage.setItem(`${key}`, `${value}`);
 }
 
+// Gets a value from localStorage by key
 function getLocalLocalStorageItem(key, value) {
   return localStorage.getItem(`${key}`, `${value}`);
 }
