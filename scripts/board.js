@@ -86,10 +86,18 @@ function bindColumns() {
   });
 }
 
+function autoScroll(zone, clientY) {
+  const r = zone.getBoundingClientRect();
+  const thr = 24; 
+  if (clientY < r.top + thr) zone.scrollTop -= 10;
+  else if (clientY > r.bottom - thr) zone.scrollTop += 10;
+}
+
 function onDragOver(e, zone) {
   if (!dragged) return;
   e.preventDefault();
   zone.classList.add("is-over");
+  autoScroll(zone, e.clientY);   
   insertPlaceholder(zone, e.clientY);
 }
 
