@@ -28,9 +28,21 @@
 //}
 
 function sidebarHeaderInit() {
-  if (!localStorage.getItem("currentUser")) {
-    window.location.href = "../index.html";
-    return; // stop execution
+  const PUBLIC_PAGES = new Set([
+    "/", "/index.html",
+    "/html/privacyPolicy.html",
+    "/html/legalNotice.html"
+  ]);
+
+  const currentPath = location.pathname.replace(/\/+$/, "") || "/";
+
+  const isPublic = PUBLIC_PAGES.has(currentPath)
+    || document.body?.dataset.public === "true"; 
+
+  if (!isPublic && !localStorage.getItem("currentUser")) {
+    const toIndex = currentPath.startsWith("/html/") ? "../index.html" : "./index.html";
+    window.location.href = toIndex;
+    return;
   }
   const currentUser = loadLoginStatus();
   updateHeaderAvatars(currentUser);
@@ -153,3 +165,25 @@ function highlightActiveLink() {
     document.addEventListener("mouseup", endDrag, { capture: true });
   });
 })();
+
+async function removeContactFromAllTasks(contactName) {
+  try {
+    const res = await fetch(DB_ROOT + "/tasks.json");
+    const tasks = await res.json() || {};
+    const ops = [];
+    for (const [tid, t] of Object.entries(tasks)) {
+      const arr = Array.isArray(t.assignedContacts) ? t.assignedContacts : [];
+      if (arr.includes(contactName)) {
+        const next = arr.filter(n => n !== contactName);
+        ops.push(fetch(`${DB_ROOT}/tasks/${tid}.json`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ assignedContacts: next })
+        }));
+      }
+    }
+    await Promise.all(ops);
+  } catch (e) {
+    console.error("Failed to remove contact from tasks:", e);
+  }
+}

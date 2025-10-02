@@ -4,17 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Join – Board</title>
+
+    <!-- Favicon -->
     <link rel="shortcut icon" href="../assets/svg/join_logo.svg" type="image/x-icon" />
+
+    <!-- Basis-Styles -->
     <link rel="stylesheet" href="../styles/standard.css" />
     <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../styles/colors.css" />
+    <link rel="stylesheet" href="../styles/fonts.css" />
+
+    <!-- Board-Styles (nach Basis laden) -->
+    <link rel="stylesheet" href="../styles/boardLayout.css" />
     <link rel="stylesheet" href="../styles/board.css" />
     <link rel="stylesheet" href="../styles/boardOverlay.css" />
     <link rel="stylesheet" href="../styles/media.css" />
     <link rel="stylesheet" href="../styles/addTask.css" />
     <link rel="stylesheet" href="../styles/addTaskMedia.css" />
-    <link rel="stylesheet" href="../styles/colors.css" />
-    <link rel="stylesheet" href="../styles/fonts.css" />
 
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script>
@@ -36,9 +44,12 @@
     <script src="../scripts/templates.js" defer></script>
     <script src="../scripts/boardOverlay.js" defer></script>
     <script src="../scripts/board.js" defer></script>
+    <script src="../scripts/mobileSlider.js" defer></script>
     <script src="../script.js" defer></script>
     <script src="../scripts/boardSearchbar.js" defer></script>
     <script src="../scripts/subTask.js" defer></script>
+    <script src="../scripts/logIn.js" defer></script>
+    <script src="../scripts/header.js" defer></script>
 
     <noscript>
       <style>
@@ -59,11 +70,14 @@
           <a href="../html/help.html" class="help-link" aria-label="Help">
             <img class="helper" src="../assets/svg/help.svg" alt="Hilfe" />
           </a>
+
           <div id="userAvatar" class="header-avatar" title="Profil" onclick="toggleProfileMenu(event)"></div>
+
           <div id="guestAvatar" class="avatar-wrapper" title="Gast" onclick="toggleProfileMenu(event)">
             <img class="default" src="../assets/img/guest.png" alt="Gastprofil" />
             <img class="hover" src="../assets/img/guest-hover.png" alt="Gastprofil Hover" />
           </div>
+
           <div id="profileMenu" class="profile-menu" style="display: none">
             <a class="menu-item helpMobile" href="../html/help.html">Help</a>
             <a class="menu-item" href="../html/legalNotice.html">Legal Notice</a>
@@ -128,13 +142,13 @@
 
           <button type="button" id="openAddTask" class="btn btn-dark" aria-label="Add task">
             <span class="btn-text">Add task</span>
-            <img src="../assets/svg/add.svg" alt="" class="icon-add" aria-hidden="true" />
+            <img src="../assets/svg/add.svg" alt="" class="icon-add" />
           </button>
         </div>
       </div>
 
-      <section class="board-viewport" aria-label="Board-Viewport">
-        <section class="board" aria-label="Kanban Board">
+      <section class="board-viewport" id="boardViewport" aria-label="Board-Viewport">
+        <section class="board" id="board" aria-label="Kanban Board">
           <div class="column">
             <div class="col-head">
               To do
@@ -176,6 +190,11 @@
           </div>
         </section>
       </section>
+
+      <div class="board-slider-nav" id="boardSliderNav" aria-hidden="true">
+        <button type="button" id="prevCol" aria-label="Vorherige Spalte">‹</button>
+        <button type="button" id="nextCol" aria-label="Nächste Spalte">›</button>
+      </div>
     </div>
 
     <div id="taskDetailOverlay" class="task-overlay">
@@ -313,8 +332,5 @@
         </div>
       </div>
     </div>
-
-    <script src="../scripts/logIn.js" defer></script>
-    <script src="../scripts/header.js" defer></script>
   </body>
 </html>

@@ -148,6 +148,7 @@
 
 .detailsName {
   font-size: 40px;
+  font-weight: bold;
 }
 
 .detailsActions {
@@ -233,11 +234,12 @@
   pointer-events: none;
   transition: opacity 0.2s ease;
 }
-/* ----------------------von arne hinzugefügt --------------------------- */
+
 .overlay.open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  z-index: 6002;
 }
 
 .overlay-panel {
@@ -257,16 +259,19 @@
   transform: translateX(0);
 }
 
-/* ------------------------------------------------------------------ */
-
 .overlay-left {
-  background: #203047;
+  background: #2a3647;
 }
+
 .overlay-left > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+#addContactMobileOverlay {
+  display: none;
 }
 
 body.modal-open {
@@ -279,7 +284,7 @@ body.modal-open {
   flex-direction: column;
   height: 100%;
   gap: 16px;
-  overflow: auto;
+  overflow-x: hidden;
 }
 
 .overlay-title {
@@ -437,7 +442,7 @@ body.modal-open {
   position: fixed;
   right: 24px;
   bottom: 24px;
-  z-index: 6000;
+  z-index: 6001;
 }
 
 .fab-main {
@@ -474,7 +479,7 @@ body.modal-open {
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
   opacity: 0;
-  transform: translateX(16px); 
+  transform: translateX(16px);
   pointer-events: none;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
@@ -518,4 +523,8 @@ body.modal-open {
 
 .contactActionsFab.is-open .fab-item:nth-child(2) {
   transition-delay: 0.04s;
+}
+
+#editContactImgMobile {
+  display: none;
 }

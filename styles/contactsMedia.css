@@ -8,6 +8,10 @@
   .contactDetailsHeader img {
     width: 100%;
   }
+
+  .detailsName {
+    font-size: 35px;
+  }
 }
 
 @media (max-width: 1095px) {
@@ -17,12 +21,9 @@
 }
 
 @media (max-width: 1025px) {
-  .detailsName {
-    font-size: 35px;
-  }
-
   .detailsAvatar {
-    width: 80px;
+    min-width: 80px;
+    max-width: 80px;
     height: 80px;
   }
 }
@@ -33,7 +34,7 @@
   }
 }
 
-@media (max-width: 905px) {
+@media (max-width: 925px) {
   .contactDetails {
     display: none;
   }
@@ -90,5 +91,208 @@
 
   .detailsActions {
     display: none !important;
+  }
+
+  .overlay-panel {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #addContactDesktopOverlay {
+    display: none;
+  }
+
+  #addContactMobileOverlay {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-bottom: 16px;
+    height: 352px;
+  }
+
+  #cancelAdd {
+    display: none;
+  }
+
+  .overlay-actions {
+    justify-content: center;
+    margin-top: 0px;
+    gap: 0px;
+  }
+
+  .overlay-close {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    color: white;
+  }
+
+  .add-contact-overlay-right {
+    flex-direction: column;
+  }
+
+  .avatar {
+    position: absolute;
+    top: 300px;
+    justify-self: center;
+    margin: 0;
+    border: 0;
+  }
+
+  .avatar img {
+    opacity: 1;
+  }
+
+  .overlay-body {
+    padding-top: 64px;
+    height: 408px;
+  }
+
+  .add-contact-overlay-form {
+    gap: 8px;
+  }
+
+  .overlay-left img {
+    height: 352px;
+  }
+
+  #editContactImgMobile {
+    display: block;
+  }
+
+  #editContactImgDesktop {
+    display: none;
+  }
+
+  #editContactForm {
+    height: 408px;
+    padding: 0;
+    .add-contact-overlay-form {
+      gap: 16px !important;
+    }
+  }
+
+  .overlay {
+    .detailsAvatar {
+      min-width: 120px;
+      max-width: 120px;
+      height: 120px;
+      position: absolute;
+      top: 300px;
+      justify-self: center;
+      margin: 0;
+      border: 3px solid white;
+      box-shadow: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .overlay-actions {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 850px) {
+  .contactPage {
+    padding-left: 0px;
+  }
+
+  .detailsSection {
+    * {
+      font-size: 20px !important;
+    }
+  }
+
+  .addContactFab {
+    bottom: 104px;
+    right: 24px;
+  }
+
+  .contactActionsFab {
+    bottom: 104px;
+    right: 24px;
+  }
+
+  .contactListItems {
+    padding-bottom: 104px;
+  }
+}
+
+@media (max-width: 425px) {
+  .overlay-left img {
+    /* width: 300px; */
+    object-fit: contain;
+  }
+
+  #editContactImgMobile {
+    background-color: #2a3647;
+  }
+
+  .add-contact-overlay-form input {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 388px) {
+  .contactDetailsHeader .header-small {
+    width: 190px;
+  }
+
+  .detailsTop {
+    gap: 18px;
+  }
+
+  .detailsName {
+    font-size: 30px;
+  }
+
+  .detailsSection {
+    * {
+      font-size: 16px !important;
+    }
+  }
+
+  .overlay-body {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+
+@media (max-height: 730px) {
+  .overlay-close {
+    top: 48px;
+  }
+}
+
+@media (max-height: 690px) {
+  .add-contact-overlay-form {
+    gap: 0px;
+  }
+}
+
+@media (max-height: 660px) {
+  .overlay-close {
+    top: 62px;
+  }
+
+  .overlay-body {
+    padding-top: 40px;
+  }
+}
+
+@media (max-height: 630px) {
+  .overlay-close {
+    top: 80px;
+  }
+
+  .overlay-body {
+    padding-top: 0px;
+    height: 370px;
+  }
+}
+
+@media (max-height: 590px) {
+  .overlay-close {
+    top: 96px;
   }
 }

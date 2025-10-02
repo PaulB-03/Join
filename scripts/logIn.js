@@ -80,9 +80,12 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// function logoutUser() {
-//   localStorage.removeItem("showedOnce");
-//   localStorage.removeItem("currentUser");
-//   document.getElementById("profileMenu").style.display = "none";
+// function logout() {
+//   try {
+//     localStorage.removeItem("showedOnce");
+//     localStorage.removeItem("currentUser");
+//     const menu = document.getElementById("profileMenu");
+//     if (menu) menu.style.display = "none";
+//   } catch {}
 //   window.location.href = "../index.html";
 // }
