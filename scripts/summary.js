@@ -78,6 +78,8 @@ function countForSummary(responseToJson) {
 
 function stringIfNoDateFound(nextUpcomingDeadlineArray) {
   // If no deadline found, push "Nothing to worry"
+  urgencyImgContainer.style = "background-color:  var(--button-low)";
+  urgencyImg.src = "../assets/svg/check_2.svg"
   return nextUpcomingDeadlineArray.push("Nothing to worry")
 }
 
