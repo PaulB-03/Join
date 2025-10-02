@@ -14,6 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   input.addEventListener("focus", toggleControls);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      saveBtn.click();
+    }
+  });
+
   input.addEventListener("input", toggleControls);
   input.addEventListener("blur", () => {
     if (!input.value.trim()) controls.style.display = "none";
@@ -83,8 +90,12 @@ window.createSubtaskElement = function (text) {
       item.replaceChild(actions, editActions);
     };
 
-    editActions.querySelector(".saveEdit").addEventListener("click", () => exitEdit(true));
-    editActions.querySelector(".cancelEdit").addEventListener("click", () => exitEdit(false));
+    editActions
+      .querySelector(".saveEdit")
+      .addEventListener("click", () => exitEdit(true));
+    editActions
+      .querySelector(".cancelEdit")
+      .addEventListener("click", () => exitEdit(false));
 
     editInput.focus();
   };

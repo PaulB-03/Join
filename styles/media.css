@@ -188,3 +188,13 @@
     width: 220px !important;
   }
 }
+
+@media (max-width: 900px) {
+  .board {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .dropzone {
+    min-height: 160px;
+  }
+}

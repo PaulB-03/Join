@@ -153,3 +153,25 @@ function highlightActiveLink() {
     document.addEventListener("mouseup", endDrag, { capture: true });
   });
 })();
+
+async function removeContactFromAllTasks(contactName) {
+  try {
+    const res = await fetch(DB_ROOT + "/tasks.json");
+    const tasks = await res.json() || {};
+    const ops = [];
+    for (const [tid, t] of Object.entries(tasks)) {
+      const arr = Array.isArray(t.assignedContacts) ? t.assignedContacts : [];
+      if (arr.includes(contactName)) {
+        const next = arr.filter(n => n !== contactName);
+        ops.push(fetch(`${DB_ROOT}/tasks/${tid}.json`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ assignedContacts: next })
+        }));
+      }
+    }
+    await Promise.all(ops);
+  } catch (e) {
+    console.error("Failed to remove contact from tasks:", e);
+  }
+}

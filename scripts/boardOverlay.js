@@ -1,12 +1,20 @@
 function byId(id) { return document.getElementById(id); }
 
-(function(){
+/* ------- Fallback-Farbpalette für Avatare (window.color) ------- */
+(function () {
   if (typeof window.color !== "function") {
-    const __PALETTE = ["#f44336","#2196F3","#FF9800","#9C27B0","#4CAF50","#00BCD4","#FFC107"];
-    window.color = function(i){ return __PALETTE[i % __PALETTE.length]; };
+    const __PALETTE = ["#f44336", "#2196F3", "#FF9800", "#9C27B0", "#4CAF50", "#00BCD4", "#FFC107"];
+    window.color = function (i) { return __PALETTE[i % __PALETTE.length]; };
   }
 })();
 
+/* ------- Spalten-ID -> State (für Quick-Add) ------- */
+const __COL_TO_STATE = {
+  "todo": "toDo",
+  "in-progress": "in progress",
+  "await-feedback": "await feedback",
+  "done": "done",
+};
 
 const RTDB_BASE =
   (typeof baseURL !== "undefined" && baseURL) ||
@@ -14,24 +22,20 @@ const RTDB_BASE =
 
 let __lastActive = null;
 
+/* -------------------------- Overlay-Utilities -------------------------- */
+
 function firstFocusable(root = document) {
-  return root.querySelector(
-    '[autofocus], button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  );
+  return root.querySelector('[autofocus], button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
 }
 
 function inertParts() {
-  return [
-    document.querySelector('header'),
-    document.getElementById('sidebar'),
-    document.querySelector('.app')
-  ].filter(Boolean);
+  return [document.querySelector("header"), byId("sidebar"), document.querySelector(".app")].filter(Boolean);
 }
 
 function setBackgroundInert(on) {
   inertParts().forEach(el => {
-    if (on) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
-    else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }
+    if (on) { el.setAttribute("inert", ""); el.setAttribute("aria-hidden", "true"); }
+    else { el.removeAttribute("inert"); el.removeAttribute("aria-hidden"); }
   });
 }
 
@@ -63,16 +67,18 @@ function closeOverlay(overlay) {
   if (!overlay) return;
   closeSemantics(overlay);
   document.removeEventListener("keydown", onEscCloseOnce);
-  __lastActive?.focus?.(); __lastActive = null;
+  __lastActive?.focus?.();
+  __lastActive = null;
 }
 
 function onEscCloseOnce(e) {
   if (e.key !== "Escape") return;
-  const d = byId("taskDetailOverlay");
-  const a = byId("taskOverlay");
+  const d = byId("taskDetailOverlay"), a = byId("taskOverlay");
   if (d?.classList.contains("open")) return closeOverlay(d);
   if (a?.classList.contains("open")) return closeOverlay(a);
 }
+
+/* ---------------------------- Detail-Overlay ---------------------------- */
 
 async function openTaskDetail(id) {
   const ov = byId("taskDetailOverlay"), ct = byId("taskDetailContent");
@@ -107,6 +113,8 @@ async function onDeleteTask(id, overlay) {
   window.Board?.updateAllEmptyStates?.();
 }
 
+/* ----------------------------- Add/Edit-UI ------------------------------ */
+
 function onEditTask(id, task, overlay) {
   closeOverlay(overlay);
   if (typeof openTaskOverlay !== "function") return;
@@ -119,10 +127,8 @@ function onEditTask(id, task, overlay) {
 }
 
 function bindOverlayButtons() {
-  const open = byId("openAddTask");
-  open?.addEventListener("click", onOpenAddClick);
-  document.querySelectorAll(".add-card-btn")
-    .forEach(b => b.addEventListener("click", onQuickAddClick));
+  byId("openAddTask")?.addEventListener("click", onOpenAddClick);
+  document.querySelectorAll(".add-card-btn").forEach(b => b.addEventListener("click", onQuickAddClick));
   byId("closeTaskOverlay")?.addEventListener("click", closeTaskOverlay);
   byId("cancelTask")?.addEventListener("click", closeTaskOverlay);
   byId("taskOverlay")?.addEventListener("click", e => e.target.id === "taskOverlay" && closeTaskOverlay());
@@ -135,13 +141,15 @@ function onOpenAddClick(e) {
   clearTask(); openTaskOverlay(); setOverlayButtonText(false); toggleClearButton(false);
 }
 
-function onQuickAddClick() {
+function onQuickAddClick(e) {
+  const zone = e?.currentTarget?.parentElement?.nextElementSibling;
+  const colId = (zone && zone.classList.contains("dropzone")) ? zone.id : "todo";
+  window.selectedState = __COL_TO_STATE[colId] || "toDo";
   clearTask(); openTaskOverlay();
 }
 
 function openTaskOverlay() {
-  const ov = byId("taskOverlay");
-  if (!ov) return;
+  const ov = byId("taskOverlay"); if (!ov) return;
   ov.classList.remove("edit-mode");
   showOverlay(ov, { focus: false });
   const btn = byId("add");
@@ -152,8 +160,7 @@ function openTaskOverlay() {
 }
 
 function closeTaskOverlay() {
-  const ov = byId("taskOverlay");
-  if (!ov) return;
+  const ov = byId("taskOverlay"); if (!ov) return;
   closeOverlay(ov);
   typeof clearTask === "function" && clearTask();
 }
@@ -170,7 +177,6 @@ function fillTaskFormFromExisting(id, task) {
   renderAssignedInitials(); fillSubtasks(task.subtasks || []);
   selectedCategory = task.category || "Task";
   selectedState = task.state || "toDo";
-  renderAssignedInitials(); fillSubtasks(task.subtasks || []);
   setOverlayButtonText(true); toggleClearButton(true);
   byId("add").setAttribute("data-editing-id", id);
 }
@@ -193,8 +199,7 @@ function resetPrioSelection() {
 function setOverlayButtonText(isEditing) {
   const btn = byId("add"); if (!btn) return; btn.textContent = "";
   const p = document.createElement("p"); p.textContent = isEditing ? "OK" : "Create";
-  const img = document.createElement("img"); img.src = "../assets/svg/check.svg";
-  img.className = "createTaskCheck"; img.alt = "";
+  const img = document.createElement("img"); img.src = "../assets/svg/check.svg"; img.className = "createTaskCheck"; img.alt = "";
   btn.append(p, img);
 }
 
@@ -203,68 +208,27 @@ function toggleClearButton(isEditing) {
   c.style.display = isEditing ? "none" : "inline-flex";
 }
 
+/* ----------------------------- Add / Edit ------------------------------- */
+
 async function handleAddOrEditTask(e) {
   e && e.preventDefault();
-
-  const btn = document.getElementById("add");
-  const id  = btn.getAttribute("data-editing-id");
-
-  if (id) {
-    await saveEditFlow(btn, id);
-  } else {
-    if (typeof window.createTask === "function") {
-      await window.createTask();
-    } else {
-      console.error("createTask function not found!");
-    }
-  }
+  const id = byId("add")?.getAttribute("data-editing-id");
+  if (!id) return typeof window.createTask === "function" ? window.createTask() : console.error("createTask not found");
+  await saveEditFlow(id);
 }
 
-async function saveEditFlow(btn, id) {
-  const isAddTaskStandalone = /\/html\/addTask\.html$/.test(location.pathname);
-  const shouldReopenDetail  = !isAddTaskStandalone; 
-
-  await updateTask(
-    id,isAddTaskStandalone, true, shouldReopenDetail
-  );
-
-  btn.removeAttribute("data-editing-id");
+async function saveEditFlow(id) {
+  const standalone = /\/html\/addTask\.html$/.test(location.pathname);
+  const reopen = !standalone;
+  await updateTask(id, standalone, true, reopen);
+  byId("add")?.removeAttribute("data-editing-id");
   setOverlayButtonText(false);
-  byId("taskOverlay").classList.remove("edit-mode");
+  byId("taskOverlay")?.classList.remove("edit-mode");
 }
 
-async function updateTask(
-  id,
-  navigateToBoard = false,
-  closeTaskOverlayAfterUpdate = false,
-  reopenDetail = false
-) {
-  if (!id) { if (typeof window.createTask === "function") window.createTask(); return; }
-  const payload = buildUpdatedTask();
-  try {
-    await putTask(id, payload);
+/* ---- Aufsplitten: updateTask + Helfer, alle ≤ 14 Zeilen ---- */
 
-    if (closeTaskOverlayAfterUpdate) {
-      closeOverlay(byId("taskOverlay"));
-    }
-
-    await window.Board?.renderAllTasks?.();
-
-    if (navigateToBoard) {
-      location.href = "board.html";
-      return;
-    }
-
-    if (reopenDetail) {
-      await openTaskDetail(id);
-    }
-  } catch (err) {
-    console.error("Error updating task:", err);
-    alert("Failed to update task. Please try again.");
-  }
-}
-
-function buildUpdatedTask() {
+function readTaskForm() {
   return {
     title: byId("titleInput").value.trim(),
     description: byId("descriptionInput").value.trim(),
@@ -273,17 +237,33 @@ function buildUpdatedTask() {
     assignedContacts,
     subtasks: getSubtasksFromForm(),
     state: selectedState,
-    category: selectedCategory
+    category: selectedCategory,
   };
 }
 
-async function putTask(id, data) {
-  await fetch(`${RTDB_BASE}tasks/${id}.json`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+async function putTaskJson(id, data) {
+  const r = await fetch(`${RTDB_BASE}tasks/${id}.json`, {
+    method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data)
   });
+  if (!r.ok) throw new Error("PUT failed: " + r.status);
 }
+
+async function afterUpdateUI(id, navigateToBoard, closeOverlayAfter, reopenDetail) {
+  if (closeOverlayAfter) closeOverlay(byId("taskOverlay"));
+  await window.Board?.renderAllTasks?.();
+  if (navigateToBoard) { location.href = "board.html"; return; }
+  if (reopenDetail) await openTaskDetail(id);
+}
+
+async function updateTask(id, navigateToBoard = false, closeTaskOverlayAfterUpdate = false, reopenDetail = false) {
+  if (!id) return typeof window.createTask === "function" ? window.createTask() : null;
+  try {
+    await putTaskJson(id, readTaskForm());
+    await afterUpdateUI(id, navigateToBoard, closeTaskOverlayAfterUpdate, reopenDetail);
+  } catch (err) { console.error("Error updating task:", err); alert("Failed to update task. Please try again."); }
+}
+
+/* ------------------------- Subtasks im Detail-UI ------------------------- */
 
 async function saveSubtasksFromOverlay(taskId) {
   const items = [...document.querySelectorAll("#taskDetailOverlay .subtasks__item")];
@@ -318,8 +298,10 @@ function mountSubtaskCheckboxListener() {
 async function onDetailSubtaskChange(e) {
   const cb = e.target;
   if (!cb.matches('#taskDetailOverlay input[type="checkbox"][data-sub-index]')) return;
-  const detail = cb.closest(".task-detail"); const taskId = detail?.getAttribute("data-id");
-  if (!taskId) return; const previous = !cb.checked;
+  const detail = cb.closest(".task-detail");
+  const taskId = detail?.getAttribute("data-id");
+  if (!taskId) return;
+  const previous = !cb.checked;
   try {
     const { done, total } = await saveSubtasksFromOverlay(taskId);
     updateSubtaskCountersUI(taskId, done, total);
@@ -327,26 +309,25 @@ async function onDetailSubtaskChange(e) {
   } catch (err) { console.error(err); cb.checked = previous; alert("Konnte Subtask nicht speichern. Bitte später erneut versuchen."); }
 }
 
+/* ----------------------- Assigned / Subtasks (Form) ---------------------- */
+
 function fillAssignedContacts(contacts) {
   const wrap = byId("assignedToInitials"); wrap.innerHTML = "";
-  if (!contacts.length) { wrap.style.display = "none"; return; }
+  if (!contacts?.length) { wrap.style.display = "none"; return; }
   wrap.style.display = "flex";
   contacts.forEach((c, i) => {
     const div = document.createElement("div");
-    div.className = "av"; div.style.background = color(i);
+    div.className = "av"; div.style.background = window.color(i);
     div.textContent = initials(c); wrap.appendChild(div);
   });
 }
 
 function fillSubtasks(subtasks) {
-  const wrap = document.querySelector(".addedSubtaskWrapper");
-  wrap.innerHTML = "";
-  subtasks.forEach(s => {
+  const wrap = document.querySelector(".addedSubtaskWrapper"); wrap.innerHTML = "";
+  (subtasks || []).forEach(s => {
     let txt = typeof s === "string" ? s : s.text;
-    txt = txt.replace(/^•\s*/, ""); // always remove leading bullet
-    wrap.appendChild(
-      createSubtaskElement(txt, !!(typeof s === "object" && s.done))
-    );
+    txt = txt.replace(/^•\s*/, "");
+    wrap.appendChild(createSubtaskElement(txt, !!(typeof s === "object" && s.done)));
   });
 }
 
@@ -356,29 +337,22 @@ function renderAssignedInitials() {
   w.style.display = "flex";
   assignedContacts.forEach((c, i) => {
     const d = document.createElement("div");
-    d.className = "av"; d.style.background = color(i);
+    d.className = "av"; d.style.background = window.color(i);
     d.textContent = initials(c); w.appendChild(d);
   });
 }
 
+/* --------------------------- Datepicker (Min) ---------------------------- */
+
 function mountDatePickerMinToday() {
-  window.addEventListener('DOMContentLoaded', () => {
-    const input = byId('date');
-    if (!input) return;
-
-    input.min = new Date().toISOString().split('T')[0];
-
-    const tryOpenPicker = () => {
-      try {
-        const ua = navigator.userActivation;
-        const hasActivation = ua && (ua.isActive || ua.hasBeenActive);
-        if (typeof input.showPicker === 'function' && hasActivation) {
-          input.showPicker();
-        }
-      } catch (e) {
-      }
-    };
-
-    input.addEventListener('pointerdown', tryOpenPicker);
-  });
+  const input = byId("date"); if (!input) return;
+  input.min = new Date().toISOString().split("T")[0];
+  const tryOpen = () => {
+    try {
+      const ua = navigator.userActivation;
+      const ok = ua && (ua.isActive || ua.hasBeenActive);
+      if (typeof input.showPicker === "function" && ok) input.showPicker();
+    } catch {}
+  };
+  input.addEventListener("pointerdown", tryOpen);
 }

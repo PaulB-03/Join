@@ -1,3 +1,5 @@
+// board.js (bereinigt, Funktionen ≤ 14 Zeilen)
+
 const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
 
 const COL_TO_STATE = {
@@ -15,7 +17,7 @@ let placeholder = null;
 
 let __liveBound = false;
 let __tasksRef = null;
-const __localEdits = new Set(); 
+const __localEdits = new Set();
 
 document.addEventListener("DOMContentLoaded", () => {
   init();
@@ -23,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
   mountSubtaskCheckboxListener();
   mountDatePickerMinToday();
 });
+
+/* ------------------------------ Boot & DnD ------------------------------ */
 
 async function init() {
   await renderAllTasks();
@@ -71,24 +75,23 @@ function onDragEnd(e) {
   if (!box) return;
   box.classList.remove("is-dragging");
   box.querySelector(".card")?.classList.remove("is-dragging");
-  document.querySelectorAll(".dropzone.is-over").forEach((z) => z.classList.remove("is-over"));
+  document.querySelectorAll(".dropzone.is-over").forEach(z => z.classList.remove("is-over"));
   placeholder.remove();
   dragged = null;
 }
 
 function bindColumns() {
-  document.querySelectorAll(".dropzone").forEach((zone) => {
+  document.querySelectorAll(".dropzone").forEach(zone => {
     if (zone.__bound) return;
-    zone.addEventListener("dragover", (ev) => onDragOver(ev, zone));
+    zone.addEventListener("dragover", ev => onDragOver(ev, zone));
     zone.addEventListener("dragleave", () => zone.classList.remove("is-over"));
-    zone.addEventListener("drop", (ev) => onDrop(ev, zone)); // bleibt async kompatibel
+    zone.addEventListener("drop", ev => onDrop(ev, zone));
     zone.__bound = true;
   });
 }
 
 function autoScroll(zone, clientY) {
-  const r = zone.getBoundingClientRect();
-  const thr = 24; 
+  const r = zone.getBoundingClientRect(), thr = 24;
   if (clientY < r.top + thr) zone.scrollTop -= 10;
   else if (clientY > r.bottom - thr) zone.scrollTop += 10;
 }
@@ -97,28 +100,36 @@ function onDragOver(e, zone) {
   if (!dragged) return;
   e.preventDefault();
   zone.classList.add("is-over");
-  autoScroll(zone, e.clientY);   
+  autoScroll(zone, e.clientY);
   insertPlaceholder(zone, e.clientY);
+}
+
+/* ---------------------------- DnD: Drop Flow ---------------------------- */
+
+function insertDraggedInto(zone, mouseY) {
+  insertPlaceholder(zone, mouseY);
+  placeholder.replaceWith(dragged);
+}
+
+async function persistDragState(id, zone) {
+  await updateTaskState(id, COL_TO_STATE[zone.id]);
+  updateEmptyState(zone);
 }
 
 async function onDrop(e, zone) {
   e.preventDefault();
   zone.classList.remove("is-over");
   if (!dragged) return;
+  const prev = dragged.parentElement;
 
-  const prevParent = dragged.parentElement;
-
-  insertPlaceholder(zone, e.clientY);
-  placeholder.replaceWith(dragged);
-
+  insertDraggedInto(zone, e.clientY);
   try {
-    await updateTaskState(dragged.dataset.id, COL_TO_STATE[zone.id]);
-    updateEmptyState(prevParent);
-    updateEmptyState(zone);
+    await persistDragState(dragged.dataset.id, zone);
+    updateEmptyState(prev);
   } catch (err) {
     console.error(err);
-    prevParent.appendChild(dragged);
-    updateEmptyState(prevParent);
+    prev.appendChild(dragged);
+    updateEmptyState(prev);
     updateEmptyState(zone);
   }
 }
@@ -137,6 +148,8 @@ function insertPlaceholder(container, mouseY) {
   target ? container.insertBefore(placeholder, target) : container.appendChild(placeholder);
 }
 
+/* --------------------------- Empty-State Utils -------------------------- */
+
 function updateEmptyState(zone) {
   if (!zone) return;
   const hasTask = zone.querySelector(".task-container");
@@ -154,16 +167,17 @@ function updateAllEmptyStates() {
 }
 
 function clearColumns() {
-  document.querySelectorAll(".dropzone").forEach((z) => {
+  document.querySelectorAll(".dropzone").forEach(z => {
     const title = z.previousElementSibling?.textContent?.trim() || "";
     z.innerHTML = `<div class="empty">No tasks ${title}</div>`;
   });
 }
 
+/* ------------------------------- API ------------------------------------ */
+
 async function updateTaskState(id, state) {
   __localEdits.add(id);
   setTimeout(() => __localEdits.delete(id), 1500);
-
   const res = await fetch(`${BASE_URL}/tasks/${id}.json`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -178,9 +192,7 @@ async function fetchTasks() {
   const data = await r.json();
   if (!data) return {};
   if (Array.isArray(data)) {
-    return Object.fromEntries(
-      data.map((t, i) => [i, t]).filter(([, t]) => t)
-    );
+    return Object.fromEntries(data.map((t, i) => [i, t]).filter(([, t]) => t));
   }
   return data;
 }
@@ -210,9 +222,7 @@ function normalizeSubtasks(subs) {
 }
 
 function toSubtask(x) {
-  return typeof x === "string"
-    ? { text: x, done: false }
-    : x || { text: "", done: false };
+  return typeof x === "string" ? { text: x, done: false } : x || { text: "", done: false };
 }
 
 async function saveSubtasks(taskId, subs) {
@@ -224,6 +234,8 @@ async function saveSubtasks(taskId, subs) {
   if (!r.ok) throw new Error(`PATCH subtasks failed: ${r.status}`);
 }
 
+/* --------------------------- Rendering / Cards -------------------------- */
+
 async function renderAllTasks() {
   const tasks = await fetchTasks();
   clearColumns();
@@ -231,18 +243,19 @@ async function renderAllTasks() {
   updateAllEmptyStates();
 }
 
+function computeCardHTML(t) {
+  const { total, done, percent } = subtaskProgress(t.subtasks);
+  return window.taskCardInnerHtml(t, percent, done, total);
+}
+
 function addTaskCard(id, t) {
   const zone = getZoneForTask(t);
   zone.querySelector(".empty")?.remove();
-
   const wrap = makeTaskWrapper(id);
-  const { total, done, percent } = subtaskProgress(t.subtasks);
-
   const card = document.createElement("article");
   card.className = "card";
   card.dataset.id = id;
-  card.innerHTML = window.taskCardInnerHtml(t, percent, done, total);
-
+  card.innerHTML = computeCardHTML(t);
   bindCardClickDrag(wrap, card, id);
   wrap.appendChild(card);
   zone.appendChild(wrap);
@@ -276,83 +289,64 @@ function bindCardClickDrag(wrapper, card, id) {
   card.addEventListener("click", () => !draggedFlag && openTaskDetail(id));
 }
 
-/* ==============================
-   Live Sync (RTDB)
-   ============================== */
+/* ----------------------------- Live Sync -------------------------------- */
 
 function startLiveSync() {
   if (__liveBound) return;
-  if (!window.rtdb) {
-    console.warn("RTDB nicht initialisiert – LiveSync wird übersprungen.");
+  if (!window.rtdb) { console.warn("RTDB nicht initialisiert – LiveSync wird übersprungen."); return; }
+  __liveBound = true;
+  __tasksRef = window.rtdb.ref("tasks");
+  bindLiveHandlers(__tasksRef);
+}
+
+function bindLiveHandlers(ref) {
+  ref.on("child_added", onChildAdded);
+  ref.on("child_changed", onChildChanged);
+  ref.on("child_removed", onChildRemoved);
+}
+
+function onChildAdded(snap) {
+  upsertTaskCard(snap.key, snap.val());
+  updateAllEmptyStates();
+}
+
+function onChildChanged(snap) {
+  const id = snap.key, t = snap.val();
+  if (__localEdits.has(id)) { safeUpdateCardContent(id, t); return; }
+  handleChangedPlacement(id, t);
+}
+
+function handleChangedPlacement(id, t) {
+  const existing = document.querySelector(`.task-container[data-id="${id}"]`);
+  const zone = getZoneForTask(t);
+  if (existing && existing.parentElement === zone) {
+    safeUpdateCardContent(id, t);
+    updateAllEmptyStates();
     return;
   }
-  __liveBound = true;
+  upsertTaskCard(id, t);
+  updateAllEmptyStates();
+}
 
-  const ref = window.rtdb.ref("tasks");
-  __tasksRef = ref;
-
-  ref.on("child_added", (snap) => {
-    const id = snap.key, t = snap.val();
-    upsertTaskCard(id, t);
-    updateAllEmptyStates();
-  });
-
-  ref.on("child_changed", (snap) => {
-    const id = snap.key, t = snap.val();
-    if (__localEdits.has(id)) {
-      safeUpdateCardContent(id, t);
-      return;
-    }
-
-    const existing = document.querySelector(`.task-container[data-id="${id}"]`);
-    const zone = getZoneForTask(t);
-
-    if (existing && existing.parentElement === zone) {
-      safeUpdateCardContent(id, t);
-      updateAllEmptyStates();
-      return;
-    }
-
-    upsertTaskCard(id, t);
-    updateAllEmptyStates();
-  });
-
-  ref.on("child_removed", (snap) => {
-    const id = snap.key;
-    removeTaskCard(id);
-    updateAllEmptyStates();
-  });
+function onChildRemoved(snap) {
+  removeTaskCard(snap.key);
+  updateAllEmptyStates();
 }
 
 function safeUpdateCardContent(id, t) {
   const existing = document.querySelector(`.task-container[data-id="${id}"]`);
-  if (!existing) {
-    upsertTaskCard(id, t);
-    updateAllEmptyStates();
-    return;
-  }
+  if (!existing) { upsertTaskCard(id, t); updateAllEmptyStates(); return; }
   const card = existing.querySelector(".card");
-  const { total, done, percent } = subtaskProgress(t.subtasks);
-  card.innerHTML = window.taskCardInnerHtml(t, percent, done, total);
+  card.innerHTML = computeCardHTML(t);
 }
 
 function upsertTaskCard(id, t) {
   const existing = document.querySelector(`.task-container[data-id="${id}"]`);
   const zone = getZoneForTask(t);
   zone.querySelector(".empty")?.remove();
-
-  if (!existing) {
-    addTaskCard(id, t);
-    return;
-  }
-
-  const card = existing.querySelector(".card");
-  const { total, done, percent } = subtaskProgress(t.subtasks);
-  card.innerHTML = window.taskCardInnerHtml(t, percent, done, total);
-
-  if (existing.parentElement !== zone) {
-    zone.appendChild(existing);
-  }
+  if (!existing) { addTaskCard(id, t); return; }
+  existing.querySelector(".card").innerHTML = computeCardHTML(t);
+  if (existing.parentElement !== zone) zone.appendChild(existing);
 }
 
 function removeTaskCard(id) {
@@ -360,10 +354,10 @@ function removeTaskCard(id) {
 }
 
 window.addEventListener("beforeunload", () => {
-  try {
-    __tasksRef?.off();
-  } catch (e) {}
+  try { __tasksRef?.off(); } catch (e) {}
 });
+
+/* ------------------------------ Exports ---------------------------------- */
 
 window.Board = Object.assign(window.Board || {}, {
   renderAllTasks,
