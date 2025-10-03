@@ -48,18 +48,9 @@ async function getDataForTasks() {
 
 // Counts how many tasks are in each state + handles deadlines
 function countForSummary(responseToJson) {
-  let countStatesObj = {
-    "progressCount": 0,
-    "toDoCount": 0,
-    "doneCount": 0,
-    "awaitFeedbackCount": 0,
-  }
-  let datesObject = {
-    "dates": [],
-    "prioritys": [],
-  };
+  let countStatesObj = createCountObject()
+  let datesObject = createDatesObject()
   let objectToArray = Object.entries(responseToJson.tasks);
-
   for (let index = 0; index < objectToArray.length; index++) {
     let taskState = objectToArray[index][1].state;
     checkState(datesObject, taskState, index, objectToArray)
@@ -70,9 +61,38 @@ function countForSummary(responseToJson) {
       case "await feedback": countStatesObj.awaitFeedbackCount++; break;
     }
   }
-
   filterNextUpcomingDeadline(datesObject, responseToJson);
   changeInnerHtmlOfSummary(countStatesObj);
+}
+
+function createDatesObject() {
+  let datesObject = {
+    "dates": [],
+    "prioritys": [],
+  };
+  return datesObject
+}
+
+function createCountObject() {
+  let countStatesObj = {
+    "progressCount": 0,
+    "toDoCount": 0,
+    "doneCount": 0,
+    "awaitFeedbackCount": 0,
+  };
+  return countStatesObj
+}
+
+// Push task’s date and priority if it's not "done"
+function checkState(datesObject, taskState, index, objectToArray) {
+  if ("done" == taskState) {
+    return
+  } else {
+    let dateToPush = objectToArray[index][1].date
+    datesObject.dates.push(dateToPush)
+    datesObject.prioritys.push(objectToArray[index][1].priority)
+    return datesObject
+  }
 }
 
 // If no deadline found, push "Nothing to worry"
@@ -145,18 +165,6 @@ function changeUrgencyImg(highesValue) {
     case 3:
       urgencyImg.src = "../assets/svg/double_arrow_down_white.svg"
       break
-  }
-}
-
-// Push task’s date and priority if it's not "done"
-function checkState(datesObject, taskState, index, objectToArray) {
-  if ("done" == taskState) {
-    return
-  } else {
-    let dateToPush = objectToArray[index][1].date
-    datesObject.dates.push(dateToPush)
-    datesObject.prioritys.push(objectToArray[index][1].priority)
-    return datesObject
   }
 }
 
