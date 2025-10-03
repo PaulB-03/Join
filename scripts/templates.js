@@ -37,14 +37,14 @@ function taskDetailTemplate(id, t = {}) {
   const date  = formatDate(t.date || "-");
 
   const assigned =
-    (t.assignedContacts || [])
-      .map((n, i) => `
+  (t.assignedContacts || [])
+    .map((n, i) => `
       <div class="task-assigned__item">
-        <div class="av" style="background:${bgForNameOrIndex(n, i)}">${initials(n)}</div>
+        <div class="av" style="background:${(window.colorForName && window.colorForName(n)) || bgForNameOrIndex(n, i)}">${initials(n)}</div>
         <div class="task-assigned__name">${escapeHtml(n)}</div>
       </div>`)
-      .join("") ||
-    `<div class="task-assigned__item" style="opacity:.6">No assignees</div>`;
+    .join("") ||
+  `<div class="task-assigned__item" style="opacity:.6">No assignees</div>`;
 
   const subtasks =
     (t.subtasks || [])
@@ -86,10 +86,16 @@ function taskDetailTemplate(id, t = {}) {
       </div>
 
       <div class="task-actions">
-        <button type="button" id="taskDelete" class="danger">🗑 Delete</button>
-        <div class="task-divider"></div>
-        <button type="button" id="taskEdit" class="primary">✏ Edit</button>
-      </div>
-    </div>
+        <button type="button" id="taskDelete" class="danger">
+          <img class="icon" src="../assets/svg/subdelete.svg" alt="" aria-hidden="true" />
+          <span>Delete</span>
+        </button>
+      <div class="task-divider"></div>
+        <button type="button" id="taskEdit" class="primary">
+          <img class="icon" src="../assets/svg/subedit.svg" alt="" aria-hidden="true" />
+          <span>Edit</span>
+        </button>
+   </div>
+
   `;
 }

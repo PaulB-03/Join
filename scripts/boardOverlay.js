@@ -356,3 +356,22 @@ function mountDatePickerMinToday() {
   };
   input.addEventListener("pointerdown", tryOpen);
 }
+
+function openSemantics(overlay) {
+  __lastActive = document.activeElement;
+  overlay.style.display = "flex";
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden", "false");
+  overlay.removeAttribute("aria-hidden"); 
+  document.body.classList.add("modal-open");
+  setBackgroundInert(true);
+}
+
+function closeSemantics(overlay) {
+  overlay.classList.remove("open");
+  overlay.style.display = "";
+  overlay.setAttribute("aria-hidden", "true");
+  overlay.setAttribute("aria-hidden", "true"); 
+  document.body.classList.remove("modal-open");
+  setBackgroundInert(false);
+}

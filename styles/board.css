@@ -363,3 +363,9 @@
   font-size: 14px;
   margin: 8px 0 0;
 }
+
+.task-actions .icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+}

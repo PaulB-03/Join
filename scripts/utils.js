@@ -38,18 +38,12 @@ function escapeHtml(s) {
     return `${dd}/${mm}/${yyyy}`;
   }
   
-  // Eine Liste von Farben, die wir für Avatare benutzen.
-  // So bekommt jeder Nutzer eine "zufällige" Hintergrundfarbe.
-  const COLORS = ["#f44336","#2196F3","#FF9800","#9C27B0","#4CAF50","#00BCD4","#FFC107"];
-  
-  // Liefert eine Hintergrundfarbe für einen Namen zurück.
-  // Falls es eine Funktion window.colorForName gibt, wird die benutzt.
-  // Ansonsten nimmt er eine Farbe aus COLORS, abhängig von der Reihenfolge (Index).
+  // Einheitliche Farbquelle: delegiere immer an standardFunctions.js → colorForName
   function bgForNameOrIndex(name, i) {
     if (typeof window !== "undefined" && typeof window.colorForName === "function") {
-      return window.colorForName(name);
+      return window.colorForName(name || "");
     }
-    return COLORS[i % COLORS.length];
+    return "#999";
   }
   
   // Macht aus einem Namen die Initialen (ersten Buchstaben).
