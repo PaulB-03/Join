@@ -167,6 +167,7 @@ a.btn:active {
   height: 24px;
   justify-content: space-between;
   opacity: 1;
+  padding-left: 20px;
 }
 .col-head .count {
   color: var(--color-icon);

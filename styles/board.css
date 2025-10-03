@@ -371,6 +371,6 @@
 }
 
 .dropzone {
-  height: 100vh;          
+  height: auto;          
   padding: 12px 10px;    
 }
