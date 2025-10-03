@@ -65,6 +65,7 @@ function countForSummary(responseToJson) {
   changeInnerHtmlOfSummary(countStatesObj);
 }
 
+// creates obj for countForSummary
 function createDatesObject() {
   let datesObject = {
     "dates": [],
@@ -72,7 +73,7 @@ function createDatesObject() {
   };
   return datesObject
 }
-
+// creates obj for countForSummary
 function createCountObject() {
   let countStatesObj = {
     "progressCount": 0,
@@ -220,14 +221,25 @@ function verifyTheRightDate(date) {
   const nowDay = now.getDate();
   const nowYear = now.getFullYear();
   let nowMonth = now.getMonth() + 1;
-  let formatedDate
-
-  if (nowMonth < 10) {
-    formatedDate = nowYear + "-" + "0" + nowMonth + "-" + nowDay
-  } else {
-    formatedDate = nowYear + "-" + nowMonth + "-" + nowDay
-  }
+  let formatedDate = returnTheRightDateFormat(nowDay, nowMonth, nowYear)
   return date >= formatedDate
+}
+
+// date: month and day has to be at least two digit -> adds 0 to date day/month if smaller then 10
+function returnTheRightDateFormat(nowDay, nowMonth, nowYear) {
+  let nowDayNew
+  let nowMonthNew
+  if (nowMonth < 10 || nowDay < 10) {
+    if (nowMonth < 10) {
+      nowMonthNew = "0" + nowMonth
+    } else { nowMonthNew = nowMonth }
+    if (nowDay < 10) {
+      nowDayNew = "0" + nowDay
+    } else { nowDayNew = nowDay }
+    return formatedDate = nowYear + "-" + nowMonthNew + "-" + nowDayNew
+  } else {
+    return formatedDate = nowYear + "-" + nowMonth + "-" + nowDay
+  }
 }
 
 // Converts deadline into "Month Day, Year" format
