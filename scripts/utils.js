@@ -46,27 +46,6 @@ function escapeHtml(s) {
     return "#999";
   }
   
-  // Macht aus einem Namen die Initialen (ersten Buchstaben).
-  // Beispiel: "Max Mustermann" → "MM"
-  function initials(name) {
-    if (typeof window !== "undefined" && typeof window.initials === "function") {
-      return window.initials(name);
-    }
-    const parts = (name || "").trim().split(/\s+/);
-    const first = parts[0]?.[0] || "";
-    const last = parts.length > 1 ? parts[parts.length - 1][0] : "";
-    return (first + last).toUpperCase();
-  }
-  
-  // Baut die HTML-Struktur für mehrere Avatare aus Namen.
-  // Jeder Name bekommt Initialen + eine Farbe als Kreis.
-  function renderInitials(names = []) {
-    const html = names
-      .map((n, i) => `<div class="av" style="background:${bgForNameOrIndex(n, i)}">${initials(n)}</div>`)
-      .join("");
-    return `<div class="row"><div class="avatars">${html}</div></div>`;
-  }
-  
   // Gibt ein kleines Icon für die Priorität zurück.
   // Urgent = roter Pfeil nach oben, Medium = Doppellinien, Low = grüner Pfeil nach unten.
   function getPriorityIcon(prio) {

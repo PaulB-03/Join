@@ -369,3 +369,8 @@
   height: 14px;
   display: inline-block;
 }
+
+.dropzone {
+  height: 100vh;          
+  padding: 12px 10px;    
+}

@@ -224,9 +224,21 @@ function initContactsDropdownInput() {
 function initDateMinAndPicker() {
   const input = $id("date"); if (!input) return;
   input.min = new Date().toISOString().split("T")[0];
-  const open = () => { if (typeof input.showPicker === "function") input.showPicker(); };
-  input.addEventListener("mousedown", open);
-  input.addEventListener("touchend", open, { passive: true });
+  const open = (e) => {
+    try {
+      const ua = navigator.userActivation;
+      const ok = ua && (ua.isActive || ua.hasBeenActive);
+      if (typeof input.showPicker === "function" && ok) {
+        input.showPicker(); 
+      } else {
+        input.focus(); 
+      }
+    } catch {
+      input.focus(); 
+    }
+  };
+
+  input.addEventListener("click", open);
 }
 
 /* ----------------------------- Live Search ------------------------------- */

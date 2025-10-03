@@ -114,6 +114,16 @@
     gap: 8px;
   }
 
+  .task-detail {
+    padding: 24px 28px 8px 28px;
+    width: 330px;
+    height: auto;
+  }
+
+  #taskOverlay.edit-mode .overlay-panel {
+    width: 390px;
+  }
+
   .dropzone .empty {
     padding: 10px;
     font-size: 12px;
@@ -128,8 +138,9 @@
     margin-top: 100px;
   }
   .dropzone {
-    min-height: 160px;
+    height: 300px;
   }
+
   .board-viewport {
     scroll-snap-type: x mandatory;
     overscroll-behavior-x: contain;
@@ -145,7 +156,7 @@
   .board-slider-nav {
     display: none;
   }
-  
+
   .board-slider-nav button {
     display: none;
   }

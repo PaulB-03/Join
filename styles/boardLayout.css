@@ -227,6 +227,7 @@ a.btn:active {
   flex-direction: column;
   gap: 10px;
 }
+
 .dropzone .empty {
   padding: 12px;
   text-align: center;

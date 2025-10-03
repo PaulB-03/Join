@@ -226,8 +226,6 @@ async function saveEditFlow(id) {
   byId("taskOverlay")?.classList.remove("edit-mode");
 }
 
-/* ---- Aufsplitten: updateTask + Helfer, alle ≤ 14 Zeilen ---- */
-
 function readTaskForm() {
   return {
     title: byId("titleInput").value.trim(),
