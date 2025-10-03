@@ -7,6 +7,9 @@
   transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
   cursor: pointer;
   margin-bottom: 12px;
+  width: 240px;
+  gap: 24px;
+  opacity: 1;
 }
 .card.is-dragging {
   transform: rotate(3deg) translateX(6px);
