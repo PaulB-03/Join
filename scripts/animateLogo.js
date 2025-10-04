@@ -155,16 +155,12 @@
   function runSplash(startLogo, finalLogo, overlay, isMobile) {
     setTimeout(() => {
       fadeInElements();
-
       const startRect = startLogo.getBoundingClientRect();
       const targetRect = finalLogo.getBoundingClientRect();
-      startLogo.style.transition = "transform 1.2s ease-in-out, opacity 0.4s ease";
-
+      startLogo.style.transition = "transform 0.7s ease-in-out, opacity 0.1s ease";
       const { deltaX, deltaY, scale } = calculateTransform(startRect, targetRect);
       animateLogo(startLogo, deltaX, deltaY, scale);
-
       if (isMobile && overlay) handleMobileOverlay(startLogo, overlay);
-
       showHiddenElements(startLogo, () => {
         hideAllSplash();
         unlockLogos();
@@ -182,7 +178,7 @@
   function handleMobileOverlay(startLogo, overlay) {
     overlay.classList.add("fade-out");
     setTimeout(() => overlay.classList.add("d_none"), 450);
-    setTimeout(() => (startLogo.src = "./assets/svg/join_logo_small.svg"), 600);
+    setTimeout(() => (startLogo.src = "./assets/svg/join_logo_small.svg"), 200);
   }
 
   /**
