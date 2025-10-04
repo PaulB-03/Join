@@ -323,36 +323,34 @@ function boxListener() {
 // Shows or resets greeting overlay on mobile
 function greetingOverlayMobile() {
   let sumGreetingContainer = document.getElementById("sumGreetingContainer");
-  let summarySection = document.getElementById("summarySection");
   let showedOnce = getLocalLocalStorageItem("showedOnce", "true");
   if (window.innerWidth <= 1280 && !showedOnce) {
-    changeHTMLOfGreetingContainer(sumGreetingContainer, summarySection);
-    fadeOutGreetingOverlay(sumGreetingContainer, summarySection);
+    changeHTMLOfGreetingContainer(sumGreetingContainer);
+    fadeOutGreetingOverlay(sumGreetingContainer);
   } else {
-    resetHTMLOfGreetingContainer(sumGreetingContainer, summarySection);
+    resetHTMLOfGreetingContainer(sumGreetingContainer);
   }
 }
 
 // Fades out greeting overlay after delay
-function fadeOutGreetingOverlay(sumGreetingContainer, summarySection) {
+function fadeOutGreetingOverlay(sumGreetingContainer) {
   setTimeout(() => {
-    sumGreetingContainer.style.opacity = "0";
+    sumGreetingContainer.style.opacity = "0.4";
+    setTimeout(() => {
+      sumGreetingContainer.style.cssText = "";
+    }, 700);
   }, 1500);
-  summarySection.style.cssText = "";
 }
 
 // Resets inline styles of greeting overlay and summary section
 function resetHTMLOfGreetingContainer(sumGreetingContainer, summarySection) {
   sumGreetingContainer.style.cssText = "";
-
-  summarySection.style.cssText = "";
 }
 
 // Applies mobile greeting overlay styles and sets localStorage flag
-function changeHTMLOfGreetingContainer(sumGreetingContainer, summarySection) {
+function changeHTMLOfGreetingContainer(sumGreetingContainer) {
   sumGreetingContainer.style.cssText =
-    "transition: opacity 2s ease; opacity: 1;display: flex; justify-content: center; align-items: center; position: absolute;top: 0; left: 0; background-color: var(--main-bg-color); width: 100%;  height: 100%;";
-  summarySection.style.cssText = "padding-left: 0";
+    "transition: opacity 0.7s ease; opacity: 1;display: flex; justify-content: center; align-items: center; position: absolute;top: 0; left: 0; background-color: var(--main-bg-color); width: 100%;  height: 100%;";
 
   setLocalStorageItem("showedOnce", "true");
 }
