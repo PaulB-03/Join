@@ -323,35 +323,33 @@ function boxListener() {
 // Shows or resets greeting overlay on mobile
 function greetingOverlayMobile() {
   let sumGreetingContainer = document.getElementById("sumGreetingContainer");
+  let summarySection = document.getElementById("summarySection");
   let showedOnce = getLocalLocalStorageItem("showedOnce", "true");
   if (window.innerWidth <= 1280 && !showedOnce) {
-    changeHTMLOfGreetingContainer(sumGreetingContainer);
-    fadeOutGreetingOverlay(sumGreetingContainer);
+    changeHTMLOfGreetingContainer(sumGreetingContainer, summarySection);
+    fadeOutGreetingOverlay(sumGreetingContainer, summarySection);
   } else {
-    resetHTMLOfGreetingContainer(sumGreetingContainer);
+    resetHTMLOfGreetingContainer(sumGreetingContainer, summarySection);
   }
 }
 
 // Fades out greeting overlay after delay
-function fadeOutGreetingOverlay(sumGreetingContainer) {
+function fadeOutGreetingOverlay(sumGreetingContainer, summarySection) {
   setTimeout(() => {
     sumGreetingContainer.style.opacity = "0";
   }, 1500);
+  summarySection.style.cssText = "";
 }
 
 // Resets inline styles of greeting overlay and summary section
-function resetHTMLOfGreetingContainer() {
-  let summarySection = document.getElementById("summarySection");
-
+function resetHTMLOfGreetingContainer(sumGreetingContainer, summarySection) {
   sumGreetingContainer.style.cssText = "";
 
   summarySection.style.cssText = "";
 }
 
 // Applies mobile greeting overlay styles and sets localStorage flag
-function changeHTMLOfGreetingContainer(sumGreetingContainer) {
-  let summarySection = document.getElementById("summarySection");
-
+function changeHTMLOfGreetingContainer(sumGreetingContainer, summarySection) {
   sumGreetingContainer.style.cssText =
     "transition: opacity 2s ease; opacity: 1;display: flex; justify-content: center; align-items: center; position: absolute;top: 0; left: 0; background-color: var(--main-bg-color); width: 100%;  height: 100%;";
   summarySection.style.cssText = "padding-left: 0";
