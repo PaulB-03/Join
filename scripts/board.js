@@ -96,7 +96,7 @@ function onDragOver(e, zone) {
   if (!dragged) return;
   e.preventDefault();
   zone.classList.add("is-over");
-  if (!zone.contains(placeholder)) zone.appendChild(placeholder); // <— wichtig
+  if (!zone.contains(placeholder)) zone.appendChild(placeholder); 
   autoScroll(zone, e.clientY);
   insertPlaceholder(zone, e.clientY);
 }

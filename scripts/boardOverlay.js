@@ -1,6 +1,5 @@
 function byId(id) { return document.getElementById(id); }
 
-/* ------- Fallback-Farbpalette für Avatare (window.color) ------- */
 (function () {
   if (typeof window.color !== "function") {
     const __PALETTE = ["#f44336", "#2196F3", "#FF9800", "#9C27B0", "#4CAF50", "#00BCD4", "#FFC107"];
@@ -8,7 +7,6 @@ function byId(id) { return document.getElementById(id); }
   }
 })();
 
-/* ------- Spalten-ID -> State (für Quick-Add) ------- */
 const __COL_TO_STATE = {
   "todo": "toDo",
   "in-progress": "in progress",
@@ -137,7 +135,7 @@ function bindOverlayButtons() {
 
 function onOpenAddClick(e) {
   e.preventDefault();
-  if (window.innerWidth <= 1100) return location.assign("../html/addTask.html");
+  if (window.innerWidth <= 850) return location.assign("../html/addTask.html");
   clearTask(); openTaskOverlay(); setOverlayButtonText(false); toggleClearButton(false);
 }
 
