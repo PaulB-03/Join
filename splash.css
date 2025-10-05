@@ -396,10 +396,6 @@
 }
 
 @media (max-height: 820px) {
-  .indexMain {
-    padding-bottom: 30px;
-  }
-
   .logo {
     display: none;
   }
