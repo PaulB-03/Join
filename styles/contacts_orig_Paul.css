@@ -2,16 +2,14 @@
   display: flex;
   height: 100vh;
   max-width: 1920px;
-  padding: 96px 20px 0px 241px;
-  transition: padding 0.3s;
+  padding: 96px 20px 0px 260px;
 }
 
 .contactList {
-  position: relative;
+  width: 408px;
   background: var(--white);
-  box-shadow: 4px 0 6px 0 rgba(0, 0, 0, 0.08);
+  border-right: 1px solid #eee;
   overflow-y: auto;
-  padding: 32px 24px;
 }
 
 .newContactBtn {
@@ -19,14 +17,13 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
-  width: 352px;
-  height: 56px;
+  width: calc(100% - 64px);
   align-self: center;
   margin: 12px;
-  padding: 12px;
+  padding: 15px 24px;
   border-radius: 10px;
-  font-size: 21px;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   border: 1px solid var(--main-color);
   background: var(--main-color);
   color: var(--white);
@@ -36,23 +33,23 @@
 .newContactBtn:hover {
   background: var(--light-blue);
   border-color: var(--light-blue);
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .newContactBtnContainer {
-  position: sticky;
-  top: 0;
-  z-index: 200;
   display: flex;
   justify-content: center;
 }
 
 .newContactBtn img {
-  width: 29px;
+  width: 1.2em;
+  height: 1.2em;
   margin: 0;
+  filter: brightness(0) invert(1);
 }
 
 .contactDetails {
+  width: 75%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -70,30 +67,31 @@
   display: flex;
   padding: 32px 40px;
   flex-direction: column;
-  gap: 21px;
+  gap: 24px;
 }
 
 .contactListItems {
-  padding: 0 24px;
+  padding: 8px 12px 24px;
 }
 
 .alphaHeader {
-  padding: 17px 36px;
+  padding: 8px 12px;
+  font-weight: 700;
+  color: #6b6b6b;
 }
 
 .alphaDivider {
-  width: 352px;
-  border: 1px solid var(--color-placeholder);
-  border-radius: 1px;
+  height: 1px;
+  background: #e9e9e9;
   margin: 4px 0 8px;
 }
 
 .contactItem {
   display: flex;
   align-items: center;
-  gap: 35px;
-  padding: 15px 24px;
-  border-radius: 10px;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
   cursor: pointer;
 }
 
@@ -103,7 +101,7 @@
 }
 
 .contactItem:hover {
-  background: bottom linear-gradient(#f9f9f9, #f0f0f0);
+  background: #f6f7f8;
 }
 
 .contactAvatar {
@@ -114,49 +112,48 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 12px;
+  font-weight: 700;
   flex: 0 0 42px;
   border: #fff 2px solid;
 }
 
-.contactText {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.contactText .contactName {
+  font-weight: 700;
 }
 
 .contactText .contactEmail {
+  font-size: 0.9rem;
   color: var(--color-link);
 }
 
 .detailsTop {
   display: flex;
   align-items: center;
-  gap: 54px;
+  gap: 24px;
 }
 
 .detailsAvatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 70px;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-weight: 500;
-  font-size: 47px;
-  border: #fff 3px solid;
+  font-weight: 700;
+  font-size: 32px;
+  border: #fff 2px solid;
   box-shadow: 0px 0px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .detailsName {
-  font-size: 47px;
-  font-weight: 500;
+  font-size: 40px;
+  font-weight: bold;
 }
 
 .detailsActions {
   display: flex;
-  gap: 32px;
+  gap: 16px;
   margin-top: 8px;
   color: var(--color-icon);
 }
@@ -164,18 +161,21 @@
 .detailsAction {
   display: inline-flex;
   align-items: center;
-  gap: 13px;
+  gap: 5px;
   border: 0;
   background: transparent;
   cursor: pointer;
   color: var(--main-color);
+  padding: 0;
   transition: color 0.15s ease;
+  width: 1em;
+  height: 1em;
   flex: 0 0 auto;
+  margin-right: 32px;
 }
 
 .detailsAction:hover {
   color: var(--light-blue);
-  font-weight: 700;
 }
 
 .detailsIcon {
@@ -186,12 +186,13 @@
 
 .detailsAction .detailsIcon * {
   fill: currentColor !important;
+  stroke: currentColor !important;
 }
 
 .detailsSection {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 12px;
 }
 
 .sectionTitle {
@@ -201,15 +202,14 @@
 }
 
 .infoRow {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 15px;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  align-items: center;
 }
 
 .label {
   color: #000000;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .link {
@@ -417,10 +417,10 @@ body.modal-open {
   bottom: 24px;
   width: 56px;
   height: 56px;
-  border-radius: 56px;
+  border-radius: 50%;
   border: none;
   background: var(--main-color);
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
   display: none;
   align-items: center;
   justify-content: center;

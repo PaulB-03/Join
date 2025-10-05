@@ -116,7 +116,7 @@ function baseLetter(name) {
 
 function alphaHeader(letter) {
   const frag = document.createDocumentFragment();
-  const h = document.createElement("div");
+  const h = document.createElement("h6");
   h.className = "alphaHeader";
   h.textContent = letter;
   const divider = document.createElement("div");
@@ -140,7 +140,7 @@ function contactRow(contact) {
   const avatar = createElementWith("div", "contactAvatar", initials(contact.name)); // profile picture with initials
   avatar.style.background = colorForName(contact.name); //use colorForName to pick a color
   const text = createElementWith("div", "contactText"); // wrapper container for the text (name and email)
-  text.appendChild(createElementWith("div", "contactName", contact.name)); // add name to the container
+  text.appendChild(createElementWith("h6", "contactName", contact.name)); // add name to the container
   text.appendChild(createElementWith("div", "contactEmail", contact.email)); // add email to the container
   row.appendChild(avatar); // add avatar to the current row
   row.appendChild(text); // add email and name to the current row
@@ -207,7 +207,7 @@ function detailsInfoHTML(contact) {
   const phoneMarkup = phoneIsMissing ? `<a href="#" id="editPhoneTrigger" class="value link">add phone number</a>` : `<div class="value">${contact.phone || ""}</div>`;
 
   return `
-    <div class="sectionTitle">Contact Information</div>
+    <h6 class="sectionTitle">Contact Information</h6>
     <div class="infoRow"><div class="label">Email</div>
       <a class="value link" href="mailto:${contact.email}">${contact.email}</a>
     </div>
