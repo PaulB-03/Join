@@ -1,10 +1,12 @@
+const baseURL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
+
 let prioGrade = "";
 let selectedPrio = "";
 let selectedCategory = "";
 let selectedContact = "";
 let selectedState = "";
 let allContacts = [];
-let assignedContacts = [];
+window.assignedContacts = window.assignedContacts || [];
 
 /* ----------------------------- UI-Helpers ------------------------------ */
 
@@ -64,9 +66,19 @@ function getSelectedPriority() {
 
 function validateTaskFormFields() {
   let ok = true;
-  if (!getFieldValue("titleInput")) { showInlineError($id("titleInput")); ok = false; }
-  if (!getFieldValue("date"))       { showInlineError($id("date"));       ok = false; }
-  if (!selectedCategory)            { showInlineError($id("assignedToDropdownCategory")); ok = false; }
+
+  if (!getFieldValue("titleInput")) {
+    showInlineError($id("titleInput"));
+    ok = false;
+  }
+  if (!getFieldValue("date")) {
+    showInlineError($id("date"));
+    ok = false;
+  }
+  if (!window.selectedCategory) {
+    showInlineError($id("assignedToDropdownCategory"));
+    ok = false;
+  }
   return ok;
 }
 
@@ -81,12 +93,12 @@ function collectSubtasksFromUI() {
 function buildTaskPayloadFromForm() {
   return {
     title: getFieldValue("titleInput"),
-    description: getFieldValue("descriptionInput"), // optional
+    description: getFieldValue("descriptionInput"),
     date: getFieldValue("date"),
-    state: window.selectedState || "toDo",
     priority: selectedPrio,
-    category: selectedCategory,
-    assignedContacts: Array.isArray(assignedContacts) ? assignedContacts : [],
+    category: window.selectedCategory || "",
+    assignedContacts: Array.isArray(window.assignedContacts) ? [...window.assignedContacts] : [],
+    state: window.selectedState || "toDo",
     subtasks: collectSubtasksFromUI(),
   };
 }
@@ -94,11 +106,12 @@ function buildTaskPayloadFromForm() {
 /* ----------------------------- API Calls -------------------------------- */
 
 async function persistTask(payload) {
-  const res = await fetch(baseURL + "tasks.json", {
+  const res = await fetch(`${baseURL}tasks.json`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
+
   if (!res.ok) throw new Error("POST /tasks failed: " + res.status);
   return res.json();
 }
@@ -119,14 +132,33 @@ function showAddedToastAndRedirect() {
 
 async function createTask() {
   clearInlineErrors();
+
   if (!validateTaskFormFields()) return;
 
   const payload = buildTaskPayloadFromForm();
-  const btn = $id("add"); if (btn) btn.disabled = true;
+  const btn = document.getElementById("add");
+  if (btn) btn.disabled = true;
 
-  try { await persistTask(payload); showAddedToastAndRedirect(); }
-  catch (e) { alert("Die Aufgabe konnte nicht gespeichert werden."); console.error(e); }
-  finally { if (btn) btn.disabled = false; }
+  try {
+    const savedTask = await persistTask(payload);
+    showAddedToastAndRedirect();
+  } catch (e) {
+    alert("Die Aufgabe konnte nicht gespeichert werden.");
+    console.error(e);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+function selectContact(contact) {
+  if (!contact) return;
+
+  if (!assignedContacts.some(c => c.id === contact.id)) {
+    assignedContacts.push(contact);
+  }
+
+  const initials = document.getElementById("assignedToInitials");
+  if (initials) initials.textContent = assignedContacts.map(c => c.name[0]).join(", ");
 }
 
 /* ------------------------ Subtasks (Overlay-Form) ------------------------ */
@@ -162,11 +194,12 @@ function resetCategoryUI() {
 function resetAssignedUI() {
   assignedContacts = [];
   selectedContact = "";
-  const initials = $id("assignedToInitials");
+  const initials = document.getElementById("assignedToInitials");
   if (initials) initials.innerHTML = "";
   const span = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
   if (span) span.textContent = "Select contact";
-  const list = $id("dropdown-list-contacts"); if (list) list.innerHTML = "";
+  const list = document.getElementById("dropdown-list-contacts");
+  if (list) list.innerHTML = "";
 }
 
 function clearTask() {
@@ -174,12 +207,23 @@ function clearTask() {
     const el = document.querySelector(sel);
     if (el) el.value = "";
   });
+
+  const subInput = document.getElementById("subtaskInput");
+  if (subInput) subInput.value = "";
+
   document.querySelectorAll(".error-message").forEach(e => e.remove());
   ["#titleInput", "#descriptionInput", "#date", "#assignedToDropdownContacts", "#assignedToDropdownCategory"]
     .forEach(sel => { const el = document.querySelector(sel); if (el) el.style.border = ""; });
-  resetPrioUI(); resetCategoryUI(); resetAssignedUI();
-  const subWrap = document.querySelector(".addedSubtaskWrapper"); if (subWrap) subWrap.innerHTML = "";
-  const imgC = document.querySelector(".subtask-images-container"); if (imgC) imgC.style.display = "none";
+  
+  resetPrioUI(); 
+  resetCategoryUI(); 
+  resetAssignedUI();
+
+  const subWrap = document.querySelector(".addedSubtaskWrapper"); 
+  if (subWrap) subWrap.innerHTML = "";
+
+  const imgC = document.querySelector(".subtask-images-container"); 
+  if (imgC) imgC.style.display = "none";
 }
 
 /* --------------------------- Kontakte / Suche ---------------------------- */
@@ -212,9 +256,21 @@ function initContactsDropdownInput() {
   Array.from(drop.getElementsByClassName("dropdown-item-contact")).forEach(item => {
     item.addEventListener("click", (ev) => {
       ev.stopPropagation();
-      isOpen = false;
+
+      const contact = { id: item.dataset.id, name: item.dataset.name };
+      if (!assignedContacts.some(c => c.id === contact.id)) {
+        assignedContacts.push(contact);
+      }
+
+      const initials = document.getElementById("assignedToInitials");
+      if (initials) {
+        initials.style.display = "block"; // show div
+        initials.textContent = assignedContacts.map(c => c.name[0]).join(", ");
+      }
+
       drop.style.display = "none";
-      arrow.style.transform = "translateY(-50%) rotate(0deg)";
+      const arrow = document.getElementById("dropdown-arrow-contacts");
+      if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
     });
   });
 }
@@ -268,3 +324,100 @@ window.createTask = window.createTask || createTask;
 window.clearTask = window.clearTask || clearTask;
 window.getSubtasksFromForm = window.getSubtasksFromForm || getSubtasksFromForm;
 window.setPrioColor = window.setPrioColor || setPrioColor;
+
+const CategoryDropdown = (() => {
+  // === Helpers ===
+  const $ = (id) => document.getElementById(id);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const on = (el, evt, fn) => el?.addEventListener(evt, fn);
+
+  // === Core Select Logic ===
+const categories = ["Userstory", "Technical Task"];
+
+function selectCategory(index) {
+  const dd = $("assignedToDropdownCategory");
+  const ph = $("categoryPlaceholder");
+  const inputs = $$("input[name='category']");
+  const category = categories[index];
+
+  window.selectedCategory = category;
+  if (ph) ph.textContent = category;
+  dd?.classList.add("selected-red");
+
+  inputs.forEach((input, i) => (input.checked = i === index));
+
+  dd.style.border = "";
+  const nextEl = dd.nextElementSibling;
+  if (nextEl && nextEl.classList.contains("error-message")) {
+    nextEl.remove();
+  }
+
+  if (typeof resetSubtasksSpacing === "function") resetSubtasksSpacing();
+}
+
+
+function saveSelectedCategory(index) {
+    selectCategory(index);
+    closeDropdown();
+  }
+  let open = false;
+
+function toggleDropdown() {
+    open ? closeDropdown() : openDropdown();
+  }
+
+function openDropdown() {
+    const dd = $("assignedToDropdownCategory");
+    const arrow = $("dropdown-arrow-subtasks");
+    open = true;
+    dd?.classList.add("open");
+    if (arrow) arrow.style.transform = "translateY(-50%) rotate(180deg)";
+    dd?.setAttribute("aria-expanded", "true");
+  }
+
+function closeDropdown() {
+    const dd = $("assignedToDropdownCategory");
+    const arrow = $("dropdown-arrow-subtasks");
+    open = false;
+    dd?.classList.remove("open");
+    if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
+    dd?.setAttribute("aria-expanded", "false");
+  }
+
+function init() {
+    const dd = $("assignedToDropdownCategory");
+    const list = $("dropdown-list-category");
+    if (!dd || !list) return;
+
+    on(dd, "click", (ev) => {
+      ev.stopPropagation();
+      toggleDropdown();
+    });
+
+    on(dd, "keydown", (ev) => {
+      if (["Enter", " "].includes(ev.key)) {
+        ev.preventDefault();
+        toggleDropdown();
+      } else if (ev.key === "Escape") {
+        closeDropdown();
+      }
+    });
+
+    $$(".dropdown-item-category", list).forEach((item, idx) => {
+      on(item, "click", (ev) => {
+        ev.stopPropagation();
+        selectCategory(idx);
+        closeDropdown();
+      });
+    });
+
+    on(document, "click", () => {
+      if (open) closeDropdown();
+    });
+
+    window.saveSelectedCategory = saveSelectedCategory;
+  }
+  return { init, selectCategory, saveSelectedCategory };
+})();
+
+document.addEventListener("DOMContentLoaded", CategoryDropdown.init);
