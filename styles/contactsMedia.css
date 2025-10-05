@@ -232,6 +232,12 @@
   }
 }
 
+@media (max-width: 405px) {
+  .overlay {
+    padding: 20px;
+  }
+}
+
 @media (max-width: 388px) {
   .contactDetailsHeader .header-small {
     width: 190px;
@@ -255,9 +261,44 @@
     padding-left: 0px;
     padding-right: 0px;
   }
+
+  .add-contact-overlay-form input {
+    width: 80%;
+    align-self: center;
+    justify-self: center;
+  }
 }
 
 /* Max Height queries */
+
+@media (max-height: 790px) {
+  #addContactMobileOverlay {
+    height: 300px;
+  }
+
+  .overlay-body {
+    height: 350px;
+    overflow-y: hidden;
+  }
+
+  .avatar {
+    top: 260px;
+  }
+
+  #editContactImgMobile {
+    height: 300px;
+  }
+
+  .overlay {
+    .detailsAvatar {
+      top: 240px;
+    }
+  }
+
+  #editContactForm {
+    height: 350px;
+  }
+}
 
 @media (max-height: 730px) {
   .overlay-close {
