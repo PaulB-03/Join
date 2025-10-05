@@ -124,7 +124,8 @@ textarea {
 textarea:focus {
   border: 1.5px solid var(--light-blue);
 }
-textarea:valid {
+
+#descriptionInput:not(:placeholder-shown) {
   background-color: rgb(232, 240, 254);
 }
 
@@ -135,6 +136,7 @@ textarea:valid {
   display: flex;
   background-color: white;
 }
+
 #assignedToDropdownContacts .dropdown-selected {
   width: 100%;
   display: flex;
@@ -180,10 +182,6 @@ textarea:valid {
   border: 1.5px solid var(--light-blue);
 }
 
-#assignedToDropdownCategory:valid {
-  background-color: #4caf50;
-}
-
 input#contactSearch.search::placeholder {
   font-size: 20px;
   color: black;
@@ -217,9 +215,9 @@ input#contactSearch.search::placeholder {
 }
 
 #subtasks {
-    padding-bottom: 50px;
-    margin-top: 0px;
-    transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
+  padding-bottom: 50px;
+  margin-top: 0px;
+  transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
 }
 
 #dropdown-arrow-contacts {
