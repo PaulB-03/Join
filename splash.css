@@ -100,6 +100,7 @@
   margin-right: auto;
   margin-left: auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 240px);
@@ -112,7 +113,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 40px 0 50px 0;
+  padding: 48px 0;
   border-radius: 30px;
   background-color: white;
   box-shadow: 0px 0px 14px 3px rgba(0, 0, 0, 0.04);
@@ -174,7 +175,7 @@
 .inputGroup {
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: 16px 16px 5px 16px;
   width: 100%;
 }
 
@@ -182,7 +183,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
   width: 100%;
   max-width: 454px;
 }
@@ -217,7 +217,7 @@
 
 .errors {
   color: var(--form-error);
-  font-size: 13px;
+  font-size: 11px;
   visibility: hidden;
   padding-top: 2px;
   padding-bottom: 12px;
@@ -225,7 +225,16 @@
 
 .actions {
   display: flex;
-  gap: 40px;
+  gap: 35px;
+}
+
+.loginBtn {
+  padding: 15px 24px;
+}
+
+.signupBtn {
+  padding: 15px 16px;
+  width: 104px;
 }
 
 .acceptPolicy {
@@ -245,6 +254,14 @@
   max-width: 1920px;
   margin-right: auto;
   margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.indexFooterLegal {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -294,14 +311,16 @@
   display: none;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  gap: 20px;
-  top: 80%;
+  gap: 35px;
 }
 
 @media (max-width: 768px) {
   .indexHeaderRight {
     display: none;
+  }
+
+  .indexFooter {
+    justify-content: space-around;
   }
 
   .indexMain {
@@ -311,6 +330,17 @@
 
   .mobileSignUpChoice {
     display: flex;
+  }
+}
+
+@media (max-width: 590px) {
+  .loginContainer,
+  .signupContainer {
+    padding: 32px 0;
+  }
+
+  .signupReturnArrowContainer {
+    top: 40px;
   }
 }
 
@@ -324,15 +354,6 @@
     display: block;
   }
 
-  .indexHeader,
-  .indexFooter {
-    height: 80px;
-  }
-
-  .indexMain {
-    height: calc(100vh - 160px);
-  }
-
   h1 {
     font-size: 47px;
   }
@@ -342,6 +363,7 @@
   }
 
   .actions {
+    width: 180px;
     flex-direction: column;
     gap: 21px;
   }
@@ -373,12 +395,17 @@
   }
 }
 
-@media (max-height: 746px) {
+@media (max-height: 820px) {
   .indexMain {
     padding-bottom: 30px;
   }
 
+  .logo {
+    display: none;
+  }
+
   .mobileLogo {
+    display: block;
     top: 18px;
     left: 18px;
   }
@@ -391,16 +418,15 @@
     padding: 20px 0 20px 0;
   }
 
-  .mobileSignUpChoice {
-    top: 84%;
-  }
-
   .inputGroup {
     padding: 0px 16px;
   }
 
   .signupContainer {
     padding: 12px 0;
-    margin-top: 40px;
+  }
+
+  .signupReturnArrowContainer {
+    top: 21px;
   }
 }
