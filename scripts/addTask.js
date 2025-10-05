@@ -300,14 +300,35 @@ function initDateMinAndPicker() {
 /* ----------------------------- Live Search ------------------------------- */
 
 function initContactSearch() {
-  const search = $id("contactSearch");
-  if (!search) return;
+  const search = document.getElementById("contactSearch");
+  const dropdown = document.getElementById("dropdown-list-contacts");
+  if (!search || !dropdown) return;
+
   search.addEventListener("input", function () {
-    const q = this.value.toLowerCase();
-    const filtered = allContacts.filter(n => n.toLowerCase().includes(q));
-    if (window.loadedContacts) renderContacts(filtered, window.loadedContacts);
+    const query = this.value.toLowerCase().trim();
+    const filtered = window.allContacts.filter(name => name.toLowerCase().includes(query));
+    
+    if (window.loadedContacts) {
+      renderContacts(filtered, window.loadedContacts);
+    }
+
+    // Show dropdown if there is input, hide if empty
+    if (query.length > 0 && filtered.length > 0) {
+      dropdown.style.display = "block"; // or remove "hidden" class if you use Tailwind/bootstrap style
+    } else {
+      dropdown.style.display = "none"; // hide if nothing matches or input is empty
+    }
+  });
+
+  // Optional: hide dropdown if user clicks outside
+  document.addEventListener("click", (e) => {
+    if (!dropdown.contains(e.target) && e.target !== search) {
+      dropdown.style.display = "none";
+    }
   });
 }
+
+document.addEventListener("DOMContentLoaded", initContactSearch);
 
 /* ------------------------------ Bootstraps ------------------------------- */
 
