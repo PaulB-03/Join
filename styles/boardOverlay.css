@@ -223,7 +223,6 @@ body.modal-open {
 }
 
 #taskOverlay .overlay-panel {
-  transform: none !important;
   display: block;
   width: 1080px;
   overflow-y: auto;
