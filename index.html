@@ -17,7 +17,7 @@
       <div class="mobileLogo"><img src="./assets/svg/join_logo_small.svg" alt="Join Logo" /></div>
       <div id="showSignUp" class="indexHeaderRight">
         <h6>Not a Join user?</h6>
-        <button onclick="showSignupScreen()" class="btn-dark font_700_16">Sign up</button>
+        <button onclick="showSignupScreen()" class="btn-dark font_700_16 signupBtn">Sign up</button>
       </div>
     </header>
     <main class="indexMain">
@@ -39,8 +39,8 @@
             <p id="loginError" class="errors">Check your email and password. Please try again.</p>
           </div>
           <div class="actions">
-            <button class="btn-dark font_700_21" type="submit" id="loginBtn">Log in</button>
-            <button class="btn-white font_700_21" type="button" id="guestLogin">Guest Log in</button>
+            <button class="btn-dark font_700_21 loginBtn" type="submit" id="loginBtn">Log in</button>
+            <button class="btn-white font_700_21 loginBtn" type="button" id="guestLogin">Guest Log in</button>
           </div>
         </form>
       </div>
@@ -70,14 +70,16 @@
           </div>
         </form>
       </div>
-      <div id="showSignUpMobile" class="mobileSignUpChoice">
-        <h6>Not a Join user?</h6>
-        <button onclick="showSignupScreen()" class="btn-dark font_700_16">Sign up</button>
-      </div>
     </main>
     <footer class="indexFooter hidden">
-      <a class="legalLink" href="./html/privacyPolicy.html">Privacy Policy</a>
-      <a class="legalLink" href="./html/legalNotice.html">Legal Notice</a>
+      <div id="showSignUpMobile" class="mobileSignUpChoice">
+        <h6>Not a Join user?</h6>
+        <button onclick="showSignupScreen()" class="btn-dark font_700_16 signupBtn">Sign up</button>
+      </div>
+      <div class="indexFooterLegal">
+        <a class="legalLink" href="./html/privacyPolicy.html">Privacy Policy</a>
+        <a class="legalLink" href="./html/legalNotice.html">Legal Notice</a>
+      </div>
     </footer>
     <script src="script.js"></script>
     <script src="./scripts/logIn.js"></script>
