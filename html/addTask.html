@@ -4,18 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join – Add Task</title>
+
     <link rel="shortcut icon" href="../assets/svg/join_logo.svg" type="image/x-icon" />
+
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../styles/fonts.css" />
     <link rel="stylesheet" href="../styles/addTask.css" />
     <link rel="stylesheet" href="../styles/addTaskMedia.css">
     <link rel="stylesheet" href="../styles/colors.css" />
     <link rel="stylesheet" href="../styles/standard.css" />
+
     <script src="../scripts/standardFunctions.js" defer></script>
     <script src="../scripts/addTask.js"></script>
     <script src="../script.js"></script>
     <script src="../scripts/subTask.js"></script>
     <script src="../scripts/utilsAddTask.js" defer></script>
+
   </head>
 
   <body onload="sidebarHeaderInit()">
@@ -121,10 +125,10 @@
             </div>
             <div id="assignedToInitials" style="display: none"></div>
           </div>
-        <div id="taskDetail">
+        
           <div class="inputFlexbox" id="category">
             <span id="requiredHead">Category <img src="../assets/svg/required.svg" alt="" id="required" /></span>
-            <div id="assignedToDropdownCategory" class="title" tabindex="0" onclick="toggleCategoryDropdown()">
+            <div id="assignedToDropdownCategory" class="title" tabindex="0">
               <div class="dropdown-selected" id="input-category">
                 <span id="categoryPlaceholder">Select task category</span>
                 <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" />
@@ -175,7 +179,7 @@
           </div>
           <div id="taskError" class="error-message"></div>
         </div>
-        </div>
+        
       </div>
     </form>
     <script src="../scripts/header.js"></script>

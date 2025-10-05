@@ -60,6 +60,7 @@ body {
 }
 
 .search {
+  background-color: white;
   border: none;
   font-size: 16px;
   padding-left: 3px;
@@ -209,15 +210,6 @@ input#contactSearch.search::placeholder {
 
 .dropdown-subtasks:focus-within {
   border: 1.5px solid var(--light-blue);
-}
-
-#assignedToDropdownContacts {
-  background-color: var(--white);
-  transition: background-color 0.3s ease;
-}
-
-#assignedToDropdownContacts.selected {
-  background-color: rgb(232, 240, 254);
 }
 
 .selected-red {
@@ -550,6 +542,14 @@ input[type="date"]::before {
 
 input[type="date"]:focus::before {
   content: "" !important;
+}
+
+input[type="date"]::placeholder {
+  color: black;
+}
+
+input[type="text"]:focus {
+  background-color: white;
 }
 
 .createTaskCheck {
