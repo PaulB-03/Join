@@ -166,11 +166,18 @@ function selectContact(row, contact) {
   }
 }
 
+function removeSelected() {
+  document
+    .querySelectorAll(".contactItem.is-selected")
+    .forEach((el) => el.classList.remove("is-selected"));
+}
+
 function backToList() {
   //nur für mobile Ansicht um von den Details zurück zur Liste zu kommen
   document.querySelector(".contactDetails")?.classList.remove("show");
   document.querySelector(".contactList")?.classList.remove("hide");
   document.body.classList.remove("showing-details");
+  removeSelected();
 }
 
 function renderContactDetails(contact) {
