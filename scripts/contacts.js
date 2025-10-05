@@ -1,6 +1,5 @@
 // conntection to databse
-const DB_ROOT =
-  "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
+const DB_ROOT = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
 const CONTACTS_URL = `${DB_ROOT}/contacts.json`;
 
 let contacts = [];
@@ -32,6 +31,7 @@ function openAddContactDialog() {
     document.body.classList.add("modal-open");
   }
 }
+
 function closeAddContactDialog() {
   var overlay = document.getElementById("contactOverlay"),
     form = document.getElementById("addContactForm");
@@ -41,6 +41,7 @@ function closeAddContactDialog() {
   }
   if (form) form.reset();
 }
+
 function readAddContactForm() {
   var form = document.getElementById("addContactForm");
   return {
@@ -49,6 +50,7 @@ function readAddContactForm() {
     phone: form.phone.value.trim(),
   };
 }
+
 async function submitAddContact(event) {
   event.preventDefault();
   if (!validateAddContactForm()) return; // stop if invalid
@@ -67,8 +69,7 @@ function setupAddContactOverlay() {
   if (openButton) openButton.addEventListener("click", openAddContactDialog);
   if (openFab) openFab.addEventListener("click", openAddContactDialog);
   if (closeButton) closeButton.addEventListener("click", closeAddContactDialog);
-  if (cancelButton)
-    cancelButton.addEventListener("click", closeAddContactDialog);
+  if (cancelButton) cancelButton.addEventListener("click", closeAddContactDialog);
   if (overlay) overlay.addEventListener("click", closeAddContactDialog);
   if (form) form.addEventListener("submit", submitAddContact);
 }
@@ -136,11 +137,7 @@ function createElementWith(tag, cls, text) {
 // loads each row in the contact list, called by initContactsList
 function contactRow(contact) {
   const row = createElementWith("div", "contactItem"); // outer container
-  const avatar = createElementWith(
-    "div",
-    "contactAvatar",
-    initials(contact.name)
-  ); // profile picture with initials
+  const avatar = createElementWith("div", "contactAvatar", initials(contact.name)); // profile picture with initials
   avatar.style.background = colorForName(contact.name); //use colorForName to pick a color
   const text = createElementWith("div", "contactText"); // wrapper container for the text (name and email)
   text.appendChild(createElementWith("div", "contactName", contact.name)); // add name to the container
@@ -153,9 +150,7 @@ function contactRow(contact) {
 
 // called by contactRow with onClick
 function selectContact(row, contact) {
-  document
-    .querySelectorAll(".contactItem.is-selected")
-    .forEach((el) => el.classList.remove("is-selected")); // clear any previous selection
+  document.querySelectorAll(".contactItem.is-selected").forEach((el) => el.classList.remove("is-selected")); // clear any previous selection
   row.classList.add("is-selected"); // mark this row
   renderContactDetails(contact); // show details on the right
 
@@ -167,9 +162,7 @@ function selectContact(row, contact) {
 }
 
 function removeSelected() {
-  document
-    .querySelectorAll(".contactItem.is-selected")
-    .forEach((el) => el.classList.remove("is-selected"));
+  document.querySelectorAll(".contactItem.is-selected").forEach((el) => el.classList.remove("is-selected"));
 }
 
 function backToList() {
@@ -195,23 +188,13 @@ function renderContactDetails(contact) {
 // top section (avatar, name, action buttons (edit, delete)), called by renderContactDetails
 function detailsTop(contact) {
   const top = createElementWith("div", "detailsTop"); // outer container
-  const avatar = createElementWith(
-    "div",
-    "detailsAvatar",
-    initials(contact.name)
-  ); // profile picture with initials
+  const avatar = createElementWith("div", "detailsAvatar", initials(contact.name)); // profile picture with initials
   avatar.style.background = colorForName(contact.name); //use colorForName to pick a color (so it is the same color as it is in the list)
   const title = createElementWith("div", "detailsTitleWrap"); // container for name and buttons
   title.appendChild(createElementWith("div", "detailsName", contact.name)); // add name
   const actions = createElementWith("div", "detailsActions"); // container for the buttons
-  actions.appendChild(
-    actionButton("Edit", "../assets/svg/edit.svg", () => openEdit(contact))
-  );
-  actions.appendChild(
-    actionButton("Delete", "../assets/svg/delete.svg", () =>
-      deleteContact(contact.id)
-    )
-  );
+  actions.appendChild(actionButton("Edit", "../assets/svg/edit.svg", () => openEdit(contact)));
+  actions.appendChild(actionButton("Delete", "../assets/svg/delete.svg", () => deleteContact(contact.id)));
   title.appendChild(actions); // place buttons
   top.appendChild(avatar); // add profile picture
   top.appendChild(title); // add name and buttons
@@ -221,9 +204,7 @@ function detailsTop(contact) {
 // info section built from template, called by renderContactDetails
 function detailsInfoHTML(contact) {
   const phoneIsMissing = isMissingPhone(contact.phone);
-  const phoneMarkup = phoneIsMissing
-    ? `<a href="#" id="editPhoneTrigger" class="value link">add phone number</a>`
-    : `<div class="value">${contact.phone || ""}</div>`;
+  const phoneMarkup = phoneIsMissing ? `<a href="#" id="editPhoneTrigger" class="value link">add phone number</a>` : `<div class="value">${contact.phone || ""}</div>`;
 
   return `
     <div class="sectionTitle">Contact Information</div>
@@ -298,15 +279,9 @@ function getAddContactRefs() {
   if (!form) return {};
   return {
     form,
-    name:
-      document.getElementById("contactName") ||
-      form.querySelector('[name="name"]'),
-    email:
-      document.getElementById("contactEmail") ||
-      form.querySelector('[name="email"]'),
-    phone:
-      document.getElementById("contactPhone") ||
-      form.querySelector('[name="phone"]'),
+    name: document.getElementById("contactName") || form.querySelector('[name="name"]'),
+    email: document.getElementById("contactEmail") || form.querySelector('[name="email"]'),
+    phone: document.getElementById("contactPhone") || form.querySelector('[name="phone"]'),
     nameErr: document.getElementById("contactNameError"),
     emailErr: document.getElementById("contactEmailError"),
     phoneErr: document.getElementById("contactPhoneError"),
@@ -314,8 +289,7 @@ function getAddContactRefs() {
 }
 
 function validateAddContactForm() {
-  const { name, email, phone, nameErr, emailErr, phoneErr } =
-    getAddContactRefs();
+  const { name, email, phone, nameErr, emailErr, phoneErr } = getAddContactRefs();
   if (!name || !email || !phone) return false;
 
   const validName = addNameRegex.test(name.value.trim());
@@ -424,12 +398,8 @@ function mountAndShow(overlay) {
 
 function wireCloseHandlers(overlay) {
   overlay.addEventListener("click", closeEditDialog);
-  overlay
-    .querySelector(".overlay-panel")
-    .addEventListener("click", (e) => e.stopPropagation());
-  overlay
-    .querySelector(".overlay-close")
-    .addEventListener("click", closeEditDialog);
+  overlay.querySelector(".overlay-panel").addEventListener("click", (e) => e.stopPropagation());
+  overlay.querySelector(".overlay-close").addEventListener("click", closeEditDialog);
 }
 
 function prefillEditForm(overlay, contact) {
@@ -454,28 +424,24 @@ function wireLiveAvatar(overlay) {
 }
 
 function wireDelete(overlay, contact) {
-  overlay
-    .querySelector("#editDeleteBtn")
-    .addEventListener("click", async () => {
-      await deleteContact(contact.id);
-      closeEditDialog();
-    });
+  overlay.querySelector("#editDeleteBtn").addEventListener("click", async () => {
+    await deleteContact(contact.id);
+    closeEditDialog();
+  });
 }
 
 function wireSave(overlay, contact) {
-  overlay
-    .querySelector("#editContactForm")
-    .addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const f = e.currentTarget;
-      const updates = {
-        name: f.elements.name.value.trim(),
-        email: f.elements.email.value.trim(),
-        phone: f.elements.phone.value.trim(),
-      };
-      await updateContact(contact.id, updates);
-      closeEditDialog();
-    });
+  overlay.querySelector("#editContactForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.currentTarget;
+    const updates = {
+      name: f.elements.name.value.trim(),
+      email: f.elements.email.value.trim(),
+      phone: f.elements.phone.value.trim(),
+    };
+    await updateContact(contact.id, updates);
+    closeEditDialog();
+  });
 }
 
 function closeEditDialog() {
@@ -485,10 +451,7 @@ function closeEditDialog() {
 }
 
 function isMissingPhone(phone) {
-  return (
-    !(phone ?? "").trim() ||
-    (phone || "").trim().toLowerCase() === "add phone number"
-  );
+  return !(phone ?? "").trim() || (phone || "").trim().toLowerCase() === "add phone number";
 }
 
 function getById(id) {
@@ -521,9 +484,19 @@ function setupContactActionsFab(contact) {
   const fabMenu = getById("contactActionsMenu");
   if (!fabContainer || !toggleButton || !fabMenu) return;
 
-  getById("fabEdit").onclick = () => { closeFabMenu(fabContainer, toggleButton, fabMenu); openEdit(contact); };
-  getById("fabDelete").onclick = () => { closeFabMenu(fabContainer, toggleButton, fabMenu); deleteContact(contact.id); };
+  getById("fabEdit").onclick = () => {
+    closeFabMenu(fabContainer, toggleButton, fabMenu);
+    openEdit(contact);
+  };
+  getById("fabDelete").onclick = () => {
+    closeFabMenu(fabContainer, toggleButton, fabMenu);
+    deleteContact(contact.id);
+  };
   toggleButton.onclick = () => toggleFabMenu(fabContainer, toggleButton, fabMenu);
-  document.addEventListener("click", (e) => { if (!fabContainer.contains(e.target)) closeFabMenu(fabContainer, toggleButton, fabMenu); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeFabMenu(fabContainer, toggleButton, fabMenu); });
+  document.addEventListener("click", (e) => {
+    if (!fabContainer.contains(e.target)) closeFabMenu(fabContainer, toggleButton, fabMenu);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeFabMenu(fabContainer, toggleButton, fabMenu);
+  });
 }
