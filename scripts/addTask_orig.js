@@ -19,17 +19,21 @@ function getFieldValue(id) {
   return el ? el.value.trim() : "";
 }
 
-function showInlineError(field, errorMessage) {
-  if (!field) return;
-  field.style.border = "1px solid red";
-  errorMessage.style.visibility = "visible";
+function showInlineError(el, msg = "This field is required") {
+  if (!el) return;
+  el.style.border = "2px solid red";
+  const m = document.createElement("div");
+  m.className = "error-message";
+  m.style.cssText = "color:red;font-size:.8em;margin-top:4px;";
+  m.textContent = msg;
+  el.insertAdjacentElement("afterend", m);
 }
 
 function clearInlineErrors() {
-  document.querySelectorAll(".addTaskErrors").forEach((e) => (e.style.visibility = "hidden"));
+  document.querySelectorAll(".error-message").forEach((e) => e.remove());
   ["titleInput", "date", "assignedToDropdownCategory"].forEach((id) => {
-    const field = $id(id);
-    if (field) field.style.border = "";
+    const el = $id(id);
+    if (el) el.style.border = "";
   });
 }
 
@@ -67,11 +71,11 @@ function validateTaskFormFields() {
   let ok = true;
 
   if (!getFieldValue("titleInput")) {
-    showInlineError($id("titleInput"), $id("titleError"));
+    showInlineError($id("titleInput"));
     ok = false;
   }
   if (!getFieldValue("date")) {
-    showInlineError($id("date"), $id("dateError"));
+    showInlineError($id("date"));
     ok = false;
   }
   if (!window.selectedCategory) {
@@ -216,7 +220,7 @@ function clearTask() {
   const subInput = document.getElementById("subtaskInput");
   if (subInput) subInput.value = "";
 
-  document.querySelectorAll(".addTaskErrors").forEach((e) => (e.style.visibility = "hidden"));
+  document.querySelectorAll(".error-message").forEach((e) => e.remove());
   ["#titleInput", "#descriptionInput", "#date", "#assignedToDropdownContacts", "#assignedToDropdownCategory"].forEach((sel) => {
     const el = document.querySelector(sel);
     if (el) el.style.border = "";
@@ -448,74 +452,4 @@ const CategoryDropdown = (() => {
   return { init, selectCategory, saveSelectedCategory };
 })();
 
-document.addEventListener("DOMContentLoaded", CategoryDropdown.init);
-
-// textarea resize functions
-
-const textarea = document.getElementById("descriptionInput");
-const handle = document.querySelector(".resize-handle");
-
-let isResizing = false;
-let startY, startHeight;
-
-handle.addEventListener("mousedown", (e) => {
-  isResizing = true;
-  startY = e.clientY;
-  startHeight = parseInt(getComputedStyle(textarea).height, 10);
-  document.addEventListener("mousemove", resize);
-  document.addEventListener("mouseup", stopResize);
-  e.preventDefault();
-});
-
-function resize(e) {
-  if (!isResizing) return;
-  const deltaY = e.clientY - startY;
-  let newHeight = startHeight + deltaY;
-
-  const minHeight = parseInt(getComputedStyle(textarea).minHeight, 10);
-  const maxHeight = parseInt(getComputedStyle(textarea).maxHeight, 10);
-  newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
-
-  textarea.style.height = newHeight + "px";
-}
-
-function stopResize() {
-  isResizing = false;
-  document.removeEventListener("mousemove", resize);
-  document.removeEventListener("mouseup", stopResize);
-}
-
-// custom calendar
-// Automatically insert slashes while typing
-const dateInput = document.getElementById("date");
-dateInput.addEventListener("input", (e) => {
-  let val = dateInput.value.replace(/\D/g, "");
-  if (val.length > 2) val = val.slice(0, 2) + "/" + val.slice(2);
-  if (val.length > 5) val = val.slice(0, 5) + "/" + val.slice(5, 9);
-  dateInput.value = val;
-});
-
-flatpickr("#date", {
-  dateFormat: "d/m/Y",
-  locale: "en",
-  allowInput: true,
-  minDate: "today",
-  onClose: validateFutureDate,
-});
-
-function validateFutureDate(_, dateStr, instance) {
-  const parts = dateStr.split("/");
-  if (parts.length === 3) {
-    const [d, m, y] = parts;
-    const typedDate = new Date(`${y}-${m}-${d}`);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (!isNaN(typedDate) && typedDate >= today) {
-      instance.setDate(typedDate, true); // keep typed date
-    } else {
-      instance.clear();
-    }
-  } else {
-    instance.clear();
-  }
-}
+document.addEventListener("DOMContentLoaded", CategoryDropdown.ini);

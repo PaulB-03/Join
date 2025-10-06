@@ -110,23 +110,10 @@ a:hover {
   font-weight: 700;
 }
 
-input {
-  border: solid 1px var(--color-placeholder);
-  border-radius: 10px;
-  padding: 11px;
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 22px 22px;
-  font-size: 20px;
-  font-weight: 400;
-  cursor: pointer;
-  outline: none;
-}
-
 .input {
   border: solid 1px var(--color-placeholder);
   border-radius: 10px;
-  padding: 11px;
+  padding: 12px 21px;
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 22px 22px;
