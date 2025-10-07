@@ -324,88 +324,119 @@
   }
 
   /* ------------------------------ Subtasks/Category Spacing ------------- */
+  
   let __subtasksBox = null,
     __subtasksStyles = null,
     __categoryBox = null,
     __categoryStyles = null;
 
-  function ensureLayoutRefs() {
-    if (!__subtasksBox) {
-      __subtasksBox = $id("subtasks");
-      __subtasksStyles = {
-        marginTop: __subtasksBox?.style.marginTop || "0px",
-        paddingBottom: __subtasksBox?.style.paddingBottom || "50px",
-      };
-    }
-    if (!__categoryBox) {
-      __categoryBox = $id("category");
-      __categoryStyles = { marginTop: __categoryBox?.style.marginTop || "0px" };
-    }
+function ensureLayoutRefs() {
+  if (!__subtasksBox) {
+    __subtasksBox = $id("subtasks");
+    __subtasksStyles = {
+      marginTop: __subtasksBox?.style.marginTop || "0px",
+      paddingBottom: __subtasksBox?.style.paddingBottom || "50px",
+    };
   }
+  if (!__categoryBox) {
+    __categoryBox = $id("category");
+    __categoryStyles = { marginTop: __categoryBox?.style.marginTop || "0px" };
+  }
+}
 
-  function resetSubtasksSpacing() {
-    ensureLayoutRefs();
-    if (__subtasksBox && __subtasksStyles) {
-      __subtasksBox.style.marginTop = __subtasksStyles.marginTop;
-      __subtasksBox.style.paddingBottom = __subtasksStyles.paddingBottom;
+function resetSubtasksSpacing() {
+  ensureLayoutRefs();
+  if (__subtasksBox && __subtasksStyles) {
+    __subtasksBox.style.marginTop = __subtasksStyles.marginTop;
+    __subtasksBox.style.paddingBottom = __subtasksStyles.paddingBottom;
+  }
+  if (__categoryBox && __categoryStyles) {
+    __categoryBox.style.marginTop = __categoryStyles.marginTop;
+  }
+}
+
+let outsideClickHandler = null; // Global reference to the handler for removal
+
+function toggleAssignedDropdown(ev) {
+  const dd = $id("assignedToDropdownContacts");
+  if (!dd) return;
+  ev?.stopPropagation();
+  ensureLayoutRefs();
+
+  const open = !dd.classList.contains("open");
+  dd.classList.toggle("open", open);
+
+  if (open) {
+    // Remove any existing handler before adding a new one
+    if (outsideClickHandler) {
+      document.removeEventListener('click', outsideClickHandler);
     }
-    if (__categoryBox && __categoryStyles) {
-      __categoryBox.style.marginTop = __categoryStyles.marginTop;
+
+    // Define the outside click handler
+    outsideClickHandler = (e) => {
+      // Ignore clicks within the dropdown itself
+      if (dd.contains(e.target)) return;
+
+      // Close the dropdown
+      dd.classList.remove("open");
+      resetAssignedDropdown(); // This moves category and subtasks back to original positions
+
+      // Remove the listener
+      document.removeEventListener('click', outsideClickHandler);
+      outsideClickHandler = null;
+    };
+
+    // Add the listener (added after the current event has been handled, so it won't trigger immediately on open)
+    document.addEventListener('click', outsideClickHandler);
+
+    // Move category and subtasks when opening
+    if (__categoryBox) __categoryBox.style.marginTop = "220px";
+    if (__subtasksBox) {
+      __subtasksBox.style.marginTop = "0px";
+      __subtasksBox.style.paddingBottom = "50px";
     }
-  }
-
-  function toggleAssignedDropdown(ev) {
-    const dd = $id("assignedToDropdownContacts");
-    if (!dd) return;
-    ev?.stopPropagation();
-    ensureLayoutRefs();
-
-    const open = !dd.classList.contains("open");
-    dd.classList.toggle("open", open);
-
-    if (open) {
-      if (__categoryBox) __categoryBox.style.marginTop = "220px";
-      if (__subtasksBox) {
-        __subtasksBox.style.marginTop = "20px";
-        __subtasksBox.style.paddingBottom = "50px";
-      }
-    } else {
-      resetAssignedDropdown();
+  } else {
+    // Ensure listener is removed on manual close
+    if (outsideClickHandler) {
+      document.removeEventListener('click', outsideClickHandler);
+      outsideClickHandler = null;
     }
+    resetAssignedDropdown(); // This moves category and subtasks back to original positions
   }
+}
 
-  function resetAssignedDropdown() {
-    resetSubtasksSpacing();
-  }
+function resetAssignedDropdown() {
+  resetSubtasksSpacing();
+}
 
-  /* ------------------------------ Prio-Init ------------------------------ */
-  function initialiseSavePrioImg() {
-    const items = $qsa(".prioGrade");
-    items.forEach((el, i) => on(el, "click", () => window.setPrioColor?.(i)));
-  }
+/* ------------------------------ Prio-Init ------------------------------ */
+function initialiseSavePrioImg() {
+  const items = $qsa(".prioGrade");
+  items.forEach((el, i) => on(el, "click", () => window.setPrioColor?.(i)));
+}
 
-  /* ------------------------------ Exports --------------------------------*/
-  window.initials = window.initials || initials;
-  window.colorForName = window.colorForName || colorForName;
-  window.getTasks = window.getTasks || getTasks;
-  window.saveTask = window.saveTask || saveTask;
+/* ------------------------------ Exports --------------------------------*/
+window.initials = window.initials || initials;
+window.colorForName = window.colorForName || colorForName;
+window.getTasks = window.getTasks || getTasks;
+window.saveTask = window.saveTask || saveTask;
 
-  window.initCategoryDropdown = window.initCategoryDropdown || initCategoryDropdown;
-  window.selectCategory = window.selectCategory || selectCategory;
+window.initCategoryDropdown = window.initCategoryDropdown || initCategoryDropdown;
+window.selectCategory = window.selectCategory || selectCategory;
 
-  window.dropdownFunction = window.dropdownFunction || dropdownFunction;
-  window.updateDropdownText = window.updateDropdownText || updateDropdownText;
-  window.updateDropdownHighlight = window.updateDropdownHighlight || updateDropdownHighlight;
-  window.updateDropdownBackground = window.updateDropdownBackground || updateDropdownBackground;
+window.dropdownFunction = window.dropdownFunction || dropdownFunction;
+window.updateDropdownText = window.updateDropdownText || updateDropdownText;
+window.updateDropdownHighlight = window.updateDropdownHighlight || updateDropdownHighlight;
+window.updateDropdownBackground = window.updateDropdownBackground || updateDropdownBackground;
 
-  window.toggleContact = window.toggleContact || toggleContact;
-  window.renderAssignedContacts = window.renderAssignedContacts || renderAssignedContacts;
+window.toggleContact = window.toggleContact || toggleContact;
+window.renderAssignedContacts = window.renderAssignedContacts || renderAssignedContacts;
 
-  window.loadContactsInAddTask = window.loadContactsInAddTask || loadContactsInAddTask;
-  window.renderContacts = window.renderContacts || renderContacts;
-  window.initContactsDropdown = window.initContactsDropdown || initContactsDropdown;
+window.loadContactsInAddTask = window.loadContactsInAddTask || loadContactsInAddTask;
+window.renderContacts = window.renderContacts || renderContacts;
+window.initContactsDropdown = window.initContactsDropdown || initContactsDropdown;
 
-  window.toggleAssignedDropdown = window.toggleAssignedDropdown || toggleAssignedDropdown;
-  window.resetAssignedDropdown = window.resetAssignedDropdown || resetAssignedDropdown;
-  window.initialiseSavePrioImg = window.initialiseSavePrioImg || initialiseSavePrioImg;
+window.toggleAssignedDropdown = window.toggleAssignedDropdown || toggleAssignedDropdown;
+window.resetAssignedDropdown = window.resetAssignedDropdown || resetAssignedDropdown;
+window.initialiseSavePrioImg = window.initialiseSavePrioImg || initialiseSavePrioImg;
 })();
