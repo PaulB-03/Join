@@ -152,12 +152,12 @@ async function createTask() {
 function selectContact(contact) {
   if (!contact) return;
 
-  if (!assignedContacts.some((c) => c.id === contact.id)) {
-    assignedContacts.push(contact);
+  if (!window.assignedContacts.some((c) => c.id === contact.id)) {
+    window.assignedContacts.push(contact);
   }
 
   const initials = document.getElementById("assignedToInitials");
-  if (initials) initials.textContent = assignedContacts.map((c) => c.name[0]).join(", ");
+  if (initials) initials.textContent = window.assignedContacts.map((c) => c.name[0]).join(", ");
 }
 
 /* ------------------------ Subtasks (Overlay-Form) ------------------------ */
@@ -193,14 +193,13 @@ function resetCategoryUI() {
 }
 
 function resetAssignedUI() {
-  assignedContacts = [];
+  window.assignedContacts = [];
   selectedContact = "";
   const initials = document.getElementById("assignedToInitials");
   if (initials) initials.innerHTML = "";
   const span = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
   if (span) span.textContent = "Select contact";
-  const list = document.getElementById("dropdown-list-contacts");
-  if (list) list.innerHTML = "";
+  // Removed: Clearing the list.innerHTML to preserve dropdown options after reset
 }
 
 function clearTask() {
@@ -227,6 +226,21 @@ function clearTask() {
 
   const imgC = document.querySelector(".subtask-images-container");
   if (imgC) imgC.style.display = "none";
+
+  // Additional: Fully clear contacts selection visuals and state
+  const search = document.getElementById("contactSearch");
+  if (search) search.value = "";  // Clear search input to reset filtering
+
+  const dropdown = document.getElementById("dropdown-list-contacts");
+  if (dropdown) dropdown.style.display = "none";  // Ensure dropdown is closed
+
+  const arrow = document.getElementById("dropdown-arrow-contacts");
+  if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";  // Reset arrow
+
+  // Re-render full contacts list to reset any prior filtering (if loaded)
+  if (window.loadedContacts && typeof renderContacts === "function") {
+    renderContacts(window.allContacts, window.loadedContacts);
+  }
 }
 
 /* --------------------------- Kontakte / Suche ---------------------------- */
@@ -261,14 +275,14 @@ function initContactsDropdownInput() {
       ev.stopPropagation();
 
       const contact = { id: item.dataset.id, name: item.dataset.name };
-      if (!assignedContacts.some((c) => c.id === contact.id)) {
-        assignedContacts.push(contact);
+      if (!window.assignedContacts.some((c) => c.id === contact.id)) {
+        window.assignedContacts.push(contact);
       }
 
       const initials = document.getElementById("assignedToInitials");
       if (initials) {
         initials.style.display = "block"; // show div
-        initials.textContent = assignedContacts.map((c) => c.name[0]).join(", ");
+        initials.textContent = window.assignedContacts.map((c) => c.name[0]).join(", ");
       }
 
       drop.style.display = "none";
@@ -357,7 +371,7 @@ const CategoryDropdown = (() => {
   const on = (el, evt, fn) => el?.addEventListener(evt, fn);
 
   // === Core Select Logic ===
-  const categories = ["Userstory", "Technical Task"];
+  const categories = ["User  story", "Technical Task"];
 
   function selectCategory(index) {
     const dd = $("assignedToDropdownCategory");
