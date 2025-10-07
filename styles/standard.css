@@ -129,10 +129,6 @@ a:hover {
   font-weight: 400;
 }
 
-input:focus {
-  border-color: var(--light-blue);
-}
-
 .input:focus {
   border-color: var(--light-blue);
 }

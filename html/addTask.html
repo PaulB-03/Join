@@ -126,12 +126,12 @@
           </div>
           <div class="inputFlexbox">
             <h6>Assigned to</h6>
-            <div class="input" id="assignedToDropdownContacts" tabindex="0" onclick="toggleAssignedDropdown(event)">
+            <div id="assignedToDropdownContacts" tabindex="0" onclick="toggleAssignedDropdown(event)">
               <div class="dropdown-selected">
                 <input class="assignedToSearch" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts to assign" />
                 <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts" />
               </div>
-              <ul id="dropdown-list-contacts"></ul>
+              <ul id="dropdown-list-contacts" class="addTaskContactsList"></ul>
             </div>
             <div id="assignedToInitials" style="display: none"></div>
           </div>
@@ -175,7 +175,7 @@
         </div>
       </form>
       <div class="addTaskFooter">
-        <p class="textrequired"><sub class="requiredAsterisk">*</sub>This field is required</p>
+        <p><sub class="requiredAsterisk">*</sub>This field is required</p>
         <div class="addOrClear">
           <div id="clear" class="btn-white clearBtn addOrClearBtn" onclick="clearTask()">
             <h6>Clear</h6>
