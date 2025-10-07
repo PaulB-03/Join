@@ -107,6 +107,10 @@ body {
   display: inline-block;
 }
 
+textarea::placeholder {
+  color: var(--color-placeholder);
+}
+
 .description {
   position: relative; /* ensures z-index works predictably */
   z-index: 1;
@@ -317,14 +321,6 @@ body {
   border: 1px solid white;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
-}
-
-#titleInput.title::placeholder {
-  font-size: 20px;
-}
-
-.dropdown-selected.input-subtask::placeholder {
-  font-size: 20px;
 }
 
 #categoryPlaceholder {
