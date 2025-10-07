@@ -113,18 +113,32 @@ async function persistTask(payload) {
 
 /* ------------------------------ UX -------------------------------------- */
 
-function showAddedToastAndRedirect() {
-  const overlay = document.createElement("div");
-  overlay.className = "task-added-overlay";
+function createToastMessage() {
   const msg = document.createElement("div");
   msg.className = "task-added-message";
-  msg.innerHTML = 'TASK ADDED TO BOARD <img src="../assets/svg/board.svg" alt="Board icon" style="width:24px;height:24px;margin-left:10px;vertical-align:middle">';
-  document.body.append(overlay, msg);
+  msg.innerHTML = `
+    Task added to board 
+    <img src="../assets/svg/board.svg" 
+         alt="Board icon" 
+         style="width:30px;height:30px;margin-left:10px;vertical-align:middle">
+  `;
+  document.body.append(msg);
+  return msg;
+}
+
+function animateToastIn(msg) {
+  requestAnimationFrame(() => {
+    msg.style.transform = "translate(-50%, -50%)";
+  });
+}
+
+function showAddedToastAndRedirect() {
+  const msg = createToastMessage();
+  animateToastIn(msg);
   setTimeout(() => {
     msg.remove();
-    overlay.remove();
     location.href = "board.html";
-  }, 1600);
+  }, 900);
 }
 
 /* ------------------------------ Create ---------------------------------- */
@@ -229,13 +243,13 @@ function clearTask() {
 
   // Additional: Fully clear contacts selection visuals and state
   const search = document.getElementById("contactSearch");
-  if (search) search.value = "";  // Clear search input to reset filtering
+  if (search) search.value = ""; // Clear search input to reset filtering
 
   const dropdown = document.getElementById("dropdown-list-contacts");
-  if (dropdown) dropdown.style.display = "none";  // Ensure dropdown is closed
+  if (dropdown) dropdown.style.display = "none"; // Ensure dropdown is closed
 
   const arrow = document.getElementById("dropdown-arrow-contacts");
-  if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";  // Reset arrow
+  if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)"; // Reset arrow
 
   // Re-render full contacts list to reset any prior filtering (if loaded)
   if (window.loadedContacts && typeof renderContacts === "function") {

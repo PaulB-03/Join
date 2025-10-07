@@ -129,7 +129,7 @@
             <div id="assignedToDropdownContacts" tabindex="0" onclick="toggleAssignedDropdown(event)">
               <div class="dropdown-selected">
                 <input class="assignedToSearch" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts to assign" />
-                <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts" />
+                <img src="../assets/svg/arrow_drop_down.svg" class="dropdownArrow" id="dropdown-arrow-contacts" />
               </div>
               <ul id="dropdown-list-contacts" class="addTaskContactsList"></ul>
             </div>
@@ -140,7 +140,7 @@
             <div id="assignedToDropdownCategory" class="input" tabindex="0">
               <div class="dropdown-selected" id="input-category">
                 <h6 id="categoryPlaceholder">Select task category</h6>
-                <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" />
+                <img src="../assets/svg/arrow_drop_down.svg" class="dropdownArrow" id="dropdown-arrow-subtasks" />
               </div>
               <ul id="dropdown-list-category">
                 <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
@@ -161,7 +161,7 @@
             </div>
           </div>
           <div class="inputFlexbox" id="subtasks">
-            <span class="sub">Subtasks</span>
+            <h6>Subtasks</h6>
             <div class="dropdown-subtasks" tabindex="0">
               <input type="text" class="dropdown-selected input input-subtask" id="subtaskInput" name="subtask" placeholder="Add a new subtask" />
               <div class="subtask-images-container" style="display: none">

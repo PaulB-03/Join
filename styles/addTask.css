@@ -75,18 +75,13 @@ body {
   flex: 1 1 calc(50% - 20px);
 }
 
-.prio,
-.assigned,
-.sub {
-  font-size: 20px;
-}
-
 .assignedToSearch {
   background-color: white;
   border: none;
   padding-left: 3px;
   width: 300px;
   height: 24px;
+  font-size: 20px;
 }
 
 .assignedToSearch::placeholder {
@@ -157,7 +152,7 @@ textarea::placeholder {
 
 #assignedToDropdownCategory {
   position: relative;
-  border: 1px solid var(--color-icon);
+  border: 1px solid var(--color-placeholder);
   border-radius: 10px;
   display: flex;
   background-color: var(--white);
@@ -170,7 +165,7 @@ textarea::placeholder {
   background-color: white;
   padding: 0px;
   height: 48px;
-  border: 1px solid var(--color-icon);
+  border: 1px solid var(--color-placeholder);
   border-radius: 10px;
 }
 
@@ -184,16 +179,7 @@ textarea::placeholder {
   transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
 }
 
-#dropdown-arrow-contacts {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 20px;
-  transition: transform 0.3s ease;
-}
-
-#dropdown-arrow-subtasks {
+.dropdownArrow {
   position: absolute;
   right: 10px;
   top: 50%;
@@ -219,7 +205,7 @@ textarea::placeholder {
   z-index: 1;
 }
 
-#dropdown-list-contacts::-webkit-scrollbar {
+.addTaskContactsList::-webkit-scrollbar {
   width: 8px;
 }
 
@@ -236,6 +222,7 @@ textarea::placeholder {
 #assignedToDropdownContacts {
   position: relative;
   background-color: white;
+  cursor: pointer;
 }
 
 #assignedToDropdownContacts .dropdown-selected {
@@ -244,7 +231,7 @@ textarea::placeholder {
   align-items: center;
   position: relative;
   z-index: 2;
-  border: solid 1px var(--color-icon);
+  border: solid 1px var(--color-placeholder);
   border-radius: 10px;
   padding: 12px 21px;
 }
@@ -258,21 +245,32 @@ textarea::placeholder {
 .dropdown-item-contact {
   border-radius: 10px;
   padding: 7px 16px;
+  margin-bottom: 2px;
 }
 
 .dropdown-item-contact:hover {
   background-color: var(--empty-category);
 }
 
-#assignedToDropdownContacts .dropdown-selected span {
+/* When selected */
+.dropdown-item-contact.selected {
+  background-color: var(--main-color);
+}
+
+/* Optional: make hover override selected background temporarily */
+.dropdown-item-contact.selected:hover {
+  background-color: var(--main-color-dark);
+}
+
+/*.dropdown-selected span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   flex-shrink: 1;
-}
+}*/
 
-#assignedToDropdownContacts:hover {
-  cursor: pointer;
+.checkbox-svg.checked {
+  filter: brightness(0) invert(1);
 }
 
 #dropdown-list-category {
@@ -326,13 +324,7 @@ textarea::placeholder {
   font-weight: 400;
   font-size: 12px;
   border: 2px solid white;
-  /* box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); */
   flex-shrink: 0;
-}
-
-#categoryPlaceholder {
-  padding-left: 2px;
-  font-size: 20px;
 }
 
 .input-subtask {
@@ -502,17 +494,11 @@ textarea::placeholder {
 .subtask-images-container .divider1 {
   width: 1px;
   height: 24px;
-  background-color: #ccc;
+  background-color: var(--color-icon);
 }
 
 .subtask-images-container img:hover {
   background-color: #eee;
-}
-
-.divider1 {
-  width: 1px;
-  height: 18px;
-  background: #ddd;
 }
 
 .addedSubtaskWrapper {
@@ -583,28 +569,24 @@ textarea::placeholder {
   transform: scale(1.2);
 }
 
-.task-added-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 9999;
-}
-
 .task-added-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8);
+  width: 326px;
+  height: 74px;
+  transform: translate(-50%, 100vh); /* start off-screen */
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  background-color: var(--main-color);
   color: white;
-  padding: 20px 40px;
-  font-size: 24px;
-  font-weight: bold;
-  border-radius: 8px;
-  z-index: 10000;
+  font-size: 20px;
+  font-weight: 400;
+  border-radius: 20px;
+  z-index: 100;
   text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
 }

@@ -36,6 +36,7 @@
     </script>
 
     <script src="../scripts/standardFunctions.js" defer></script>
+    <script src="../scripts/addTask.js" defer></script>
     <script src="../scripts/utilsAddTask.js" defer></script>
     <script src="../scripts/boardOverlay.js" defer></script>
     <script src="../scripts/board.js" defer></script>
@@ -65,14 +66,11 @@
           <a href="../html/help.html" class="help-link" aria-label="Help">
             <img class="helper" src="../assets/svg/help.svg" alt="Hilfe" />
           </a>
-
           <div id="userAvatar" class="header-avatar" title="Profil" onclick="toggleProfileMenu(event)"></div>
-
           <div id="guestAvatar" class="avatar-wrapper" title="Gast" onclick="toggleProfileMenu(event)">
             <img class="default" src="../assets/img/guest.png" alt="Gastprofil" />
             <img class="hover" src="../assets/img/guest-hover.png" alt="Gastprofil Hover" />
           </div>
-
           <div id="profileMenu" class="profile-menu" style="display: none">
             <a class="menu-item helpMobile" href="../html/help.html">Help</a>
             <a class="menu-item" href="../html/legalNotice.html">Legal Notice</a>
@@ -82,7 +80,6 @@
         </nav>
       </div>
     </header>
-
     <aside id="sidebar">
       <aside class="sidebar">
         <div class="sb-header">
@@ -195,133 +192,115 @@
       <div id="taskOverlay" class="overlay" aria-hidden="true">
         <div class="overlay-panel task-overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
           <button type="button" class="overlay-close" id="closeTaskOverlay" aria-label="Close">×</button>
-          <h1>Add Task</h1>
-          <div class="task-overlay-inner" style="padding: 4px 4px 20px">
-            <form class="overlay" autocomplete="off">
-              <div class="addTaskWrapper">
-                <div>
-                  <div class="inputFlexbox">
-                    <span id="requiredHead">
-                      Title
-                      <img src="../assets/svg/required.svg" alt="" id="required" />
-                    </span>
-                    <input class="title" id="titleInput" name="title" type="text" placeholder="Enter a title" />
-                  </div>
-
-                  <div class="inputFlexbox">
-                    <span class="description">Description</span>
-                    <textarea rows="5" cols="50" class="title" id="descriptionInput" name="description" placeholder="Enter description" required></textarea>
-                  </div>
-
-                  <div class="inputFlexbox">
-                    <span id="requiredHead">
-                      Due date
-                      <img src="../assets/svg/required.svg" alt="" id="required" />
-                    </span>
-                    <input class="title" id="date" name="date" type="text" tabindex="0" required />
-                  </div>
-
-                  <span id="requiredHead" class="textrequired" aria-live="polite">
-                    <img id="required" src="../assets/svg/required.svg" alt="" />
-                    <p>This field is required</p>
-                  </span>
+          <div class="addTaskOverlayWrapper">
+            <h1>Add Task</h1>
+            <form autocomplete="off" class="addTaskForm">
+              <div>
+                <div class="inputFlexbox">
+                  <h6>Title<sub class="requiredAsterisk">*</sub></h6>
+                  <input class="input" id="titleInput" name="title" type="text" placeholder="Enter a title" />
                 </div>
-
-                <div class="divider"></div>
-
-                <div>
-                  <div class="inputFlexbox">
-                    <span class="prio">Priority</span>
-                    <div class="prioDivsWrapper" role="group" aria-label="Priority">
-                      <div id="urgent" onclick="setPrioColor(0)" class="prioGrade">
-                        <span>Urgent</span>
-                        <img src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="red" />
-                      </div>
-                      <div id="medium" onclick="setPrioColor(1)" class="prioGrade">
-                        <span>Medium</span>
-                        <img src="../assets/svg/double_lines.svg" class="prioImage" alt="orange" />
-                      </div>
-                      <div id="low" onclick="setPrioColor(2)" class="prioGrade">
-                        <span>Low</span>
-                        <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="green" />
-                      </div>
+                <p id="titleError" class="addTaskErrors">This field is required</p>
+                <div class="marginTop8 inputFlexbox">
+                  <h6>Description</h6>
+                  <div class="textarea-wrapper">
+                    <textarea rows="5" cols="50" class="description" id="descriptionInput" name="description" placeholder="Enter description" required></textarea>
+                    <div class="resize-handle"></div>
+                  </div>
+                </div>
+                <div class="inputFlexbox marginTop24">
+                  <h6>Due date<sub class="requiredAsterisk">*</sub></h6>
+                  <input type="text" id="date" class="dateIcon input" placeholder="dd/mm/yyyy" required />
+                </div>
+                <p id="dateError" class="addTaskErrors">This field is required</p>
+              </div>
+              <div class="divider"></div>
+              <div class="addTaskFormRight">
+                <div class="inputFlexbox">
+                  <h6>Priority</h6>
+                  <div class="prioDivsWrapper">
+                    <div id="urgent" onclick="setPrioColor(0)" class="prioGrade">
+                      <h6>Urgent</h6>
+                      <img src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="red" />
+                    </div>
+                    <div id="medium" onclick="setPrioColor(1)" class="prioGrade">
+                      <h6>Medium</h6>
+                      <img src="../assets/svg/double_lines.svg" class="prioImage" alt="orange" />
+                    </div>
+                    <div id="low" onclick="setPrioColor(2)" class="prioGrade">
+                      <h6>Low</h6>
+                      <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="green" />
                     </div>
                   </div>
-
-                  <div class="inputFlexbox">
-                    <span class="assigned">Assigned to</span>
-                    <div id="assignedToDropdownContacts" class="title" tabindex="0">
-                      <div class="dropdown-selected">
-                        <input class="search" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts" />
-                        <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts" alt="" />
-                      </div>
-                      <ul id="dropdown-list-contacts"></ul>
+                </div>
+                <div class="inputFlexbox">
+                  <h6>Assigned to</h6>
+                  <div id="assignedToDropdownContacts" tabindex="0" onclick="toggleAssignedDropdown(event)">
+                    <div class="dropdown-selected">
+                      <input class="assignedToSearch" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts to assign" />
+                      <img src="../assets/svg/arrow_drop_down.svg" class="dropdownArrow" id="dropdown-arrow-contacts" />
                     </div>
-                    <div id="assignedToInitials" style="display: none"></div>
+                    <ul id="dropdown-list-contacts" class="addTaskContactsList"></ul>
                   </div>
-
-                  <div class="inputFlexbox" id="category">
-                    <span id="requiredHead">
-                      Category
-                      <img src="../assets/svg/required.svg" alt="" id="required" />
-                    </span>
-                    <div id="assignedToDropdownCategory" class="title" tabindex="0" aria-required="true">
-                      <div class="dropdown-selected" id="input-category">
-                        <span id="categoryPlaceholder">Select task category</span>
-                        <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" alt="" />
-                      </div>
-                      <ul id="dropdown-list-category">
-                        <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
-                          <label class="custom-checkbox">
-                            Userstory
-                            <input type="checkbox" id="category-userstory" name="category" value="Userstory" />
-                            <span style="display: none"></span>
-                          </label>
-                        </li>
-                        <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
-                          <label class="custom-checkbox">
-                            Technical Task
-                            <input type="checkbox" id="category-technical" name="category" value="Technical Task" />
-                            <span style="display: none"></span>
-                          </label>
-                        </li>
-                      </ul>
+                  <div id="assignedToInitials" style="display: none"></div>
+                </div>
+                <div class="inputFlexbox" id="category">
+                  <h6>Category<sub class="requiredAsterisk">*</sub></h6>
+                  <div id="assignedToDropdownCategory" class="input" tabindex="0">
+                    <div class="dropdown-selected" id="input-category">
+                      <h6 id="categoryPlaceholder">Select task category</h6>
+                      <img src="../assets/svg/arrow_drop_down.svg" class="dropdownArrow" id="dropdown-arrow-subtasks" />
+                    </div>
+                    <ul id="dropdown-list-category">
+                      <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
+                        <label class="custom-checkbox">
+                          Userstory
+                          <input type="checkbox" id="category-userstory" name="category" value="Userstory" required />
+                          <span style="display: none"></span>
+                        </label>
+                      </li>
+                      <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
+                        <label class="custom-checkbox">
+                          Technical Task
+                          <input type="checkbox" id="category-technical" name="category" value="Technical Task" required />
+                          <span style="display: none"></span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="inputFlexbox" id="subtasks">
+                  <h6>Subtasks</h6>
+                  <div class="dropdown-subtasks" tabindex="0">
+                    <input type="text" class="dropdown-selected input input-subtask" id="subtaskInput" name="subtask" placeholder="Add a new subtask" />
+                    <div class="subtask-images-container" style="display: none">
+                      <img src="../assets/svg/subclose.svg" class="subtaskImages cancelSubtask" alt="Delete Subtask" />
+                      <div class="divider1"></div>
+                      <img src="../assets/svg/subcheck.svg" class="subtaskImages saveSubtask" alt="Save Subtask" />
                     </div>
                   </div>
-
-                  <div class="inputFlexbox" id="subtasks">
-                    <span class="sub">Subtasks</span>
-                    <div class="dropdown-subtasks" tabindex="0">
-                      <input type="text" class="dropdown-selected input-subtask" id="subtaskInput" name="subtask" placeholder="Add a new subtask" />
-                      <div class="subtask-images-container" style="display: none">
-                        <img src="../assets/svg/subclose.svg" class="subtaskImages cancelSubtask" alt="Delete Subtask" />
-                        <div class="divider1"></div>
-                        <img src="../assets/svg/subcheck.svg" class="subtaskImages saveSubtask" alt="Save Subtask" />
-                      </div>
-                    </div>
-                    <div class="addedSubtaskWrapper"></div>
-                  </div>
-
-                  <div class="addOrClear">
-                    <div id="clear" class="addOrClearBtn" onclick="clearTask()">
-                      <p>Cancel</p>
-                      <img src="../assets/svg/cancel.svg" alt="" />
-                    </div>
-                    <button id="add" class="addOrClearBtn" type="button" onclick="handleAddOrEditTask(event)">
-                      <p>Create Task</p>
-                      <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
-                    </button>
-                  </div>
-
-                  <div id="taskError" class="error-message"></div>
+                  <div class="addedSubtaskWrapper"></div>
                 </div>
               </div>
             </form>
+            <div class="addTaskFooter">
+              <p><sub class="requiredAsterisk">*</sub>This field is required</p>
+              <div class="addOrClear">
+                <div id="clear" class="btn-white clearBtn addOrClearBtn" onclick="clearTask()">
+                  <h6>Clear</h6>
+                  <img src="../assets/svg/cancel.svg" alt="" />
+                </div>
+                <button id="add" class="btn-dark addOrClearBtn" type="button" onclick="createTask(event)">
+                  Create task
+                  <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
+    <script src="../scripts/flatpickr.min.js"></script>
     <script src="../scripts/addTask.js"></script>
   </body>
 </html>
