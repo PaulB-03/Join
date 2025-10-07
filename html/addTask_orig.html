@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join – Add Task</title>
 
     <link rel="shortcut icon" href="../assets/svg/join_logo.svg" type="image/x-icon" />
-    <link rel="stylesheet" href="../styles/standard.css" />
+
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../styles/fonts.css" />
     <link rel="stylesheet" href="../styles/addTask.css" />
     <link rel="stylesheet" href="../styles/addTaskMedia.css" />
-    <link rel="stylesheet" href="../styles/flatpickr.min.css" />
     <link rel="stylesheet" href="../styles/colors.css" />
+    <link rel="stylesheet" href="../styles/standard.css" />
 
     <script src="../scripts/standardFunctions.js" defer></script>
-
+    <script src="../scripts/addTask.js"></script>
     <script src="../script.js"></script>
     <script src="../scripts/subTask.js"></script>
     <script src="../scripts/utilsAddTask.js" defer></script>
@@ -82,53 +82,42 @@
         </div>
       </aside>
     </aside>
-
-    <div class="addTaskWrapper">
-      <h1>Add Task</h1>
-      <form class="addTaskForm">
+    <h1>Add Task</h1>
+    <form>
+      <div class="addTaskWrapper">
         <div>
           <div class="inputFlexbox">
-            <h6>Title<sub class="requiredAsterisk">*</sub></h6>
-            <input class="input" id="titleInput" name="title" type="text" placeholder="Enter a title" />
+            <span id="requiredHead">Title<img src="../assets/svg/required.svg" alt="" id="required" required /></span>
+            <input class="title" id="titleInput" name="title" type="text" placeholder="Enter a title" />
           </div>
-          <p id="titleError" class="addTaskErrors">This field is required</p>
-          <div class="marginTop8 inputFlexbox">
-            <h6>Description</h6>
-            <div class="textarea-wrapper">
-              <textarea rows="5" cols="50" class="description" id="descriptionInput" name="description" placeholder="Enter description" required></textarea>
-              <div class="resize-handle"></div>
-            </div>
+          <div class="inputFlexbox">
+            <span class="description">Description</span>
+            <textarea rows="5" cols="50" class="title" id="descriptionInput" name="description" placeholder="Enter description" required></textarea>
           </div>
-          <div class="inputFlexbox marginTop24">
-            <h6>Due date<sub class="requiredAsterisk">*</sub></h6>
-            <input type="text" id="date" class="dateIcon input" placeholder="dd/mm/yyyy" required />
+          <div class="inputFlexbox">
+            <span id="requiredHead">Due date <img src="../assets/svg/required.svg" alt="" id="required" /></span>
+            <input class="title" id="date" name="date" type="date" tabindex="0" required />
           </div>
-          <p id="dateError" class="addTaskErrors">This field is required</p>
+          <span id="requiredHeaders" class="textrequired">
+            <img id="required" src="../assets/svg/required.svg" alt="" />
+            <p>This field is required</p>
+          </span>
         </div>
         <div class="divider"></div>
-        <div class="addTaskFormRight">
+        <div>
           <div class="inputFlexbox">
-            <h6>Priority</h6>
+            <span class="prio">Priority</span>
             <div class="prioDivsWrapper">
-              <div id="urgent" onclick="setPrioColor(0)" class="prioGrade">
-                <h6>Urgent</h6>
-                <img src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="red" />
-              </div>
-              <div id="medium" onclick="setPrioColor(1)" class="prioGrade">
-                <h6>Medium</h6>
-                <img src="../assets/svg/double_lines.svg" class="prioImage" alt="orange" />
-              </div>
-              <div id="low" onclick="setPrioColor(2)" class="prioGrade">
-                <h6>Low</h6>
-                <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="green" />
-              </div>
+              <div id="urgent" onclick="setPrioColor(0)" class="prioGrade"><span>Urgent</span> <img src="../assets/svg/double_arrow_red.svg" class="prioImage" alt="red" /></div>
+              <div id="medium" onclick="setPrioColor(1)" class="prioGrade"><span>Medium</span> <img src="../assets/svg/double_lines.svg" class="prioImage" alt="orange" /></div>
+              <div id="low" onclick="setPrioColor(2)" class="prioGrade"><span>Low</span> <img src="../assets/svg/double_arrow_down.svg" class="prioImage" alt="green" /></div>
             </div>
           </div>
           <div class="inputFlexbox">
-            <h6>Assigned to</h6>
-            <div class="input" id="assignedToDropdownContacts" tabindex="0" onclick="toggleAssignedDropdown(event)">
+            <span class="assigned">Assigned to</span>
+            <div id="assignedToDropdownContacts" class="title" tabindex="0" onclick="toggleAssignedDropdown(event)">
               <div class="dropdown-selected">
-                <input class="assignedToSearch" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts to assign" />
+                <input class="search" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts" />
                 <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-contacts" />
               </div>
               <ul id="dropdown-list-contacts"></ul>
@@ -137,10 +126,10 @@
           </div>
 
           <div class="inputFlexbox" id="category">
-            <h6 id="requiredHeaders">Category<sub class="requiredAsterisk">*</sub></h6>
-            <div id="assignedToDropdownCategory" class="input" tabindex="0">
+            <span id="requiredHead">Category <img src="../assets/svg/required.svg" alt="" id="required" /></span>
+            <div id="assignedToDropdownCategory" class="title" tabindex="0">
               <div class="dropdown-selected" id="input-category">
-                <h6 id="categoryPlaceholder">Select task category</h6>
+                <span id="categoryPlaceholder">Select task category</span>
                 <img src="../assets/svg/arrow_drop_down.svg" id="dropdown-arrow-subtasks" />
               </div>
               <ul id="dropdown-list-category">
@@ -164,7 +153,7 @@
           <div class="inputFlexbox" id="subtasks">
             <span class="sub">Subtasks</span>
             <div class="dropdown-subtasks" tabindex="0">
-              <input type="text" class="dropdown-selected input input-subtask" id="subtaskInput" name="subtask" placeholder="Add a new subtask" />
+              <input type="text" class="dropdown-selected input-subtask" id="subtaskInput" name="subtask" placeholder="Add a new subtask" />
               <div class="subtask-images-container" style="display: none">
                 <img src="../assets/svg/subclose.svg" class="subtaskImages cancelSubtask" alt="Delete Subtask" />
                 <div class="divider1"></div>
@@ -172,25 +161,25 @@
               </div>
             </div>
             <div class="addedSubtaskWrapper"></div>
+            <span id="requiredHeadersMobile" class="textrequired">
+              <img id="required" src="../assets/svg/required.svg" alt="" />
+              <p>This field is required</p>
+            </span>
           </div>
-        </div>
-      </form>
-      <div class="addTaskFooter">
-        <p class="textrequired"><sub class="requiredAsterisk">*</sub>This field is required</p>
-        <div class="addOrClear">
-          <div id="clear" class="btn-white clearBtn addOrClearBtn" onclick="clearTask()">
-            <h6>Clear</h6>
-            <img src="../assets/svg/cancel.svg" alt="" />
+          <div class="addOrClear">
+            <div id="clear" class="addOrClearBtn" onclick="clearTask()">
+              <p>Cancel</p>
+              <img src="../assets/svg/cancel.svg" alt="" />
+            </div>
+            <button id="add" class="addOrClearBtn" type="button" onclick="createTask(event)">
+              <p>Create task</p>
+              <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
+            </button>
           </div>
-          <button id="add" class="btn-dark addOrClearBtn" type="button" onclick="createTask(event)">
-            Create task
-            <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
-          </button>
+          <div id="taskError" class="error-message"></div>
         </div>
       </div>
-    </div>
-    <script src="../scripts/flatpickr.min.js"></script>
-    <script src="../scripts/addTask.js"></script>
+    </form>
     <script src="../scripts/header.js"></script>
     <script src="../scripts/logIn.js"></script>
   </body>

@@ -1,22 +1,23 @@
 body {
+  margin: 0;
   overflow: hidden;
   background-color: var(--main-bg-color);
   height: 100%;
+  box-sizing: border-box;
   overflow: scroll;
   overflow-x: hidden;
 }
 
-.marginTop8 {
-  margin-top: 8px;
+#required {
+  width: 10px;
 }
 
-.marginTop24 {
-  margin-top: 24px;
-}
-
-.requiredAsterisk {
-  color: var(--form-error);
-  vertical-align: text-top;
+#requiredHeaders,
+#requiredHead {
+  gap: 2px;
+  display: flex;
+  align-items: start;
+  font-size: 20px;
 }
 
 .textrequired {
@@ -24,134 +25,119 @@ body {
 }
 
 .divider {
-  height: 424px;
+  height: 370px;
   width: 1px;
-  background-color: var(--color-placeholder);
+  background-color: #ccc;
+}
+
+.blueFrame {
+  border-color: var(--light-blue);
 }
 
 .addTaskWrapper {
   display: flex;
-  flex-direction: column;
-  max-width: 1920px;
-  padding: 176px 20px 64px 345px;
-}
-
-.addTaskForm {
-  display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   align-items: flex-start;
   gap: 40px;
   max-width: 1280px;
   flex-direction: row;
-  padding-top: 50px;
-}
-
-.addTaskFormRight {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.addTaskForm h6 {
-  color: var(--main-color);
-}
-
-.addTaskErrors {
-  font-size: 14px;
-  color: var(--input-error);
-  height: 16px;
-  margin-top: 4px;
-  visibility: hidden;
-}
-
-.addTaskFooter {
-  max-width: 977px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0 0 16px 16px;
 }
 
 .inputFlexbox {
   display: flex;
   flex-direction: column;
   width: 440px;
-  gap: 8px;
+  gap: 10px;
   flex: 1 1 calc(50% - 20px);
+  box-sizing: border-box;
+  margin: 10px;
 }
 
+.description,
 .prio,
 .assigned,
 .sub {
   font-size: 20px;
 }
 
-.assignedToSearch {
+.search {
   background-color: white;
   border: none;
   font-size: 16px;
   padding-left: 3px;
 }
 
-.assignedToSearch::placeholder {
-  font-size: 20px;
-  color: var(--main-color);
+.search::placeholder {
+  font-size: 16px;
+  margin-left: 5px;
 }
 
-.textarea-wrapper {
+.title {
+  border: 1px solid var(--color-placeholder);
+  border-radius: 10px;
+  height: 40px;
+  outline: none;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#titleInput:not(:placeholder-shown) {
+  background-color: rgb(232, 240, 254);
+}
+
+.title:focus {
+  border-color: var(--light-blue);
+}
+
+.title::placeholder {
+  color: var(--color-placeholder);
+}
+
+form {
+  max-width: 1920px;
+  padding: 150px 20px 64px 360px;
+  position: absolute;
+}
+
+h1 {
   position: relative;
-  display: inline-block;
+  margin-left: 390px;
+  top: 140px;
 }
 
-.description {
-  position: relative; /* ensures z-index works predictably */
-  z-index: 1;
-  appearance: none;
-  -webkit-appearance: none;
+textarea {
+  appearance: none; /* modern browsers */
+  -webkit-appearance: none; /* Safari/Chrome */
   -moz-appearance: none;
-  width: 440px !important;
   height: 120px;
+  width: 440px !important;
   max-height: 200px;
   min-height: 120px;
   resize: none;
+  padding: 8px;
   overflow: auto;
   background-image: url("../assets/svg/Recurso.svg");
   background-repeat: no-repeat;
-  background-position: calc(100% - 4px) calc(100% - 4px);
-  background-size: 19px 19px;
-  border: solid 1px var(--color-placeholder);
-  border-radius: 10px;
-  padding: 12px 21px;
-  font-size: 20px;
-  font-weight: 400;
-  cursor: text;
-  outline: none;
+  background-position: right 4px bottom 4px;
+  background-size: 16px 16px;
 }
 
-/* The invisible clickable handle */
-.resize-handle {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 28px; /* slightly bigger click zone */
-  height: 28px;
-  cursor: ns-resize;
-  z-index: 2; /* must be higher than textarea */
-}
-
-.description:focus {
+textarea:focus {
   border: 1.5px solid var(--light-blue);
 }
 
-::-webkit-calendar-picker-indicator {
-  display: none;
-}
-
-.dateIcon {
-  background-image: url("../assets/svg/event.svg");
+#descriptionInput:not(:placeholder-shown) {
+  background-color: rgb(232, 240, 254);
 }
 
 #assignedToDropdownContacts {
   position: relative;
+  border: 1px solid var(--color-placeholder);
+  border-radius: 10px;
+  display: flex;
   background-color: white;
 }
 
@@ -180,6 +166,38 @@ body {
   display: flex;
   background-color: var(--white);
   transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#assignedToDropdownCategory.selected {
+  background-color: rgb(232, 240, 254);
+}
+
+#assignedToDropdownCategory:hover {
+  cursor: pointer;
+}
+
+#assignedToDropdownContacts:focus-within,
+#assignedToDropdownContacts:active {
+  border: 1.5px solid var(--light-blue);
+}
+
+#assignedToDropdownCategory:focus-within,
+#assignedToDropdownCategory:active {
+  border: 1.5px solid var(--light-blue);
+}
+
+input#contactSearch.search::placeholder {
+  font-size: 20px;
+  color: black;
+}
+
+.dropdown-selected {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 16px;
 }
 
 .dropdown-subtasks {
@@ -322,6 +340,10 @@ body {
   font-size: 20px;
 }
 
+#descriptionInput.title::placeholder {
+  font-size: 20px;
+}
+
 .dropdown-selected.input-subtask::placeholder {
   font-size: 20px;
 }
@@ -341,20 +363,18 @@ body {
 .prioDivsWrapper {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
 }
 
 .prioGrade {
-  width: calc(100% / 3);
-  border: none;
+  border: 1px solid var(--color-placeholder);
   border-radius: 10px;
   background-color: var(--white);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  padding: 16px 10px;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
+  gap: 5px;
+  height: 56px;
+  width: 136px;
 }
 
 .prioGrade:hover {
@@ -362,33 +382,23 @@ body {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.prioGrade:active {
-  box-shadow: none;
+.prioGrade span {
+  font-size: 20px;
 }
 
 .redColor {
-  background-color: var(--button-urgent);
-  h6 {
-    color: white;
-  }
+  background-color: #ff3d00;
+  color: var(--white);
 }
 
 .orangeColor {
-  background-color: var(--button-medium);
-  h6 {
-    color: white;
-  }
+  background-color: #ffa800;
+  color: var(--white);
 }
 
 .greenColor {
-  background-color: var(--button-low);
-  h6 {
-    color: white;
-  }
-}
-
-.removeHoverEffect:hover {
-  box-shadow: none;
+  background-color: #7ae229;
+  color: var(--white);
 }
 
 .filterWhite {
@@ -405,17 +415,46 @@ body {
 .addOrClearBtn {
   display: flex;
   justify-content: center;
+  border: 1px solid;
+  display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   padding: 16px;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 21px;
-  font-weight: 700;
+  height: 60px;
+  width: 160px;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.05s ease;
 }
 
-.clearBtn:hover img {
+.addOrClearBtn:hover {
+  border: 1px solid var(--light-blue);
+  color: var(--light-blue);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+#clear:hover img {
   filter: brightness(0) saturate(100%) invert(44%) sepia(95%) saturate(2474%) hue-rotate(180deg) brightness(90%) contrast(70%);
+}
+
+.addOrClear p {
+  margin: 0px;
+  font-size: 18px;
+}
+
+#add {
+  margin-right: 8px;
+  background-color: var(--main-color);
+  color: white;
+}
+
+#add:hover {
+  background-color: var(--light-blue);
+}
+
+#clear img {
+  width: 14px;
+  height: 14px;
 }
 
 .dropdown-checkbox {
@@ -471,6 +510,48 @@ body {
   margin-left: 10px;
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s;
+}
+
+input[type="date" i] {
+  background-color: white;
+  color: black;
+}
+
+input[type="date" i]:valid {
+  background-color: rgb(232, 240, 254);
+}
+
+input[type="date"]:invalid {
+  color: var(--color-placeholder);
+  font-size: 20px;
+}
+
+input[type="date"]:valid {
+  color: black;
+  font-size: 20px;
+}
+
+input[type="date"]:not(:focus):invalid::before {
+  content: attr(placeholder);
+  color: gray;
+}
+
+input[type="date"]::before {
+  content: attr(data-date);
+  position: absolute;
+  color: black;
+}
+
+input[type="date"]:focus::before {
+  content: "" !important;
+}
+
+input[type="date"]::placeholder {
+  color: black;
+}
+
+input[type="text"]:focus {
+  background-color: white;
 }
 
 .createTaskCheck {
@@ -617,4 +698,11 @@ body {
   z-index: 10000;
   text-align: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#requiredHeaders {
+  display: flex;
+}
+#requiredHeadersMobile {
+  display: none;
 }
