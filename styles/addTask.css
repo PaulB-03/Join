@@ -88,7 +88,6 @@ body {
 .assignedToSearch {
   background-color: white;
   border: none;
-  font-size: 16px;
   padding-left: 3px;
   width: 300px;
   height: 24px;
@@ -129,7 +128,7 @@ body {
   padding: 12px 21px;
   font-size: 20px;
   font-weight: 400;
-  cursor: text;
+  cursor: pointer;
   outline: none;
 }
 
@@ -148,20 +147,12 @@ body {
   border: 1.5px solid var(--light-blue);
 }
 
-#descriptionInput:not(:placeholder-shown) {
-  background-color: rgb(232, 240, 254);
-}
-
 ::-webkit-calendar-picker-indicator {
   display: none;
 }
 
 .dateIcon {
   background-image: url("../assets/svg/event.svg");
-}
-
-#date:valid {
-  background-color: var(--input-fill);
 }
 
 #assignedToDropdownContacts {
@@ -208,10 +199,6 @@ body {
 
 .dropdown-subtasks:focus-within {
   border: 1.5px solid var(--light-blue);
-}
-
-.selected-red {
-  background-color: var(--input-fill) !important;
 }
 
 #subtasks {
@@ -338,10 +325,6 @@ body {
 
 .dropdown-selected.input-subtask::placeholder {
   font-size: 20px;
-}
-
-#titleInput:not(:placeholder-shown) {
-  background-color: var(--input-fill);
 }
 
 #categoryPlaceholder {
