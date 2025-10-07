@@ -124,9 +124,9 @@
               </div>
             </div>
           </div>
-          <div class="inputFlexbox">
+          <div class="inputFlexbox marginTop24">
             <h6>Assigned to</h6>
-            <div id="assignedToDropdownContacts" tabindex="0" onclick="toggleAssignedDropdown(event)">
+            <div id="assignedToDropdownContacts" class="dropdownField" tabindex="0" onclick="toggleAssignedDropdown(event)">
               <div class="dropdown-selected">
                 <input class="assignedToSearch" type="text" id="contactSearch" name="contactSearch" placeholder="Select contacts to assign" />
                 <img src="../assets/svg/arrow_drop_down.svg" class="dropdownArrow" id="dropdown-arrow-contacts" />
@@ -135,14 +135,14 @@
             </div>
             <div id="assignedToInitials" style="display: none"></div>
           </div>
-          <div class="inputFlexbox" id="category">
+          <div class="inputFlexbox marginTop24" id="category">
             <h6>Category<sub class="requiredAsterisk">*</sub></h6>
-            <div id="assignedToDropdownCategory" class="input" tabindex="0">
+            <div id="assignedToDropdownCategory" class="dropdownField" tabindex="0">
               <div class="dropdown-selected" id="input-category">
                 <h6 id="categoryPlaceholder">Select task category</h6>
                 <img src="../assets/svg/arrow_drop_down.svg" class="dropdownArrow" id="dropdown-arrow-subtasks" />
               </div>
-              <ul id="dropdown-list-category">
+              <ul id="dropdown-list-category" class="addTaskCategoryList">
                 <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
                   <label class="custom-checkbox">
                     Userstory
@@ -160,7 +160,7 @@
               </ul>
             </div>
           </div>
-          <div class="inputFlexbox" id="subtasks">
+          <div class="inputFlexbox marginTop24" id="subtasks">
             <h6>Subtasks</h6>
             <div class="dropdown-subtasks" tabindex="0">
               <input type="text" class="dropdown-selected input input-subtask" id="subtaskInput" name="subtask" placeholder="Add a new subtask" />

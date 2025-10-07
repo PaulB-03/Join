@@ -344,13 +344,13 @@
     if (!__subtasksBox) {
       __subtasksBox = $id("subtasks");
       __subtasksStyles = {
-        marginTop: __subtasksBox?.style.marginTop || "0px",
+        marginTop: __subtasksBox?.style.marginTop || "24px",
         paddingBottom: __subtasksBox?.style.paddingBottom || "50px",
       };
     }
     if (!__categoryBox) {
       __categoryBox = $id("category");
-      __categoryStyles = { marginTop: __categoryBox?.style.marginTop || "0px" };
+      __categoryStyles = { marginTop: __categoryBox?.style.marginTop || "24px" };
     }
   }
 
@@ -400,9 +400,9 @@
       document.addEventListener("click", outsideClickHandler);
 
       // Move category and subtasks when opening
-      if (__categoryBox) __categoryBox.style.marginTop = "220px";
+      if (__categoryBox) __categoryBox.style.marginTop = "244px";
       if (__subtasksBox) {
-        __subtasksBox.style.marginTop = "0px";
+        __subtasksBox.style.marginTop = "24px";
         __subtasksBox.style.paddingBottom = "50px";
       }
     } else {
