@@ -20,14 +20,14 @@ function getFieldValue(id) {
 }
 
 function showInlineError(field, errorMessage) {
-  if (!field) return;
+  if (!field || !errorMessage) return;
   field.style.border = "1px solid red";
   errorMessage.style.visibility = "visible";
 }
 
 function clearInlineErrors() {
   document.querySelectorAll(".addTaskErrors").forEach((e) => (e.style.visibility = "hidden"));
-  ["titleInput", "date", "assignedToDropdownCategory"].forEach((id) => {
+  ["titleInput", "date"].forEach((id) => {
     const field = $id(id);
     if (field) field.style.border = "";
   });
@@ -72,10 +72,6 @@ function validateTaskFormFields() {
   }
   if (!getFieldValue("date")) {
     showInlineError($id("date"), $id("dateError"));
-    ok = false;
-  }
-  if (!window.selectedCategory) {
-    showInlineError($id("assignedToDropdownCategory"));
     ok = false;
   }
   return ok;
@@ -450,49 +446,51 @@ const CategoryDropdown = (() => {
 
 document.addEventListener("DOMContentLoaded", CategoryDropdown.init);
 
-// textarea resize functions
-
 const textarea = document.getElementById("descriptionInput");
 const handle = document.querySelector(".resize-handle");
 
-let isResizing = false;
-let startY, startHeight;
+if (textarea && handle) {
+  let isResizing = false;
+  let startY, startHeight;
 
-handle.addEventListener("mousedown", (e) => {
-  isResizing = true;
-  startY = e.clientY;
-  startHeight = parseInt(getComputedStyle(textarea).height, 10);
-  document.addEventListener("mousemove", resize);
-  document.addEventListener("mouseup", stopResize);
-  e.preventDefault();
-});
+  handle.addEventListener("mousedown", (e) => {
+    isResizing = true;
+    startY = e.clientY;
+    startHeight = parseInt(getComputedStyle(textarea).height, 10);
+    document.addEventListener("mousemove", resize);
+    document.addEventListener("mouseup", stopResize);
+    e.preventDefault();
+  });
 
-function resize(e) {
-  if (!isResizing) return;
-  const deltaY = e.clientY - startY;
-  let newHeight = startHeight + deltaY;
+  function resize(e) {
+    if (!isResizing) return;
+    const deltaY = e.clientY - startY;
+    let newHeight = startHeight + deltaY;
 
-  const minHeight = parseInt(getComputedStyle(textarea).minHeight, 10);
-  const maxHeight = parseInt(getComputedStyle(textarea).maxHeight, 10);
-  newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+    const minHeight = parseInt(getComputedStyle(textarea).minHeight, 10);
+    const maxHeight = parseInt(getComputedStyle(textarea).maxHeight, 10);
+    newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
 
-  textarea.style.height = newHeight + "px";
+    textarea.style.height = newHeight + "px";
+  }
+
+  function stopResize() {
+    isResizing = false;
+    document.removeEventListener("mousemove", resize);
+    document.removeEventListener("mouseup", stopResize);
+  }
 }
 
-function stopResize() {
-  isResizing = false;
-  document.removeEventListener("mousemove", resize);
-  document.removeEventListener("mouseup", stopResize);
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const dateInput = document.getElementById("date");
+  if (!dateInput) return;
 
-// custom calendar
-// Automatically insert slashes while typing
-const dateInput = document.getElementById("date");
-dateInput.addEventListener("input", (e) => {
-  let val = dateInput.value.replace(/\D/g, "");
-  if (val.length > 2) val = val.slice(0, 2) + "/" + val.slice(2);
-  if (val.length > 5) val = val.slice(0, 5) + "/" + val.slice(5, 9);
-  dateInput.value = val;
+  dateInput.addEventListener("input", (e) => {
+    let val = dateInput.value.replace(/\D/g, "");
+    if (val.length > 2) val = val.slice(0, 2) + "/" + val.slice(2);
+    if (val.length > 5) val = val.slice(0, 5) + "/" + val.slice(5, 9);
+    dateInput.value = val;
+  });
 });
 
 flatpickr("#date", {
