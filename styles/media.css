@@ -10,10 +10,27 @@
   .dropzone {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    -webkit-overflow-scrolling: touch;
     gap: 10px;
     min-height: 200px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; 
+    scroll-behavior: smooth;
+    cursor: grab;
+    padding: 12px 0;
+    box-sizing: border-box;
+    height: 300px;
+    margin-bottom: 20px;
+  }
+
+  .column {
+    scroll-snap-align: start;
+    min-height: 0;
+    opacity: 1;
+    width: 700px;
   }
 
   .empty {
@@ -144,9 +161,6 @@
     gap: 16px;
     margin-top: 100px;
   }
-  .dropzone {
-    height: 300px;
-  }
 
   .board-viewport {
     scroll-snap-type: x mandatory;
@@ -156,15 +170,6 @@
   .column {
     scroll-snap-align: start;
     min-height: 0;
-    width: 396px;
     opacity: 1;
-  }
-
-  .board-slider-nav {
-    display: none;
-  }
-
-  .board-slider-nav button {
-    display: none;
   }
 }
