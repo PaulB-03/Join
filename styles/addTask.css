@@ -176,7 +176,6 @@ textarea::placeholder {
 
 #subtasks {
   padding-bottom: 50px;
-  margin-top: 0px;
   transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
 }
 

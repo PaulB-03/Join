@@ -217,10 +217,30 @@
     const i = list.indexOf(name);
     if (i >= 0) list.splice(i, 1);
     else list.push(name);
+
+    const dd = $id("assignedToDropdownContacts");
+    const isOpen = dd && dd.classList.contains("open");
+    let beforeHeight;
+
+    if (isOpen) {
+      ensureLayoutRefs();
+      beforeHeight = __categoryBox ? __categoryBox.offsetTop : 0;
+    }
+
     updateDropdownText();
     renderAssignedContacts();
     updateDropdownHighlight();
     updateDropdownBackground("assignedToDropdownContacts");
+
+    if (isOpen && __categoryBox && beforeHeight !== undefined) {
+      const afterHeight = __categoryBox.offsetTop;
+      const delta = afterHeight - beforeHeight;
+      // Get current margin (prefer inline style, fallback to computed)
+      const currentMargin = parseFloat(__categoryBox.style.marginTop) || parseFloat(getComputedStyle(__categoryBox).marginTop) || 0;
+      // Counteract the delta to keep position fixed (prevent negative margin)
+      const newMargin = Math.max(0, currentMargin - delta);
+      __categoryBox.style.marginTop = newMargin + "px";
+    }
   }
 
   function renderAssignedContacts() {
@@ -400,7 +420,7 @@
       document.addEventListener("click", outsideClickHandler);
 
       // Move category and subtasks when opening
-      if (__categoryBox) __categoryBox.style.marginTop = "244px";
+      if (__categoryBox) __categoryBox.style.marginTop = "264px";
       if (__subtasksBox) {
         __subtasksBox.style.marginTop = "24px";
         __subtasksBox.style.paddingBottom = "50px";
