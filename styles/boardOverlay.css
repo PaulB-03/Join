@@ -14,7 +14,7 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity .2s ease, visibility 0s linear .2s;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
 }
 
 .overlay.open {
@@ -44,7 +44,7 @@
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transition: opacity .2s ease;
+  transition: opacity 0.2s ease;
 }
 
 body.modal-open {

@@ -1,4 +1,5 @@
 .card {
+  position: relative;
   background: var(--white);
   border: 1px solid var(--color-placeholder);
   border-radius: 16px;
@@ -10,6 +11,7 @@
   width: 240px;
   gap: 24px;
   opacity: 1;
+  z-index: 1000;
 }
 .card.is-dragging {
   transform: rotate(3deg) translateX(6px);
@@ -63,9 +65,12 @@
   margin: 8px 0 4px;
 }
 .task-desc {
+  position: relative;
+  z-index: 0;
   font-size: 16px;
   color: var(--color-icon);
   line-height: 1.4;
+  pointer-events: none;
 }
 .row {
   display: flex;
@@ -287,10 +292,7 @@
   display: inline-block;
 }
 .subtasks__item input[type="checkbox"]:focus-visible + .cb--unchecked,
-.subtasks__item
-  input[type="checkbox"]:focus-visible
-  + .cb--unchecked
-  + .cb--checked {
+.subtasks__item input[type="checkbox"]:focus-visible + .cb--unchecked + .cb--checked {
   outline: 2px solid var(--color-statsbar);
   outline-offset: 2px;
   border-radius: 4px;
@@ -371,6 +373,6 @@
 }
 
 .dropzone {
-  height: auto;          
-  padding: 12px 10px;    
+  height: auto;
+  padding: 12px 10px;
 }

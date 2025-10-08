@@ -6,9 +6,7 @@ const COL_TO_STATE = {
   "await-feedback": "await feedback",
   done: "done",
 };
-const STATE_TO_COL = Object.fromEntries(
-  Object.entries(COL_TO_STATE).map(([c, s]) => [s, c])
-);
+const STATE_TO_COL = Object.fromEntries(Object.entries(COL_TO_STATE).map(([c, s]) => [s, c]));
 
 let dragged = null;
 let placeholder = null;
@@ -71,23 +69,24 @@ function onDragEnd(e) {
   if (!box) return;
   box.classList.remove("is-dragging");
   box.querySelector(".card")?.classList.remove("is-dragging");
-  document.querySelectorAll(".dropzone.is-over").forEach(z => z.classList.remove("is-over"));
+  document.querySelectorAll(".dropzone.is-over").forEach((z) => z.classList.remove("is-over"));
   placeholder.remove();
   dragged = null;
 }
 
 function bindColumns() {
-  document.querySelectorAll(".dropzone").forEach(zone => {
+  document.querySelectorAll(".dropzone").forEach((zone) => {
     if (zone.__bound) return;
-    zone.addEventListener("dragover", ev => onDragOver(ev, zone));
+    zone.addEventListener("dragover", (ev) => onDragOver(ev, zone));
     zone.addEventListener("dragleave", () => zone.classList.remove("is-over"));
-    zone.addEventListener("drop", ev => onDrop(ev, zone));
+    zone.addEventListener("drop", (ev) => onDrop(ev, zone));
     zone.__bound = true;
   });
 }
 
 function autoScroll(zone, clientY) {
-  const r = zone.getBoundingClientRect(), thr = 24;
+  const r = zone.getBoundingClientRect(),
+    thr = 24;
   if (clientY < r.top + thr) zone.scrollTop -= 10;
   else if (clientY > r.bottom - thr) zone.scrollTop += 10;
 }
@@ -96,7 +95,7 @@ function onDragOver(e, zone) {
   if (!dragged) return;
   e.preventDefault();
   zone.classList.add("is-over");
-  if (!zone.contains(placeholder)) zone.appendChild(placeholder); 
+  if (!zone.contains(placeholder)) zone.appendChild(placeholder);
   autoScroll(zone, e.clientY);
   insertPlaceholder(zone, e.clientY);
 }
@@ -160,7 +159,7 @@ function updateAllEmptyStates() {
 }
 
 function clearColumns() {
-  document.querySelectorAll(".dropzone").forEach(z => {
+  document.querySelectorAll(".dropzone").forEach((z) => {
     const title = z.previousElementSibling?.textContent?.trim() || "";
     z.innerHTML = `<div class="empty">No tasks ${title}</div>`;
   });
@@ -280,7 +279,10 @@ function bindCardClickDrag(wrapper, card, id) {
 
 function startLiveSync() {
   if (__liveBound) return;
-  if (!window.rtdb) { console.warn("RTDB nicht initialisiert – LiveSync wird übersprungen."); return; }
+  if (!window.rtdb) {
+    console.warn("RTDB nicht initialisiert – LiveSync wird übersprungen.");
+    return;
+  }
   __liveBound = true;
   __tasksRef = window.rtdb.ref("tasks");
   bindLiveHandlers(__tasksRef);
@@ -298,8 +300,12 @@ function onChildAdded(snap) {
 }
 
 function onChildChanged(snap) {
-  const id = snap.key, t = snap.val();
-  if (__localEdits.has(id)) { safeUpdateCardContent(id, t); return; }
+  const id = snap.key,
+    t = snap.val();
+  if (__localEdits.has(id)) {
+    safeUpdateCardContent(id, t);
+    return;
+  }
   handleChangedPlacement(id, t);
 }
 
@@ -322,7 +328,11 @@ function onChildRemoved(snap) {
 
 function safeUpdateCardContent(id, t) {
   const existing = document.querySelector(`.task-container[data-id="${id}"]`);
-  if (!existing) { upsertTaskCard(id, t); updateAllEmptyStates(); return; }
+  if (!existing) {
+    upsertTaskCard(id, t);
+    updateAllEmptyStates();
+    return;
+  }
   const card = existing.querySelector(".card");
   card.innerHTML = computeCardHTML(t);
 }
@@ -331,7 +341,10 @@ function upsertTaskCard(id, t) {
   const existing = document.querySelector(`.task-container[data-id="${id}"]`);
   const zone = getZoneForTask(t);
   zone.querySelector(".empty")?.remove();
-  if (!existing) { addTaskCard(id, t); return; }
+  if (!existing) {
+    addTaskCard(id, t);
+    return;
+  }
   existing.querySelector(".card").innerHTML = computeCardHTML(t);
   if (existing.parentElement !== zone) zone.appendChild(existing);
 }
@@ -341,7 +354,9 @@ function removeTaskCard(id) {
 }
 
 window.addEventListener("beforeunload", () => {
-  try { __tasksRef?.off(); } catch (e) {}
+  try {
+    __tasksRef?.off();
+  } catch (e) {}
 });
 
 window.Board = Object.assign(window.Board || {}, {

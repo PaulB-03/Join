@@ -126,15 +126,11 @@
         <h1>Board</h1>
         <div class="controls">
           <div id="search-empty-state" class="empty-state d_none" role="status" aria-live="polite">Keine Ergebnisse gefunden.</div>
-
           <div class="search" role="search" aria-label="Find Task">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="7"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
+            <img class="search-icon" src="../assets/svg/search_default.svg" alt="" />
             <input type="search" oninput="processChanges()" id="taskSearchInput" name="taskSearch" placeholder="Find Task" />
           </div>
-
+          <!-- <input class="search" type="search" oninput="processChanges()" id="taskSearchInput" name="taskSearch" placeholder="Find Task" /> -->
           <button type="button" id="openAddTask" class="btn btn-dark" aria-label="Add task">
             <span class="btn-text">Add task</span>
             <img src="../assets/svg/add.svg" alt="" class="icon-add" />
@@ -175,10 +171,7 @@
           </div>
 
           <div class="column">
-            <div class="col-head">
-              Done
-              <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
-            </div>
+            <div class="col-head">Done</div>
             <div class="dropzone" id="done">
               <div class="empty">No tasks Done</div>
             </div>
@@ -321,7 +314,7 @@
         </div>
       </div>
     </div>
-
+    <script src="../scripts/flatpickr.min.js"></script>
     <script src="../scripts/addTask.js"></script>
   </body>
 </html>

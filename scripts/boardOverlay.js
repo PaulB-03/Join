@@ -1,9 +1,13 @@
-function byId(id) { return document.getElementById(id); }
+function byId(id) {
+  return document.getElementById(id);
+}
 
 (function () {
   if (typeof window.color !== "function") {
     const __PALETTE = ["#f44336", "#2196F3", "#FF9800", "#9C27B0", "#4CAF50", "#00BCD4", "#FFC107"];
-    window.color = function (i) { return __PALETTE[i % __PALETTE.length]; };
+    window.color = function (i) {
+      return __PALETTE[i % __PALETTE.length];
+    };
   }
 })();
 
@@ -14,9 +18,7 @@ const __COL_TO_STATE = {
   "done": "done",
 };
 
-const RTDB_BASE =
-  (typeof baseURL !== "undefined" && baseURL) ||
-  "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
+const RTDB_BASE = (typeof baseURL !== "undefined" && baseURL) || "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let __lastActive = null;
 
@@ -31,9 +33,14 @@ function inertParts() {
 }
 
 function setBackgroundInert(on) {
-  inertParts().forEach(el => {
-    if (on) { el.setAttribute("inert", ""); el.setAttribute("aria-hidden", "true"); }
-    else { el.removeAttribute("inert"); el.removeAttribute("aria-hidden"); }
+  inertParts().forEach((el) => {
+    if (on) {
+      el.setAttribute("inert", "");
+      el.setAttribute("aria-hidden", "true");
+    } else {
+      el.removeAttribute("inert");
+      el.removeAttribute("aria-hidden");
+    }
   });
 }
 
@@ -71,7 +78,8 @@ function closeOverlay(overlay) {
 
 function onEscCloseOnce(e) {
   if (e.key !== "Escape") return;
-  const d = byId("taskDetailOverlay"), a = byId("taskOverlay");
+  const d = byId("taskDetailOverlay"),
+    a = byId("taskOverlay");
   if (d?.classList.contains("open")) return closeOverlay(d);
   if (a?.classList.contains("open")) return closeOverlay(a);
 }
@@ -79,7 +87,8 @@ function onEscCloseOnce(e) {
 /* ---------------------------- Detail-Overlay ---------------------------- */
 
 async function openTaskDetail(id) {
-  const ov = byId("taskDetailOverlay"), ct = byId("taskDetailContent");
+  const ov = byId("taskDetailOverlay"),
+    ct = byId("taskDetailContent");
   if (!ov || !ct) return;
   showOverlay(ov, { focus: false });
   const task = await window.Board?.fetchSingleTask?.(id);
@@ -89,12 +98,11 @@ async function openTaskDetail(id) {
 }
 
 function wireDetailActions(overlay, content, id, task) {
-  content.querySelectorAll('input[type="checkbox"][data-sub-index]')
-    .forEach(cb => cb.addEventListener("change", e => onSubtaskToggle(id, e)));
+  content.querySelectorAll('input[type="checkbox"][data-sub-index]').forEach((cb) => cb.addEventListener("change", (e) => onSubtaskToggle(id, e)));
   byId("taskDetailClose")?.addEventListener("click", () => closeOverlay(overlay), { once: true });
   byId("taskDelete")?.addEventListener("click", () => onDeleteTask(id, overlay));
   byId("taskEdit")?.addEventListener("click", () => onEditTask(id, task, overlay));
-  overlay.addEventListener("click", e => e.target === overlay && closeOverlay(overlay), { once: true });
+  overlay.addEventListener("click", (e) => e.target === overlay && closeOverlay(overlay), { once: true });
   document.addEventListener("keydown", onEscCloseOnce);
 }
 
@@ -126,39 +134,46 @@ function onEditTask(id, task, overlay) {
 
 function bindOverlayButtons() {
   byId("openAddTask")?.addEventListener("click", onOpenAddClick);
-  document.querySelectorAll(".add-card-btn").forEach(b => b.addEventListener("click", onQuickAddClick));
+  document.querySelectorAll(".add-card-btn").forEach((b) => b.addEventListener("click", onQuickAddClick));
   byId("closeTaskOverlay")?.addEventListener("click", closeTaskOverlay);
   byId("cancelTask")?.addEventListener("click", closeTaskOverlay);
-  byId("taskOverlay")?.addEventListener("click", e => e.target.id === "taskOverlay" && closeTaskOverlay());
-  document.addEventListener("keydown", e => e.key === "Escape" && closeTaskOverlay());
+  byId("taskOverlay")?.addEventListener("click", (e) => e.target.id === "taskOverlay" && closeTaskOverlay());
+  document.addEventListener("keydown", (e) => e.key === "Escape" && closeTaskOverlay());
 }
 
 function onOpenAddClick(e) {
   e.preventDefault();
   if (window.innerWidth <= 850) return location.assign("../html/addTask.html");
-  clearTask(); openTaskOverlay(); setOverlayButtonText(false); toggleClearButton(false);
+  clearTask();
+  openTaskOverlay();
+  setOverlayButtonText(false);
+  toggleClearButton(false);
 }
 
 function onQuickAddClick(e) {
   const zone = e?.currentTarget?.parentElement?.nextElementSibling;
-  const colId = (zone && zone.classList.contains("dropzone")) ? zone.id : "todo";
+  const colId = zone && zone.classList.contains("dropzone") ? zone.id : "todo";
   window.selectedState = __COL_TO_STATE[colId] || "toDo";
-  clearTask(); openTaskOverlay();
+  clearTask();
+  openTaskOverlay();
 }
 
 function openTaskOverlay() {
-  const ov = byId("taskOverlay"); if (!ov) return;
+  const ov = byId("taskOverlay");
+  if (!ov) return;
   ov.classList.remove("edit-mode");
   showOverlay(ov, { focus: false });
   const btn = byId("add");
   btn.removeAttribute("data-editing-id");
   btn.querySelector("p").textContent = "Create task";
-  clearTask(); initTaskFormEnhancements();
+  clearTask();
+  initTaskFormEnhancements();
   (byId("titleInput") || firstFocusable(ov) || ov).focus();
 }
 
 function closeTaskOverlay() {
-  const ov = byId("taskOverlay"); if (!ov) return;
+  const ov = byId("taskOverlay");
+  if (!ov) return;
   closeOverlay(ov);
   typeof clearTask === "function" && clearTask();
 }
@@ -170,12 +185,15 @@ function initTaskFormEnhancements() {
 }
 
 function fillTaskFormFromExisting(id, task) {
-  setFormValues(task); setPrioFromTask(task);
+  setFormValues(task);
+  setPrioFromTask(task);
   assignedContacts = task.assignedContacts ? [...task.assignedContacts] : [];
-  renderAssignedInitials(); fillSubtasks(task.subtasks || []);
+  renderAssignedInitials();
+  fillSubtasks(task.subtasks || []);
   selectedCategory = task.category || "Task";
   selectedState = task.state || "toDo";
-  setOverlayButtonText(true); toggleClearButton(true);
+  setOverlayButtonText(true);
+  toggleClearButton(true);
   byId("add").setAttribute("data-editing-id", id);
 }
 
@@ -191,18 +209,25 @@ function setPrioFromTask(task) {
 }
 
 function resetPrioSelection() {
-  document.querySelectorAll(".prioGrade").forEach(el => el.classList.remove("active"));
+  document.querySelectorAll(".prioGrade").forEach((el) => el.classList.remove("active"));
 }
 
 function setOverlayButtonText(isEditing) {
-  const btn = byId("add"); if (!btn) return; btn.textContent = "";
-  const p = document.createElement("p"); p.textContent = isEditing ? "OK" : "Create";
-  const img = document.createElement("img"); img.src = "../assets/svg/check.svg"; img.className = "createTaskCheck"; img.alt = "";
+  const btn = byId("add");
+  if (!btn) return;
+  btn.textContent = "";
+  const p = document.createElement("p");
+  p.textContent = isEditing ? "OK" : "Create";
+  const img = document.createElement("img");
+  img.src = "../assets/svg/check.svg";
+  img.className = "createTaskCheck";
+  img.alt = "";
   btn.append(p, img);
 }
 
 function toggleClearButton(isEditing) {
-  const c = byId("clear"); if (!c) return;
+  const c = byId("clear");
+  if (!c) return;
   c.style.display = isEditing ? "none" : "inline-flex";
 }
 
@@ -239,7 +264,9 @@ function readTaskForm() {
 
 async function putTaskJson(id, data) {
   const r = await fetch(`${RTDB_BASE}tasks/${id}.json`, {
-    method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data)
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
   });
   if (!r.ok) throw new Error("PUT failed: " + r.status);
 }
@@ -247,7 +274,10 @@ async function putTaskJson(id, data) {
 async function afterUpdateUI(id, navigateToBoard, closeOverlayAfter, reopenDetail) {
   if (closeOverlayAfter) closeOverlay(byId("taskOverlay"));
   await window.Board?.renderAllTasks?.();
-  if (navigateToBoard) { location.href = "board.html"; return; }
+  if (navigateToBoard) {
+    location.href = "board.html";
+    return;
+  }
   if (reopenDetail) await openTaskDetail(id);
 }
 
@@ -256,23 +286,28 @@ async function updateTask(id, navigateToBoard = false, closeTaskOverlayAfterUpda
   try {
     await putTaskJson(id, readTaskForm());
     await afterUpdateUI(id, navigateToBoard, closeTaskOverlayAfterUpdate, reopenDetail);
-  } catch (err) { console.error("Error updating task:", err); alert("Failed to update task. Please try again."); }
+  } catch (err) {
+    console.error("Error updating task:", err);
+    alert("Failed to update task. Please try again.");
+  }
 }
 
 /* ------------------------- Subtasks im Detail-UI ------------------------- */
 
 async function saveSubtasksFromOverlay(taskId) {
   const items = [...document.querySelectorAll("#taskDetailOverlay .subtasks__item")];
-  const subs = items.map(el => {
+  const subs = items.map((el) => {
     const chk = el.querySelector('input[type="checkbox"]');
     const txt = (el.querySelector(".txt")?.textContent || "").trim();
     return { text: txt, done: !!chk?.checked };
   });
   const res = await fetch(`${RTDB_BASE}tasks/${taskId}/subtasks.json`, {
-    method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(subs)
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(subs),
   });
   if (!res.ok) throw new Error(`Save failed: ${res.status}`);
-  return { done: subs.filter(s => s.done).length, total: subs.length };
+  return { done: subs.filter((s) => s.done).length, total: subs.length };
 }
 
 function updateSubtaskCountersUI(taskId, done, total) {
@@ -302,25 +337,36 @@ async function onDetailSubtaskChange(e) {
     const { done, total } = await saveSubtasksFromOverlay(taskId);
     updateSubtaskCountersUI(taskId, done, total);
     document.dispatchEvent(new CustomEvent("task:updated", { detail: { taskId, done, total } }));
-  } catch (err) { console.error(err); cb.checked = previous; alert("Konnte Subtask nicht speichern. Bitte später erneut versuchen."); }
+  } catch (err) {
+    console.error(err);
+    cb.checked = previous;
+    alert("Konnte Subtask nicht speichern. Bitte später erneut versuchen.");
+  }
 }
 
 /* ----------------------- Assigned / Subtasks (Form) ---------------------- */
 
 function fillAssignedContacts(contacts) {
-  const wrap = byId("assignedToInitials"); wrap.innerHTML = "";
-  if (!contacts?.length) { wrap.style.display = "none"; return; }
+  const wrap = byId("assignedToInitials");
+  wrap.innerHTML = "";
+  if (!contacts?.length) {
+    wrap.style.display = "none";
+    return;
+  }
   wrap.style.display = "flex";
   contacts.forEach((c, i) => {
     const div = document.createElement("div");
-    div.className = "av"; div.style.background = window.color(i);
-    div.textContent = initials(c); wrap.appendChild(div);
+    div.className = "av";
+    div.style.background = window.color(i);
+    div.textContent = initials(c);
+    wrap.appendChild(div);
   });
 }
 
 function fillSubtasks(subtasks) {
-  const wrap = document.querySelector(".addedSubtaskWrapper"); wrap.innerHTML = "";
-  (subtasks || []).forEach(s => {
+  const wrap = document.querySelector(".addedSubtaskWrapper");
+  wrap.innerHTML = "";
+  (subtasks || []).forEach((s) => {
     let txt = typeof s === "string" ? s : s.text;
     txt = txt.replace(/^•\s*/, "");
     wrap.appendChild(createSubtaskElement(txt, !!(typeof s === "object" && s.done)));
@@ -328,20 +374,27 @@ function fillSubtasks(subtasks) {
 }
 
 function renderAssignedInitials() {
-  const w = byId("assignedToInitials"); w.innerHTML = "";
-  if (!(assignedContacts && assignedContacts.length)) { w.style.display = "none"; return; }
+  const w = byId("assignedToInitials");
+  w.innerHTML = "";
+  if (!(assignedContacts && assignedContacts.length)) {
+    w.style.display = "none";
+    return;
+  }
   w.style.display = "flex";
   assignedContacts.forEach((c, i) => {
     const d = document.createElement("div");
-    d.className = "av"; d.style.background = window.color(i);
-    d.textContent = initials(c); w.appendChild(d);
+    d.className = "av";
+    d.style.background = window.color(i);
+    d.textContent = initials(c);
+    w.appendChild(d);
   });
 }
 
 /* --------------------------- Datepicker (Min) ---------------------------- */
 
 function mountDatePickerMinToday() {
-  const input = byId("date"); if (!input) return;
+  const input = byId("date");
+  if (!input) return;
   input.min = new Date().toISOString().split("T")[0];
   const tryOpen = () => {
     try {
@@ -358,7 +411,7 @@ function openSemantics(overlay) {
   overlay.style.display = "flex";
   overlay.classList.add("open");
   overlay.setAttribute("aria-hidden", "false");
-  overlay.removeAttribute("aria-hidden"); 
+  overlay.removeAttribute("aria-hidden");
   document.body.classList.add("modal-open");
   setBackgroundInert(true);
 }
@@ -367,7 +420,7 @@ function closeSemantics(overlay) {
   overlay.classList.remove("open");
   overlay.style.display = "";
   overlay.setAttribute("aria-hidden", "true");
-  overlay.setAttribute("aria-hidden", "true"); 
+  overlay.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
   setBackgroundInert(false);
 }
