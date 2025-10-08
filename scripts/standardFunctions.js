@@ -137,6 +137,63 @@
     resetSubtasksSpacing();
   }
 
+  function initCategoryDropdownSubtask() {
+  const dd = document.getElementById("assignedToDropdownCategory");
+  const arrow = document.getElementById("dropdown-arrow-subtasks");
+  const list = document.getElementById("dropdown-list-category");
+
+  if (!dd || !arrow || !list) return;
+
+  let open = false;
+  let __subtasksBox = document.getElementById("subtasks");
+  const __subtasksStyles = {
+    marginTop: __subtasksBox?.style.marginTop || "24px",
+    paddingBottom: __subtasksBox?.style.paddingBottom || "50px",
+  };
+
+  dd.addEventListener("click", (ev) => {
+    ev.stopPropagation();
+    open = !open;
+    dd.classList.toggle("open", open);
+    arrow.style.transform = open
+      ? "translateY(-50%) rotate(180deg)"
+      : "translateY(-50%) rotate(0deg)";
+
+    if (open) {
+      if (__subtasksBox) {
+        const dropdownHeight = list.offsetHeight;
+        __subtasksBox.style.marginTop = dropdownHeight + 16 + "px"; // add extra spacing
+        __subtasksBox.style.paddingBottom = "50px";
+      }
+      const outsideClickHandler = (e) => {
+        if (!dd.contains(e.target)) {
+          dd.classList.remove("open");
+          arrow.style.transform = "translateY(-50%) rotate(0deg)";
+          __subtasksBox.style.marginTop = __subtasksStyles.marginTop;
+          document.removeEventListener("click", outsideClickHandler);
+          open = false;
+        }
+      };
+      document.addEventListener("click", outsideClickHandler);
+    } else {
+      if (__subtasksBox) __subtasksBox.style.marginTop = __subtasksStyles.marginTop;
+    }
+  });
+
+  list.querySelectorAll(".dropdown-item-category").forEach((item) => {
+    item.addEventListener("click", () => {
+      if (__subtasksBox) __subtasksBox.style.marginTop = __subtasksStyles.marginTop;
+      dd.classList.remove("open");
+      arrow.style.transform = "translateY(-50%) rotate(0deg)";
+      open = false;
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initCategoryDropdownSubtask();
+});
+
   /* ------------------------------ Contacts Dropdown --------------------- */
   function dropdownFunction(arrow, dropDown, select, items, onSelect) {
     let open = false;
@@ -217,10 +274,30 @@
     const i = list.indexOf(name);
     if (i >= 0) list.splice(i, 1);
     else list.push(name);
+
+    const dd = $id("assignedToDropdownContacts");
+    const isOpen = dd && dd.classList.contains("open");
+    let beforeHeight;
+
+    if (isOpen) {
+      ensureLayoutRefs();
+      beforeHeight = __categoryBox ? __categoryBox.offsetTop : 0;
+    }
+
     updateDropdownText();
     renderAssignedContacts();
     updateDropdownHighlight();
     updateDropdownBackground("assignedToDropdownContacts");
+
+    if (isOpen && __categoryBox && beforeHeight !== undefined) {
+      const afterHeight = __categoryBox.offsetTop;
+      const delta = afterHeight - beforeHeight;
+      // Get current margin (prefer inline style, fallback to computed)
+      const currentMargin = parseFloat(__categoryBox.style.marginTop) || parseFloat(getComputedStyle(__categoryBox).marginTop) || 0;
+      // Counteract the delta to keep position fixed (prevent negative margin)
+      const newMargin = Math.max(0, currentMargin - delta);
+      __categoryBox.style.marginTop = newMargin + "px";
+    }
   }
 
   function renderAssignedContacts() {
@@ -400,7 +477,7 @@
       document.addEventListener("click", outsideClickHandler);
 
       // Move category and subtasks when opening
-      if (__categoryBox) __categoryBox.style.marginTop = "244px";
+      if (__categoryBox) __categoryBox.style.marginTop = "264px";
       if (__subtasksBox) {
         __subtasksBox.style.marginTop = "24px";
         __subtasksBox.style.paddingBottom = "50px";
