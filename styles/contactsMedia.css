@@ -25,6 +25,8 @@
     min-width: 80px;
     max-width: 80px;
     height: 80px;
+    min-height: 80px;
+    font-weight: 400;
   }
 }
 
@@ -188,6 +190,11 @@
 
   .overlay-actions {
     gap: 20px;
+  }
+
+  .fab-item-delete img {
+    width: 16px !important;
+    height: 18px !important;
   }
 }
 

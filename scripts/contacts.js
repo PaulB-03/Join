@@ -350,13 +350,13 @@ function editOverlayHTML() {
 
           <div class="add-contact-overlay-form">
             <div class="field">
-              <input name="name" class="has-icon icon-user" placeholder="Name" required>
+              <input name="name" class="has-icon icon-user input" placeholder="Name" required>
             </div>
             <div class="field">
-              <input name="email" class="has-icon icon-mail" type="email" placeholder="Email" required>
+              <input name="email" class="has-icon icon-mail input" type="email" placeholder="Email" required>
             </div>
             <div class="field">
-              <input name="phone" class="has-icon icon-phone" placeholder="Phone">
+              <input name="phone" class="has-icon icon-phone input" placeholder="Phone">
             </div>
 
             <div class="overlay-actions">
