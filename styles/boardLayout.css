@@ -210,17 +210,36 @@ a.btn:active {
 
 .dropzone {
   border-radius: 14px;
-  min-height: 200px;
+  height: 800px;
   background: transparent;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 12px 10px;
+  overflow-y: auto;
+  /* For Firefox */
+  scrollbar-width: none;
+  /* For Chrome, Safari, and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .dropzone .empty {
   padding: 12px;
   text-align: center;
   opacity: 0.6;
+}
+
+.dropzone-scrollable {
+  /* For Firefox */
+  scrollbar-width: none;
+  /* For Chrome, Safari, and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  /* For IE and Edge */
+  -ms-overflow-style: none;
 }
 
 .board-viewport {
