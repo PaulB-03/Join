@@ -1,65 +1,94 @@
-@media (max-width: 1024px) {
+@media (max-width: 1400px) {
   .app {
     padding: 150px 16px 48px 260px;
   }
 
   .board {
     grid-template-columns: repeat(1, 1fr);
+    opacity: 1;
+    transform: translateZ(0);
   }
 
   .dropzone {
     display: flex;
-    flex-direction: row;
-    gap: 10px;
-    min-height: 200px;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 12px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch; 
-    scroll-behavior: smooth;
-    cursor: grab;
-    padding: 12px 0;
+    flex-direction: row;     
+    flex-wrap: nowrap;       
+    gap: 16px;                 
+    padding: 12px 16px;
     box-sizing: border-box;
-    height: 300px;
-    margin-bottom: 20px;
+    min-height: 300px;
+    overflow-x: auto;        
+    overflow-y: visible;
+    width: 100%;             
+    justify-content: flex-start;
+    align-items: flex-start;
+    scroll-snap-type: x mandatory;
+    cursor: grab;
+  }
+  .dropzone::after {
+    content: "";
+    flex: 0 0 32px;
   }
 
   .column {
+    flex: 0 0 auto;           
+    width: 100%;             
+    max-width: 80vw;          
     scroll-snap-align: start;
-    min-height: 0;
-    opacity: 1;
-    width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 350px;
   }
 
-  .empty {
-    height: 50px;
-  }
-
-  .btn-text {
-    font-weight: 600;
-    white-space: nowrap;
+  .card {
+    width: 250px;             
+    height: 250px;            
+    flex-shrink: 0;           
+    box-sizing: border-box;
+    border-radius: 24px;
     overflow: hidden;
-    text-overflow: ellipsis;
   }
 }
 
 @media (max-width: 850px) {
+  .board {
+    margin-top: 100px;
+    width: 100%;
+  }
+  .task-detail {
+    padding: 24px 28px 8px 28px;
+    width: 330px;
+    height: auto;
+  }
+
+  #taskOverlay.edit-mode .overlay-panel {
+    width: 390px;
+  }
+
+  .dropzone .empty {
+    padding: 10px;
+    font-size: 12px;
+    min-width: 200px;
+  }
+
+  .column {
+    flex: 0 0 auto;           
+    width: 850px;             
+    max-width: 90vw;          
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 350px;
+  }
+
   .heading {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .card {
-    width: 252px;
-    height: 263px;
-    gap: 10px;
-    opacity: 1;
-    border-radius: 24px;
-    padding: 16px;
+    gap: 8px;
   }
 
   .dropdown-subtasks {
@@ -115,62 +144,5 @@
     width: 20px;
     height: 20px;
     display: inline-block;
-  }
-
-  .dropzone .card,
-  .dropzone .task-container {
-    flex: 0 0 260px;
-  }
-}
-
-@media (max-width: 640px) {
-  .col-head {
-    font-size: 18px;
-    margin-bottom: 6px;
-    height: 32px;
-    justify-content: space-between;
-    opacity: 1;
-  }
-}
-
-@media (max-width: 860px) {
-  .dropzone {
-    min-height: 160px;
-    gap: 8px;
-  }
-
-  .task-detail {
-    padding: 24px 28px 8px 28px;
-    width: 330px;
-    height: auto;
-  }
-
-  #taskOverlay.edit-mode .overlay-panel {
-    width: 390px;
-  }
-
-  .dropzone .empty {
-    padding: 10px;
-    font-size: 12px;
-    min-width: 200px;
-  }
-}
-
-@media (max-width: 900px) {
-  .board {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    margin-top: 100px;
-  }
-
-  .board-viewport {
-    scroll-snap-type: x mandatory;
-    overscroll-behavior-x: contain;
-  }
-
-  .column {
-    scroll-snap-align: start;
-    min-height: 0;
-    opacity: 1;
   }
 }
