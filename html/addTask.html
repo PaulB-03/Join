@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="../styles/fonts.css" />
     <link rel="stylesheet" href="../styles/addTask.css" />
     <link rel="stylesheet" href="../styles/addTaskMedia.css" />
-    <link rel="stylesheet" href="../styles/flatpickr.min.css" />
     <link rel="stylesheet" href="../styles/colors.css" />
 
     <script src="../scripts/standardFunctions.js" defer></script>
@@ -101,7 +100,7 @@
           </div>
           <div class="inputFlexbox marginTop24">
             <h6>Due date<sub class="requiredAsterisk">*</sub></h6>
-            <input type="text" id="date" class="dateIcon input" placeholder="dd/mm/yyyy" required />
+            <input type="date" id="date" class="dateIcon input" placeholder="dd/mm/yyyy" required />
           </div>
           <p id="dateError" class="addTaskErrors">This field is required</p>
         </div>
@@ -170,7 +169,7 @@
                 <img src="../assets/svg/subcheck.svg" class="subtaskImages saveSubtask" alt="Save Subtask" />
               </div>
             </div>
-            <div class="addedSubtaskWrapper"></div>
+            <ul class="addedSubtaskWrapper"></ul>
           </div>
         </div>
       </form>
@@ -188,7 +187,6 @@
         </div>
       </div>
     </div>
-    <script src="../scripts/flatpickr.min.js"></script>
     <script src="../scripts/addTask.js"></script>
     <script src="../scripts/header.js"></script>
     <script src="../scripts/logIn.js"></script>

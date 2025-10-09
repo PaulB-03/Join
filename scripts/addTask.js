@@ -509,25 +509,25 @@ if (textarea && handle) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const dateInput = document.getElementById("date");
-  if (!dateInput) return;
+//document.addEventListener("DOMContentLoaded", () => {
+//  const dateInput = document.getElementById("date");
+//  if (!dateInput) return;
+//
+//  dateInput.addEventListener("input", (e) => {
+//    let val = dateInput.value.replace(/\D/g, "");
+//    if (val.length > 2) val = val.slice(0, 2) + "/" + val.slice(2);
+//    if (val.length > 5) val = val.slice(0, 5) + "/" + val.slice(5, 9);
+//    dateInput.value = val;
+//  });
+//});
 
-  dateInput.addEventListener("input", (e) => {
-    let val = dateInput.value.replace(/\D/g, "");
-    if (val.length > 2) val = val.slice(0, 2) + "/" + val.slice(2);
-    if (val.length > 5) val = val.slice(0, 5) + "/" + val.slice(5, 9);
-    dateInput.value = val;
-  });
-});
-
-flatpickr("#date", {
-  dateFormat: "d/m/Y",
-  locale: "en",
-  allowInput: true,
-  minDate: "today",
-  onClose: validateFutureDate,
-});
+//flatpickr("#date", {
+//  dateFormat: "d/m/Y",
+//  locale: "en",
+//  allowInput: true,
+//  minDate: "today",
+//  onClose: validateFutureDate,
+//});
 
 function validateFutureDate(_, dateStr, instance) {
   const parts = dateStr.split("/");
