@@ -50,7 +50,7 @@ function openSemantics(overlay) {
   overlay.classList.add("open");
   overlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
-  setBackgroundInert(true);
+  //setBackgroundInert(true);
 }
 
 function closeSemantics(overlay) {
@@ -58,7 +58,7 @@ function closeSemantics(overlay) {
   overlay.style.display = "";
   overlay.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
-  setBackgroundInert(false);
+  //setBackgroundInert(false);
 }
 
 function showOverlay(overlay, { focus = true } = {}) {

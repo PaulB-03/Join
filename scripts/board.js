@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   init();
   bindOverlayButtons();
   mountSubtaskCheckboxListener();
-  mountDatePickerMinToday();
+  //mountDatePickerMinToday();
 });
 
 async function init() {
