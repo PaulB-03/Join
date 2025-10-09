@@ -209,7 +209,7 @@ a.btn:active {
 }
 
 .dropzone {
-  border-radius: 14px;
+  width: 270px;
   height: 800px;
   background: transparent;
   display: flex;
