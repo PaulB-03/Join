@@ -1,4 +1,4 @@
-body {
+.addTaskBody {
   overflow: hidden;
   background-color: var(--main-bg-color);
   height: 100%;
@@ -30,7 +30,8 @@ body {
   display: flex;
   flex-direction: column;
   max-width: 1920px;
-  padding: 176px 20px 64px 345px;
+  padding: 206px 20px 64px 328px;
+  transition: padding-left 0.3s ease; /* smooth shrink */
 }
 
 .addTaskForm {
@@ -175,7 +176,7 @@ textarea::placeholder {
 }
 
 #subtasks {
-  padding-bottom: 50px;
+  padding-bottom: 12px;
   transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
 }
 

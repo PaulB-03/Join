@@ -1,131 +1,146 @@
-@media (max-width: 1410px) {
-    body::-webkit-scrollbar {
-        display: none;
-    } 
-    .divider {
-        display: none;
-    }
-    .textrequired {
-        margin-top: 0px;
-    }
-    #requiredHeaders {
-        display: none;
-    }
-    #requiredHeadersMobile {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin: 8px 0;
-    }
+@media (max-width: 1413px) {
+  .addTaskForm {
+    gap: 20px;
+  }
+
+  .addTaskFooter {
+    width: 927px;
+  }
+
+  .addTaskBody::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 1270px) {
+  .addTaskWrapper {
+    padding-left: 255px;
+  }
+}
+
+@media (min-width: 1211px) {
+  .hideDesktop {
+    display: none;
+  }
+}
+
+@media (max-width: 1210px) {
+  .addTaskWrapper {
+    padding-top: 166px;
+  }
+
+  .addTaskWrapper h1 {
+    position: fixed;
+    top: 0;
+    background: var(--main-bg-color);
+    width: 100%;
+    padding-top: 120px;
+    z-index: 2;
+  }
+  .divider {
+    display: none;
+  }
+
+  .addTaskForm {
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 16px;
+    padding-bottom: 42px;
+  }
+
+  .hideMobile {
+    display: none;
+  }
+
+  .addTaskFooter {
+    justify-content: flex-end;
+    width: 440px;
+    position: fixed;
+    top: auto;
+    bottom: 0px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    background: var(--main-bg-color);
+  }
 }
 
 @media (max-width: 850px) {
-    h1 {
-        margin-left: 30px;
-        top: 120px;
-    }
-    form {
-        padding-left: 5px;
-        padding-top: 140px;
-        position: unset;
-    }
-    .inputFlexbox {
-        width: auto;
-    }
-    .title {
-        width: 300px;
-    }
-    #requiredHead, .description, .prio, .assigned, .sub {
-        font-size: 14px;
-    }
-    #requiredHeadersMobile {
-        gap: 2px;
-        display: flex;
-        align-items: start;
-    }
-    #required {
-        width: 8px;
-    }
-    textarea {
-        width: 300px !important;
-    }
-    .prioDivsWrapper {
-        width: 300px;
-        gap: 10px;
-        justify-content: flex-start;
-    }
-    .prioGrade {
-        width: 100px;
-        height: 35px;
-    }
-    .prioGrade span {
-        font-size: 14px;
-    }
-    .prioImage {
-        width: 15px;
-    }
-    .dropdown-subtasks {
-        width: 300px;
-    }
-    .addOrClear {
-        justify-content: center;
-        width: 320px;
-        font-size: 16px;
-        gap: 5px;
-    }
-    .addOrClearBtn {
-        width: 140px;
-        height: 50px;
-    }
-    .addOrClear p {
-        font-size: 14px;
-    }
-    input#contactSearch.search::placeholder {
-        font-size: 12px;
-    }
-    #titleInput.title::placeholder {
-        font-size: 12px;
-    }
-    #descriptionInput.title::placeholder {
-        font-size: 12px;
-    }
-    .dropdown-selected.input-subtask::placeholder {
-        font-size: 12px;
-    }
-    #categoryPlaceholder {
-        font-size: 12px;
-    }
-    input[type="date"]:invalid {
-        font-size: 12px;
-    }
-    input[type="date"]:valid {
-        font-size: 12px;
-    }
-    #dropdown-list-contacts {
-        width: 300px;
-    }
-    #dropdown-list-category {
-        width: 300px;
-    }
-    .custom-checkbox {
-        font-size: 12px;
-    }
-    #subtasks {
-        padding-bottom: 20px;
-    }
-    .dropdown-item-category {
-        width: 300px;
-    }
-    .addTaskWrapper {
-        gap: 10px;
-    }
-    input[type="text"] {
-        font-size: 12px;
-    }
-    .title {
-        font-size: 12px;
-    }
-    #assignedToInitials {
-        gap: 5px;
-    }
+  .addTaskBody {
+    display: flex;
+    justify-content: center;
+  }
+
+  h1 {
+    top: 120px;
+  }
+
+  .addTaskWrapper {
+    gap: 10px;
+    padding-left: 0;
+  }
+  .addTaskForm {
+    padding-bottom: 112px;
+  }
+  /* .inputFlexbox { */
+  /* width: auto; */
+  /* } */
+
+  .addTaskFooter {
+    padding-bottom: 90px;
+  }
+}
+
+@media (max-width: 460px) {
+  .dropdown-subtasks {
+    width: 300px;
+  }
+
+  input#contactSearch.search::placeholder {
+    font-size: 12px;
+  }
+  #titleInput.title::placeholder {
+    font-size: 12px;
+  }
+  #descriptionInput.title::placeholder {
+    font-size: 12px;
+  }
+  .dropdown-selected.input-subtask::placeholder {
+    font-size: 12px;
+  }
+  #categoryPlaceholder {
+    font-size: 12px;
+  }
+  input[type="date"]:invalid {
+    font-size: 12px;
+  }
+  input[type="date"]:valid {
+    font-size: 12px;
+  }
+  #dropdown-list-contacts {
+    width: 300px;
+  }
+  #dropdown-list-category {
+    width: 300px;
+  }
+  .custom-checkbox {
+    font-size: 12px;
+  }
+  #subtasks {
+    padding-bottom: 20px;
+  }
+  .dropdown-item-category {
+    width: 300px;
+  }
+  .addTaskWrapper {
+    gap: 10px;
+  }
+  input[type="text"] {
+    font-size: 12px;
+  }
+  .title {
+    font-size: 12px;
+  }
+  #assignedToInitials {
+    gap: 5px;
+  }
 }

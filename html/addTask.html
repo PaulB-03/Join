@@ -20,7 +20,7 @@
     <script src="../scripts/utilsAddTask.js" defer></script>
   </head>
 
-  <body onload="sidebarHeaderInit()">
+  <body class="addTaskBody" onload="sidebarHeaderInit()">
     <header id="header">
       <div class="header-content" id="header">
         <img src="../assets/svg/join_logo_small.svg" class="headerLogo" style="height: 39px" alt="Join Logo" />
@@ -171,10 +171,11 @@
             </div>
             <ul class="addedSubtaskWrapper"></ul>
           </div>
+          <p class="hideDesktop"><sub class="requiredAsterisk">*</sub>This field is required</p>
         </div>
       </form>
       <div class="addTaskFooter">
-        <p><sub class="requiredAsterisk">*</sub>This field is required</p>
+        <p class="hideMobile"><sub class="requiredAsterisk">*</sub>This field is required</p>
         <div class="addOrClear">
           <div id="clear" class="btn-white clearBtn addOrClearBtn" onclick="clearTask()">
             <h6>Clear</h6>
