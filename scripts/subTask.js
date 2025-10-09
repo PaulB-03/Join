@@ -93,7 +93,7 @@ window.createSubtaskElement = function (text) {
     };
 
     editActions.querySelector(".saveEdit").addEventListener("click", () => exitEdit(true));
-    editActions.querySelector(".cancelEdit").addEventListener("click", () => exitEdit(false));
+    editActions.querySelector(".cancelEdit").addEventListener("click", () => item.remove());
 
     editInput.focus();
   };
