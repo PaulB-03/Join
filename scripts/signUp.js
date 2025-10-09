@@ -8,11 +8,16 @@ const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.a
  * @param {string} email - Email to check.
  * @returns {boolean} True if user exists, false otherwise.
  */
-function checkForUser(users, email) {
-  if (users && Object.values(users).some((u) => u.email === email)) {
+function checkForUser(users, contacts, email) {
+  const emailExistsInUsers = users && Object.values(users).some((u) => u.email === email);
+
+  const emailExistsInContacts = contacts && Object.values(contacts).some((c) => c.email === email);
+
+  if (emailExistsInUsers || emailExistsInContacts) {
     setEmailError("This email address is already used.", true);
     return true;
   }
+
   setEmailError("Please use a valid email address.", false);
   return false;
 }
@@ -76,8 +81,10 @@ async function addUser(name, email, password) {
   const newUser = { name, email, password };
   const res = await fetch(`${BASE_URL}/users.json`);
   const users = await res.json();
+  const contactCheck = await fetch(`${BASE_URL}/contacts.json`);
+  const contacts = await contactCheck.json();
 
-  if (checkForUser(users, email)) return false;
+  if (checkForUser(users, contacts, email)) return false;
   const nextIndex = checkIndexPosition(users);
   const newKey = await saveNewUser(newUser, nextIndex);
   if (!newKey) return false;

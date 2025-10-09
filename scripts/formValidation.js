@@ -72,8 +72,6 @@ async function signupProcess(name, email, password) {
   const success = await addUser(name, email, password);
 
   if (!success) {
-    // Optionally show a UI error message
-    console.warn("Signup failed — user not added");
     return; // stop here
   }
 
