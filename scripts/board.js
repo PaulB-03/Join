@@ -27,6 +27,7 @@ async function init() {
   startLiveSync();
   initDnd();
   highlightNewTask();
+  checkSwapMenu()
 }
 
 function highlightNewTask() {
@@ -356,7 +357,7 @@ function removeTaskCard(id) {
 window.addEventListener("beforeunload", () => {
   try {
     __tasksRef?.off();
-  } catch (e) {}
+  } catch (e) { }
 });
 
 window.Board = Object.assign(window.Board || {}, {
