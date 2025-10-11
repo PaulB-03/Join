@@ -1,0 +1,69 @@
+/* Max Height queries */
+
+@media (max-height: 790px) {
+  #addContactMobileOverlay {
+    height: 300px;
+  }
+
+  .overlay-body {
+    height: 350px;
+    overflow-y: hidden;
+  }
+
+  .avatar {
+    top: 260px;
+  }
+
+  #editContactImgMobile {
+    height: 300px;
+  }
+
+  .overlay {
+    .detailsAvatar {
+      top: 240px;
+    }
+  }
+
+  #editContactForm {
+    height: 350px;
+  }
+}
+
+@media (max-height: 730px) {
+  .overlay-close {
+    top: 48px;
+  }
+}
+
+@media (max-height: 690px) {
+  .add-contact-overlay-form {
+    gap: 0px;
+  }
+}
+
+@media (max-height: 660px) {
+  .overlay-close {
+    top: 62px;
+  }
+
+  .overlay-body {
+    padding-top: 40px;
+  }
+}
+
+@media (max-height: 630px) {
+  .overlay-close {
+    top: 80px;
+  }
+
+  .overlay-body {
+    padding-top: 0px;
+    height: 370px;
+  }
+}
+
+@media (max-height: 590px) {
+  .overlay-close {
+    top: 96px;
+  }
+}
