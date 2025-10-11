@@ -344,15 +344,31 @@ function validateAddContactForm() {
 
 async function deleteContact(id) {
   if (!id) return;
-  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, {
-    method: "DELETE",
-  });
+  const contact = contacts.find(c => c.id === id);
+  if (contact) await removeContactFromAllTasks(contact.name);
+  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, { method: "DELETE" });
   if (!res.ok) throw new Error("Failed to delete contact");
-  await loadContacts(); // refresh list
+  await loadContacts();
   const body = document.querySelector(".contactDetailsBody");
-  if (body) body.innerHTML = ""; // clear details panel
+  if (body) body.innerHTML = "";
   document.body.classList.remove("showing-details");
 }
+
+
+async function removeContactFromAllTasks(name) {
+  try {
+    const res = await fetch(`${DB_ROOT}/tasks.json`);
+    const tasks = (await res.json()) || {};
+    await Promise.all(Object.entries(tasks)
+      .filter(([_, t]) => t.assignedContacts?.includes(name))
+      .map(([id, t]) => fetch(`${DB_ROOT}/tasks/${id}.json`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ assignedContacts: t.assignedContacts.filter(n => n !== name) })
+      })));
+  } catch (e) { console.error("Failed to remove contact from tasks:", e); }
+}
+
 
 function stripId(obj) {
   const { id, ...rest } = obj || {};
