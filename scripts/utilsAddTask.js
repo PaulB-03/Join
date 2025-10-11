@@ -232,7 +232,7 @@ function closeSwapMenu() {
 function getSwapTemplate() {
   return `
          <ul class="swapMenu" id="swapMenu">
-            <li class"swapMenuHeading">Move To</li>
+            <li class="swapMenuHeading">Move To</li>
             <div class="menuStates">
               <li>To-do</li>
               <li>In Progress</li>
