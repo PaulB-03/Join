@@ -65,8 +65,13 @@
   gap: 16px;
   z-index: 10;
   list-style: none;
+  cursor: default;
 }
 
+.swapMenuHeading {
+  font-weight: 700;
+  font-size: 16px;
+}
 .menuStates {
   display: flex;
   flex-direction: column;
@@ -80,11 +85,12 @@
 .menuStates li {
   padding: 7px;
   transition: background-color 0.1s ease-in-out;
-  border-bottom-left-radius: 20px;
-  border-top-left-radius: 20px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .swapMenu li {
+  font-weight: 500;
   color: white;
   font-size: 14px;
 }
