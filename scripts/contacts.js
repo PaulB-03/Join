@@ -154,7 +154,7 @@ function selectContact(row, contact) {
   row.classList.add("is-selected"); // mark this row
   renderContactDetails(contact); // show details on the right
 
-  if (window.innerWidth <= 905) {
+  if (window.innerWidth <= 925) {
     document.querySelector(".contactDetails")?.classList.add("show");
     document.querySelector(".contactList")?.classList.add("hide");
     document.body.classList.add("showing-details");
