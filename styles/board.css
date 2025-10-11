@@ -69,9 +69,11 @@
 }
 
 .swapMenuHeading {
-  font-weight: 700;
+  font-weight: 700 ;
   font-size: 16px;
+  color: white;
 }
+
 .menuStates {
   display: flex;
   flex-direction: column;
@@ -87,11 +89,8 @@
   transition: background-color 0.1s ease-in-out;
   border-radius: 8px;
   cursor: pointer;
-}
-
-.swapMenu li {
-  font-weight: 500;
   color: white;
+  font-weight: 500;
   font-size: 14px;
 }
 
