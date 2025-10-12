@@ -69,7 +69,7 @@
 }
 
 .swapMenuHeading {
-  font-weight: 700 ;
+  font-weight: 700;
   font-size: 16px;
   color: white;
 }
@@ -97,15 +97,13 @@
 .pill {
   display: inline-flex;
   align-items: center;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
+  /*border-radius: 999px;*/
   padding: 0 10px;
   color: var(--white);
 }
 
 .pill.user {
-  background: var(--contact-bg-purple);
+  background: var(--contact-bg-blue);
   border-radius: 8px;
   padding: 6px 10px;
 }
@@ -194,7 +192,7 @@
 }
 
 .progress {
-  background: var(--main-bg-color);
+  background: var(--bottom-gradient);
   height: 6px;
   border-radius: 8px;
   overflow: hidden;
@@ -377,16 +375,16 @@
   display: none;
 }
 
-.subtasks__item input[type="checkbox"]:checked+.cb--unchecked {
+.subtasks__item input[type="checkbox"]:checked + .cb--unchecked {
   display: none;
 }
 
-.subtasks__item input[type="checkbox"]:checked+.cb--unchecked+.cb--checked {
+.subtasks__item input[type="checkbox"]:checked + .cb--unchecked + .cb--checked {
   display: inline-block;
 }
 
-.subtasks__item input[type="checkbox"]:focus-visible+.cb--unchecked,
-.subtasks__item input[type="checkbox"]:focus-visible+.cb--unchecked+.cb--checked {
+.subtasks__item input[type="checkbox"]:focus-visible + .cb--unchecked,
+.subtasks__item input[type="checkbox"]:focus-visible + .cb--unchecked + .cb--checked {
   outline: 2px solid var(--color-statsbar);
   outline-offset: 2px;
   border-radius: 4px;
@@ -448,8 +446,6 @@
 }
 
 .priority-icon {
-  width: 15px;
-  height: 15px;
   display: inline-block;
 }
 

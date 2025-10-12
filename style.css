@@ -255,7 +255,7 @@ header {
   .nav-list {
     flex-direction: row;
     justify-content: space-evenly;
-    margin: 0 20px;
+    margin: 0 6px;
   }
 
   .nav-link {
@@ -265,7 +265,7 @@ header {
     gap: 4px;
     font-size: 14px;
     font-weight: 400;
-    border-radius: 8px;
+    border-radius: 16px;
   }
 
   .nav-link .icon img {
@@ -274,14 +274,20 @@ header {
   }
 
   .nav-item {
-    border-radius: 8px;
+    border-radius: 16px;
     height: 80px;
-    width: 76px;
+    width: 90px;
   }
 
   .sb-header,
   .sb-footer {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-item {
+    width: 76px;
   }
 }
 

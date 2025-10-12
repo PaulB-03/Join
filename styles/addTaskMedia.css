@@ -27,6 +27,7 @@
 @media (max-width: 1210px) {
   .addTaskWrapper {
     padding-top: 166px;
+    padding-left: 300px;
   }
 
   .addTaskWrapper h1 {
@@ -76,11 +77,14 @@
 
   .addTaskWrapper {
     gap: 10px;
-    padding-left: 0;
+    padding-right: 8px;
+    padding-left: 8px;
   }
+
   .addTaskForm {
     padding-bottom: 112px;
   }
+
   /* .inputFlexbox { */
   /* width: auto; */
   /* } */
@@ -90,56 +94,73 @@
   }
 }
 
-@media (max-width: 460px) {
-  .dropdown-subtasks {
-    width: 300px;
+@media (max-width: 480px) {
+  .addTaskWrapper {
+    width: 100vw;
   }
 
-  input#contactSearch.search::placeholder {
-    font-size: 12px;
+  .addTaskMobile {
+    width: 100%;
   }
-  #titleInput.title::placeholder {
-    font-size: 12px;
+
+  .inputFlexbox {
+    width: 100%;
   }
-  #descriptionInput.title::placeholder {
-    font-size: 12px;
+
+  .description {
+    font-size: 16px;
+    width: 100% !important;
   }
-  .dropdown-selected.input-subtask::placeholder {
-    font-size: 12px;
+
+  .prioDivsWrapper {
+    gap: 5px;
   }
-  #categoryPlaceholder {
-    font-size: 12px;
+
+  .prioGrade {
+    padding: 16px 6px;
   }
-  input[type="date"]:invalid {
-    font-size: 12px;
-  }
-  input[type="date"]:valid {
-    font-size: 12px;
-  }
-  #dropdown-list-contacts {
+
+  .assignedToSearch {
     width: 300px;
+    height: 24px;
+    font-size: 16px;
   }
-  #dropdown-list-category {
-    width: 300px;
+
+  .dropdown-selected {
+    padding: 11px 21px;
   }
+
+  .dropdown-subtasks {
+    width: 100%;
+  }
+
+  .assignedToSearch::placeholder {
+    font-size: 16px;
+  }
+
   .custom-checkbox {
-    font-size: 12px;
+    font-size: 16px;
   }
+
+  .clearBtn h6 {
+    font-size: 20px;
+  }
+
+  .addTaskFooter {
+    width: 100%;
+    right: 8px;
+  }
+}
+
+@media (max-width: 460px) {
   #subtasks {
     padding-bottom: 20px;
   }
-  .dropdown-item-category {
-    width: 300px;
-  }
+
   .addTaskWrapper {
     gap: 10px;
   }
-  input[type="text"] {
-    font-size: 12px;
-  }
-  .title {
-    font-size: 12px;
-  }
+
   #assignedToInitials {
     gap: 5px;
   }

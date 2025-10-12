@@ -161,9 +161,9 @@ a:hover {
   height: 16px;
 }
 
-@media (max-width: 590px) {
+@media (max-width: 480px) {
   * {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   h1 {
@@ -179,8 +179,17 @@ a:hover {
   }
 
   h6 {
-    font-size: 14px;
+    font-size: 16px;
   }
+}
+
+.input {
+  padding: 10px 21px;
+  font-size: 16px;
+}
+
+.input::placeholder {
+  font-size: 16px;
 }
 
 @media (max-width: 450px) {
