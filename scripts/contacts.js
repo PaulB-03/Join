@@ -25,13 +25,14 @@ async function addContact(contact) {
   showContactToast(); // show toast notification
 }
 
+// display a temporary toast notification after a new contact is added
 function showContactToast(message = "Contact successfully created") {
-  const toastElement = document.getElementById("contactToast");
-  if (!toastElement) return;
-  toastElement.textContent = message;
-  toastElement.classList.add("show");
-  clearTimeout(toastElement.autoHideTimer);
-  toastElement.autoHideTimer = setTimeout(() => toastElement.classList.remove("show"), 3500);
+  const toastElement = document.getElementById("contactToast"); // get the toast element from the DOM
+  if (!toastElement) return; // stop if the toast element is not found
+  toastElement.textContent = message; // set the message text
+  toastElement.classList.add("show"); // make the toast visible by adding the 'show' class
+  clearTimeout(toastElement.autoHideTimer); // clear any existing auto-hide timer to prevent multiple timers from running
+  toastElement.autoHideTimer = setTimeout(() => toastElement.classList.remove("show"), 3500); // automatically hide the toast after 3.5 seconds
 }
 
 // helpers for setupAddContactOverlay()
@@ -43,26 +44,26 @@ function openAddContactDialog() {
   }
 }
 
-function closeAddContactDialog() {
-  var overlay = document.getElementById("contactOverlay"),
+function closeAddContactDialog() { // close the "Add Contact" overlay and reset the form, called after submitting or canceling
+  var overlay = document.getElementById("contactOverlay"), // get references to the overlay and the form elements
     form = document.getElementById("addContactForm");
-  if (overlay) {
+  if (overlay) { // if the overlay exists, close it and restore normal page scrolling
     overlay.classList.remove("open");
     document.body.classList.remove("modal-open");
   }
-  if (form) form.reset();
+  if (form) form.reset(); // if the form exists, reset all its input fields to default (empty)
 }
 
-function readAddContactForm() {
-  var form = document.getElementById("addContactForm");
-  return {
+function readAddContactForm() { // read and return the current values from the "Add Contact" form fields
+  var form = document.getElementById("addContactForm"); // get a reference to the form element
+  return { // return an object with trimmed values for name, email, and phone
     name: form.name.value.trim(),
     email: form.email.value.trim(),
     phone: form.phone.value.trim(),
   };
 }
 
-async function submitAddContact(event) {
+async function submitAddContact(event) { // handle submission of the "Add Contact" form
   event.preventDefault();
   if (!validateAddContactForm()) return; // stop if invalid
   await addContact(readAddContactForm());
@@ -126,16 +127,17 @@ function baseLetter(name) {
   return ch.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
+// create a header element for each alphabet group in the contact list, called by initContactsList()
 function alphaHeader(letter) {
-  const frag = document.createDocumentFragment();
-  const h = document.createElement("h6");
-  h.className = "alphaHeader";
-  h.textContent = letter;
-  const divider = document.createElement("div");
-  divider.className = "alphaDivider";
-  frag.appendChild(h);
+  const frag = document.createDocumentFragment(); // create a document fragment to hold the header elements (improves performance when appending)
+  const h = document.createElement("h6"); // create the letter header element (e.g., "A", "B", "C")
+  h.className = "alphaHeader"; // add class for styling
+  h.textContent = letter; // set the displayed letter
+  const divider = document.createElement("div"); // create a divider line below the header
+  divider.className = "alphaDivider"; // add class for styling
+  frag.appendChild(h); // append the header and divider to the fragment
   frag.appendChild(divider);
-  return frag;
+  return frag; // return the completed header fragment to be inserted into the contact list
 }
 
 // helper function for contactRow() to create each element (contact avatar, name, email)
@@ -179,10 +181,11 @@ function selectContact(row, contact) {
   }
 }
 
+// clear the current contact selection in the contact list
 function removeSelected() {
-  document
+  document // find all contact items that are currently marked as selected
     .querySelectorAll(".contactItem.is-selected")
-    .forEach((el) => el.classList.remove("is-selected"));
+    .forEach((el) => el.classList.remove("is-selected")); // loop through each selected item and remove the "is-selected" class
 }
 
 function backToList() {
@@ -249,17 +252,18 @@ function detailsInfoHTML(contact) {
   `;
 }
 
+// build the contact information section (email and phone) for the details view, called by renderContactDetails()
 function detailsInfo(contact) {
-  const info = createElementWith("div", "detailsSection");
-  info.innerHTML = detailsInfoHTML(contact);
-  const trigger = info.querySelector("#editPhoneTrigger");
-  if (trigger) {
+  const info = createElementWith("div", "detailsSection"); // create the main container for the contact info section
+  info.innerHTML = detailsInfoHTML(contact); // fill the container with the HTML template generated by detailsInfoHTML()
+  const trigger = info.querySelector("#editPhoneTrigger"); // check if the "add phone number" link is present (appears when phone is missing when a new user is created on Signup)
+  if (trigger) { // if the trigger exists, attach an onClick event to open the edit dialog instead of navigating
     trigger.addEventListener("click", (e) => {
-      e.preventDefault();
-      openEdit(contact);
+      e.preventDefault(); // prevent default link behavior
+      openEdit(contact); // open the contact edit form
     });
   }
-  return info;
+  return info; // return the fully built info section to be added to the details view
 }
 
 // load the svg file and inline it, called by actionButton
@@ -326,66 +330,67 @@ function getAddContactRefs() {
   };
 }
 
+// validate the add contact form before submission, called by submitAddContact()
 function validateAddContactForm() {
-  const { name, email, phone, nameErr, emailErr, phoneErr } =
-    getAddContactRefs();
-  if (!name || !email || !phone) return false;
+  const { name, email, phone, nameErr, emailErr, phoneErr } = getAddContactRefs(); // get references to all input and error elements from the form
+  if (!name || !email || !phone) return false; // stop validation if any of the fields are missing (form not found or incomplete)
 
-  const validName = addNameRegex.test(name.value.trim());
+  const validName = addNameRegex.test(name.value.trim()); // test the values of each input using their respective regex patterns (name, email, phone)
   const validEmail = addEmailRegex.test(email.value.trim());
   const validPhone = addPhoneRegex.test((phone.value || "").trim());
 
-  updateFieldErr(validName, name, nameErr);
+  updateFieldErr(validName, name, nameErr); // update visual error state for each field (show/hide error message and styling)
   updateFieldErr(validEmail, email, emailErr);
   updateFieldErr(validPhone, phone, phoneErr);
 
-  return validName && validEmail && validPhone;
+  return validName && validEmail && validPhone; // return true only if all fields are valid
 }
 
+// delete a contact from the database, called by the Delete button in contact details
 async function deleteContact(id) {
-  if (!id) return;
-  const contact = contacts.find(c => c.id === id);
-  if (contact) await removeContactFromAllTasks(contact.name);
-  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, { method: "DELETE" });
-  if (!res.ok) throw new Error("Failed to delete contact");
-  await loadContacts();
-  const body = document.querySelector(".contactDetailsBody");
+  if (!id) return; // stop if no contact ID was provided
+  const contact = contacts.find(c => c.id === id); // find the contact in the contacts array using the ID
+  if (contact) await removeContactFromAllTasks(contact.name);  // if the contact exists, remove them from all tasks before deletion
+  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, { method: "DELETE" }); // send a DELETE request to remove the contact from the database
+  if (!res.ok) throw new Error("Failed to delete contact"); // if the request failed, throw an error
+  await loadContacts(); // reload the updated contact list after deletion
+  const body = document.querySelector(".contactDetailsBody"); // clear the contact details panel if it is currently visible
   if (body) body.innerHTML = "";
-  document.body.classList.remove("showing-details");
+  document.body.classList.remove("showing-details"); // remove the "showing-details" class to return to list view (for mobile)
 }
 
-
+// remove a contact from all tasks where they are assigned, called before deleting a contact
 async function removeContactFromAllTasks(name) {
   try {
-    const res = await fetch(`${DB_ROOT}/tasks.json`);
-    const tasks = (await res.json()) || {};
-    await Promise.all(Object.entries(tasks)
-      .filter(([_, t]) => t.assignedContacts?.includes(name))
-      .map(([id, t]) => fetch(`${DB_ROOT}/tasks/${id}.json`, {
+    const res = await fetch(`${DB_ROOT}/tasks.json`); // fetch all tasks from the database
+    const tasks = (await res.json()) || {}; // parse the JSON response (fallback to empty object if null)
+    await Promise.all(Object.entries(tasks) // go through each task and find the ones where the contact is assigned
+      .filter(([_, t]) => t.assignedContacts?.includes(name)) // only keep tasks that include this contact
+      .map(([id, t]) => fetch(`${DB_ROOT}/tasks/${id}.json`, { // send a PATCH request to update each task and remove the contact’s name
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ assignedContacts: t.assignedContacts.filter(n => n !== name) })
+        body: JSON.stringify({ assignedContacts: t.assignedContacts.filter(n => n !== name) }) // remove the contact from the list
       })));
-  } catch (e) { console.error("Failed to remove contact from tasks:", e); }
+  } catch (e) { console.error("Failed to remove contact from tasks:", e); } // log any errors that occur during the process
 }
 
-
+// remove the "id" property from a contact object before saving to the database
 function stripId(obj) {
-  const { id, ...rest } = obj || {};
-  return rest;
+  const { id, ...rest } = obj || {}; // use object destructuring to separate "id" from the rest of the properties
+  return rest; // return the object without the "id" field
 }
 
+// update an existing contact in the database, called when saving contact edits
 async function updateContact(id, updates) {
-  const existing = contacts.find((c) => c.id === id) || {};
-  const payload = stripId({ ...existing, ...updates });
-  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, {
+  const existing = contacts.find((c) => c.id === id) || {}; // find the existing contact by its ID from the local contacts array
+  const payload = stripId({ ...existing, ...updates }); // merge the existing contact data with the new updates, then remove the 'id' property before saving
+  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, { // send a PUT request to update the contact data in the database
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
-  if (!res.ok) throw new Error("Failed to update contact");
+  if (!res.ok) throw new Error("Failed to update contact"); // if the request failed, throw an error
   await loadContacts(); // refresh list
-  const updated = contacts.find((c) => c.id === id);
-  if (updated) renderContactDetails(updated); // refresh right pane
+  const updated = contacts.find((c) => c.id === id); // find the updated contact in the refreshed list
+  if (updated) renderContactDetails(updated); // if the contact exists, re-render the contact details panel to show the new info
 }
-
