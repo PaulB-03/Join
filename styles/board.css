@@ -1,10 +1,10 @@
 .card {
   position: relative;
   background: var(--white);
-  border: 1px solid var(--color-placeholder);
-  border-radius: 16px;
+  border: none;
+  border-radius: 24px;
   padding: 14px;
-  box-shadow: 0px 0px 10px 3px #00000014;
+  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
   transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
   cursor: pointer;
   margin-bottom: 12px;
@@ -456,13 +456,11 @@
 }
 
 .empty-state {
-  padding: 12px 14px;
-  border: 1px solid var(--color-placeholder);
-  background: var(--main-bg-color);
-  color: var(--board-column);
-  border-radius: 8px;
+  position: absolute;
+  top: 52px;
+  left: 17px;
+  color: var(--form-error);
   font-size: 14px;
-  margin: 8px 0 0;
 }
 
 .task-actions .icon {

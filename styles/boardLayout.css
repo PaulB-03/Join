@@ -32,6 +32,7 @@ h1 {
 }
 
 .controls {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -66,7 +67,21 @@ h1 {
 
 .search-icon {
   position: absolute;
-  right: 15px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background-image: url(../assets/svg/search_default.svg);
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.3s ease; /* optional */
+}
+
+.search-icon:hover {
+  background-image: url(../assets/svg/search_hover.svg);
+}
+
+.search-icon:active {
+  background-image: url(../assets/svg/search_clicked.svg);
 }
 
 .search::after {
@@ -160,29 +175,26 @@ a.btn:active {
 }
 
 .col-head .add-card-btn {
-  display: inline-flex;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
+  background-image: url("../assets/svg/boardAdd_default.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.3s ease;
+  border: none;
   margin-left: auto;
-  border: 2px solid var(--main-color-dark);
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--main-color-dark);
-  background: var(--white);
   cursor: pointer;
   transition: 0.2s;
 }
 
-.col-head .add-card-btn:hover {
-  background: var(--main-bg-color);
-  color: var(--light-blue);
-  border-color: var(--light-blue);
+.add-card-btn:hover {
+  background-image: url("../assets/svg/boardAdd_hover.svg");
 }
 
-.add-card-btn {
-  background: transparent !important;
+.add-card-btn:active {
+  background-image: url("../assets/svg/boardAdd_clicked.svg");
 }
 
 .empty {

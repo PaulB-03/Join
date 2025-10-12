@@ -117,6 +117,10 @@ body {
   height: 60px;
 }
 
+.urgencySvgContainer img {
+  width: 34.19px;
+}
+
 .summaryCount {
   display: flex;
   flex-direction: column;
@@ -153,7 +157,7 @@ body {
 
 .summaryBox:hover {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  transform: scale(1.02);
+  transform: scale(1.029);
   background-color: var(--main-color);
   color: white;
 
@@ -278,6 +282,13 @@ body {
   .summaryInfoTiles {
     max-width: 396px;
     gap: 24px;
+    h2 {
+      font-size: 47px;
+      line-height: 0.9;
+    }
+    h6 {
+      font-size: 14px;
+    }
   }
   .summaryBox {
     gap: 10px;
@@ -294,6 +305,10 @@ body {
   .urgencySvgContainer {
     height: 40px;
     width: 40px;
+  }
+
+  .urgencySvgContainer img {
+    width: 22.79px;
   }
 
   .summaryCount {

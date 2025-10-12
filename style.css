@@ -295,4 +295,8 @@ header {
   .nav-link {
     font-size: 12px;
   }
+
+  .nav-item span {
+    font-size: 12px;
+  }
 }

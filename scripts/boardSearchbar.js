@@ -94,62 +94,62 @@ function hideNoResults() {
   box.classList.add("d_none");
 }
 
-const defaultSrc = "../assets/svg/search_default.svg";
-const hoverSrc = "../assets/svg/search_hover.svg";
-const clickedSrc = "../assets/svg/search_clicked.svg";
+// const defaultSrc = "../assets/svg/search_default.svg";
+// const hoverSrc = "../assets/svg/search_hover.svg";
+// const clickedSrc = "../assets/svg/search_clicked.svg";
 
-// ---- Part 1: setup and initialization ----
-function setupSearchIcons() {
-  document.querySelectorAll(".search-icon").forEach((icon) => {
-    const input = icon.nextElementSibling;
-    let clickTimeout;
+// // ---- Part 1: setup and initialization ----
+// function setupSearchIcons() {
+//   document.querySelectorAll(".search-icon").forEach((icon) => {
+//     const input = icon.nextElementSibling;
+//     let clickTimeout;
 
-    addHoverHandlers(icon);
-    addClickHandler(icon, input, () => (clickTimeout = handleClick(icon, clickTimeout)));
-    addResetHandlers(icon, input, () => clearTimeout(clickTimeout));
-  });
-}
+//     addHoverHandlers(icon);
+//     addClickHandler(icon, input, () => (clickTimeout = handleClick(icon, clickTimeout)));
+//     addResetHandlers(icon, input, () => clearTimeout(clickTimeout));
+//   });
+// }
 
-// ---- Part 2: hover behavior ----
-function addHoverHandlers(icon) {
-  icon.addEventListener("mouseenter", () => {
-    if (!icon.classList.contains("active")) icon.src = hoverSrc;
-  });
+// // ---- Part 2: hover behavior ----
+// function addHoverHandlers(icon) {
+//   icon.addEventListener("mouseenter", () => {
+//     if (!icon.classList.contains("active")) icon.src = hoverSrc;
+//   });
 
-  icon.addEventListener("mouseleave", () => {
-    if (!icon.classList.contains("active")) icon.src = defaultSrc;
-  });
-}
+//   icon.addEventListener("mouseleave", () => {
+//     if (!icon.classList.contains("active")) icon.src = defaultSrc;
+//   });
+// }
 
-// ---- Part 3: click behavior (500 ms effect) ----
-function handleClick(icon, clickTimeout) {
-  icon.src = clickedSrc;
-  icon.classList.add("active");
-  const input = icon.nextElementSibling;
-  input.focus();
+// // ---- Part 3: click behavior (500 ms effect) ----
+// function handleClick(icon, clickTimeout) {
+//   icon.src = clickedSrc;
+//   icon.classList.add("active");
+//   const input = icon.nextElementSibling;
+//   input.focus();
 
-  clearTimeout(clickTimeout);
-  return setTimeout(() => {
-    icon.classList.remove("active");
-    icon.src = defaultSrc;
-  }, 100);
-}
+//   clearTimeout(clickTimeout);
+//   return setTimeout(() => {
+//     icon.classList.remove("active");
+//     icon.src = defaultSrc;
+//   }, 100);
+// }
 
-function addClickHandler(icon, input, handler) {
-  icon.addEventListener("click", handler);
-}
+// function addClickHandler(icon, input, handler) {
+//   icon.addEventListener("click", handler);
+// }
 
-// ---- Part 4: reset on typing or blur ----
-function addResetHandlers(icon, input, clearTimer) {
-  input.addEventListener("input", () => resetIcon(icon, clearTimer));
-  input.addEventListener("blur", () => resetIcon(icon, clearTimer));
-}
+// // ---- Part 4: reset on typing or blur ----
+// function addResetHandlers(icon, input, clearTimer) {
+//   input.addEventListener("input", () => resetIcon(icon, clearTimer));
+//   input.addEventListener("blur", () => resetIcon(icon, clearTimer));
+// }
 
-function resetIcon(icon, clearTimer) {
-  clearTimer();
-  icon.classList.remove("active");
-  icon.src = defaultSrc;
-}
+// function resetIcon(icon, clearTimer) {
+//   clearTimer();
+//   icon.classList.remove("active");
+//   icon.src = defaultSrc;
+// }
 
-// ---- Initialize everything ----
-setupSearchIcons();
+// // ---- Initialize everything ----
+// setupSearchIcons();

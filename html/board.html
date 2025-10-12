@@ -127,7 +127,7 @@
         <div class="controls">
           <div id="search-empty-state" class="empty-state d_none" role="status" aria-live="polite">Keine Ergebnisse gefunden.</div>
           <div class="search" role="search" aria-label="Find Task">
-            <img class="search-icon" src="../assets/svg/search_default.svg" alt="" />
+            <div class="search-icon"></div>
             <input type="search" oninput="processChanges()" id="taskSearchInput" name="taskSearch" placeholder="Find Task" />
           </div>
           <!-- <input class="search" type="search" oninput="processChanges()" id="taskSearchInput" name="taskSearch" placeholder="Find Task" /> -->
@@ -143,7 +143,7 @@
           <div class="column">
             <div class="col-head">
               To do
-              <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+              <button class="add-card-btn" aria-label="Neue Karte hinzufügen"></button>
             </div>
             <div class="dropzone" id="todo">
               <div class="empty">No tasks To do</div>
@@ -153,7 +153,7 @@
           <div class="column">
             <div class="col-head">
               In progress
-              <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+              <button class="add-card-btn" aria-label="Neue Karte hinzufügen"></button>
             </div>
             <div class="dropzone" id="in-progress">
               <div class="empty">No tasks In progress</div>
@@ -163,7 +163,7 @@
           <div class="column">
             <div class="col-head">
               Await feedback
-              <button class="add-card-btn" aria-label="Neue Karte hinzufügen">+</button>
+              <button class="add-card-btn" aria-label="Neue Karte hinzufügen"></button>
             </div>
             <div class="dropzone" id="await-feedback">
               <div class="empty">No tasks Await feedback</div>
