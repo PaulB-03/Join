@@ -144,7 +144,7 @@ textarea::placeholder {
 }
 
 .description:focus {
-  border: 1.5px solid var(--light-blue);
+  border: 1px solid var(--light-blue);
 }
 
 ::-webkit-calendar-picker-indicator {
