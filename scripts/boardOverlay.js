@@ -127,8 +127,16 @@ function onEditTask(id, task, overlay) {
   openTaskOverlay();
   byId("taskOverlay")?.classList.add("edit-mode");
   const btn = byId("add");
-  btn.setAttribute("data-editing-id", id);
-  btn.querySelector("p").textContent = "Save changes";
+  if (btn) {
+    btn.setAttribute("data-editing-id", id);
+    // Falls kein <p> vorhanden ist, anlegen
+    let p = btn.querySelector("p");
+    if (!p) {
+      p = document.createElement("p");
+      btn.prepend(p);
+    }
+    p.textContent = "Save changes";
+  }
   typeof fillTaskFormFromExisting === "function" && fillTaskFormFromExisting(id, task);
 }
 
@@ -164,8 +172,16 @@ function openTaskOverlay() {
   ov.classList.remove("edit-mode");
   showOverlay(ov, { focus: false });
   const btn = byId("add");
-  btn.removeAttribute("data-editing-id");
-  btn.querySelector("p").textContent = "Create task";
+  if (btn) {
+    btn.removeAttribute("data-editing-id");
+    // Stelle sicher, dass ein <p> existiert bevor textContent gesetzt wird
+    let p = btn.querySelector("p");
+    if (!p) {
+      p = document.createElement("p");
+      btn.prepend(p);
+    }
+    p.textContent = "Create task";
+  }
   clearTask();
   initTaskFormEnhancements();
   (byId("titleInput") || firstFocusable(ov) || ov).focus();
