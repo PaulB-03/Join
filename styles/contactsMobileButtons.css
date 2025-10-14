@@ -1,3 +1,10 @@
+#submitAdd {
+  width: 214px;
+  height: 57px;
+  font-size: 21px;
+  padding: 0;
+}
+
 .backToListBtn {
   display: none;
   width: 32px;

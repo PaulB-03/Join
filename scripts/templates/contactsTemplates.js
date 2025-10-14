@@ -51,7 +51,7 @@ function editOverlayHTML() {
 
             <div class="overlay-actions">
               <button type="button" class="btn-white" id="editDeleteBtn">Delete</button>
-              <button type="submit" class="btn-dark">Save ✓</button>
+              <button type="submit" class="btn-dark" id="editSaveBtn">Save <img src="../assets/svg/check.svg" alt="Save icon"></button>
             </div>
           </div>
         </div>
