@@ -30,6 +30,7 @@ function updateFieldErr(isValid, inputEl, errorEl) {
   inputEl.setAttribute("aria-invalid", String(!isValid));
 }
 
+
 /**
  * Get references to Add Contact form fields and error nodes.
  * @returns {AddContactRefs}
@@ -54,6 +55,7 @@ function getAddContactRefs() {
   };
 }
 
+
 /**
  * Validate the Add Contact form values.
  * @returns {boolean} True if all fields are valid.
@@ -69,6 +71,7 @@ function validateAddContactForm() {
   updateFieldErr(validPhone, phone, phoneErr);
   return validName && validEmail && validPhone;
 }
+
 
 /**
  * Delete a contact by id and update the UI.
@@ -87,6 +90,7 @@ async function deleteContact(id) {
   if (body) body.innerHTML = "";
   document.body.classList.remove("showing-details");
 }
+
 
 /**
  * Remove a contact's name from all tasks where it is assigned.
@@ -108,6 +112,7 @@ async function removeContactFromAllTasks(name) {
   } catch (e) { console.error("Failed to remove contact from tasks:", e); } 
 }
 
+
 /**
  * Remove the `id` property from an object.
  * @template T extends object
@@ -118,6 +123,7 @@ function stripId(obj) {
   const { id, ...rest } = obj || {}; 
   return rest;
 }
+
 
 /**
  * Update a contact by id with partial fields.
@@ -140,6 +146,7 @@ async function updateContact(id, updates) {
   if (updated) renderContactDetails(updated);
 }
 
+
 /**
  * Opens the edit overlay for a given contact and wires all interactions.
  * @param {Contact} contact - The contact to edit.
@@ -159,6 +166,7 @@ function openEdit(contact) {
   wireSave(overlay, contact);
 }
 
+
 /**
  * Creates the overlay container element for the edit dialog.
  * @returns {HTMLElement} The overlay root element.
@@ -171,6 +179,7 @@ function makeEditOverlay() {
   return el; 
 }
 
+
 /**
  * Appends the overlay to the DOM and displays it.
  * @param {HTMLElement} overlay - The overlay element to mount.
@@ -181,6 +190,7 @@ function mountAndShow(overlay) {
   requestAnimationFrame(() => overlay.classList.add("open")); 
   document.body.classList.add("modal-open"); 
 }
+
 
 /**
  * Registers handlers to close the overlay via outside click or close button.
@@ -196,6 +206,7 @@ function wireCloseHandlers(overlay) {
     .querySelector(".overlay-close")
     .addEventListener("click", closeEditDialog); 
 }
+
 
 /**
  * Prefills the edit form fields and avatar based on the provided contact.
@@ -213,6 +224,7 @@ function prefillEditForm(overlay, contact) {
   avatar.style.background = colorForName(contact.name);
 }
 
+
 /**
  * Updates the avatar (initials and background color) live as the name input changes.
  * @param {HTMLElement} overlay - The overlay element containing the form and avatar.
@@ -229,6 +241,7 @@ function wireLiveAvatar(overlay) {
   form.elements.name.addEventListener("input", update); 
 }
 
+
 /**
  * Wires the delete button inside the overlay to remove the contact.
  * @param {HTMLElement} overlay - The overlay element containing the delete button.
@@ -244,6 +257,7 @@ function wireDelete(overlay, contact) {
       closeEditDialog();
     });
 }
+
 
 /**
  * Handles the form submission for saving updates to a contact.
@@ -264,6 +278,7 @@ function wireSave(overlay, contact) {
     });
 }
 
+
 /**
  * Closes and removes the edit overlay, restoring page scroll.
  * @returns {void}
@@ -273,6 +288,7 @@ function closeEditDialog() {
   if (el) el.remove(); 
   document.body.classList.remove("modal-open");
 }
+
 
 /**
  * Checks whether a phone value is empty or a placeholder.
@@ -286,6 +302,7 @@ function isMissingPhone(phone) {
   );
 }
 
+
 /**
  * Convenience wrapper for document.getElementById.
  * @param {string} id - Element ID.
@@ -294,6 +311,7 @@ function isMissingPhone(phone) {
 function getById(id) {
   return document.getElementById(id);
 }
+
 
 /**
  * Opens the Floating Action Button (FAB) action menu.
@@ -309,6 +327,7 @@ function openFabMenu(fabContainer, toggleButton, menu) {
   menu.setAttribute("aria-hidden", "false");
 }
 
+
 /**
  * Closes the Floating Action Button (FAB) action menu.
  * Updates ARIA attributes for accessibility.
@@ -322,6 +341,7 @@ function closeFabMenu(fabContainer, toggleButton, menu) {
   toggleButton.setAttribute("aria-expanded", "false");
   menu.setAttribute("aria-hidden", "true");
 }
+
 
 /**
  * Toggles the open/closed state of the FAB action menu.
@@ -337,6 +357,7 @@ function toggleFabMenu(fabContainer, toggleButton, menu) {
     openFabMenu(fabContainer, toggleButton, menu);
   }
 }
+
 
 /**
  * Initializes FAB actions for a given contact:
