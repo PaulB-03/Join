@@ -1,3 +1,27 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-error {
+  color: var(--form-error);
+  font-size: 14px;
+  min-height: 14px;
+}
+
+.add-contact-overlay-form input {
+  width: 422px;
+}
+
+.has-icon {
+  padding-right: 44px;
+}
+
+.icon-user {background-image: url("../assets/svg/person.svg");}
+.icon-mail {background-image: url("../assets/svg/mail.svg");}
+.icon-phone {background-image: url("../assets/svg/phone.svg");}
+
 #cancelAdd img {width: 24px; height: 24px;}
 
 #cancelAdd {
