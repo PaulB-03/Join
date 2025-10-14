@@ -58,7 +58,7 @@
   }
   .task-detail {
     padding: 24px 28px 8px 28px;
-    width: 330px;
+    width: 396px;
     height: auto;
   }
 
@@ -144,5 +144,33 @@
     width: 20px;
     height: 20px;
     display: inline-block;
+  }
+}
+
+@media (max-width: 450px) {
+  .task-detail {
+    padding: 16px 20px 8px 20px;
+    width: 300px;
+    height: auto;
+  }
+
+  #taskOverlay.edit-mode .overlay-panel {
+    width: 90vw;
+    max-width: 400px;
+  }
+
+  .dropdown-subtasks {
+    width: 180px !important;
+  }
+
+  .column {
+    flex: 0 0 auto;           
+    width: 400px;             
+    max-width: 90vw;          
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 350px;
   }
 }
