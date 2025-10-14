@@ -1,8 +1,55 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-error {
+  color: var(--form-error);
+  font-size: 14px;
+  min-height: 14px;
+}
+
+.add-contact-overlay-form input {
+  width: 422px;
+}
+
+.has-icon {
+  padding-right: 44px;
+}
+
+.icon-user {background-image: url("../assets/svg/person.svg");}
+.icon-mail {background-image: url("../assets/svg/mail.svg");}
+.icon-phone {background-image: url("../assets/svg/phone.svg");}
+
+#cancelAdd img {width: 24px; height: 24px;}
+
+#cancelAdd {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  height: 57px;
+  width: 126px;
+  font-size: 20px;
+  border-radius: 10px;
+}
+
+#cancelAdd:hover img[src$="cancel_black.svg"] {content: url("../assets/svg/cancel_blue.svg");}
+
+#editDeleteBtn, #editSaveBtn{
+  width: 112px;
+  height: 56px;
+  font-size: 21px;
+}
+
 #submitAdd {
   width: 214px;
   height: 57px;
   font-size: 21px;
   padding: 0;
+  border-radius: 10px;
+  font-weight: 700;
 }
 
 .backToListBtn {

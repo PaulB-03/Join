@@ -38,6 +38,7 @@ async function loadContacts() {
   loadContactsInAddTask();
 }
 
+
 /**
  * Add a new contact to the backend and refresh the UI.
  * @async
@@ -54,6 +55,7 @@ async function addContact(contact) {
   showContactToast(); 
 }
 
+
 /**
  * Show a temporary toast notification.
  * @param {string} [message="Contact successfully created"] - Display text.
@@ -68,6 +70,7 @@ function showContactToast(message = "Contact successfully created") {
   toastElement.autoHideTimer = setTimeout(() => toastElement.classList.remove("show"), 3500); 
 }
 
+
 /**
  * Open the Add Contact overlay.
  * @returns {void}
@@ -79,6 +82,7 @@ function openAddContactDialog() {
     document.body.classList.add("modal-open");
   }
 }
+
 
 /**
  * Close the Add Contact dialog and reset the form.
@@ -94,6 +98,7 @@ function closeAddContactDialog() {
   if (form) form.reset(); 
 }
 
+
 /**
  * Read the Add Contact form fields.
  * @returns {{name: string, email: string, phone: string}} Trimmed string values for name, email, and phone.
@@ -107,6 +112,7 @@ function readAddContactForm() {
   };
 }
 
+
 /**
  * Handle Add Contact form submission.
  * @async
@@ -119,6 +125,7 @@ async function submitAddContact(event) {
   await addContact(readAddContactForm());
   closeAddContactDialog();
 }
+
 
 /**
  * Initialize Add Contact overlay and handlers.
@@ -134,11 +141,11 @@ function setupAddContactOverlay() {
   if (openButton) openButton.addEventListener("click", openAddContactDialog);
   if (openFab) openFab.addEventListener("click", openAddContactDialog);
   if (closeButton) closeButton.addEventListener("click", closeAddContactDialog);
-  if (cancelButton)
-    cancelButton.addEventListener("click", closeAddContactDialog);
+  if (cancelButton) cancelButton.addEventListener("click", closeAddContactDialog);
   if (overlay) overlay.addEventListener("click", closeAddContactDialog);
   if (form) form.addEventListener("submit", submitAddContact);
 }
+
 
 /**
  * Initialize the page.
@@ -149,6 +156,7 @@ function init() {
   loadContacts();
   setupAddContactOverlay();
 }
+
 
 /**
  * Render the contacts list.
@@ -171,6 +179,7 @@ function initContactsList() {
   });
 }
 
+
 /**
  * Group items by the uppercase base letter of their name.
  * @template T extends {name: string}
@@ -185,6 +194,7 @@ function groupByInitial(items) {
   }, {});
 }
 
+
 /**
  * Get the normalized uppercase initial letter for grouping.
  * @param {string} name - Raw name string.
@@ -194,6 +204,7 @@ function baseLetter(name) {
   const ch = (name?.trim()?.[0] || "#").toUpperCase();
   return ch.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
+
 
 /**
  * Create an alphabet header fragment for the list.
@@ -212,6 +223,7 @@ function alphaHeader(letter) {
   return frag; 
 }
 
+
 /**
  * Utility to create an element with optional class and text.
  * @param {keyof HTMLElementTagNameMap} tag - Valid HTML tag name.
@@ -225,6 +237,7 @@ function createElementWith(tag, cls, text) {
   if (text != null) element.textContent = text;
   return element;
 }
+
 
 /**
  * Build a single contact row element.
@@ -243,6 +256,7 @@ function contactRow(contact) {
   row.addEventListener("click", () => selectContact(row, contact)); 
   return row;
 }
+
 
 /**
  * Select a contact and render details.
@@ -263,6 +277,7 @@ function selectContact(row, contact) {
   }
 }
 
+
 /**
  * Clear the current selected state in the list.
  * @returns {void}
@@ -272,6 +287,7 @@ function removeSelected() {
     .querySelectorAll(".contactItem.is-selected")
     .forEach((el) => el.classList.remove("is-selected")); 
 }
+
 
 /**
  * Navigate back to the list view (mobile).
@@ -283,6 +299,7 @@ function backToList() {
   document.body.classList.remove("showing-details");
   removeSelected();
 }
+
 
 /**
  * Render the details view for a contact.
@@ -299,6 +316,7 @@ function renderContactDetails(contact) {
   body.appendChild(info); 
   setupContactActionsFab(contact);
 }
+
 
 /**
  * Build the top details section.
@@ -320,6 +338,7 @@ function detailsTop(contact) {
   return top;
 }
 
+
 /**
  * Build the info section element for details.
  * @param {Contact} contact - Source contact.
@@ -337,6 +356,7 @@ function detailsInfo(contact) {
   }
   return info; 
 }
+
 
 /**
  * Load an SVG and return an inline element.
@@ -359,6 +379,7 @@ function inlineSvg(url) {
       return svg;
     });
 }
+
 
 /**
  * Create an action button with an icon.

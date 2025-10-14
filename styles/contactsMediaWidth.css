@@ -34,6 +34,22 @@
     width: 350px;
     padding-left: 32px;
   }
+
+  .overlay-body {
+    width: 550px !important;
+  }
+
+  .add-contact-overlay-form input {
+    width: 350px;
+  }
+
+  .add-contact-overlay-right {
+    transform: translateX(-30px);
+  }
+
+  .overlay-close {
+    transform: translateX(-10px);
+  }
 }
 
 @media (max-width: 1095px) {
@@ -65,6 +81,22 @@
     min-height: 80px;
     font-weight: 400;
   }
+
+  .overlay-body {
+    width: 490px !important;
+  }
+
+  .add-contact-overlay-form input {
+    width: 320px;
+  }
+
+  .add-contact-overlay-right {
+    transform: translateX(-20px);
+  }
+
+  .overlay-close {
+    transform: translateX(15px);
+  }
 }
 
 @media (max-width: 1005px) {
@@ -95,6 +127,14 @@
 @media (max-width: 975px) {
   .contactPage {
     padding-right: 0px;
+  }
+
+  .overlay-body {
+    width: 450px !important;
+  }
+
+  .add-contact-overlay-form input {
+    width: 280px;
   }
 }
 
@@ -190,6 +230,7 @@
   .overlay-panel {
     display: flex;
     flex-direction: column;
+    height: 760px;
   }
 
   #addContactDesktopOverlay {
@@ -247,7 +288,8 @@
   }
 
   .overlay-left img {
-    height: 352px;
+    height: 351px;
+    width: 396px;
   }
 
   #editContactImgMobile {
@@ -375,8 +417,11 @@
 
 @media (max-width: 370px) {
   .contactItem {
-    padding-left: 0px;
     gap: 12px;
+  }
+
+  .contactList {
+    padding-left: 0;
   }
 }
 

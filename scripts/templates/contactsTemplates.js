@@ -20,6 +20,7 @@ function detailsInfoHTML(contact) {
   `;
 }
 
+
 /**
  * Returns the HTML string for the edit contact overlay.
  * @returns {string} HTML markup for the overlay contents.
