@@ -1,183 +1,361 @@
-function editOverlayHTML() {
-  return `
-    <div class="overlay-panel" role="dialog" aria-modal="true">
-      <div class="overlay-left">
-        <img src="../assets/svg/editContactForm.svg" alt="Edit contact artwork" id="editContactImgDesktop" />
-        <img src="../assets/svg/editContactFormMobile.svg" alt="Edit contact artwork" id="editContactImgMobile" />
-      </div>
+/**
+ * Regex for validating a full name (two or more parts).
+ * @constant {RegExp}
+ */
+const addNameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+(?:\s+[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+)+$/;
 
-      <form id="editContactForm" class="overlay-body" novalidate>
-        <button type="button" class="overlay-close" aria-label="Close">×</button>
+/**
+ * Regex for validating an email address.
+ * @constant {RegExp}
+ */
+const addEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-        <div class="add-contact-overlay-right">
-          <div id="editAvatar" class="detailsAvatar"></div>
+/**
+ * Regex for validating a phone number (optional).
+ * @constant {RegExp}
+ */
+const addPhoneRegex = /^\s*$|^\+?[0-9\s\-()]{6,}$/;
 
-          <div class="add-contact-overlay-form">
-            <div class="field">
-              <input name="name" class="has-icon icon-user input" placeholder="Name" required>
-            </div>
-            <div class="field">
-              <input name="email" class="has-icon icon-mail input" type="email" placeholder="Email" required>
-            </div>
-            <div class="field">
-              <input name="phone" class="has-icon icon-phone input" placeholder="Phone">
-            </div>
-
-            <div class="overlay-actions">
-              <button type="button" class="btn-white" id="editDeleteBtn">Delete</button>
-              <button type="submit" class="btn-dark">Save ✓</button>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  `;
+/**
+ * Update the error UI state for a field.
+ * @param {boolean} isValid
+ * @param {HTMLInputElement} inputEl
+ * @param {HTMLElement} errorEl
+ * @returns {void}
+ */
+function updateFieldErr(isValid, inputEl, errorEl) {
+  if (!inputEl || !errorEl) return;
+  errorEl.style.visibility = isValid ? "hidden" : "visible";
+  inputEl.classList.toggle("input-error", !isValid);
+  inputEl.setAttribute("aria-invalid", String(!isValid));
 }
 
-// open the edit contact overlay, called when editing a contact
+/**
+ * Get references to Add Contact form fields and error nodes.
+ * @returns {AddContactRefs}
+ */
+function getAddContactRefs() {
+  const form = document.getElementById("addContactForm");
+  if (!form) return {};
+  return {
+    form,
+    name:
+      document.getElementById("contactName") ||
+      form.querySelector('[name="name"]'),
+    email:
+      document.getElementById("contactEmail") ||
+      form.querySelector('[name="email"]'),
+    phone:
+      document.getElementById("contactPhone") ||
+      form.querySelector('[name="phone"]'),
+    nameErr: document.getElementById("contactNameError"),
+    emailErr: document.getElementById("contactEmailError"),
+    phoneErr: document.getElementById("contactPhoneError"),
+  };
+}
+
+/**
+ * Validate the Add Contact form values.
+ * @returns {boolean} True if all fields are valid.
+ */
+function validateAddContactForm() {
+  const { name, email, phone, nameErr, emailErr, phoneErr } = getAddContactRefs(); 
+  if (!name || !email || !phone) return false; 
+  const validName = addNameRegex.test(name.value.trim()); 
+  const validEmail = addEmailRegex.test(email.value.trim());
+  const validPhone = addPhoneRegex.test((phone.value || "").trim());
+  updateFieldErr(validName, name, nameErr); 
+  updateFieldErr(validEmail, email, emailErr);
+  updateFieldErr(validPhone, phone, phoneErr);
+  return validName && validEmail && validPhone;
+}
+
+/**
+ * Delete a contact by id and update the UI.
+ * @async
+ * @param {string} id - Firebase id of the contact to delete.
+ * @returns {Promise<void>}
+ */
+async function deleteContact(id) {
+  if (!id) return; 
+  const contact = contacts.find(c => c.id === id); 
+  if (contact) await removeContactFromAllTasks(contact.name);  
+  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, { method: "DELETE" });
+  if (!res.ok) throw new Error("Failed to delete contact"); 
+  await loadContacts(); 
+  const body = document.querySelector(".contactDetailsBody"); 
+  if (body) body.innerHTML = "";
+  document.body.classList.remove("showing-details");
+}
+
+/**
+ * Remove a contact's name from all tasks where it is assigned.
+ * @async
+ * @param {string} name - Contact's display name used in tasks.
+ * @returns {Promise<void>}
+ */
+async function removeContactFromAllTasks(name) {
+  try {
+    const res = await fetch(`${DB_ROOT}/tasks.json`); 
+    const tasks = (await res.json()) || {}; 
+    await Promise.all(Object.entries(tasks) 
+      .filter(([_, t]) => t.assignedContacts?.includes(name)) 
+      .map(([id, t]) => fetch(`${DB_ROOT}/tasks/${id}.json`, { 
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ assignedContacts: t.assignedContacts.filter(n => n !== name) }) 
+      })));
+  } catch (e) { console.error("Failed to remove contact from tasks:", e); } 
+}
+
+/**
+ * Remove the `id` property from an object.
+ * @template T extends object
+ * @param {T} obj - Source object.
+ * @returns {Omit<T, "id">} Copy without `id`.
+ */
+function stripId(obj) {
+  const { id, ...rest } = obj || {}; 
+  return rest;
+}
+
+/**
+ * Update a contact by id with partial fields.
+ * @async
+ * @param {string} id - Firebase id of the contact to update.
+ * @param {Partial<Contact>} updates - Fields to overwrite.
+ * @returns {Promise<void>}
+ */
+async function updateContact(id, updates) {
+  const existing = contacts.find((c) => c.id === id) || {}; 
+  const payload = stripId({ ...existing, ...updates }); 
+  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, { 
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error("Failed to update contact"); 
+  await loadContacts(); 
+  const updated = contacts.find((c) => c.id === id); 
+  if (updated) renderContactDetails(updated);
+}
+
+/**
+ * Opens the edit overlay for a given contact and wires all interactions.
+ * @param {Contact} contact - The contact to edit.
+ * @see deleteContact
+ * @see updateContact
+ * @see initials
+ * @see colorForName
+ */
 function openEdit(contact) {
-  closeEditDialog(); // close any existing edit dialog to avoid duplicates
-  const overlay = makeEditOverlay(); // create a new edit overlay element
-  mountAndShow(overlay); // add it to the DOM and display it
-  wireCloseHandlers(overlay); // set up handlers to close the overlay
-  prefillEditForm(overlay, contact); // fill the form with the contact details from the currently selected contact
-  wireLiveAvatar(overlay); // enable live updates of the avatar as the user types
-  wireDelete(overlay, contact); // attach delete and save button functionality
+  closeEditDialog(); 
+  const overlay = makeEditOverlay();
+  mountAndShow(overlay); 
+  wireCloseHandlers(overlay); 
+  prefillEditForm(overlay, contact); 
+  wireLiveAvatar(overlay); 
+  wireDelete(overlay, contact);
   wireSave(overlay, contact);
 }
 
-// helpers for openEdit():
-
-// create the edit overlay container element
+/**
+ * Creates the overlay container element for the edit dialog.
+ * @returns {HTMLElement} The overlay root element.
+ */
 function makeEditOverlay() { 
-  const el = document.createElement("div"); // create the outer overlay div
-  el.id = "editOverlay"; // assign an ID for reference
-  el.className = "overlay"; // add class for styling
-  el.innerHTML = editOverlayHTML(); // set the inner HTML from the template function
-  return el; // return the completed overlay element
+  const el = document.createElement("div"); 
+  el.id = "editOverlay"; 
+  el.className = "overlay"; 
+  el.innerHTML = editOverlayHTML(); 
+  return el; 
 }
 
-// mount the overlay into the DOM and display it
+/**
+ * Appends the overlay to the DOM and displays it.
+ * @param {HTMLElement} overlay - The overlay element to mount.
+ * @returns {void}
+ */
 function mountAndShow(overlay) {
-  document.body.appendChild(overlay); // add overlay to the page
-  requestAnimationFrame(() => overlay.classList.add("open")); // trigger CSS transition to show it
-  document.body.classList.add("modal-open"); // prevent background scrolling
+  document.body.appendChild(overlay); 
+  requestAnimationFrame(() => overlay.classList.add("open")); 
+  document.body.classList.add("modal-open"); 
 }
 
-// attach click and close event handlers for overlay elements
+/**
+ * Registers handlers to close the overlay via outside click or close button.
+ * @param {HTMLElement} overlay - The overlay element to wire.
+ * @returns {void}
+ */
 function wireCloseHandlers(overlay) {
-  overlay.addEventListener("click", closeEditDialog); // close when clicking outside panel
+  overlay.addEventListener("click", closeEditDialog); 
   overlay
     .querySelector(".overlay-panel")
-    .addEventListener("click", (e) => e.stopPropagation()); // prevent closing when clicking inside
+    .addEventListener("click", (e) => e.stopPropagation()); 
   overlay
     .querySelector(".overlay-close")
-    .addEventListener("click", closeEditDialog); // close when clicking the 'X' button
+    .addEventListener("click", closeEditDialog); 
 }
 
-// fill the form with the contact details from the currently selected contact
+/**
+ * Prefills the edit form fields and avatar based on the provided contact.
+ * @param {HTMLElement} overlay - The overlay element containing the form.
+ * @param {Contact} contact - The contact whose data is used to prefill the form.
+ * @returns {void}
+ */
 function prefillEditForm(overlay, contact) {
-  const form = overlay.querySelector("#editContactForm"); // find the form
-  form.elements.name.value = contact.name || ""; // fill name field
-  form.elements.email.value = contact.email || ""; // fill email field
-  form.elements.phone.value = contact.phone || ""; // fill phone field
-  const avatar = overlay.querySelector("#editAvatar"); // setup avatar with contact initials and color
+  const form = overlay.querySelector("#editContactForm"); 
+  form.elements.name.value = contact.name || ""; 
+  form.elements.email.value = contact.email || ""; 
+  form.elements.phone.value = contact.phone || ""; 
+  const avatar = overlay.querySelector("#editAvatar"); 
   avatar.textContent = initials(contact.name);
   avatar.style.background = colorForName(contact.name);
 }
 
-// update the avatar live as the user types in the name field
+/**
+ * Updates the avatar (initials and background color) live as the name input changes.
+ * @param {HTMLElement} overlay - The overlay element containing the form and avatar.
+ * @returns {void}
+ */
 function wireLiveAvatar(overlay) {
   const form = overlay.querySelector("#editContactForm");
   const avatar = overlay.querySelector("#editAvatar");
-  const update = () => { // define update function for avatar display
-    const v = form.elements.name.value; // get current name input
-    avatar.textContent = initials(v); // update initials
-    avatar.style.background = colorForName(v); // update background color for avatar
+  const update = () => { 
+    const v = form.elements.name.value;
+    avatar.textContent = initials(v);
+    avatar.style.background = colorForName(v); 
   };
-  form.elements.name.addEventListener("input", update); // listen for typing changes in the name field
+  form.elements.name.addEventListener("input", update); 
 }
 
-// handle delete button click inside the edit overlay
+/**
+ * Wires the delete button inside the overlay to remove the contact.
+ * @param {HTMLElement} overlay - The overlay element containing the delete button.
+ * @param {Contact} contact - The contact to delete.
+ * @returns {void}
+ * @see deleteContact
+ */
 function wireDelete(overlay, contact) {
   overlay
     .querySelector("#editDeleteBtn")
     .addEventListener("click", async () => {
-      await deleteContact(contact.id); // delete contact from firebase
-      closeEditDialog(); // close overlay after deletion
-    });
-}
-
-// handle save button and form submission inside edit overlay
-function wireSave(overlay, contact) {
-  overlay
-    .querySelector("#editContactForm")
-    .addEventListener("submit", async (e) => {
-      e.preventDefault(); // prevent page reload
-      const f = e.currentTarget; // get the form element
-      const updates = { // read and trim updated values
-        name: f.elements.name.value.trim(),
-        email: f.elements.email.value.trim(),
-        phone: f.elements.phone.value.trim(),
-      };
-      await updateContact(contact.id, updates); // save updates to firebase
+      await deleteContact(contact.id);
       closeEditDialog();
     });
 }
 
-// close and remove the edit contact overlay
-function closeEditDialog() {
-  const el = document.getElementById("editOverlay");
-  if (el) el.remove(); // remove from DOM
-  document.body.classList.remove("modal-open"); // allow page scrolling again
+/**
+ * Handles the form submission for saving updates to a contact.
+ * @param {HTMLElement} overlay - The overlay element containing the form.
+ * @param {Contact} contact - The contact being updated.
+ * @returns {void}
+ * @see updateContact
+ */
+function wireSave(overlay, contact) {
+  overlay
+    .querySelector("#editContactForm")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault(); 
+      const f = e.currentTarget; 
+      const updates = {name: f.elements.name.value.trim(), email: f.elements.email.value.trim(), phone: f.elements.phone.value.trim()};
+      await updateContact(contact.id, updates);
+      closeEditDialog();
+    });
 }
 
-// check if a contact's phone number is missing or marked as placeholder
+/**
+ * Closes and removes the edit overlay, restoring page scroll.
+ * @returns {void}
+ */
+function closeEditDialog() {
+  const el = document.getElementById("editOverlay");
+  if (el) el.remove(); 
+  document.body.classList.remove("modal-open");
+}
+
+/**
+ * Checks whether a phone value is empty or a placeholder.
+ * @param {string} [phone] - The phone value to check.
+ * @returns {boolean} True if the phone is missing or equals the placeholder text; otherwise false.
+ */
 function isMissingPhone(phone) {
   return (
-    !(phone ?? "").trim() || // empty or undefined
-    (phone || "").trim().toLowerCase() === "add phone number" // placeholder text
+    !(phone ?? "").trim() ||
+    (phone || "").trim().toLowerCase() === "add phone number" 
   );
 }
 
-// shorthand helper to get an element by ID
+/**
+ * Convenience wrapper for document.getElementById.
+ * @param {string} id - Element ID.
+ * @returns {HTMLElement|null} The found element or null.
+ */
 function getById(id) {
   return document.getElementById(id);
 }
 
-// open the floating action button (FAB) menu for contact actions
+/**
+ * Opens the Floating Action Button (FAB) action menu.
+ * Updates ARIA attributes for accessibility.
+ * @param {HTMLElement} fabContainer - The FAB container element.
+ * @param {HTMLElement} toggleButton - The button that toggles the menu.
+ * @param {HTMLElement} menu - The menu element containing the actions.
+ * @returns {void}
+ */
 function openFabMenu(fabContainer, toggleButton, menu) {
-  fabContainer.classList.add("is-open"); // show the menu
-  toggleButton.setAttribute("aria-expanded", "true"); // update ARIA attributes for accessibility
-  menu.setAttribute("aria-hidden", "false"); // make menu visible to screen readers
+  fabContainer.classList.add("is-open"); 
+  toggleButton.setAttribute("aria-expanded", "true"); 
+  menu.setAttribute("aria-hidden", "false");
 }
 
-// close the floating action button (FAB) menu
+/**
+ * Closes the Floating Action Button (FAB) action menu.
+ * Updates ARIA attributes for accessibility.
+ * @param {HTMLElement} fabContainer - The FAB container element.
+ * @param {HTMLElement} toggleButton - The button that toggles the menu.
+ * @param {HTMLElement} menu - The menu element containing the actions.
+ * @returns {void}
+ */
 function closeFabMenu(fabContainer, toggleButton, menu) {
-  fabContainer.classList.remove("is-open"); // hide the menu
-  toggleButton.setAttribute("aria-expanded", "false"); // mark as collapsed
-  menu.setAttribute("aria-hidden", "true"); // hide from screen readers
+  fabContainer.classList.remove("is-open"); 
+  toggleButton.setAttribute("aria-expanded", "false");
+  menu.setAttribute("aria-hidden", "true");
 }
 
-// toggle the open/closed state of the FAB menu
+/**
+ * Toggles the open/closed state of the FAB action menu.
+ * @param {HTMLElement} fabContainer - The FAB container element.
+ * @param {HTMLElement} toggleButton - The button that toggles the menu.
+ * @param {HTMLElement} menu - The menu element containing the actions.
+ * @returns {void}
+ */
 function toggleFabMenu(fabContainer, toggleButton, menu) {
   if (fabContainer.classList.contains("is-open")) {
-    closeFabMenu(fabContainer, toggleButton, menu); // close if open
+    closeFabMenu(fabContainer, toggleButton, menu); 
   } else {
-    openFabMenu(fabContainer, toggleButton, menu); // open if closed
+    openFabMenu(fabContainer, toggleButton, menu);
   }
 }
 
-// setup and wire all floating action button (FAB) menu actions for a contact
+/**
+ * Initializes FAB actions for a given contact:
+ * - Edit opens the edit overlay.
+ * - Delete removes the contact.
+ * - Outside click and Escape key close the menu.
+ * @param {Contact} contact - The contact linked to the FAB actions.
+ * @returns {void}
+ * @see openEdit
+ * @see deleteContact
+ */
 function setupContactActionsFab(contact) {
-  const fabContainer = getById("contactActionsFab"); // main FAB container
-  const toggleButton = getById("contactActionsToggle"); // button to open/close menu
-  const fabMenu = getById("contactActionsMenu"); // the menu with action buttons
-  if (!fabContainer || !toggleButton || !fabMenu) return; // stop if any elements are missing
-
-  getById("fabEdit").onclick = () => { closeFabMenu(fabContainer, toggleButton, fabMenu); openEdit(contact); }; // wire edit action: close menu and open edit overlay
-  getById("fabDelete").onclick = () => { closeFabMenu(fabContainer, toggleButton, fabMenu); deleteContact(contact.id); }; // wire delete action: close menu and delete contact
-  toggleButton.onclick = () => toggleFabMenu(fabContainer, toggleButton, fabMenu); // wire toggle button to open/close FAB menu
-  document.addEventListener("click", (e) => { if (!fabContainer.contains(e.target)) closeFabMenu(fabContainer, toggleButton, fabMenu); }); // close menu when clicking outside of it
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeFabMenu(fabContainer, toggleButton, fabMenu); }); // close menu when pressing the esc key
+  const fabContainer = getById("contactActionsFab"); 
+  const toggleButton = getById("contactActionsToggle"); 
+  const fabMenu = getById("contactActionsMenu");
+  if (!fabContainer || !toggleButton || !fabMenu) return;
+  getById("fabEdit").onclick = () => { closeFabMenu(fabContainer, toggleButton, fabMenu); openEdit(contact); }; 
+  getById("fabDelete").onclick = () => { closeFabMenu(fabContainer, toggleButton, fabMenu); deleteContact(contact.id); }; 
+  toggleButton.onclick = () => toggleFabMenu(fabContainer, toggleButton, fabMenu); 
+  document.addEventListener("click", (e) => { if (!fabContainer.contains(e.target)) closeFabMenu(fabContainer, toggleButton, fabMenu); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeFabMenu(fabContainer, toggleButton, fabMenu); });
 }
