@@ -142,23 +142,22 @@ function showAddedToastAndRedirect() {
 }
 
 /* ------------------------------ Create ---------------------------------- */
+document.addEventListener("DOMContentLoaded",()=>{const b=document.getElementById("add");if(b)b.onclick=handleAddOrEditTask;});
 
-async function createTask() {
-  clearInlineErrors();
-  if (!validateTaskFormFields()) return;
+async function createTask(){
+  clearInlineErrors(); if(!validateTaskFormFields()) return;
+  const b=document.getElementById("add"); b?.setAttribute("disabled",true);
+  try{ await persistTask(buildTaskPayloadFromForm()); showAddedToastAndRedirect(); }
+  catch(e){ console.error(e); alert("Die Aufgabe konnte nicht gespeichert werden."); }
+  finally{ b?.removeAttribute("disabled"); }
+}
 
-  const btn = document.getElementById("add");
-  btn?.setAttribute("disabled", true);
-
-  try {
-    await persistTask(buildTaskPayloadFromForm());
-    showAddedToastAndRedirect();
-  } catch (e) {
-    console.error(e);
-    alert("Die Aufgabe konnte nicht gespeichert werden.");
-  } finally {
-    btn?.removeAttribute("disabled");
-  }
+function handleAddOrEditTask(e){
+  e?.preventDefault();
+  const b=document.getElementById("add");
+  const id=b?.getAttribute("data-editing-id");
+  if(id){ updateTask(id,false,true,true).catch(err=>{console.error(err);alert("Konnte Änderung nicht speichern.");}); }
+  else{ createTask(); }
 }
 
 function selectContact(contact) {

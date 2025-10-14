@@ -250,3 +250,19 @@ body.modal-open {
 #taskOverlay.edit-mode #category {
   display: none;
 }
+
+.task-overlay .task-modal {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 300ms ease, opacity 300ms ease;
+  will-change: transform, opacity;
+}
+
+.task-overlay.open .task-modal {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .task-overlay .task-modal { transition: transform 300ms ease, opacity 300ms ease; }
+}
