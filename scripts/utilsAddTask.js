@@ -18,11 +18,13 @@ function getPriorityLabel(prio) {
 function formatDate(value) {
   if (!value) return "-";
   let d;
-  if (value instanceof Date) d = value;             // Fall 1: schon ein Date-Objekt
-  else if (/^\d{4}-\d{2}-\d{2}/.test(value)) {      // Fall 2: yyyy-mm-dd
+  if (value instanceof Date) d = value; // Fall 1: schon ein Date-Objekt
+  else if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
+    // Fall 2: yyyy-mm-dd
     const [y, m, dd] = value.split("-").map(Number);
     d = new Date(y, m - 1, dd);
-  } else {                                          // Fall 3: etwas anderes
+  } else {
+    // Fall 3: etwas anderes
     d = new Date(value);
     if (Number.isNaN(+d)) return escapeHtml(String(value));
   }
@@ -43,10 +45,14 @@ function bgForNameOrIndex(name, i) {
 // Gibt Icon für die Priorität zurück.
 function getPriorityIcon(prio) {
   switch ((prio || "").toLowerCase()) {
-    case "urgent": return `<img src="../assets/svg/double_arrow_red.svg" alt="Urgent" class="priority-icon" />`;
-    case "medium": return `<img src="../assets/svg/double_lines.svg" alt="Medium" class="priority-icon" />`;
-    case "low": return `<img src="../assets/svg/double_arrow_down.svg" alt="Low" class="priority-icon" />`;
-    default: return "";
+    case "urgent":
+      return `<img src="../assets/svg/double_arrow_red.svg" alt="Urgent" class="priority-icon" />`;
+    case "medium":
+      return `<img src="../assets/svg/double_lines.svg" alt="Medium" class="priority-icon" />`;
+    case "low":
+      return `<img src="../assets/svg/double_arrow_down.svg" alt="Low" class="priority-icon" />`;
+    default:
+      return "";
   }
 }
 
@@ -57,18 +63,22 @@ function getPriorityBadge(prio) {
   const label = getPriorityLabel(p);
   let icon = "";
   switch (p) {
-    case "urgent": icon = `<img src="../assets/svg/double_arrow_red.svg" alt="${label}" class="priority-icon" />`; break;
-    case "medium": icon = `<img src="../assets/svg/double_lines.svg" alt="${label}" class="priority-icon" />`; break;
-    case "low": icon = `<img src="../assets/svg/double_arrow_down.svg" alt="${label}" class="priority-icon" />`; break;
+    case "urgent":
+      icon = `<img src="../assets/svg/double_arrow_red.svg" alt="${label}" class="priority-icon" />`;
+      break;
+    case "medium":
+      icon = `<img src="../assets/svg/double_lines.svg" alt="${label}" class="priority-icon" />`;
+      break;
+    case "low":
+      icon = `<img src="../assets/svg/double_arrow_down.svg" alt="${label}" class="priority-icon" />`;
+      break;
   }
   return `<span class="priority"><span class="priority-text">${label}</span>${icon}</span>`;
 }
 
 // Baut eine Reihe aus Avataren + dem Icon der Priorität.
 function renderAvatarsWithPriority(names = [], prio) {
-  const avatars = names
-    .map((n, i) => `<div class="av" style="background:${bgForNameOrIndex(n, i)}">${initials(n)}</div>`)
-    .join("");
+  const avatars = names.map((n, i) => `<div class="av" style="background:${bgForNameOrIndex(n, i)}">${initials(n)}</div>`).join("");
   const prioIcon = getPriorityIcon(prio);
   return `
     <div class="row">
@@ -77,7 +87,6 @@ function renderAvatarsWithPriority(names = [], prio) {
     </div>
   `;
 }
-
 
 function taskCardInnerHtml(t, percent, doneCount, total) {
   return `
@@ -88,8 +97,9 @@ function taskCardInnerHtml(t, percent, doneCount, total) {
     <div class="task-title">${escapeHtml(t?.title || "")}</div>
     <div class="task-desc">${escapeHtml(t?.description || "")}</div>
 
-    ${total
-      ? `
+    ${
+      total
+        ? `
       <div class="meta-container">
         <div class="progress">
           <div class="bar" style="width:${percent}%"></div>
@@ -100,7 +110,7 @@ function taskCardInnerHtml(t, percent, doneCount, total) {
         </div>
       </div>
     `
-      : `
+        : `
       <div class="meta-container">
         <div class="meta"><span></span><span></span></div>
       </div>
@@ -119,30 +129,30 @@ function taskDetailTemplate(id, t = {}) {
 
   const assigned =
     (t.assignedContacts || [])
-      .map((n, i) => `
+      .map(
+        (n, i) => `
       <div class="task-assigned__item">
         <div class="av" style="background:${(window.colorForName && window.colorForName(n)) || bgForNameOrIndex(n, i)}">${initials(n)}</div>
         <div class="task-assigned__name">${escapeHtml(n)}</div>
-      </div>`)
-      .join("") ||
-    `<div class="task-assigned__item" style="opacity:.6">No assignees</div>`;
+      </div>`
+      )
+      .join("") || `<div class="task-assigned__item" style="opacity:.6">No assignees</div>`;
 
   const subtasks =
     (t.subtasks || [])
       .map((s, i) => {
-        const txt = typeof s === "string" ? s : (s?.text || "");
+        const txt = typeof s === "string" ? s : s?.text || "";
         const done = typeof s === "object" ? !!s?.done : false;
         const idc = `subtask-${id}-${i}`;
         return `
         <label class="subtasks__item" for="${idc}">
           <input type="checkbox" id="${idc}" data-sub-index="${i}" ${done ? "checked" : ""}/>
-          <span class="cb cb--unchecked" aria-hidden="true"></span>
-          <img class="cb cb--checked" src="../assets/svg/checked.svg" alt="" aria-hidden="true" />
+          <div class="cb cb--unchecked" aria-hidden="true"></div>
+          <div class="cb cb--checked"aria-hidden="true"></div>
           <span class="txt">${escapeHtml(txt)}</span>
         </label>`;
       })
-      .join("") ||
-    `<div class="subtasks__item" style="opacity:.6">No subtasks</div>`;
+      .join("") || `<div class="subtasks__item" style="opacity:.6">No subtasks</div>`;
 
   return `
     <div class="task-detail" data-id="${id}">
@@ -163,7 +173,7 @@ function taskDetailTemplate(id, t = {}) {
 
       <div class="subtasks">
         <div class="section-title">Subtasks</div>
-        <div class="subtasks__list task-name">${subtasks}</div>
+        <div class="subtasks__list">${subtasks}</div>
       </div>
 
       <div class="task-actions">
@@ -183,31 +193,31 @@ function taskDetailTemplate(id, t = {}) {
 
 function swapState(event) {
   event.stopPropagation();
-  let id = event.target.closest('article').getAttribute('data-id');
+  let id = event.target.closest("article").getAttribute("data-id");
   let taskForMenu = document.querySelectorAll(`[data-id=${id}]`);
-  if (document.getElementsByClassName('swapMenu')) {
-    closeSwapMenu()
+  if (document.getElementsByClassName("swapMenu")) {
+    closeSwapMenu();
   }
-  taskForMenu[1].innerHTML += getSwapTemplate()
-  addEventlistenerOnSwapMenu(id)
+  taskForMenu[1].innerHTML += getSwapTemplate();
+  addEventlistenerOnSwapMenu(id);
 }
 
 function checkSwapMenu() {
-  let body = document.getElementById('body')
+  let body = document.getElementById("body");
   body.addEventListener("click", closeSwapMenu);
 }
 
 function addEventlistenerOnSwapMenu(id) {
-  let swapMenu = document.getElementById('swapMenu')
-  let toDo = document.getElementById('swapMenu').getElementsByTagName('li')[1]
-  let inProgress = document.getElementById('swapMenu').getElementsByTagName('li')[2]
-  let awaitFeedback = document.getElementById('swapMenu').getElementsByTagName('li')[3]
-  let done = document.getElementById('swapMenu').getElementsByTagName('li')[4]
-  swapMenu.addEventListener("click", swapMenuLinks)
-  toDo.addEventListener("mousedown", () => addInState(id, event, "toDo"))
-  inProgress.addEventListener("mousedown", () => addInState(id, event, "in progress"))
-  awaitFeedback.addEventListener("mousedown", () => addInState(id, event, "await feedback"))
-  done.addEventListener("mousedown", () => addInState(id, event, "done"))
+  let swapMenu = document.getElementById("swapMenu");
+  let toDo = document.getElementById("swapMenu").getElementsByTagName("li")[1];
+  let inProgress = document.getElementById("swapMenu").getElementsByTagName("li")[2];
+  let awaitFeedback = document.getElementById("swapMenu").getElementsByTagName("li")[3];
+  let done = document.getElementById("swapMenu").getElementsByTagName("li")[4];
+  swapMenu.addEventListener("click", swapMenuLinks);
+  toDo.addEventListener("mousedown", () => addInState(id, event, "toDo"));
+  inProgress.addEventListener("mousedown", () => addInState(id, event, "in progress"));
+  awaitFeedback.addEventListener("mousedown", () => addInState(id, event, "await feedback"));
+  done.addEventListener("mousedown", () => addInState(id, event, "done"));
 }
 
 function swapMenuLinks(event) {
@@ -216,16 +226,16 @@ function swapMenuLinks(event) {
 
 async function addInState(id, event, state) {
   event.stopPropagation();
-  await updateTaskState(id, state)
-  init()
-  closeSwapMenu()
+  await updateTaskState(id, state);
+  init();
+  closeSwapMenu();
   console.log("addInProgress");
 }
 
 function closeSwapMenu() {
-  if (document.getElementById('swapMenu')) {
-    let swapMenu = document.getElementById('swapMenu')
-    swapMenu.remove()
+  if (document.getElementById("swapMenu")) {
+    let swapMenu = document.getElementById("swapMenu");
+    swapMenu.remove();
   }
 }
 
@@ -240,5 +250,5 @@ function getSwapTemplate() {
               <li>Done</li>
             </div>
           </ul>
-          `
+          `;
 }

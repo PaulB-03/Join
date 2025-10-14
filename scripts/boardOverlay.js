@@ -233,7 +233,7 @@ function setOverlayButtonText(isEditing) {
   if (!btn) return;
   btn.textContent = "";
   const p = document.createElement("p");
-  p.textContent = isEditing ? "OK" : "Create";
+  p.textContent = isEditing ? "Ok" : "Create";
   const img = document.createElement("img");
   img.src = "../assets/svg/check.svg";
   img.className = "createTaskCheck";
