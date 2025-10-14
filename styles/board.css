@@ -47,8 +47,7 @@
 .swapHoriz {
   position: absolute;
   right: 20px;
-  border: 2px solid black;
-  border-radius: 8px;
+  visibility: hidden;
 }
 
 .swapMenu {
@@ -399,38 +398,26 @@
   align-items: center;
   justify-content: flex-end;
   padding: 12px 16px;
-  background: var(--white);
 }
 
 .task-actions button {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   padding: 6px 8px;
-  border: 0;
+  border: none;
   background: transparent;
-  color: var(--color-icon);
-  font-weight: 600;
-  font-size: 14px;
-  border-radius: 10px;
+  color: var(--main-color);
   cursor: pointer;
 }
 
-.task-actions button:hover {
-  color: var(--color-link);
-}
-
-.task-actions .danger:hover {
-  color: var(--color-link);
-}
-
 .task-actions .icon {
-  width: 16px;
-  height: 16px;
+  fill: currentColor;
   display: inline-block;
-  vertical-align: middle;
-  opacity: 0.9;
-  pointer-events: none;
+}
+
+.task-actions button:hover {
+  color: var(--light-blue);
 }
 
 .task-placeholder {
@@ -461,10 +448,4 @@
   left: 17px;
   color: var(--form-error);
   font-size: 14px;
-}
-
-.task-actions .icon {
-  width: 14px;
-  height: 14px;
-  display: inline-block;
 }
