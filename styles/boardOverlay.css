@@ -83,25 +83,6 @@ body.modal-open {
   z-index: 5;
 }
 
-#taskOverlay .overlay-close {
-  position: absolute;
-  right: 40px;
-  width: 36px;
-  height: 36px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  font-size: 28px;
-  line-height: 1;
-  cursor: pointer;
-  color: #6b7280;
-}
-
-#taskOverlay .overlay-close:hover {
-  background: rgba(0, 0, 0, 0.06);
-  color: #111827;
-}
-
 #taskOverlay .task-overlay-title {
   font-size: 40px;
   font-weight: 800;
@@ -207,30 +188,29 @@ body.modal-open {
   flex-direction: column;
 }
 
-.task-modal__close {
+.overlay-close {
+  width: 33px;
+  height: 33px;
   position: absolute;
   top: 20px;
   right: 20px;
-  width: 36px;
-  height: 36px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  font-size: 28px;
-  line-height: 1;
+  background-image: url(../assets/svg/cancel.svg);
+  background-repeat: no-repeat;
   cursor: pointer;
-  color: #6b7280;
 }
 
-.task-modal__close:hover {
-  background: rgba(0, 0, 0, 0.06);
-  color: #111827;
+.overlay-close:hover {
+  background-image: url(../assets/svg/cancel_hover.svg);
+}
+
+.overlay-close:active {
+  background-image: url(../assets/svg/cancel_clicked.svg);
 }
 
 #taskDetailOverlay .subtasks__item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   padding: 6px 18px;
   border-radius: 10px;
   width: max-content;
@@ -239,7 +219,14 @@ body.modal-open {
 
 #taskDetailOverlay .subtasks__item:hover,
 #taskDetailOverlay .subtasks__item:focus-within {
-  background-color: #f5f5dc;
+  background-color: #eeeeee;
+}
+
+.subtasks__item:hover .cb--checked {
+  background-image: url(../assets/svg/checked_hover.svg);
+}
+.subtasks__item:hover .cb--unchecked {
+  background-image: url(../assets/svg/checkbox_hover.svg);
 }
 
 /* #taskOverlay .overlay-panel { */
@@ -257,12 +244,9 @@ body.modal-open {
 }
 
 #taskOverlay.edit-mode .divider,
-#taskOverlay.edit-mode .textrequired,
+#taskOverlay.edit-mode h1,
+#taskOverlay.edit-mode .hideMobile,
+#taskOverlay.edit-mode .requiredAsterisk,
 #taskOverlay.edit-mode #category {
   display: none;
-}
-
-#taskOverlay.edit-mode textarea:valid,
-#taskOverlay.edit-mode input {
-  background-color: white;
 }

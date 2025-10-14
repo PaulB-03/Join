@@ -180,14 +180,14 @@
       </section>
       <div id="taskDetailOverlay" class="task-overlay">
         <div class="task-modal" role="dialog" aria-modal="true" aria-labelledby="taskDetailTitle" onclick="event.stopPropagation()">
-          <button class="task-modal__close" id="taskDetailClose" aria-label="Close">&times;</button>
+          <div class="overlay-close" id="taskDetailClose" aria-label="Close"></div>
           <div id="taskDetailContent"><!-- Inhalt wird per JS gerendert --></div>
         </div>
       </div>
 
       <div id="taskOverlay" class="overlay" aria-hidden="true">
         <div class="overlay-panel task-overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
-          <button type="button" class="overlay-close" id="closeTaskOverlay" aria-label="Close">×</button>
+          <div class="overlay-close" id="closeTaskOverlay" aria-label="Close"></div>
           <div class="addTaskOverlayWrapper">
             <h1>Add Task</h1>
             <form autocomplete="off" class="addTaskForm">
@@ -289,7 +289,7 @@
                 </div>
                 <button id="add" class="btn-dark addOrClearBtn" type="button" onclick="createTask(event)">
                   Create task
-                  <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
+                  <img src="../assets/svg/check_2.svg" class="createTaskCheck" alt="" />
                 </button>
               </div>
             </div>
