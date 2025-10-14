@@ -145,21 +145,19 @@ function showAddedToastAndRedirect() {
 
 async function createTask() {
   clearInlineErrors();
-
   if (!validateTaskFormFields()) return;
 
-  const payload = buildTaskPayloadFromForm();
   const btn = document.getElementById("add");
-  if (btn) btn.disabled = true;
+  btn?.setAttribute("disabled", true);
 
   try {
-    const savedTask = await persistTask(payload);
+    await persistTask(buildTaskPayloadFromForm());
     showAddedToastAndRedirect();
   } catch (e) {
-    alert("Die Aufgabe konnte nicht gespeichert werden.");
     console.error(e);
+    alert("Die Aufgabe konnte nicht gespeichert werden.");
   } finally {
-    if (btn) btn.disabled = false;
+    btn?.removeAttribute("disabled");
   }
 }
 
@@ -217,44 +215,18 @@ function resetAssignedUI() {
 }
 
 function clearTask() {
-  ["#titleInput", "#descriptionInput", "#date"].forEach((sel) => {
-    const el = document.querySelector(sel);
-    if (el) el.value = "";
-  });
-
-  const subInput = document.getElementById("subtaskInput");
-  if (subInput) subInput.value = "";
-
-  document.querySelectorAll(".addTaskErrors").forEach((e) => (e.style.visibility = "hidden"));
-  ["#titleInput", "#descriptionInput", "#date", "#assignedToDropdownContacts", "#assignedToDropdownCategory"].forEach((sel) => {
-    const el = document.querySelector(sel);
-    if (el) el.style.border = "";
-  });
-
-  resetPrioUI();
-  resetCategoryUI();
-  resetAssignedUI();
-
-  const subWrap = document.querySelector(".addedSubtaskWrapper");
-  if (subWrap) subWrap.innerHTML = "";
-
-  const imgC = document.querySelector(".subtask-images-container");
-  if (imgC) imgC.style.display = "none";
-
-  // Additional: Fully clear contacts selection visuals and state
-  const search = document.getElementById("contactSearch");
-  if (search) search.value = ""; // Clear search input to reset filtering
-
-  const dropdown = document.getElementById("dropdown-list-contacts");
-  if (dropdown) dropdown.style.display = "none"; // Ensure dropdown is closed
-
-  const arrow = document.getElementById("dropdown-arrow-contacts");
-  if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)"; // Reset arrow
-
-  // Re-render full contacts list to reset any prior filtering (if loaded)
-  if (window.loadedContacts && typeof renderContacts === "function") {
-    renderContacts(window.allContacts, window.loadedContacts);
-  }
+  const $ = s => document.querySelector(s);
+  ["#titleInput","#descriptionInput","#date","#subtaskInput"].forEach(s=>{const e=$(s); if (e) e.value = "";});
+  document.querySelectorAll(".addTaskErrors").forEach(e=>e.style.visibility = "hidden");
+  ["#titleInput","#descriptionInput","#date","#assignedToDropdownContacts","#assignedToDropdownCategory"]
+    .forEach(s=>{const e=$(s); if (e) e.style.border = "";});
+  resetPrioUI(); resetCategoryUI(); resetAssignedUI();
+  const subWrap = $(".addedSubtaskWrapper"); if (subWrap) subWrap.innerHTML = "";
+  const imgC = $(".subtask-images-container"); if (imgC) imgC.style.display = "none";
+  const search = document.getElementById("contactSearch"); if (search) search.value = "";
+  const dropdown = document.getElementById("dropdown-list-contacts"); if (dropdown) dropdown.style.display = "none";
+  const arrow = document.getElementById("dropdown-arrow-contacts"); if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
+  if (window.loadedContacts && typeof renderContacts === "function") renderContacts(window.allContacts, window.loadedContacts);
 }
 
 /* --------------------------- Kontakte / Suche ---------------------------- */
@@ -264,46 +236,27 @@ async function loadContacts() {
 }
 
 function initContactsDropdownInput() {
-  const select = $id("assignedToDropdownContacts");
-  const arrow = $id("dropdown-arrow-contacts");
-  const drop = $id("dropdown-list-contacts");
-  if (!select || !arrow || !drop) return;
+  const sel = $id("assignedToDropdownContacts"), arrow = $id("dropdown-arrow-contacts"), drop = $id("dropdown-list-contacts");
+  if (!sel || !arrow || !drop) return;
+  let open = false;
 
-  let isOpen = false;
-  select.addEventListener("click", (ev) => {
-    ev.stopPropagation();
-    isOpen = !isOpen;
-    drop.style.display = isOpen ? "block" : "none";
-    arrow.style.transform = isOpen ? "translateY(-50%) rotate(180deg)" : "translateY(-50%) rotate(0deg)";
-  });
+  const toggle = (show) => {
+    drop.style.display = show ? "block" : "none";
+    arrow.style.transform = `translateY(-50%) rotate(${show ? 180 : 0}deg)`;
+    open = show;
+  };
 
-  document.addEventListener("click", () => {
-    if (!isOpen) return;
-    drop.style.display = "none";
-    arrow.style.transform = "translateY(-50%) rotate(0deg)";
-    isOpen = false;
-  });
+  sel.addEventListener("click", e => (e.stopPropagation(), toggle(!open)));
+  document.addEventListener("click", () => open && toggle(false));
 
-  Array.from(drop.getElementsByClassName("dropdown-item-contact")).forEach((item) => {
-    item.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-
-      const contact = { id: item.dataset.id, name: item.dataset.name };
-      if (!window.assignedContacts.some((c) => c.id === contact.id)) {
-        window.assignedContacts.push(contact);
-      }
-
-      const initials = document.getElementById("assignedToInitials");
-      if (initials) {
-        initials.style.display = "block"; // show div
-        initials.textContent = window.assignedContacts.map((c) => c.name[0]).join(", ");
-      }
-
-      drop.style.display = "none";
-      const arrow = document.getElementById("dropdown-arrow-contacts");
-      if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
-    });
-  });
+  drop.querySelectorAll(".dropdown-item-contact").forEach(it => it.addEventListener("click", e => {
+    e.stopPropagation();
+    const c = { id: it.dataset.id, name: it.dataset.name };
+    if (!window.assignedContacts.some(x => x.id === c.id)) window.assignedContacts.push(c);
+    const initials = $id("assignedToInitials");
+    if (initials) { initials.style.display = "block"; initials.textContent = window.assignedContacts.map(x => x.name[0]).join(", "); }
+    toggle(false);
+  }));
 }
 
 /* ---------------------------- Datepicker UX ------------------------------ */
@@ -311,52 +264,37 @@ function initContactsDropdownInput() {
 function initDateMinAndPicker() {
   const input = $id("date");
   if (!input) return;
+
   input.min = new Date().toISOString().split("T")[0];
-  const open = (e) => {
+
+  input.addEventListener("click", () => {
     try {
       const ua = navigator.userActivation;
-      const ok = ua && (ua.isActive || ua.hasBeenActive);
-      if (typeof input.showPicker === "function" && ok) {
-        input.showPicker();
-      } else {
-        input.focus();
-      }
+      const canShow = ua?.isActive || ua?.hasBeenActive;
+      input.showPicker?.call && canShow ? input.showPicker() : input.focus();
     } catch {
       input.focus();
     }
-  };
-
-  input.addEventListener("click", open);
+  });
 }
 
 /* ----------------------------- Live Search ------------------------------- */
 
 function initContactSearch() {
-  const search = document.getElementById("contactSearch");
-  const dropdown = document.getElementById("dropdown-list-contacts");
-  if (!search || !dropdown) return;
+  const search = $id("contactSearch"), drop = $id("dropdown-list-contacts");
+  if (!search || !drop) return;
 
-  search.addEventListener("input", function () {
-    const query = this.value.toLowerCase().trim();
-    const filtered = window.allContacts.filter((name) => name.toLowerCase().includes(query));
+  const toggle = show => drop.style.display = show ? "block" : "none";
+  const filterContacts = q => window.allContacts.filter(n => n.toLowerCase().includes(q));
 
-    if (window.loadedContacts) {
-      renderContacts(filtered, window.loadedContacts);
-    }
-
-    // Show dropdown if there is input, hide if empty
-    if (query.length > 0 && filtered.length > 0) {
-      dropdown.style.display = "block"; // or remove "hidden" class if you use Tailwind/bootstrap style
-    } else {
-      dropdown.style.display = "none"; // hide if nothing matches or input is empty
-    }
+  search.addEventListener("input", () => {
+    const q = search.value.toLowerCase().trim(), results = filterContacts(q);
+    if (window.loadedContacts) renderContacts(results, window.loadedContacts);
+    toggle(q && results.length);
   });
 
-  // Optional: hide dropdown if user clicks outside
-  document.addEventListener("click", (e) => {
-    if (!dropdown.contains(e.target) && e.target !== search) {
-      dropdown.style.display = "none";
-    }
+  document.addEventListener("click", e => {
+    if (!drop.contains(e.target) && e.target !== search) toggle(false);
   });
 }
 
