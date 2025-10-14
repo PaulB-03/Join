@@ -142,7 +142,7 @@
         <section class="board" id="board" aria-label="Kanban Board">
           <div class="column">
             <div class="col-head">
-              To do
+              <h5>To do</h5>
               <button class="add-card-btn" aria-label="Neue Karte hinzufügen"></button>
             </div>
             <div class="dropzone" id="todo">
@@ -152,7 +152,7 @@
 
           <div class="column">
             <div class="col-head">
-              In progress
+              <h5>In progress</h5>
               <button class="add-card-btn" aria-label="Neue Karte hinzufügen"></button>
             </div>
             <div class="dropzone" id="in-progress">
@@ -162,7 +162,7 @@
 
           <div class="column">
             <div class="col-head">
-              Await feedback
+              <h5>Await feedback</h5>
               <button class="add-card-btn" aria-label="Neue Karte hinzufügen"></button>
             </div>
             <div class="dropzone" id="await-feedback">
@@ -171,7 +171,7 @@
           </div>
 
           <div class="column">
-            <div class="col-head">Done</div>
+            <div class="col-head"><h5>Done</h5></div>
             <div class="dropzone" id="done">
               <div class="empty">No tasks Done</div>
             </div>
@@ -187,8 +187,8 @@
 
       <div id="taskOverlay" class="overlay" aria-hidden="true">
         <div class="overlay-panel task-overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
-          <div class="overlay-close" id="closeTaskOverlay" aria-label="Close"></div>
           <div class="addTaskOverlayWrapper">
+            <div class="overlay-close" id="closeTaskOverlay" aria-label="Close"></div>
             <h1>Add Task</h1>
             <form autocomplete="off" class="addTaskForm">
               <div>

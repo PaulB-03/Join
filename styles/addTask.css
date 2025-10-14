@@ -412,6 +412,15 @@ textarea::placeholder {
   font-weight: 700;
 }
 
+#clear {
+  padding: 12px 16px;
+}
+
+#add p {
+  font-weight: 700;
+  font-size: 21px;
+}
+
 .clearBtn:hover img {
   filter: brightness(0) saturate(100%) invert(44%) sepia(95%) saturate(2474%) hue-rotate(180deg) brightness(90%) contrast(70%);
 }

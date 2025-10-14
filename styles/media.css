@@ -4,9 +4,22 @@
   }
 
   .board {
+    display: block;
+    width: 100%;
     grid-template-columns: repeat(1, 1fr);
     opacity: 1;
     transform: translateZ(0);
+  }
+
+  .col-head .add-card-btn {
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+  }
+
+  .col-head h5 {
+    font-size: 27px;
+    color: var(--main-color);
   }
 
   .dropzone {
@@ -57,7 +70,7 @@
 
 @media (max-width: 850px) {
   .board {
-    margin-top: 100px;
+    margin-top: 40px;
     width: 100%;
   }
   .task-detail {
@@ -88,11 +101,15 @@
   }
 
   .heading {
-    position: relative;
+    position: sticky;
+    top: 80px;
+    background: var(--main-bg-color);
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
+    z-index: 5;
+    padding-top: 24px;
   }
 
   .dropdown-subtasks {
@@ -104,15 +121,11 @@
     max-width: 100%;
   }
 
-  .app h1 {
-    font-size: 40px;
-  }
-
   .controls {
     position: static;
     width: 100%;
     gap: 8px;
-    margin-top: 52px;
+    margin-top: 24px;
     padding-top: 0;
   }
 
@@ -130,11 +143,11 @@
 
   .btn#openAddTask {
     position: absolute;
-    top: 0;
+    top: 40px;
     right: 0;
     height: 40px;
     width: 40px;
-    border-radius: 8px;
+    border-radius: 10px;
     justify-content: center;
     font-size: 0;
     display: inline-flex !important;

@@ -6,17 +6,6 @@
   min-height: 100vh;
 }
 
-.app h1 {
-  margin: 0;
-  position: static;
-  top: auto;
-  margin-left: 0;
-}
-h1 {
-  font-size: 61px;
-  margin: 0;
-}
-
 .heading {
   display: flex;
   align-items: center;
@@ -31,7 +20,7 @@ h1 {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 32px;
 }
 
 .search {
@@ -154,16 +143,11 @@ a.btn:active {
 .col-head {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  font-weight: 700;
-  font-size: 20px;
   color: var(--board-column) !important;
-  width: 244px;
+  width: 100%;
   height: 24px;
   justify-content: space-between;
   opacity: 1;
-  padding-left: 20px;
 }
 
 .col-head .count {
@@ -207,8 +191,6 @@ a.btn:active {
 .task-container {
   position: relative;
   display: block;
-  padding: 6px;
-  border-radius: 14px;
   transition: background 120ms ease, outline-color 120ms ease;
 }
 .task-container.is-over {
@@ -218,14 +200,12 @@ a.btn:active {
 }
 
 .dropzone {
-  width: 270px;
+  width: 100%;
   height: 800px;
-  background: transparent;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 12px 10px;
   overflow-y: auto;
+  gap: 16px;
   /* For Firefox */
   scrollbar-width: none;
   /* For Chrome, Safari, and Opera */
@@ -266,9 +246,11 @@ a.btn:active {
 .column {
   display: flex;
   flex-direction: column;
+  align-items: center;
   min-height: 0;
-  width: 246px;
+  width: 252px;
   opacity: 1;
+  gap: 16px;
 }
 
 body.modal-open {

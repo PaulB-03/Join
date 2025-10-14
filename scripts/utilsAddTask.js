@@ -73,7 +73,7 @@ function getPriorityBadge(prio) {
       icon = `<img src="../assets/svg/double_arrow_down.svg" alt="${label}" class="priority-icon" />`;
       break;
   }
-  return `<span class="priority"><span class="priority-text">${label}</span>${icon}</span>`;
+  return `<span class="priority"><h6 class="priority-text">${label}</h6>${icon}</span>`;
 }
 
 // Baut eine Reihe aus Avataren + dem Icon der Priorität.
@@ -133,7 +133,7 @@ function taskDetailTemplate(id, t = {}) {
         (n, i) => `
       <div class="task-assigned__item">
         <div class="av" style="background:${(window.colorForName && window.colorForName(n)) || bgForNameOrIndex(n, i)}">${initials(n)}</div>
-        <div class="task-assigned__name">${escapeHtml(n)}</div>
+        <h6 class="task-assigned__name">${escapeHtml(n)}</h6>
       </div>`
       )
       .join("") || `<div class="task-assigned__item" style="opacity:.6">No assignees</div>`;
@@ -157,22 +157,22 @@ function taskDetailTemplate(id, t = {}) {
   return `
     <div class="task-detail" data-id="${id}">
       <span class="pill">${cat}</span>
-      <h2 id="taskDetailTitle" class="task-detail__title">${title.replace(/\n/g, "<br>")}</h2>
+      <h1 id="taskDetailTitle" class="task-detail__title">${title.replace(/\n/g, "<br>")}</h1>
 
-      ${desc ? `<p class="task-detail__desc">${desc}</p>` : ""}
+      ${desc ? `<h6 class="task-detail__desc">${desc}</h6>` : ""}
 
       <dl class="task-meta">
-        <dt>Due date</dt><dd>${date}</dd>
-        <dt>Priority</dt><dd>${getPriorityBadge(t.priority)}</dd>
+        <dt><h6>Due date:</h6></dt><dd><h6>${date}</h6></dd>
+        <dt><h6>Priority:</h6></dt><dd>${getPriorityBadge(t.priority)}</dd>
       </dl>
 
       <div class="task-assigned">
-        <div class="section-title">Assigned to:</div>
+        <h6 class="section-title">Assigned to:</h6></div>
         <div class="task-assigned__list task-name">${assigned}</div>
       </div>
 
       <div class="subtasks">
-        <div class="section-title">Subtasks</div>
+        <h6div class="section-title"><h6>Subtasks</h6></div>
         <div class="subtasks__list">${subtasks}</div>
       </div>
 

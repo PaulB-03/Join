@@ -180,12 +180,10 @@ body.modal-open {
 .task-modal {
   background: #fff;
   max-height: 100vh;
-  border-radius: 24px;
+  border-radius: 30px;
   overflow: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.16);
   position: relative;
-  display: flex;
-  flex-direction: column;
 }
 
 .overlay-close {
@@ -211,7 +209,7 @@ body.modal-open {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 6px 18px;
+  padding: 0px 18px;
   border-radius: 10px;
   width: max-content;
   max-width: 100%;
@@ -249,4 +247,28 @@ body.modal-open {
 #taskOverlay.edit-mode .requiredAsterisk,
 #taskOverlay.edit-mode #category {
   display: none;
+}
+
+#taskOverlay.edit-mode .overlay-close {
+  position: sticky;
+  width: 100%;
+  background-color: white;
+  background-position: right;
+}
+
+#taskOverlay.edit-mode .addTaskOverlayFooter {
+  position: sticky;
+  bottom: 0px;
+  width: 100%;
+  display: block;
+  background: white;
+  padding: 12px 0 40px 0;
+}
+
+#taskOverlay.edit-mode .addOrClearBtn {
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+}
+
+#taskOverlay.edit-mode .addTaskForm {
+  justify-content: center;
 }
