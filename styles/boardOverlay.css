@@ -220,9 +220,11 @@ body.modal-open {
 
 #taskOverlay.edit-mode .task-overlay-panel {
   width: 530px;
+  padding-top: 0;
 }
 
 #taskOverlay.edit-mode .divider,
+#taskOverlay.edit-mode .hideDesktop,
 #taskOverlay.edit-mode h1,
 #taskOverlay.edit-mode .hideMobile,
 #taskOverlay.edit-mode .requiredAsterisk,
@@ -232,9 +234,12 @@ body.modal-open {
 
 #taskOverlay.edit-mode .overlay-close {
   position: sticky;
+  top: 0;
   width: 100%;
   background-color: white;
-  background-position: right;
+  background-position: right bottom;
+  height: 70px;
+  z-index: 5;
 }
 
 #taskOverlay.edit-mode .addTaskOverlayFooter {
@@ -248,7 +253,6 @@ body.modal-open {
 
 #taskOverlay.edit-mode .addOrClear {
   justify-content: flex-end;
-  padding-right: 35px;
   padding-top: 5px;
 }
 
