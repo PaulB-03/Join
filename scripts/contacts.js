@@ -38,7 +38,6 @@ async function loadContacts() {
   loadContactsInAddTask();
 }
 
-
 /**
  * Add a new contact to the backend and refresh the UI.
  * @async
@@ -51,10 +50,9 @@ async function addContact(contact) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(contact),
   });
-  await loadContacts(); 
-  showContactToast(); 
+  await loadContacts();
+  showContactToast();
 }
-
 
 /**
  * Show a temporary toast notification.
@@ -62,14 +60,13 @@ async function addContact(contact) {
  * @returns {void}
  */
 function showContactToast(message = "Contact successfully created") {
-  const toastElement = document.getElementById("contactToast"); 
-  if (!toastElement) return; 
-  toastElement.textContent = message; 
-  toastElement.classList.add("show"); 
-  clearTimeout(toastElement.autoHideTimer); 
-  toastElement.autoHideTimer = setTimeout(() => toastElement.classList.remove("show"), 3500); 
+  const toastElement = document.getElementById("contactToast");
+  if (!toastElement) return;
+  toastElement.textContent = message;
+  toastElement.classList.add("show");
+  clearTimeout(toastElement.autoHideTimer);
+  toastElement.autoHideTimer = setTimeout(() => toastElement.classList.remove("show"), 3500);
 }
-
 
 /**
  * Open the Add Contact overlay.
@@ -83,35 +80,32 @@ function openAddContactDialog() {
   }
 }
 
-
 /**
  * Close the Add Contact dialog and reset the form.
  * @returns {void}
  */
-function closeAddContactDialog() { 
-  var overlay = document.getElementById("contactOverlay"), 
+function closeAddContactDialog() {
+  var overlay = document.getElementById("contactOverlay"),
     form = document.getElementById("addContactForm");
-  if (overlay) { 
+  if (overlay) {
     overlay.classList.remove("open");
     document.body.classList.remove("modal-open");
   }
-  if (form) form.reset(); 
+  if (form) form.reset();
 }
-
 
 /**
  * Read the Add Contact form fields.
  * @returns {{name: string, email: string, phone: string}} Trimmed string values for name, email, and phone.
  */
-function readAddContactForm() { 
-  var form = document.getElementById("addContactForm"); 
-  return { 
+function readAddContactForm() {
+  var form = document.getElementById("addContactForm");
+  return {
     name: form.name.value.trim(),
     email: form.email.value.trim(),
     phone: form.phone.value.trim(),
   };
 }
-
 
 /**
  * Handle Add Contact form submission.
@@ -119,13 +113,12 @@ function readAddContactForm() {
  * @param {SubmitEvent} event
  * @returns {Promise<void>}
  */
-async function submitAddContact(event) { 
+async function submitAddContact(event) {
   event.preventDefault();
-  if (!validateAddContactForm()) return; 
+  if (!validateAddContactForm()) return;
   await addContact(readAddContactForm());
   closeAddContactDialog();
 }
-
 
 /**
  * Initialize Add Contact overlay and handlers.
@@ -146,7 +139,6 @@ function setupAddContactOverlay() {
   if (form) form.addEventListener("submit", submitAddContact);
 }
 
-
 /**
  * Initialize the page.
  * @returns {void}
@@ -157,7 +149,6 @@ function init() {
   setupAddContactOverlay();
 }
 
-
 /**
  * Render the contacts list.
  * @returns {void}
@@ -165,12 +156,12 @@ function init() {
 function initContactsList() {
   const container = document.querySelector(".contactList");
   if (!container) return;
-  const old = container.querySelector(".contactListItems"); 
+  const old = container.querySelector(".contactListItems");
   if (old) old.remove();
   const list = document.createElement("div");
   list.className = "contactListItems";
   container.appendChild(list);
-  const collator = new Intl.Collator("de", { sensitivity: "base" }); 
+  const collator = new Intl.Collator("de", { sensitivity: "base" });
   const sorted = [...contacts].sort((a, b) => collator.compare(a.name, b.name));
   const grouped = groupByInitial(sorted);
   Object.keys(grouped).forEach((letter) => {
@@ -178,7 +169,6 @@ function initContactsList() {
     grouped[letter].forEach((c) => list.appendChild(contactRow(c)));
   });
 }
-
 
 /**
  * Group items by the uppercase base letter of their name.
@@ -194,7 +184,6 @@ function groupByInitial(items) {
   }, {});
 }
 
-
 /**
  * Get the normalized uppercase initial letter for grouping.
  * @param {string} name - Raw name string.
@@ -205,24 +194,22 @@ function baseLetter(name) {
   return ch.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-
 /**
  * Create an alphabet header fragment for the list.
  * @param {string} letter - Alphabet letter (e.g., "A").
  * @returns {DocumentFragment} Fragment containing a header and divider.
  */
 function alphaHeader(letter) {
-  const frag = document.createDocumentFragment(); 
-  const h = document.createElement("h6"); 
-  h.className = "alphaHeader"; 
-  h.textContent = letter; 
-  const divider = document.createElement("div"); 
-  divider.className = "alphaDivider"; 
-  frag.appendChild(h); 
+  const frag = document.createDocumentFragment();
+  const h = document.createElement("h6");
+  h.className = "alphaHeader";
+  h.textContent = letter;
+  const divider = document.createElement("div");
+  divider.className = "alphaDivider";
+  frag.appendChild(h);
   frag.appendChild(divider);
-  return frag; 
+  return frag;
 }
-
 
 /**
  * Utility to create an element with optional class and text.
@@ -238,25 +225,23 @@ function createElementWith(tag, cls, text) {
   return element;
 }
 
-
 /**
  * Build a single contact row element.
  * @param {Contact} contact - Contact data to render.
  * @returns {HTMLDivElement} Row element with click handler attached.
  */
 function contactRow(contact) {
-  const row = createElementWith("div", "contactItem"); 
-  const avatar = createElementWith("div", "contactAvatar", initials(contact.name)); 
-  avatar.style.background = colorForName(contact.name); 
-  const text = createElementWith("div", "contactText"); 
-  text.appendChild(createElementWith("h6", "contactName", contact.name)); 
-  text.appendChild(createElementWith("div", "contactEmail", contact.email)); 
-  row.appendChild(avatar); 
-  row.appendChild(text); 
-  row.addEventListener("click", () => selectContact(row, contact)); 
+  const row = createElementWith("div", "contactItem");
+  const avatar = createElementWith("div", "contactAvatar", initials(contact.name));
+  avatar.style.background = colorForName(contact.name);
+  const text = createElementWith("div", "contactText");
+  text.appendChild(createElementWith("h6", "contactName", contact.name));
+  text.appendChild(createElementWith("div", "contactEmail", contact.email));
+  row.appendChild(avatar);
+  row.appendChild(text);
+  row.addEventListener("click", () => selectContact(row, contact));
   return row;
 }
-
 
 /**
  * Select a contact and render details.
@@ -265,11 +250,9 @@ function contactRow(contact) {
  * @returns {void}
  */
 function selectContact(row, contact) {
-  document
-    .querySelectorAll(".contactItem.is-selected")
-    .forEach((el) => el.classList.remove("is-selected")); 
-  row.classList.add("is-selected"); 
-  renderContactDetails(contact); 
+  document.querySelectorAll(".contactItem.is-selected").forEach((el) => el.classList.remove("is-selected"));
+  row.classList.add("is-selected");
+  renderContactDetails(contact);
   if (window.innerWidth <= 925) {
     document.querySelector(".contactDetails")?.classList.add("show");
     document.querySelector(".contactList")?.classList.add("hide");
@@ -277,17 +260,13 @@ function selectContact(row, contact) {
   }
 }
 
-
 /**
  * Clear the current selected state in the list.
  * @returns {void}
  */
 function removeSelected() {
-  document 
-    .querySelectorAll(".contactItem.is-selected")
-    .forEach((el) => el.classList.remove("is-selected")); 
+  document.querySelectorAll(".contactItem.is-selected").forEach((el) => el.classList.remove("is-selected"));
 }
-
 
 /**
  * Navigate back to the list view (mobile).
@@ -300,23 +279,22 @@ function backToList() {
   removeSelected();
 }
 
-
 /**
  * Render the details view for a contact.
  * @param {Contact} contact
  * @returns {void}
  */
 function renderContactDetails(contact) {
-  const body = document.querySelector(".contactDetailsBody"); 
-  if (!body) return; 
-  body.innerHTML = ""; 
-  const top = detailsTop(contact); 
-  const info = detailsInfo(contact); 
-  body.appendChild(top); 
-  body.appendChild(info); 
+  const body = document.querySelector(".contactDetailsBody");
+  if (!body) return;
+  body.innerHTML = "";
+  const top = detailsTop(contact);
+  const info = detailsInfo(contact);
+  body.appendChild(top);
+  body.appendChild(info);
   setupContactActionsFab(contact);
+  body.classList.add("showDetails");
 }
-
 
 /**
  * Build the top details section.
@@ -324,20 +302,19 @@ function renderContactDetails(contact) {
  * @returns {HTMLDivElement} Container element for the top section.
  */
 function detailsTop(contact) {
-  const top = createElementWith("div", "detailsTop"); 
-  const avatar = createElementWith("div", "detailsAvatar", initials(contact.name));  
-  avatar.style.background = colorForName(contact.name); 
-  const title = createElementWith("div", "detailsTitleWrap"); 
-  title.appendChild(createElementWith("div", "detailsName", contact.name)); 
-  const actions = createElementWith("div", "detailsActions"); 
+  const top = createElementWith("div", "detailsTop");
+  const avatar = createElementWith("div", "detailsAvatar", initials(contact.name));
+  avatar.style.background = colorForName(contact.name);
+  const title = createElementWith("div", "detailsTitleWrap");
+  title.appendChild(createElementWith("div", "detailsName", contact.name));
+  const actions = createElementWith("div", "detailsActions");
   actions.appendChild(actionButton("Edit", "../assets/svg/edit.svg", () => openEdit(contact)));
   actions.appendChild(actionButton("Delete", "../assets/svg/delete.svg", () => deleteContact(contact.id)));
-  title.appendChild(actions); 
-  top.appendChild(avatar); 
-  top.appendChild(title); 
+  title.appendChild(actions);
+  top.appendChild(avatar);
+  top.appendChild(title);
   return top;
 }
-
 
 /**
  * Build the info section element for details.
@@ -345,18 +322,17 @@ function detailsTop(contact) {
  * @returns {HTMLDivElement} Populated info section element.
  */
 function detailsInfo(contact) {
-  const info = createElementWith("div", "detailsSection"); 
-  info.innerHTML = detailsInfoHTML(contact); 
-  const trigger = info.querySelector("#editPhoneTrigger"); 
-  if (trigger) { 
+  const info = createElementWith("div", "detailsSection");
+  info.innerHTML = detailsInfoHTML(contact);
+  const trigger = info.querySelector("#editPhoneTrigger");
+  if (trigger) {
     trigger.addEventListener("click", (e) => {
-      e.preventDefault(); 
-      openEdit(contact); 
+      e.preventDefault();
+      openEdit(contact);
     });
   }
-  return info; 
+  return info;
 }
-
 
 /**
  * Load an SVG and return an inline element.
@@ -365,21 +341,20 @@ function detailsInfo(contact) {
  * @returns {Promise<SVGSVGElement|HTMLElement>} - Inline SVG or a neutral fallback element.
  */
 function inlineSvg(url) {
-  return fetch(url) 
-    .then((r) => r.text()) 
-    .then((txt) => { 
-      const wrap = document.createElement("div"); 
+  return fetch(url)
+    .then((r) => r.text())
+    .then((txt) => {
+      const wrap = document.createElement("div");
       wrap.innerHTML = txt.trim();
-      const svg = wrap.querySelector("svg") || document.createElement("span"); 
-      if (svg.tagName && svg.tagName.toLowerCase() === "svg") { 
-        svg.setAttribute("width", "1em"); 
-        svg.setAttribute("height", "1em"); 
-        svg.classList.add("detailsIcon"); 
+      const svg = wrap.querySelector("svg") || document.createElement("span");
+      if (svg.tagName && svg.tagName.toLowerCase() === "svg") {
+        svg.setAttribute("width", "1em");
+        svg.setAttribute("height", "1em");
+        svg.classList.add("detailsIcon");
       }
       return svg;
     });
 }
-
 
 /**
  * Create an action button with an icon.

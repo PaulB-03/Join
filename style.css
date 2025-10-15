@@ -229,7 +229,7 @@ header {
   }
 
   #sidebar {
-    height: 104px;
+    height: 90px;
     background: var(--main-bg-color);
     width: 100%;
     z-index: 5;
