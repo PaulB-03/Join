@@ -11,6 +11,10 @@
     transform: translateZ(0);
   }
 
+  .col-head {
+    width: 100%;
+  }
+
   .col-head .add-card-btn {
     justify-content: center;
     width: 32px;

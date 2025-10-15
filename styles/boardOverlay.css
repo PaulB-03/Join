@@ -178,8 +178,8 @@ body.modal-open {
   width: 33px;
   height: 33px;
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 62px;
+  right: 36px;
   background-image: url(../assets/svg/cancel.svg);
   background-repeat: no-repeat;
   cursor: pointer;
@@ -236,11 +236,14 @@ body.modal-open {
 #taskOverlay.edit-mode .overlay-close {
   position: sticky;
   top: 0;
-  width: 100%;
+  width: 96%;
   background-color: white;
   background-position: right bottom;
   height: 70px;
   z-index: 5;
+}
+#taskOverlay.edit-mode .addTaskOverlayWrapper {
+  padding-top: 0;
 }
 
 #taskOverlay.edit-mode .addTaskOverlayFooter {
@@ -255,6 +258,7 @@ body.modal-open {
 #taskOverlay.edit-mode .addOrClear {
   justify-content: flex-end;
   padding-top: 5px;
+  padding-right: 35px;
 }
 
 #taskOverlay.edit-mode .addOrClearBtn {
