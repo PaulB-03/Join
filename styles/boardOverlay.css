@@ -23,20 +23,7 @@
   pointer-events: auto;
 }
 
-.overlay-panel {
-  position: relative;
-  background: #fff;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-  display: grid;
-  grid-template-columns: 42% 58%;
-  transform: translateX(80px);
-  transition: transform 0.35s ease;
-  will-change: transform;
-}
-
-.overlay.open .overlay-panel {
+.overlay.open .task-overlay-panel {
   transform: translateX(0);
 }
 
@@ -51,11 +38,10 @@ body.modal-open {
   overflow: hidden;
 }
 
-#taskOverlay .task-overlay-panel {
+.task-overlay-panel {
   height: 870px;
   width: 1116px;
   background: #fff;
-  /* max-height: 100vh; */
   border-radius: 24px;
   overflow: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
@@ -63,8 +49,9 @@ body.modal-open {
   padding: 20px 10px 0px;
   display: flex;
   justify-content: center;
-  /* flex-direction: column; */
   align-items: flex-start;
+  transform: translateX(84vw);
+  transition: transform 0.35s ease;
 }
 
 .addTaskOverlayWrapper {
@@ -227,17 +214,11 @@ body.modal-open {
   background-image: url(../assets/svg/checkbox_hover.svg);
 }
 
-/* #taskOverlay .overlay-panel { */
-/* display: block; */
-/* width: 1080px; */
-/* overflow-y: auto; */
-/* } */
-
-#taskOverlay .overlay-panel::-webkit-scrollbar {
+#taskOverlay .task-overlay-panel::-webkit-scrollbar {
   display: none;
 }
 
-#taskOverlay.edit-mode .overlay-panel {
+#taskOverlay.edit-mode .task-overlay-panel {
   width: 530px;
 }
 
