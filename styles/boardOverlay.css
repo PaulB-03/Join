@@ -246,6 +246,12 @@ body.modal-open {
   padding: 12px 0 40px 0;
 }
 
+#taskOverlay.edit-mode .addOrClear {
+  justify-content: flex-end;
+  padding-right: 35px;
+  padding-top: 5px;
+}
+
 #taskOverlay.edit-mode .addOrClearBtn {
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
 }
