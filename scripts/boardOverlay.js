@@ -161,6 +161,7 @@ function openTaskOverlay() {
   showOverlay(ov, { focus: false });
   byId("add")?.removeAttribute("data-editing-id");
   setOverlayButtonText(false);
+  toggleClearButton(false);
   clearTask();
   initTaskFormEnhancements();
   (byId("titleInput") || firstFocusable(ov) || ov).focus();
