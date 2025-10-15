@@ -58,6 +58,7 @@ body.modal-open {
   display: flex;
   flex-direction: column;
   transition: padding-left 0.3s ease;
+  padding-top: 44px;
 }
 
 .addTaskOverlayFooter {
