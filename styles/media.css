@@ -176,6 +176,10 @@
     max-width: 400px;
   }
 
+  .btn#openAddTask {
+    top: 32px;
+  }
+
   .dropdown-subtasks {
     width: 180px !important;
   }
