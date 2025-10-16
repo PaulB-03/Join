@@ -239,3 +239,69 @@ function setupPasswordInput(input) {
   updatePasswordIconOnInput(input, state);
   togglePasswordVisibilityOnClick(input, state);
 }
+
+// ========== SIGNUP BUTTON ENABLE/DISABLE HANDLING ==========
+
+/**
+ * Checks if all required signup inputs are filled and policy accepted.
+ * @returns {boolean} True if all required fields are valid, false otherwise.
+ */
+function canSubmitSignup() {
+  const name = document.getElementById("signupName")?.value.trim();
+  const email = document.getElementById("signupEmail")?.value.trim();
+  const p1 = document.getElementById("signupPassword")?.value.trim();
+  const p2 = document.getElementById("confirmPassword")?.value.trim();
+  const policy = typeof policyChecked !== "undefined" ? policyChecked : false; // reuse global
+  return !!(name && email && p1 && p2 && policy);
+}
+
+/**
+ * Enables or disables the signup button depending on form completion.
+ */
+function syncSignupBtn() {
+  const ok = canSubmitSignup();
+  signupBtn.disabled = !ok;
+  signupBtn.style.opacity = ok ? "" : "0.5";
+  signupBtn.style.cursor = ok ? "" : "not-allowed";
+}
+
+/**
+ * Attaches input event listeners to form fields.
+ */
+function setupInputListeners() {
+  ["signupName", "signupEmail", "signupPassword", "confirmPassword"].forEach(
+    (id) => document.getElementById(id)?.addEventListener("input", syncSignupBtn)
+  );
+}
+
+/**
+ * Attaches click listener to policy checkbox image.
+ */
+function setupPolicyListener() {
+  document
+    .getElementById("policyCheckboxImg")
+    ?.addEventListener("click", () => setTimeout(syncSignupBtn, 0));
+}
+
+/**
+ * Prevents form submission if fields are incomplete.
+ */
+function setupFormSubmitBlock() {
+  (window.signupForm || document.getElementById("signUpForm"))?.addEventListener(
+    "submit",
+    (e) => !canSubmitSignup() && e.preventDefault()
+  );
+}
+
+/**
+ * Initializes event listeners for signup form fields and policy checkbox.
+ * Disables the signup button when inputs are empty or policy is not accepted.
+ */
+function initSignupButtonState() {
+  setupInputListeners();
+  setupPolicyListener();
+  setupFormSubmitBlock();
+  syncSignupBtn();
+}
+
+initSignupButtonState();
