@@ -228,6 +228,15 @@ header {
     gap: 12px;
   }
 
+  #sidebar {
+    height: 90px;
+    background: var(--main-bg-color);
+    width: 100%;
+    z-index: 5;
+    position: fixed;
+    bottom: 0;
+  }
+
   .header-content h6,
   .helper {
     display: none;

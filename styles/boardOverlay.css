@@ -23,20 +23,7 @@
   pointer-events: auto;
 }
 
-.overlay-panel {
-  position: relative;
-  background: #fff;
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-  display: grid;
-  grid-template-columns: 42% 58%;
-  transform: translateX(80px);
-  transition: transform 0.35s ease;
-  will-change: transform;
-}
-
-.overlay.open .overlay-panel {
+.overlay.open .task-overlay-panel {
   transform: translateX(0);
 }
 
@@ -51,11 +38,10 @@ body.modal-open {
   overflow: hidden;
 }
 
-#taskOverlay .task-overlay-panel {
+.task-overlay-panel {
   height: 870px;
   width: 1116px;
   background: #fff;
-  /* max-height: 100vh; */
   border-radius: 24px;
   overflow: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
@@ -63,14 +49,16 @@ body.modal-open {
   padding: 20px 10px 0px;
   display: flex;
   justify-content: center;
-  /* flex-direction: column; */
   align-items: flex-start;
+  transform: translateX(84vw);
+  transition: transform 0.35s ease;
 }
 
 .addTaskOverlayWrapper {
   display: flex;
   flex-direction: column;
   transition: padding-left 0.3s ease;
+  padding-top: 44px;
 }
 
 .addTaskOverlayFooter {
@@ -81,25 +69,6 @@ body.modal-open {
   align-items: flex-end;
   justify-content: space-between;
   z-index: 5;
-}
-
-#taskOverlay .overlay-close {
-  position: absolute;
-  right: 40px;
-  width: 36px;
-  height: 36px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  font-size: 28px;
-  line-height: 1;
-  cursor: pointer;
-  color: #6b7280;
-}
-
-#taskOverlay .overlay-close:hover {
-  background: rgba(0, 0, 0, 0.06);
-  color: #111827;
 }
 
 #taskOverlay .task-overlay-title {
@@ -199,39 +168,36 @@ body.modal-open {
 .task-modal {
   background: #fff;
   max-height: 100vh;
-  border-radius: 24px;
+  border-radius: 30px;
   overflow: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.16);
   position: relative;
-  display: flex;
-  flex-direction: column;
 }
 
-.task-modal__close {
+.overlay-close {
+  width: 33px;
+  height: 33px;
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 36px;
-  height: 36px;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  font-size: 28px;
-  line-height: 1;
+  top: 62px;
+  right: 36px;
+  background-image: url(../assets/svg/cancel.svg);
+  background-repeat: no-repeat;
   cursor: pointer;
-  color: #6b7280;
 }
 
-.task-modal__close:hover {
-  background: rgba(0, 0, 0, 0.06);
-  color: #111827;
+.overlay-close:hover {
+  background-image: url(../assets/svg/cancel_hover.svg);
+}
+
+.overlay-close:active {
+  background-image: url(../assets/svg/cancel_clicked.svg);
 }
 
 #taskDetailOverlay .subtasks__item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 6px 18px;
+  gap: 16px;
+  padding: 0px 18px;
   border-radius: 10px;
   width: max-content;
   max-width: 100%;
@@ -239,30 +205,84 @@ body.modal-open {
 
 #taskDetailOverlay .subtasks__item:hover,
 #taskDetailOverlay .subtasks__item:focus-within {
-  background-color: #f5f5dc;
+  background-color: #eeeeee;
 }
 
-/* #taskOverlay .overlay-panel { */
-/* display: block; */
-/* width: 1080px; */
-/* overflow-y: auto; */
-/* } */
+.subtasks__item:hover .cb--checked {
+  background-image: url(../assets/svg/checked_hover.svg);
+}
+.subtasks__item:hover .cb--unchecked {
+  background-image: url(../assets/svg/checkbox_hover.svg);
+}
 
-#taskOverlay .overlay-panel::-webkit-scrollbar {
+#taskOverlay .task-overlay-panel::-webkit-scrollbar {
   display: none;
 }
 
-#taskOverlay.edit-mode .overlay-panel {
+#taskOverlay.edit-mode .task-overlay-panel {
   width: 530px;
+  padding-top: 0;
 }
 
 #taskOverlay.edit-mode .divider,
-#taskOverlay.edit-mode .textrequired,
+#taskOverlay.edit-mode .hideDesktop,
+#taskOverlay.edit-mode h1,
+#taskOverlay.edit-mode .hideMobile,
+#taskOverlay.edit-mode .requiredAsterisk,
 #taskOverlay.edit-mode #category {
   display: none;
 }
 
-#taskOverlay.edit-mode textarea:valid,
-#taskOverlay.edit-mode input {
+#taskOverlay.edit-mode .overlay-close {
+  position: sticky;
+  top: 0;
+  width: 96%;
   background-color: white;
+  background-position: right bottom;
+  height: 70px;
+  z-index: 5;
+}
+#taskOverlay.edit-mode .addTaskOverlayWrapper {
+  padding-top: 0;
+}
+
+#taskOverlay.edit-mode .addTaskOverlayFooter {
+  position: sticky;
+  bottom: 0px;
+  width: 100%;
+  display: block;
+  background: white;
+  padding: 12px 0 40px 0;
+}
+
+#taskOverlay.edit-mode .addOrClear {
+  justify-content: flex-end;
+  padding-top: 5px;
+  padding-right: 35px;
+}
+
+#taskOverlay.edit-mode .addOrClearBtn {
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+}
+
+#taskOverlay.edit-mode .addTaskForm {
+  justify-content: center;
+}
+
+.task-overlay .task-modal {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 300ms ease, opacity 300ms ease;
+  will-change: transform, opacity;
+}
+
+.task-overlay.open .task-modal {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .task-overlay .task-modal {
+    transition: transform 300ms ease, opacity 300ms ease;
+  }
 }

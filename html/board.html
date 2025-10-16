@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../styles/colors.css" />
     <link rel="stylesheet" href="../styles/fonts.css" />
-    <link rel="stylesheet" href="../styles/flatpickr.min.css" />
     <link rel="stylesheet" href="../styles/boardLayout.css" />
     <link rel="stylesheet" href="../styles/board.css" />
     <link rel="stylesheet" href="../styles/boardOverlay.css" />
@@ -37,7 +36,9 @@
 
     <script src="../scripts/standardFunctions.js" defer></script>
     <script src="../scripts/utilsAddTask.js" defer></script>
+    <script src="../scripts/templates/addTaskTemplates.js" defer></script>
     <script src="../scripts/boardOverlay.js" defer></script>
+    <script src="../scripts/dnd.js" defer></script>
     <script src="../scripts/board.js" defer></script>
     <script src="../scripts/mobileSlider.js" defer></script>
     <script src="../script.js" defer></script>
@@ -142,7 +143,7 @@
         <section class="board" id="board" aria-label="Kanban Board">
           <div class="column">
             <div class="col-head">
-              To do
+              <h5>To do</h5>
               <button class="add-card-btn" aria-label="Neue Karte hinzufügen"></button>
             </div>
             <div class="dropzone" id="todo">
@@ -152,7 +153,7 @@
 
           <div class="column">
             <div class="col-head">
-              In progress
+              <h5>In progress</h5>
               <button class="add-card-btn" aria-label="Neue Karte hinzufügen"></button>
             </div>
             <div class="dropzone" id="in-progress">
@@ -162,7 +163,7 @@
 
           <div class="column">
             <div class="col-head">
-              Await feedback
+              <h5>Await feedback</h5>
               <button class="add-card-btn" aria-label="Neue Karte hinzufügen"></button>
             </div>
             <div class="dropzone" id="await-feedback">
@@ -171,7 +172,7 @@
           </div>
 
           <div class="column">
-            <div class="col-head">Done</div>
+            <div class="col-head"><h5>Done</h5></div>
             <div class="dropzone" id="done">
               <div class="empty">No tasks Done</div>
             </div>
@@ -180,15 +181,15 @@
       </section>
       <div id="taskDetailOverlay" class="task-overlay">
         <div class="task-modal" role="dialog" aria-modal="true" aria-labelledby="taskDetailTitle" onclick="event.stopPropagation()">
-          <button class="task-modal__close" id="taskDetailClose" aria-label="Close">&times;</button>
+          <div class="overlay-close" id="taskDetailClose" aria-label="Close"></div>
           <div id="taskDetailContent"><!-- Inhalt wird per JS gerendert --></div>
         </div>
       </div>
 
       <div id="taskOverlay" class="overlay" aria-hidden="true">
-        <div class="overlay-panel task-overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
-          <button type="button" class="overlay-close" id="closeTaskOverlay" aria-label="Close">×</button>
+        <div class="task-overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
           <div class="addTaskOverlayWrapper">
+            <div class="overlay-close" id="closeTaskOverlay" aria-label="Close"></div>
             <h1>Add Task</h1>
             <form autocomplete="off" class="addTaskForm">
               <div>
@@ -289,7 +290,7 @@
                 </div>
                 <button id="add" class="btn-dark addOrClearBtn" type="button" onclick="createTask(event)">
                   Create task
-                  <img src="../assets/svg/check.svg" class="createTaskCheck" alt="" />
+                  <img src="../assets/svg/check_2.svg" class="createTaskCheck" alt="" />
                 </button>
               </div>
             </div>

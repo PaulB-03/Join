@@ -28,35 +28,23 @@
 //}
 
 function sidebarHeaderInit() {
-  const PUBLIC_PAGES = new Set([
-    "/", "/index.html",
-    "/html/privacyPolicy.html",
-    "/html/legalNotice.html"
-  ]);
+  const PUB = new Set(["/", "/index.html", "/html/privacyPolicy.html", "/html/legalNotice.html"]);
+  const path = location.pathname.replace(/\/+$/, "") || "/";
+  const isPub = PUB.has(path) || document.body?.dataset.public === "true";
+  const noUser = !localStorage.getItem("currentUser");
 
-  const currentPath = location.pathname.replace(/\/+$/, "") || "/";
-
-  const isPublic = PUBLIC_PAGES.has(currentPath)
-    || document.body?.dataset.public === "true";
-
-  if (!isPublic && !localStorage.getItem("currentUser")) {
-    const path = window.location.pathname;
-    const exceptions = ["/Join/html/legalNotice.html", "/Join/html/privacyPolicy.html"];
-    if (!exceptions.includes(path)) {
-      let toIndex;
-      if (path.includes("/html/")) {
-        toIndex = "../index.html";
-      } else {
-        toIndex = "./index.html";
-      }
-      window.location.href = toIndex;
-      return;
+  if (!isPub && noUser) {
+    const exc = ["/Join/html/legalNotice.html", "/Join/html/privacyPolicy.html"];
+    if (!exc.includes(path)) {
+      const toIndex = path.includes("/html/") ? "../index.html" : "./index.html";
+      return (window.location.href = toIndex);
     }
   }
-  const currentUser = loadLoginStatus();
-  updateHeaderAvatars(currentUser);
+
+  const user = loadLoginStatus();
+  updateHeaderAvatars(user);
   highlightActiveLink();
-  toggleSidebarAndHeader(currentUser);
+  toggleSidebarAndHeader(user);
 }
 
 function getCurrentUser() {

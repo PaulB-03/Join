@@ -71,10 +71,6 @@
     justify-content: center;
   }
 
-  h1 {
-    top: 120px;
-  }
-
   .addTaskWrapper {
     gap: 10px;
     padding-right: 8px;
@@ -84,10 +80,6 @@
   .addTaskForm {
     padding-bottom: 112px;
   }
-
-  /* .inputFlexbox { */
-  /* width: auto; */
-  /* } */
 
   .addTaskFooter {
     padding-bottom: 90px;
