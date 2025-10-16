@@ -23,13 +23,30 @@ function bindGlobalDrag() {
 }
 
 // On start: remember dragged card and add styles
+function createDragImage(box) {
+  const clone = box.cloneNode(true);
+  clone.style.transform = "rotate(5deg)";
+  clone.style.opacity = "1";
+  clone.style.position = "absolute";
+  clone.style.top = "-9999px";
+  clone.style.pointerEvents = "none";
+  clone.style.width = `${box.offsetWidth}px`;
+  document.body.appendChild(clone);
+  return clone;
+}
+
 function onDragStart(e) {
   const box = e.target.closest(".task-container");
   if (!box) return;
   dragged = box;
+
   box.classList.add("is-dragging");
   box.querySelector(".card")?.classList.add("is-dragging");
+
+  const clone = createDragImage(box);
+  e.dataTransfer.setDragImage(clone, clone.offsetWidth / 2, clone.offsetHeight / 2);
   e.dataTransfer?.setData("text/plain", box.dataset.id || "");
+
   placeholder.style.height = `${box.offsetHeight}px`;
   placeholder.style.width = `${box.offsetWidth}px`;
 }
