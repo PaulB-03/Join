@@ -19,11 +19,23 @@
   padding-right: 44px;
 }
 
-.icon-user {background-image: url("../assets/svg/person.svg");}
-.icon-mail {background-image: url("../assets/svg/mail.svg");}
-.icon-phone {background-image: url("../assets/svg/phone.svg");}
+.icon-user {
+  background-image: url("../assets/svg/person.svg");
+  background-size: 16px 16px;
+}
+.icon-mail {
+  background-image: url("../assets/svg/mail.svg");
+  background-size: 20px 16px;
+}
+.icon-phone {
+  background-image: url("../assets/svg/phone.svg");
+  background-size: 18px 18px;
+}
 
-#cancelAdd img {width: 24px; height: 24px;}
+#cancelAdd img {
+  width: 24px;
+  height: 24px;
+}
 
 #cancelAdd {
   text-align: center;
@@ -36,9 +48,12 @@
   border-radius: 10px;
 }
 
-#cancelAdd:hover img[src$="cancel_black.svg"] {content: url("../assets/svg/cancel_blue.svg");}
+#cancelAdd:hover img[src$="cancel_black.svg"] {
+  content: url("../assets/svg/cancel_blue.svg");
+}
 
-#editDeleteBtn, #editSaveBtn{
+#editDeleteBtn,
+#editSaveBtn {
   width: 112px;
   height: 56px;
   font-size: 21px;
@@ -59,6 +74,11 @@
   height: 32px;
   background: transparent;
   border: none;
+  transform: translateY(-30px);
+}
+
+.editAvtrMbl {
+  display: none;
 }
 
 .backToListBtn:hover {
@@ -67,8 +87,8 @@
 }
 
 .backToListBtn img {
-  width: 24px;
-  height: 24px;
+  width: 24.6px;
+  height: 23.92px;
 }
 
 .contactDetailsHeader .header-small {
