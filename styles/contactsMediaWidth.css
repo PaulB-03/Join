@@ -239,6 +239,21 @@
     display: none;
   }
 
+  .editAvtrDsktp {
+    display: none;
+  }
+
+  .editAvtrMbl {
+    display: flex !important;
+    margin: 0 auto 16px auto; 
+    justify-content: center;
+    align-items: center;
+  }
+
+  .editAvtrMbl.detailsAvatar {
+    transform: none;
+  }
+
   #addContactMobileOverlay {
     display: block;
     width: 100%;
@@ -276,7 +291,7 @@
   }
 
   .avatar {
-    position: absolute;
+    position: fixed;
     top: 351px;
     align-self: center;
     margin: 0;
@@ -326,8 +341,10 @@
   }
 
   #editContactForm {
-    height: 408px;
-    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100% !important;  
     .add-contact-overlay-form {
       gap: 16px !important;
     }
@@ -476,19 +493,15 @@
     }
   }
 
-  #addContactForm.overlay-body {
-    width: 300px !important;
-  }
-
   .overlay-body {
     padding-left: 0px;
     padding-right: 0px;
+    width: 335px !important;
   }
 
   .add-contact-overlay-form input {
-    width: 80%;
     align-self: center;
-    justify-self: center;
+    width: 280px;
   }
 
   .add-contact-overlay-form {
@@ -508,11 +521,18 @@
   .add-contact-overlay-right{
     margin: 0;
   }
-}
 
-@media (max-width: 330px) {
-  #addContactForm.overlay-body {
-    width: 280px !important;
+  .add-contact-overlay-form input {
+    width: 250px;
   }
 }
 
+/* @media (max-width: 345px) {
+  .add-contact-overlay-form input {
+    width: 230px;
+  }
+
+  .field {
+    width: 230px;
+  }
+} */

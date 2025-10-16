@@ -219,9 +219,11 @@ function prefillEditForm(overlay, contact) {
   form.elements.name.value = contact.name || ""; 
   form.elements.email.value = contact.email || ""; 
   form.elements.phone.value = contact.phone || ""; 
-  const avatar = overlay.querySelector("#editAvatar"); 
-  avatar.textContent = initials(contact.name);
-  avatar.style.background = colorForName(contact.name);
+  const avatars = overlay.querySelectorAll("#editAvatar, #editAvatar2");
+  avatars.forEach(avatar => {
+    avatar.textContent = initials(contact.name);
+    avatar.style.background = colorForName(contact.name);
+  });
 }
 
 
@@ -232,11 +234,13 @@ function prefillEditForm(overlay, contact) {
  */
 function wireLiveAvatar(overlay) {
   const form = overlay.querySelector("#editContactForm");
-  const avatar = overlay.querySelector("#editAvatar");
-  const update = () => { 
+  const avatars = overlay.querySelectorAll("#editAvatar, #editAvatar2");
+  const update = () => {
     const v = form.elements.name.value;
-    avatar.textContent = initials(v);
-    avatar.style.background = colorForName(v); 
+    avatars.forEach(avatar => {
+      avatar.textContent = initials(v);
+      avatar.style.background = colorForName(v);
+    });
   };
   form.elements.name.addEventListener("input", update); 
 }

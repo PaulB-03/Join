@@ -34,10 +34,11 @@ function editOverlayHTML() {
       </div>
 
       <form id="editContactForm" class="overlay-body" novalidate>
+        <div id="editAvatar2" class="detailsAvatar editAvtrMbl"></div>
         <button type="button" class="overlay-close" aria-label="Close">×</button>
 
         <div class="add-contact-overlay-right">
-          <div id="editAvatar" class="detailsAvatar"></div>
+          <div id="editAvatar" class="detailsAvatar editAvtrDsktp"></div>
 
           <div class="add-contact-overlay-form">
             <div class="field">
