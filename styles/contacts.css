@@ -355,6 +355,10 @@ body.modal-open {
   opacity: 0.8;
 }
 
+#avatar-mobile {
+  display: none;
+}
+
 #openAddContact {
   cursor: pointer;
 }
