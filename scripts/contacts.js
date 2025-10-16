@@ -65,7 +65,7 @@ function showContactToast(message = "Contact successfully created") {
   toastElement.textContent = message;
   toastElement.classList.add("show");
   clearTimeout(toastElement.autoHideTimer);
-  toastElement.autoHideTimer = setTimeout(() => toastElement.classList.remove("show"), 3500);
+  toastElement.autoHideTimer = setTimeout(() => toastElement.classList.remove("show"), 2500);
 }
 
 /**
