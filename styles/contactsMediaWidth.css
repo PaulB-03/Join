@@ -158,6 +158,7 @@
     width: 100%;
     border-right: none;
     flex: 1;
+    padding-bottom: 64px !important;
   }
 
   .contactListItems {
@@ -181,6 +182,10 @@
   .alphaDivider {
     width: 90%;
     max-width: 400px;
+  }
+
+  .contactDetailsHeader .header-small {
+    padding-left: 16px;
   }
 
   .alphaHeader {
