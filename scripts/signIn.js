@@ -1,57 +1,138 @@
-//document.getElementById("guestLogin").addEventListener("click", () => {
-//  window.location.href = "../html/summary.html";
-//});
+/**
+ * @fileoverview Handles user and guest login functionality.
+ * Includes event listeners for guest login and user sign-in form submission.
+ * Fetches user data from Firebase Realtime Database and validates credentials.
+ */
 
+/**
+ * Guest login button element.
+ * @type {HTMLButtonElement | null}
+ */
 const guestLoginButton = document.getElementById("guestLogin");
 
+/**
+ * Adds a click event listener for guest login.
+ * Logs in as a guest, saves the login status, and redirects to the summary page.
+ *
+ * @param {MouseEvent} e - The click event object.
+ * @returns {void}
+ */
 guestLoginButton?.addEventListener("click", (e) => {
-  e.preventDefault(); // prevent default <a> navigation if needed
+  e.preventDefault(); // Prevent default <a> navigation if needed
   saveLoginStatus("guest");
-  window.location.href = "./html/summary.html"; // or "./html/summary.html" depending on your folder
+  window.location.href = "./html/summary.html";
 });
 
-document.getElementById("signinForm").addEventListener("submit", async (event) => {
-  event.preventDefault(); // stop the form from reloading the page
+/**
+ * Adds an event listener for the sign-in form submission.
+ * Triggers the user sign-in process.
+ */
+document.getElementById("signinForm").addEventListener("submit", handleSignIn);
 
-  const signinEmail = document.getElementById("signinEmail").value.toLowerCase();
-  const signinPassword = document.getElementById("signinPassword").value.trim();
+/**
+ * Handles the sign-in process.
+ * Prevents the default form submission, retrieves credentials,
+ * fetches user data, validates the user, and handles the result.
+ *
+ * @async
+ * @param {Event} event - The submit event from the sign-in form.
+ * @returns {Promise<void>}
+ */
+async function handleSignIn(event) {
+  event.preventDefault();
+  const { email, password } = getSigninFormData();
 
   try {
-    // Fetch all users from Realtime Database
-    const res = await fetch(`${BASE_URL}/users.json`);
-
-    const data = await res.json();
-    console.log(data);
-
-    if (!data) {
-      console.log("No users found!");
-      return;
-    }
-
-    // Check if email + password match
-
-    let foundUser = null;
-    for (const key in data) {
-      const user = data[key];
-      if (user.email === signinEmail && user.password === signinPassword) {
-        foundUser = user;
-        break;
-      }
-    }
-
-    if (foundUser) {
-      saveLoginStatus("user", foundUser.name);
-      window.location.href = "./html/summary.html";
-      console.log(foundUser.name);
-    } else {
-      loginError.style.visibility = "visible";
-      document.getElementById("signinEmail").classList.add("input-error");
-      document.getElementById("signinPassword").classList.add("input-error");
-    }
+    const users = await fetchUsers();
+    const foundUser = findUser(users, email, password);
+    handleLoginResult(foundUser);
   } catch (error) {
-    console.error("Error during log in:", error);
-    loginError.style.visibility = "visible";
-    document.getElementById("signinEmail").classList.add("input-error");
-    document.getElementById("signinPassword").classList.add("input-error");
+    handleLoginError(error);
   }
-});
+}
+
+/* ─────────────── Helper functions ─────────────── */
+
+/**
+ * Retrieves the user's email and password from the sign-in form fields.
+ *
+ * @returns {{ email: string, password: string }} An object containing the email and password.
+ */
+function getSigninFormData() {
+  const email = document.getElementById("signinEmail").value.toLowerCase();
+  const password = document.getElementById("signinPassword").value.trim();
+  return { email, password };
+}
+
+/**
+ * Fetches user data from the Firebase Realtime Database.
+ *
+ * @async
+ * @returns {Promise<Object>} A Promise that resolves to the user data object.
+ * @throws {Error} Throws an error if no users are found or if the fetch request fails.
+ */
+async function fetchUsers() {
+  const res = await fetch(`${BASE_URL}/users.json`);
+  const data = await res.json();
+  if (!data) throw new Error("No users found!");
+  return data;
+}
+
+/**
+ * Finds a user in the fetched user data that matches the provided email and password.
+ *
+ * @param {Object} users - An object containing all registered users.
+ * @param {string} email - The email address entered by the user.
+ * @param {string} password - The password entered by the user.
+ * @returns {Object|null} Returns the user object if found, otherwise null.
+ */
+function findUser(users, email, password) {
+  for (const key in users) {
+    const user = users[key];
+    if (user.email === email && user.password === password) {
+      return user;
+    }
+  }
+  return null;
+}
+
+/**
+ * Handles the result of the login attempt.
+ * If the user is found, saves the login status and redirects to the summary page.
+ * Otherwise, displays an error message.
+ *
+ * @param {Object|null} foundUser - The found user object or null if no match.
+ * @returns {void}
+ */
+function handleLoginResult(foundUser) {
+  if (foundUser) {
+    saveLoginStatus("user", foundUser.name);
+    window.location.href = "./html/summary.html";
+  } else {
+    showLoginError();
+  }
+}
+
+/**
+ * Handles unexpected errors during the login process.
+ * Logs the error and displays an error message.
+ *
+ * @param {Error} error - The caught error object.
+ * @returns {void}
+ */
+function handleLoginError(error) {
+  console.error("Error during log in:", error);
+  showLoginError();
+}
+
+/**
+ * Displays a visual login error message and highlights invalid input fields.
+ *
+ * @returns {void}
+ */
+function showLoginError() {
+  const loginError = document.getElementById("loginError");
+  if (loginError) loginError.style.visibility = "visible";
+  document.getElementById("signinEmail").classList.add("input-error");
+  document.getElementById("signinPassword").classList.add("input-error");
+}

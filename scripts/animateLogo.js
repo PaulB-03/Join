@@ -113,34 +113,64 @@
   }
 
   /**
-   * Waits for splash logo animation to complete,
-   * then triggers finalization.
+   * Safely finalizes the splash screen once, preventing multiple executions.
+   *
+   * @param {boolean} finished - Whether the finalization has already been triggered.
    * @param {HTMLElement|null} startLogo - The splash logo element.
-   * @param {Function} [onDone] - Callback after completion.
+   * @param {Function} [onDone] - Optional callback after completion.
+   * @returns {boolean} Updated finished state.
+   */
+  function triggerSplashFinish(finished, startLogo, onDone) {
+    if (!finished) {
+      finishSplash(startLogo, onDone);
+      return true;
+    }
+    return finished;
+  }
+
+  /**
+   * Waits for a transition end event on an element or a timeout as fallback,
+   * then calls a provided completion handler.
+   *
+   * @param {HTMLElement|null} startLogo - The splash logo element.
+   * @param {Function} onFinish - The callback to execute when finished.
+   * @param {number} [timeout=2200] - Fallback timeout in milliseconds.
    * @returns {void}
    */
-  function showHiddenElements(startLogo, onDone) {
-    let finished = false;
-    const finish = () => {
-      if (!finished) {
-        finished = true;
-        finishSplash(startLogo, onDone);
-      }
-    };
-
-    if (!startLogo) return finish();
+  function waitForTransitionOrTimeout(startLogo, onFinish, timeout = 2200) {
+    if (!startLogo) {
+      onFinish();
+      return;
+    }
 
     startLogo.addEventListener(
       "transitionend",
       (e) => {
-        if (!e.propertyName || e.propertyName === "transform") finish();
+        if (!e.propertyName || e.propertyName === "transform") onFinish();
       },
       { once: true }
     );
 
-    setTimeout(finish, 2200); // fallback if no transition
+    setTimeout(onFinish, timeout);
   }
 
+  /**
+   * Waits for splash logo animation to complete, then triggers finalization.
+   * This is the main entry point that coordinates event and timeout handling.
+   *
+   * @param {HTMLElement|null} startLogo - The splash logo element.
+   * @param {Function} [onDone] - Optional callback after splash completion.
+   * @returns {void}
+   */
+  function showHiddenElements(startLogo, onDone) {
+    let finished = false;
+
+    const handleFinish = () => {
+      finished = triggerSplashFinish(finished, startLogo, onDone);
+    };
+
+    waitForTransitionOrTimeout(startLogo, handleFinish);
+  }
   /** ========== MAIN ANIMATION FLOW ========== */
 
   /**
