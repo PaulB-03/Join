@@ -48,8 +48,11 @@ function sidebarHeaderInit() {
 }
 
 function getCurrentUser() {
-  try { return JSON.parse(localStorage.getItem("currentUser") || "{}"); }
-  catch { return {}; }
+  try {
+    return JSON.parse(localStorage.getItem("currentUser") || "{}");
+  } catch {
+    return {};
+  }
 }
 
 function toggleSidebarAndHeader(user) {
@@ -87,78 +90,78 @@ function highlightActiveLink() {
   });
 }
 
-(function enableDropzoneDragScrollSafe() {
-  const THRESHOLD = 6;
-
-  function isInteractive(el) {
-    return !!el.closest('button, a, input, textarea, select, [contenteditable=""], .add-card-btn');
-  }
-
-  function isCard(el) {
-    return !!el.closest(".card, .task-container");
-  }
-
-  document.querySelectorAll(".dropzone").forEach((zone) => {
-    let isMouseDown = false;
-    let isScrolling = false;
-    let startX = 0;
-    let startScrollLeft = 0;
-    let originTarget = null;
-
-    zone.addEventListener("mousedown", (e) => {
-      if (e.button !== 0) return;
-
-      originTarget = e.target;
-
-      if (isCard(originTarget) || isInteractive(originTarget)) {
-        isMouseDown = false;
-        isScrolling = false;
-        return;
-      }
-
-      isMouseDown = true;
-      isScrolling = false;
-      startX = e.clientX;
-      startScrollLeft = zone.scrollLeft;
-    });
-
-    function maybeSuppressClickOnce() {
-      if (!isScrolling) return;
-      const suppress = (ev) => {
-        ev.stopPropagation();
-        ev.preventDefault();
-      };
-      zone.addEventListener("click", suppress, { capture: true, once: true });
-    }
-
-    zone.addEventListener("mousemove", (e) => {
-      if (!isMouseDown) return;
-
-      const dx = e.clientX - startX;
-
-      if (!isScrolling && Math.abs(dx) < THRESHOLD) return;
-
-      if (!isScrolling) {
-        isScrolling = true;
-        zone.classList.add("drag-scroll");
-      }
-
-      e.preventDefault();
-      zone.scrollLeft = startScrollLeft - dx;
-    });
-
-    function endDrag() {
-      if (isMouseDown) {
-        maybeSuppressClickOnce();
-      }
-      isMouseDown = false;
-      isScrolling = false;
-      zone.classList.remove("drag-scroll");
-      originTarget = null;
-    }
-
-    zone.addEventListener("mouseup", endDrag);
-    zone.addEventListener("mouseleave", endDrag);
-    document.addEventListener("mouseup", endDrag, { capture: true });
-  });
-})();
+// (function enableDropzoneDragScrollSafe() {
+// const THRESHOLD = 6;
+//
+// function isInteractive(el) {
+// return !!el.closest('button, a, input, textarea, select, [contenteditable=""], .add-card-btn');
+// }
+//
+// function isCard(el) {
+// return !!el.closest(".card, .task-container");
+// }
+//
+// document.querySelectorAll(".dropzone").forEach((zone) => {
+// let isMouseDown = false;
+// let isScrolling = false;
+// let startX = 0;
+// let startScrollLeft = 0;
+// let originTarget = null;
+//
+// zone.addEventListener("mousedown", (e) => {
+// if (e.button !== 0) return;
+//
+// originTarget = e.target;
+//
+// if (isCard(originTarget) || isInteractive(originTarget)) {
+// isMouseDown = false;
+// isScrolling = false;
+// return;
+// }
+//
+// isMouseDown = true;
+// isScrolling = false;
+// startX = e.clientX;
+// startScrollLeft = zone.scrollLeft;
+// });
+//
+// function maybeSuppressClickOnce() {
+// if (!isScrolling) return;
+// const suppress = (ev) => {
+// ev.stopPropagation();
+// ev.preventDefault();
+// };
+// zone.addEventListener("click", suppress, { capture: true, once: true });
+// }
+//
+// zone.addEventListener("mousemove", (e) => {
+// if (!isMouseDown) return;
+//
+// const dx = e.clientX - startX;
+//
+// if (!isScrolling && Math.abs(dx) < THRESHOLD) return;
+//
+// if (!isScrolling) {
+// isScrolling = true;
+// zone.classList.add("drag-scroll");
+// }
+//
+// e.preventDefault();
+// zone.scrollLeft = startScrollLeft - dx;
+// });
+//
+// function endDrag() {
+// if (isMouseDown) {
+// maybeSuppressClickOnce();
+// }
+// isMouseDown = false;
+// isScrolling = false;
+// zone.classList.remove("drag-scroll");
+// originTarget = null;
+// }
+//
+// zone.addEventListener("mouseup", endDrag);
+// zone.addEventListener("mouseleave", endDrag);
+// document.addEventListener("mouseup", endDrag, { capture: true });
+// });
+// })();

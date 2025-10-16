@@ -1,5 +1,5 @@
-let dragged = null;       // currently dragged card (container)
-let placeholder = null;   // placeholder while dragging
+let dragged = null; // currently dragged card (container)
+let placeholder = null; // placeholder while dragging
 
 // Initialize Drag & Drop only once
 function initDnd() {
@@ -30,6 +30,8 @@ function onDragStart(e) {
   box.classList.add("is-dragging");
   box.querySelector(".card")?.classList.add("is-dragging");
   e.dataTransfer?.setData("text/plain", box.dataset.id || "");
+  placeholder.style.height = `${box.offsetHeight}px`;
+  placeholder.style.width = `${box.offsetWidth}px`;
 }
 
 // On end: clear styles and reset state
@@ -110,7 +112,8 @@ function insertPlaceholder(container, mouseY) {
     (acc, el) => {
       const box = el.getBoundingClientRect();
       const off = mouseY - box.top - box.height / 2;
-      return off < 0 && off > acc.offset ? { offset: off, el } : acc;},
+      return off < 0 && off > acc.offset ? { offset: off, el } : acc;
+    },
     { offset: -Infinity, el: null }
   ).el;
   target ? container.insertBefore(placeholder, target) : container.appendChild(placeholder);
