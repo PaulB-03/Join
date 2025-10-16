@@ -1,0 +1,222 @@
+@media (max-width: 850px) {
+  .contactPage {
+    padding-left: 0px;
+    height: calc(100vh - 80px);
+    padding-top: 80px;
+  }
+
+  .detailsSection {
+    * {
+      font-size: 20px !important;
+    }
+  }
+
+  .addContactFab {
+    bottom: 104px;
+    right: 24px;
+  }
+
+  .contactActionsFab {
+    bottom: 104px;
+    right: 24px;
+  }
+}
+
+@media (max-width: 590px) {
+  .contactList {
+    * {
+      font-size: 16px !important;
+    }
+  }
+}
+
+@media (max-width: 490px) {
+  .overlay-left {
+    width: 400px;
+  }
+
+  .overlay-body {
+    width: 400px !important;
+  }
+}
+
+@media (max-width: 425px) {
+  .overlay-left img {
+    object-fit: contain;
+  }
+
+  #editContactImgMobile {
+    background-color: #2a3647;
+  }
+
+  .add-contact-overlay-right {
+    transform: translateX(0px);
+  }
+
+  .add-contact-overlay-form input {
+    font-size: 16px;
+    width: 296px;
+  }
+
+  .overlay-left {
+    width: 360px;
+    height: 300px;
+  }
+
+  .overlay-body {
+    width: 360px !important;
+    padding-top: 100px;
+  }
+
+  .overlay-panel {
+    height: 700px;
+  }
+
+  .avatar {
+    top: 325px;
+    width: 100px;
+    height: 100px;
+  }
+
+  .avatar img {
+    width: 100px;
+    height: 100px;
+  }
+
+  #submitAdd {
+    transform: translateX(0px);
+  }
+}
+
+@media (max-width: 405px) {
+  .overlay {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 388px) {
+  .contactDetailsHeader .header-small {
+    width: 190px;
+  }
+
+  #submitAdd {
+    transform: translateX(0px);
+  }
+
+  .detailsTop {
+    gap: 18px;
+  }
+
+  .detailsName {
+    font-size: 30px;
+  }
+
+  .detailsSection {
+    * {
+      font-size: 16px !important;
+    }
+  }
+
+  .overlay-body {
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 335px !important;
+  }
+
+  .add-contact-overlay-form input {
+    align-self: center;
+    width: 280px;
+  }
+
+  .add-contact-overlay-form {
+    width: 280px;
+  }
+}
+
+@media (max-width: 370px) {
+  .contactItem {
+    gap: 12px;
+  }
+
+  .contactList {
+    padding-left: 0;
+  }
+
+  .add-contact-overlay-right{
+    margin: 0;
+  }
+
+  .add-contact-overlay-form input {
+    width: 250px;
+  }
+}
+
+/* Max Height queries */
+
+@media (max-height: 790px) {
+  #addContactMobileOverlay {
+    height: 300px;
+  }
+
+  .overlay-body {
+    height: 350px;
+    overflow-y: hidden;
+  }
+
+  .avatar {
+    top: 260px;
+  }
+
+  #editContactImgMobile {
+    height: 300px;
+  }
+
+  .overlay {
+    .detailsAvatar {
+      top: 240px;
+    }
+  }
+
+  #editContactForm {
+    height: 350px;
+  }
+}
+
+@media (max-height: 730px) {
+  .overlay-close {
+    top: 48px;
+  }
+}
+
+@media (max-height: 690px) {
+  .add-contact-overlay-form {
+    gap: 0px;
+  }
+}
+
+@media (max-height: 660px) {
+  .overlay-close {
+    top: 62px;
+  }
+
+  .overlay-body {
+    padding-top: 40px;
+  }
+}
+
+@media (max-height: 630px) {
+  .overlay-close {
+    top: 80px;
+  }
+
+  .overlay-body {
+    padding-top: 0px;
+    height: 370px;
+  }
+}
+
+@media (max-height: 590px) {
+  .overlay-close {
+    top: 96px;
+  }
+}
