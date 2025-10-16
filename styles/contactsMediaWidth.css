@@ -92,6 +92,7 @@
 
   .add-contact-overlay-right {
     transform: translateX(-20px);
+    justify-content: center;
   }
 
   .overlay-close {
@@ -291,8 +292,24 @@
     height: 408px;
   }
 
+  #addContactForm.overlay-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #submitAdd {
+    transform: translateX(20px);
+    width: 202px;
+    height: 51px;
+  }
+
   .add-contact-overlay-form {
     gap: 8px;
+  }
+
+  .add-contact-overlay-form  input{
+    width: 350px;
   }
 
   .overlay-left img {
@@ -372,6 +389,16 @@
   }
 }
 
+@media (max-width: 490px) {
+  .overlay-left {
+    width: 400px;
+  }
+
+  .overlay-body {
+    width: 400px !important;
+  }
+}
+
 @media (max-width: 425px) {
   .overlay-left img {
     object-fit: contain;
@@ -381,8 +408,42 @@
     background-color: #2a3647;
   }
 
+  .add-contact-overlay-right {
+    transform: translateX(0px);
+  }
+
   .add-contact-overlay-form input {
     font-size: 16px;
+    width: 296px;
+  }
+
+  .overlay-left {
+    width: 360px;
+    height: 300px;
+  }
+
+  .overlay-body {
+    width: 360px !important;
+    padding-top: 100px;
+  }
+
+  .overlay-panel {
+    height: 700px;
+  }
+
+  .avatar {
+    top: 325px;
+    width: 100px;
+    height: 100px;
+  }
+
+  .avatar img {
+    width: 100px;
+    height: 100px;
+  }
+
+  #submitAdd {
+    transform: translateX(0px);
   }
 }
 
@@ -395,6 +456,10 @@
 @media (max-width: 388px) {
   .contactDetailsHeader .header-small {
     width: 190px;
+  }
+
+  #submitAdd {
+    transform: translateX(0px);
   }
 
   .detailsTop {
@@ -411,6 +476,10 @@
     }
   }
 
+  #addContactForm.overlay-body {
+    width: 300px !important;
+  }
+
   .overlay-body {
     padding-left: 0px;
     padding-right: 0px;
@@ -421,6 +490,10 @@
     align-self: center;
     justify-self: center;
   }
+
+  .add-contact-overlay-form {
+    width: 280px;
+  }
 }
 
 @media (max-width: 370px) {
@@ -430,6 +503,16 @@
 
   .contactList {
     padding-left: 0;
+  }
+
+  .add-contact-overlay-right{
+    margin: 0;
+  }
+}
+
+@media (max-width: 330px) {
+  #addContactForm.overlay-body {
+    width: 280px !important;
   }
 }
 
