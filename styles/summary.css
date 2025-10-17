@@ -195,7 +195,6 @@ body {
     color: black;
   }
 }
-/* -----------------greeting and Name----------------------------------- */
 
 .sumGreetingContainer {
   display: flex;
@@ -279,11 +278,78 @@ body {
 }
 
 @media (max-width: 590px) {
+ .summaryInfoTiles {
+  max-width: 462px;
+  gap: 26px;
+  h2 {
+    font-size: 52px;
+    line-height: 0.99;
+  }
+  h6 {
+    font-size: 15px;
+  }
+}
+
+.summaryBox {
+  gap: 11px;
+  height: 121px;
+  width: 205px;
+  border-radius: 22px;
+}
+
+.summaryBox img {
+  height: 22px;
+}
+
+.summarySvgContainer,
+.urgencySvgContainer {
+  height: 44px;
+  width: 44px;
+}
+
+.urgencySvgContainer img {
+  width: 25px;
+}
+
+.summaryCount {
+  gap: 0;
+}
+
+.summaryUrgencyBox {
+  width: 436px;
+}
+
+.urgencyBox {
+  width: 205px;
+  gap: 20px;
+}
+
+.dividerUrgency {
+  height: 77px;
+}
+
+.summaryDeadline {
+  width: 66%;
+  padding-right: 0;
+}
+
+.urgencyDate {
+  font-size: 18px !important;
+}
+
+.taskBox {
+  width: 128px;
+  gap: 0px;
+}
+
+}
+
+@media (max-width: 500px) {
   .summaryInfoTiles {
     max-width: 396px;
     gap: 24px;
     h2 {
-      font-size: 47px;
+      font-size: 30px;
       line-height: 0.9;
     }
     h6 {
