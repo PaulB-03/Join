@@ -38,6 +38,7 @@
     padding-top: 120px;
     z-index: 2;
   }
+
   .divider {
     display: none;
   }
@@ -62,6 +63,19 @@
     padding-top: 24px;
     padding-bottom: 24px;
     background: var(--main-bg-color);
+  }
+
+  .task-overlay-panel {
+    .addTaskOverlayFooter {
+      position: relative;
+      bottom: 0px;
+      margin-bottom: 15px;
+      width: 100%;
+    }
+
+    .addTaskForm {
+      padding-bottom: 40px;
+    }
   }
 }
 

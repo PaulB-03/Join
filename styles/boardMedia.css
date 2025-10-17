@@ -146,10 +146,6 @@
     padding-top: 24px;
   }
 
-  .dropdown-subtasks {
-    width: 220px !important;
-  }
-
   .app {
     padding: 20px 16px 120px 16px;
     max-width: 100%;
@@ -212,10 +208,6 @@
 
   .btn#openAddTask {
     top: 32px;
-  }
-
-  .dropdown-subtasks {
-    width: 180px !important;
   }
 
   .column {
