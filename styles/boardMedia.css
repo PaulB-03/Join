@@ -42,6 +42,7 @@
     scroll-snap-type: x mandatory;
     cursor: grab;
   }
+
   .dropzone::after {
     content: "";
     flex: 0 0 32px;
@@ -72,11 +73,40 @@
   }
 }
 
+@media (max-width: 1000px) {
+  .heading {
+    padding-left: 0px;
+
+    .btn-dark {
+      padding: 10px 6px;
+    }
+
+    .controls {
+      gap: 15px;
+    }
+
+    .btn {
+      width: 148px
+    }
+
+    h1 {
+      font-size: 52px;
+    }
+
+    .search {
+      width: 265px;
+      margin-left: 10px;
+    }
+  }
+
+}
+
 @media (max-width: 850px) {
   .board {
     margin-top: 40px;
     width: 100%;
   }
+
   .task-detail {
     padding: 24px 28px 8px 28px;
     width: 396px;
