@@ -451,6 +451,7 @@ body {
     gap: 0;
     width: 60%;
     padding-right: 0;
+    padding-left: 10px;
   }
 
   .deadlineText {
