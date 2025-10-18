@@ -62,10 +62,10 @@ function sidebarHeaderInit() {
   }
 
   // From here on, the user is either logged in or on a public/exception page
-  const user = loadLoginStatus();        // Custom function: load user status object
-  updateHeaderAvatars(user);             // Custom function: set avatar/profile in header
-  highlightActiveLink();                 // Highlight the currently active nav link
-  toggleSidebarAndHeader(user);          // Switch between internal/external sidebar
+  const user = loadLoginStatus(); // Custom function: load user status object
+  updateHeaderAvatars(user); // Custom function: set avatar/profile in header
+  highlightActiveLink(); // Highlight the currently active nav link
+  toggleSidebarAndHeader(user); // Switch between internal/external sidebar
 }
 
 /**
@@ -107,8 +107,8 @@ function toggleSidebarAndHeader(user) {
  * Also hides the header navigation for guests.
  */
 function showExternalSidebar(external, internal, headerNav) {
-  external.classList.remove("d_none");   // Make external sidebar visible
-  internal.classList.add("d_none");      // Hide internal sidebar
+  external.classList.remove("d_none"); // Make external sidebar visible
+  internal.classList.add("d_none"); // Hide internal sidebar
   headerNav.style.visibility = "hidden"; // Hide header navigation
 }
 
@@ -117,8 +117,8 @@ function showExternalSidebar(external, internal, headerNav) {
  * and hides the external one. The header nav becomes visible.
  */
 function showInternalSidebar(external, internal, headerNav) {
-  internal.classList.remove("d_none");   // Show internal sidebar
-  external.classList.add("d_none");      // Hide external sidebar
+  internal.classList.remove("d_none"); // Show internal sidebar
+  external.classList.add("d_none"); // Hide external sidebar
   headerNav.style.visibility = "visible"; // Show header navigation
 }
 
@@ -129,7 +129,10 @@ function showInternalSidebar(external, internal, headerNav) {
  */
 function highlightActiveLink() {
   // Normalize the current path (remove trailing or duplicate slashes)
-  const currentPath = location.pathname.replace(/\/+$/, "") || "/";
+  let currentPath = location.pathname.replace(/\/+$/, "") || "/";
+
+  // 🔧 Remove hosting subfolder if needed
+  currentPath = currentPath.replace(/^\/Join/, "") || "/";
 
   // Remove previous active link markings
   document.querySelectorAll(".nav-link.active").forEach((el) => el.classList.remove("active"));
@@ -177,11 +180,11 @@ function highlightActiveLink() {
   // Apply the drag-scroll behavior to all elements with class .dropzone
   document.querySelectorAll(".dropzone").forEach((zone) => {
     // Internal state variables for drag-scroll behavior
-    let isMouseDown = false;   // Is the left mouse button held down?
-    let isScrolling = false;   // Are we currently scrolling?
-    let startX = 0;            // Initial mouse X position
-    let startScrollLeft = 0;   // Scroll position at drag start
-    let originTarget = null;   // Original element that was clicked
+    let isMouseDown = false; // Is the left mouse button held down?
+    let isScrolling = false; // Are we currently scrolling?
+    let startX = 0; // Initial mouse X position
+    let startScrollLeft = 0; // Scroll position at drag start
+    let originTarget = null; // Original element that was clicked
 
     // Mouse down: prepare potential scroll
     zone.addEventListener("mousedown", (e) => {

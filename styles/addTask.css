@@ -514,7 +514,7 @@ textarea::placeholder {
   display: flex;
 }
 
-li:focus-within {
+.addedSubtaskWrapper li:focus-within {
   border-radius: 0;
   border-bottom: 1px solid var(--light-blue);
 }
