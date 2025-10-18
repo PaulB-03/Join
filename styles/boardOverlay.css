@@ -193,6 +193,10 @@ body.modal-open {
   background-image: url(../assets/svg/cancel_clicked.svg);
 }
 
+.divInputTitleDescriptionDueDate {
+  width: 100%;
+}
+
 #taskDetailOverlay .subtasks__item {
   display: flex;
   align-items: center;
@@ -272,10 +276,10 @@ body.modal-open {
 
 #taskOverlay.edit-mode .addTaskForm {
   justify-content: center;
+  flex-wrap: wrap;
 }
 
-.divInputTitleDescriptionDueDate {
-  width: 100%;
+#taskOverlay.edit-mode .divInputTitleDescriptionDueDate {
   display: flex;
   flex-direction: column;
   align-items: center;

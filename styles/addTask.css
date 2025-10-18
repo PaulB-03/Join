@@ -37,7 +37,6 @@
 .addTaskForm {
   display: flex;
   justify-content: flex-start;
-  flex-wrap: wrap;
   align-items: flex-start;
   gap: 50px;
   max-width: 1280px;
