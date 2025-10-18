@@ -113,10 +113,18 @@
     width: 100%;
   }
 
+  .task-modal::-webkit-scrollbar {
+    display: none;
+  }
+
   .task-detail {
     padding: 24px 28px 8px 28px;
     width: 396px;
     height: auto;
+
+    h1 {
+      font-size: 36px;
+    }
   }
 
   #taskOverlay.edit-mode .overlay-panel {
