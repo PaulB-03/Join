@@ -211,6 +211,7 @@ body.modal-open {
 .subtasks__item:hover .cb--checked {
   background-image: url(../assets/svg/checked_hover.svg);
 }
+
 .subtasks__item:hover .cb--unchecked {
   background-image: url(../assets/svg/checkbox_hover.svg);
 }
@@ -222,6 +223,8 @@ body.modal-open {
 #taskOverlay.edit-mode .task-overlay-panel {
   width: 530px;
   padding-top: 0;
+  height: 100%;
+  max-height: 1180px;
 }
 
 #taskOverlay.edit-mode .divider,
@@ -241,7 +244,9 @@ body.modal-open {
   background-position: right bottom;
   height: 70px;
   z-index: 5;
+  width: 100%;
 }
+
 #taskOverlay.edit-mode .addTaskOverlayWrapper {
   padding-top: 0;
 }
@@ -267,6 +272,13 @@ body.modal-open {
 
 #taskOverlay.edit-mode .addTaskForm {
   justify-content: center;
+}
+
+.divInputTitleDescriptionDueDate {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .task-overlay .task-modal {
