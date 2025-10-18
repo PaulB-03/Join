@@ -6,14 +6,6 @@
   overflow-x: hidden;
 }
 
-.marginTop8 {
-  margin-top: 8px;
-}
-
-.marginTop24 {
-  margin-top: 24px;
-}
-
 .requiredAsterisk {
   color: var(--form-error);
   vertical-align: text-top;
@@ -76,7 +68,6 @@
   flex-direction: column;
   width: 440px;
   gap: 8px;
-  /* flex: 1 1 calc(50% - 20px); */
 }
 
 .assignedToSearch {
@@ -124,7 +115,6 @@ textarea::placeholder {
   outline: none;
 }
 
-/* The invisible clickable handle */
 .resize-handle {
   position: absolute;
   bottom: 0;
@@ -154,7 +144,6 @@ textarea::placeholder {
 }
 
 .dropdown-selected {
-  /* width: 100%; */
   display: flex;
   align-items: center;
   position: relative;
@@ -164,7 +153,6 @@ textarea::placeholder {
   padding: 12px 21px;
 }
 
-/* Highlight input border on focus OR when dropdown is open */
 .dropdownField:focus-within .dropdown-selected,
 .dropdownField.open .dropdown-selected {
   border-color: var(--light-blue);
@@ -180,43 +168,12 @@ textarea::placeholder {
   background-color: var(--empty-category);
 }
 
-/* When selected */
 .dropdown-item-contact.selected {
   background-color: var(--main-color);
 }
 
 .dropdown-item-contact.selected:hover {
   background-color: var(--main-color-dark);
-}
-
-.dropdown-subtasks {
-  position: relative;
-  display: flex;
-  background-color: white;
-  padding: 0px;
-  height: 48px;
-  border: 1px solid var(--color-placeholder);
-  border-radius: 10px;
-}
-
-.dropdown-subtasks:focus-within {
-  border-color: var(--light-blue);
-}
-
-#subtasks {
-  padding-bottom: 12px;
-  transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
-}
-
-.input-subtask {
-  width: 85%;
-  border: none;
-  outline: none;
-}
-
-.subtaskItem::before {
-  content: "•";
-  margin-right: 0.5em;
 }
 
 .dropdownArrow {
@@ -264,13 +221,6 @@ textarea::placeholder {
   background-color: white;
   cursor: pointer;
 }
-
-/*.dropdown-selected span {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-shrink: 1;
-}*/
 
 .checkbox-svg.checked {
   filter: brightness(0) invert(1);
@@ -436,100 +386,9 @@ textarea::placeholder {
   font-size: 20px;
 }
 
-/* .custom-checkbox span { */
-/* width: 20px; */
-/* height: 20px; */
-/* display: inline-block; */
-/* border: 2px solid #ccc; */
-/* border-radius: 4px; */
-/* margin-left: 10px; */
-/* cursor: pointer; */
-/* transition: background-color 0.2s, border-color 0.2s; */
-/* } */
-
 .createTaskCheck {
   height: 18px;
   width: 18px;
-}
-
-.subtask-images-container {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-right: 8px;
-}
-
-.subtask-images-container img {
-  cursor: pointer;
-  border-radius: 50%;
-  padding: 4px;
-  transition: background 0.2s ease;
-}
-
-.divider1 {
-  width: 1px;
-  height: 24px;
-  background-color: var(--subtask-divider);
-}
-
-.subtask-images-container img:hover {
-  background-color: #eee;
-}
-
-.addedSubtaskWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 5px;
-}
-
-.subtaskItem {
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.subtaskItem:hover {
-  background-color: var(--empty-category);
-}
-
-.subtaskTitle {
-  flex: 1;
-  margin-right: 10px;
-  word-break: break-word;
-}
-
-.subtaskActions {
-  display: none;
-  align-items: center;
-  gap: 4px;
-}
-
-.subtaskItem:hover .subtaskActions {
-  display: flex;
-}
-
-.addedSubtaskWrapper li:focus-within {
-  border-radius: 0;
-  border-bottom: 1px solid var(--light-blue);
-}
-
-li:focus-within::before {
-  content: "";
-}
-
-.subtaskActions img {
-  transition: background 0.2s ease;
-  cursor: pointer;
-}
-
-.subtaskActions img:hover {
-  border-radius: 50%;
-  background-color: #eee;
 }
 
 .editInput {
@@ -537,26 +396,4 @@ li:focus-within::before {
   border: none;
   outline: none;
   font-size: 16px;
-}
-
-.task-added-message {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 326px;
-  height: 74px;
-  transform: translate(-50%, 100vh); /* start off-screen */
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  background-color: var(--main-color);
-  color: white;
-  font-size: 20px;
-  font-weight: 400;
-  border-radius: 20px;
-  z-index: 3000;
-  text-align: center;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
 }
