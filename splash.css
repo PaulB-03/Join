@@ -245,7 +245,12 @@
   color: var(--color-icon);
 }
 
+.acceptPolicy p {
+  display: flex;
+}
+
 .acceptPolicy a {
+  width: 116px;
   color: var(--light-blue);
   cursor: pointer;
 }
