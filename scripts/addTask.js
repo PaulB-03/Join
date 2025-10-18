@@ -142,22 +142,39 @@ function showAddedToastAndRedirect() {
 }
 
 /* ------------------------------ Create ---------------------------------- */
-document.addEventListener("DOMContentLoaded",()=>{const b=document.getElementById("add");if(b)b.onclick=handleAddOrEditTask;});
+document.addEventListener("DOMContentLoaded", () => {
+  const b = document.getElementById("add");
+  if (b) b.onclick = handleAddOrEditTask;
+});
 
-async function createTask(){
-  clearInlineErrors(); if(!validateTaskFormFields()) return;
-  const b=document.getElementById("add"); b?.setAttribute("disabled",true);
-  try{ await persistTask(buildTaskPayloadFromForm()); showAddedToastAndRedirect(); }
-  catch(e){ console.error(e); alert("Die Aufgabe konnte nicht gespeichert werden."); }
-  finally{ b?.removeAttribute("disabled"); }
+async function createTask() {
+  clearInlineErrors();
+  if (!validateTaskFormFields()) return;
+  const b = document.getElementById("add");
+  b?.setAttribute("disabled", true);
+  try {
+    await persistTask(buildTaskPayloadFromForm());
+    showAddedToastAndRedirect();
+  } catch (e) {
+    console.error(e);
+    alert("Die Aufgabe konnte nicht gespeichert werden.");
+  } finally {
+    b?.removeAttribute("disabled");
+  }
 }
 
-function handleAddOrEditTask(e){
+function handleAddOrEditTask(e) {
   e?.preventDefault();
-  const b=document.getElementById("add");
-  const id=b?.getAttribute("data-editing-id");
-  if(id){ updateTask(id,false,true,true).catch(err=>{console.error(err);alert("Konnte Änderung nicht speichern.");}); }
-  else{ createTask(); }
+  const b = document.getElementById("add");
+  const id = b?.getAttribute("data-editing-id");
+  if (id) {
+    updateTask(id, false, true, true).catch((err) => {
+      console.error(err);
+      alert("Konnte Änderung nicht speichern.");
+    });
+  } else {
+    createTask();
+  }
 }
 
 function selectContact(contact) {
@@ -214,17 +231,29 @@ function resetAssignedUI() {
 }
 
 function clearTask() {
-  const $ = s => document.querySelector(s);
-  ["#titleInput","#descriptionInput","#date","#subtaskInput"].forEach(s=>{const e=$(s); if (e) e.value = "";});
-  document.querySelectorAll(".addTaskErrors").forEach(e=>e.style.visibility = "hidden");
-  ["#titleInput","#descriptionInput","#date","#assignedToDropdownContacts","#assignedToDropdownCategory"]
-    .forEach(s=>{const e=$(s); if (e) e.style.border = "";});
-  resetPrioUI(); resetCategoryUI(); resetAssignedUI();
-  const subWrap = $(".addedSubtaskWrapper"); if (subWrap) subWrap.innerHTML = "";
-  const imgC = $(".subtask-images-container"); if (imgC) imgC.style.display = "none";
-  const search = document.getElementById("contactSearch"); if (search) search.value = "";
-  const dropdown = document.getElementById("dropdown-list-contacts"); if (dropdown) dropdown.style.display = "none";
-  const arrow = document.getElementById("dropdown-arrow-contacts"); if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
+  const $ = (s) => document.querySelector(s);
+  ["#titleInput", "#descriptionInput", "#date", "#subtaskInput"].forEach((s) => {
+    const e = $(s);
+    if (e) e.value = "";
+  });
+  document.querySelectorAll(".addTaskErrors").forEach((e) => (e.style.visibility = "hidden"));
+  ["#titleInput", "#descriptionInput", "#date", "#assignedToDropdownContacts", "#assignedToDropdownCategory"].forEach((s) => {
+    const e = $(s);
+    if (e) e.style.border = "";
+  });
+  resetPrioUI();
+  resetCategoryUI();
+  resetAssignedUI();
+  const subWrap = $(".addedSubtaskWrapper");
+  if (subWrap) subWrap.innerHTML = "";
+  const imgC = $(".subtask-images-container");
+  if (imgC) imgC.style.display = "none";
+  const search = document.getElementById("contactSearch");
+  if (search) search.value = "";
+  const dropdown = document.getElementById("dropdown-list-contacts");
+  if (dropdown) dropdown.style.display = "none";
+  const arrow = document.getElementById("dropdown-arrow-contacts");
+  if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
   if (window.loadedContacts && typeof renderContacts === "function") renderContacts(window.allContacts, window.loadedContacts);
 }
 
@@ -235,7 +264,9 @@ async function loadContacts() {
 }
 
 function initContactsDropdownInput() {
-  const sel = $id("assignedToDropdownContacts"), arrow = $id("dropdown-arrow-contacts"), drop = $id("dropdown-list-contacts");
+  const sel = $id("assignedToDropdownContacts"),
+    arrow = $id("dropdown-arrow-contacts"),
+    drop = $id("dropdown-list-contacts");
   if (!sel || !arrow || !drop) return;
   let open = false;
 
@@ -245,17 +276,22 @@ function initContactsDropdownInput() {
     open = show;
   };
 
-  sel.addEventListener("click", e => (e.stopPropagation(), toggle(!open)));
+  sel.addEventListener("click", (e) => (e.stopPropagation(), toggle(!open)));
   document.addEventListener("click", () => open && toggle(false));
 
-  drop.querySelectorAll(".dropdown-item-contact").forEach(it => it.addEventListener("click", e => {
-    e.stopPropagation();
-    const c = { id: it.dataset.id, name: it.dataset.name };
-    if (!window.assignedContacts.some(x => x.id === c.id)) window.assignedContacts.push(c);
-    const initials = $id("assignedToInitials");
-    if (initials) { initials.style.display = "block"; initials.textContent = window.assignedContacts.map(x => x.name[0]).join(", "); }
-    toggle(false);
-  }));
+  drop.querySelectorAll(".dropdown-item-contact").forEach((it) =>
+    it.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const c = { id: it.dataset.id, name: it.dataset.name };
+      if (!window.assignedContacts.some((x) => x.id === c.id)) window.assignedContacts.push(c);
+      const initials = $id("assignedToInitials");
+      if (initials) {
+        initials.style.display = "block";
+        initials.textContent = window.assignedContacts.map((x) => x.name[0]).join(", ");
+      }
+      toggle(false);
+    })
+  );
 }
 
 /* ---------------------------- Datepicker UX ------------------------------ */
@@ -280,19 +316,21 @@ function initDateMinAndPicker() {
 /* ----------------------------- Live Search ------------------------------- */
 
 function initContactSearch() {
-  const search = $id("contactSearch"), drop = $id("dropdown-list-contacts");
+  const search = $id("contactSearch"),
+    drop = $id("dropdown-list-contacts");
   if (!search || !drop) return;
 
-  const toggle = show => drop.style.display = show ? "block" : "none";
-  const filterContacts = q => window.allContacts.filter(n => n.toLowerCase().includes(q));
+  const toggle = (show) => (drop.style.display = show ? "block" : "none");
+  const filterContacts = (q) => window.allContacts.filter((n) => n.toLowerCase().includes(q));
 
   search.addEventListener("input", () => {
-    const q = search.value.toLowerCase().trim(), results = filterContacts(q);
+    const q = search.value.toLowerCase().trim(),
+      results = filterContacts(q);
     if (window.loadedContacts) renderContacts(results, window.loadedContacts);
     toggle(q && results.length);
   });
 
-  document.addEventListener("click", e => {
+  document.addEventListener("click", (e) => {
     if (!drop.contains(e.target) && e.target !== search) toggle(false);
   });
 }
@@ -445,26 +483,6 @@ if (textarea && handle) {
     document.removeEventListener("mouseup", stopResize);
   }
 }
-
-//document.addEventListener("DOMContentLoaded", () => {
-//  const dateInput = document.getElementById("date");
-//  if (!dateInput) return;
-//
-//  dateInput.addEventListener("input", (e) => {
-//    let val = dateInput.value.replace(/\D/g, "");
-//    if (val.length > 2) val = val.slice(0, 2) + "/" + val.slice(2);
-//    if (val.length > 5) val = val.slice(0, 5) + "/" + val.slice(5, 9);
-//    dateInput.value = val;
-//  });
-//});
-
-//flatpickr("#date", {
-//  dateFormat: "d/m/Y",
-//  locale: "en",
-//  allowInput: true,
-//  minDate: "today",
-//  onClose: validateFutureDate,
-//});
 
 function validateFutureDate(_, dateStr, instance) {
   const parts = dateStr.split("/");
