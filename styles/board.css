@@ -357,7 +357,6 @@
   border: none;
   background: transparent;
   color: var(--main-color);
-  cursor: pointer;
 }
 
 .task-actions .icon {

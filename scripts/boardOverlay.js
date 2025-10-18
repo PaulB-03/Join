@@ -106,7 +106,7 @@ function onSubtaskToggle(id, e) {
 }
 
 async function onDeleteTask(id, overlay) {
-  if (!confirm("Delete this task?")) return;
+  //if (!confirm("Delete this task?")) return;
   await window.Board?.deleteTask?.(id);
   closeOverlay(overlay);
   await window.Board?.renderAllTasks?.();

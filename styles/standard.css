@@ -25,6 +25,7 @@ body::-webkit-scrollbar {
 
 button {
   cursor: pointer;
+  outline: none;
 }
 
 h1 {
