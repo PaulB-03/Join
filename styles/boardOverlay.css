@@ -10,7 +10,7 @@
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.55);
-  z-index: 5000;
+  z-index: 1000;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
