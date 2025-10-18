@@ -113,6 +113,19 @@
     width: 100%;
   }
 
+  .task-overlay-panel {
+    .addTaskOverlayFooter {
+      margin-bottom:  0px !important;
+    }
+  }
+  #taskOverlay.edit-mode .addOrClear  {
+    padding-right: 0px
+  }
+
+  #taskOverlay.edit-mode .addTaskOverlayFooter {
+    padding: 11px 0 15px 0;
+  }
+
   .task-modal::-webkit-scrollbar {
     display: none;
   }
