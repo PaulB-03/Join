@@ -73,6 +73,12 @@
   }
 }
 
+@media (max-width: 1210px) {
+  #taskOverlay .task-overlay-panel {
+    width: 750px;
+  }
+}
+
 @media (max-width: 1000px) {
   .heading {
     padding-left: 0px;
