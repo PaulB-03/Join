@@ -6,7 +6,7 @@
   border-radius: 24px;
   padding: 16px;
   box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
-  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+  transition: transform 125ms ease, box-shadow 125ms ease, opacity 125ms ease;
   cursor: pointer;
   margin-bottom: 12px;
   gap: 24px;

@@ -73,7 +73,7 @@ h6 {
   border: solid 1px var(--main-color);
   border-radius: 8px;
   padding: 10px 12px;
-  transition: ease-in-out 100ms;
+  transition: ease-in-out 125ms;
 }
 
 .btn-dark {
