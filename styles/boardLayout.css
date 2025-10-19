@@ -207,8 +207,8 @@ a.btn:active {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  gap: 16px;
-  padding: 13px;
+  gap: 10px;
+  padding: 16px;
   /* For Firefox */
   scrollbar-width: none;
   /* For Chrome, Safari, and Opera */
