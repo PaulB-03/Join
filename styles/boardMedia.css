@@ -115,10 +115,11 @@
 
   .task-overlay-panel {
     .addTaskOverlayFooter {
-      margin-bottom:  0px !important;
+      margin-bottom: 0px !important;
     }
   }
-  #taskOverlay.edit-mode .addOrClear  {
+
+  #taskOverlay.edit-mode .addOrClear {
     padding-right: 0px
   }
 
@@ -140,8 +141,13 @@
     }
   }
 
+  #taskOverlay.edit-mode .task-overlay-panel {
+    height: 88vh;
+  }
+
   #taskOverlay.edit-mode .overlay-panel {
     width: 390px;
+
   }
 
   .dropzone .empty {
