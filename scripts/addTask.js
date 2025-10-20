@@ -1,4 +1,4 @@
-window.baseURL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
+const baseURL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let prioGrade = "";
 let selectedPrio = "";
@@ -8,103 +8,70 @@ let selectedState = "";
 let allContacts = [];
 window.assignedContacts = window.assignedContacts || [];
 
-/* ----------------------------- UI Helpers ------------------------------ */
+/* ----------------------------- UI-Helpers ------------------------------ */
 
-/**
- * Gets the trimmed value of an input field by its ID.
- * @param {string} id - The ID of the input element.
- * @returns {string} Trimmed value of the input or empty string if not found.
- */
+function $id(id) {
+  return document.getElementById(id);
+}
+
 function getFieldValue(id) {
-  const el = document.getElementById(id);
+  const el = $id(id);
   return el ? el.value.trim() : "";
 }
 
-/**
- * Shows an inline error message for a form field.
- * @param {HTMLElement} field - The input field to highlight.
- * @param {HTMLElement} errorMessage - The error message element to display.
- */
 function showInlineError(field, errorMessage) {
   if (!field || !errorMessage) return;
   field.style.border = "1px solid red";
   errorMessage.style.visibility = "visible";
 }
 
-/**
- * Clears all inline error messages and resets field borders.
- */
 function clearInlineErrors() {
   document.querySelectorAll(".addTaskErrors").forEach((e) => (e.style.visibility = "hidden"));
   ["titleInput", "date"].forEach((id) => {
-    const field = document.getElementById(id);
+    const field = $id(id);
     if (field) field.style.border = "";
   });
 }
 
-/* --------------------------- Priority Selection ------------------------- */
+/* --------------------------- Prio-Auswahl ------------------------------ */
 
-/**
- * Sets the background color for a priority element based on selection.
- * @param {number} index - Index of the selected priority element.
- */
 function setPrioColor(index) {
   const refs = document.getElementsByClassName("prioGrade");
   const ref = refs[index],
     img = ref?.querySelector("img");
-
   document.querySelectorAll(".prioGrade .prioImage").forEach((i) => i.classList.remove("filterWhite"));
   Array.from(refs).forEach((e) => e.classList.remove("removeHoverEffect", "redColor", "orangeColor", "greenColor"));
-
   if (ref?.classList.contains("redColor") || ref?.classList.contains("orangeColor") || ref?.classList.contains("greenColor")) return;
   addBackgroundColor(ref, img);
 }
 
-/**
- * Adds the background color to a priority element and updates selectedPrio.
- * @param {HTMLElement} ref - Priority element reference.
- * @param {HTMLElement} img - Image inside the priority element.
- */
 function addBackgroundColor(ref, img) {
   ref.classList.add(ref.id === "urgent" ? "redColor" : ref.id === "medium" ? "orangeColor" : "greenColor");
   addPrioImgColor(ref, img);
   selectedPrio = ref.id;
 }
 
-/**
- * Adds visual styling to the priority image.
- * @param {HTMLElement} ref - Priority element reference.
- * @param {HTMLElement} img - Image inside the priority element.
- */
 function addPrioImgColor(ref, img) {
   if (!ref || !img) return;
   ref.classList.add("removeHoverEffect");
   img.classList.add("filterWhite");
 }
 
-/**
- * Returns the currently selected priority.
- * @returns {string|null} Selected priority ID or null if none selected.
- */
 function getSelectedPriority() {
   return typeof selectedPrio !== "undefined" ? selectedPrio : null;
 }
 
-/* --------------------------- Validation --------------------------------- */
+/* --------------------------- Validierung -------------------------------- */
 
-/**
- * Validates required task form fields.
- * @returns {boolean} True if all fields are valid, otherwise false.
- */
 function validateTaskFormFields() {
   let ok = true;
 
   if (!getFieldValue("titleInput")) {
-    showInlineError(document.getElementById("titleInput"), document.getElementById("titleError"));
+    showInlineError($id("titleInput"), $id("titleError"));
     ok = false;
   }
   if (!getFieldValue("date")) {
-    showInlineError(document.getElementById("date"), document.getElementById("dateError"));
+    showInlineError($id("date"), $id("dateError"));
     ok = false;
   }
   return ok;
@@ -112,20 +79,12 @@ function validateTaskFormFields() {
 
 /* ------------------------------ Payload --------------------------------- */
 
-/**
- * Collects subtasks from the UI.
- * @returns {string[]} Array of subtask titles.
- */
 function collectSubtasksFromUI() {
   return Array.from(document.querySelectorAll(".subtaskTitle"))
     .map((el) => el.textContent.trim())
     .filter(Boolean);
 }
 
-/**
- * Builds the payload object for a new task from form inputs.
- * @returns {object} Task payload object.
- */
 function buildTaskPayloadFromForm() {
   return {
     title: getFieldValue("titleInput"),
@@ -139,12 +98,21 @@ function buildTaskPayloadFromForm() {
   };
 }
 
+/* ----------------------------- API Calls -------------------------------- */
+
+async function persistTask(payload) {
+  const res = await fetch(`${baseURL}tasks.json`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) throw new Error("POST /tasks failed: " + res.status);
+  return res.json();
+}
+
 /* ------------------------------ UX -------------------------------------- */
 
-/**
- * Creates a toast message element.
- * @returns {HTMLElement} Toast message element.
- */
 function createToastMessage() {
   const msg = document.createElement("div");
   msg.className = "task-added-message";
@@ -158,19 +126,12 @@ function createToastMessage() {
   return msg;
 }
 
-/**
- * Animates the toast message into view.
- * @param {HTMLElement} msg - Toast message element.
- */
 function animateToastIn(msg) {
   requestAnimationFrame(() => {
     msg.style.transform = "translate(-50%, -50%)";
   });
 }
 
-/**
- * Shows a toast message and redirects to board page after a delay.
- */
 function showAddedToastAndRedirect() {
   const msg = createToastMessage();
   animateToastIn(msg);
@@ -180,70 +141,68 @@ function showAddedToastAndRedirect() {
   }, 900);
 }
 
-/* ------------------------------ Create Task ----------------------------- */
+/* ------------------------------ Create ---------------------------------- */
+document.addEventListener("DOMContentLoaded",()=>{const b=document.getElementById("add");if(b)b.onclick=handleAddOrEditTask;});
 
-/**
- * Creates a new task by sending it to the backend.
- */
-async function createTask() {
-  clearInlineErrors();
-  if (!validateTaskFormFields()) return;
-  const b = document.getElementById("add");
-  b?.setAttribute("disabled", true);
-  try {
-    await saveTask("tasks", buildTaskPayloadFromForm());
-    showAddedToastAndRedirect();
-  } catch (e) {
-    console.error(e);
-    alert("The task could not be saved.");
-  } finally {
-    b?.removeAttribute("disabled");
-  }
+async function createTask(){
+  clearInlineErrors(); if(!validateTaskFormFields()) return;
+  const b=document.getElementById("add"); b?.setAttribute("disabled",true);
+  try{ await persistTask(buildTaskPayloadFromForm()); showAddedToastAndRedirect(); }
+  catch(e){ console.error(e); alert("Die Aufgabe konnte nicht gespeichert werden."); }
+  finally{ b?.removeAttribute("disabled"); }
 }
 
-/**
- * Handles the add or edit button click for tasks.
- * @param {Event} e - Click event.
- */
-function handleAddOrEditTask(e) {
+function handleAddOrEditTask(e){
   e?.preventDefault();
-  const b = document.getElementById("add");
-  const id = b?.getAttribute("data-editing-id");
-  if (id) {
-    updateTask(id, false, true, true).catch((err) => {
-      console.error(err);
-      alert("Could not save changes.");
-    });
-  } else {
-    createTask();
-  }
+  const b=document.getElementById("add");
+  const id=b?.getAttribute("data-editing-id");
+  if(id){ updateTask(id,false,true,true).catch(err=>{console.error(err);alert("Konnte Änderung nicht speichern.");}); }
+  else{ createTask(); }
 }
 
-/* ---------------------------- Form Reset -------------------------------- */
+function selectContact(contact) {
+  if (!contact) return;
 
-/**
- * Resets the priority selection UI.
- */
+  if (!window.assignedContacts.some((c) => c.id === contact.id)) {
+    window.assignedContacts.push(contact);
+  }
+
+  const initials = document.getElementById("assignedToInitials");
+  if (initials) initials.textContent = window.assignedContacts.map((c) => c.name[0]).join(", ");
+}
+
+/* ------------------------ Subtasks (Overlay-Form) ------------------------ */
+
+function getSubtasksFromForm() {
+  const wrapper = document.querySelector(".addedSubtaskWrapper");
+  if (!wrapper) return [];
+  return Array.from(wrapper.querySelectorAll(".subtask, .subtaskTitle"))
+    .map((el) => {
+      const text = el.textContent.trim();
+      if (!text) return null;
+      const done = el.querySelector?.("input[type=checkbox]")?.checked || false;
+      return { text, done };
+    })
+    .filter(Boolean);
+}
+
+/* ---------------------------- Formular Reset ----------------------------- */
+
 function resetPrioUI() {
   document.querySelectorAll(".prioGrade").forEach((el) => el.classList.remove("isClicked", "redColor", "orangeColor", "greenColor", "whitePrioFont"));
   document.querySelectorAll(".prioGrade .prioImage").forEach((el) => el.classList.remove("filterWhite"));
   selectedPrio = "";
 }
 
-/**
- * Resets the category selection UI.
- */
 function resetCategoryUI() {
   selectedCategory = "";
-  const ph = document.getElementById("categoryPlaceholder");
+  const ph = $id("categoryPlaceholder");
   if (ph) ph.textContent = "Select task category";
-  document.getElementById("assignedToDropdownCategory")?.classList.remove("selected-red");
-  document.querySelectorAll("#dropdown-list-category input[type='checkbox']").forEach((cb) => (cb.checked = false));
+  $id("assignedToDropdownCategory")?.classList.remove("selected-red");
+  const list = document.querySelectorAll("#dropdown-list-category input[type='checkbox']");
+  list.forEach((cb) => (cb.checked = false));
 }
 
-/**
- * Resets assigned contacts UI and internal state.
- */
 function resetAssignedUI() {
   window.assignedContacts = [];
   selectedContact = "";
@@ -251,155 +210,275 @@ function resetAssignedUI() {
   if (initials) initials.innerHTML = "";
   const span = document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
   if (span) span.textContent = "Select contact";
+  // Removed: Clearing the list.innerHTML to preserve dropdown options after reset
 }
 
-/**
- * Clears the task form and UI elements.
- */
 function clearTask() {
-  ["#titleInput", "#descriptionInput", "#date", "#subtaskInput"].forEach((s) => {
-    const e = document.querySelector(s);
-    if (e) e.value = "";
-  });
-  document.querySelectorAll(".addTaskErrors").forEach((e) => (e.style.visibility = "hidden"));
-  ["#titleInput", "#descriptionInput", "#date", "#assignedToDropdownContacts", "#assignedToDropdownCategory"].forEach((s) => {
-    const e = document.querySelector(s);
-    if (e) e.style.border = "";
-  });
-  resetPrioUI();
-  resetCategoryUI();
-  resetAssignedUI();
-  const subWrap = document.querySelector(".addedSubtaskWrapper");
-  if (subWrap) subWrap.innerHTML = "";
-  const imgC = document.querySelector(".subtask-images-container");
-  if (imgC) imgC.style.display = "none";
-  const search = document.getElementById("contactSearch");
-  if (search) search.value = "";
-  const dropdown = document.getElementById("dropdown-list-contacts");
-  if (dropdown) dropdown.style.display = "none";
-  const arrow = document.getElementById("dropdown-arrow-contacts");
-  if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
+  const $ = s => document.querySelector(s);
+  ["#titleInput","#descriptionInput","#date","#subtaskInput"].forEach(s=>{const e=$(s); if (e) e.value = "";});
+  document.querySelectorAll(".addTaskErrors").forEach(e=>e.style.visibility = "hidden");
+  ["#titleInput","#descriptionInput","#date","#assignedToDropdownContacts","#assignedToDropdownCategory"]
+    .forEach(s=>{const e=$(s); if (e) e.style.border = "";});
+  resetPrioUI(); resetCategoryUI(); resetAssignedUI();
+  const subWrap = $(".addedSubtaskWrapper"); if (subWrap) subWrap.innerHTML = "";
+  const imgC = $(".subtask-images-container"); if (imgC) imgC.style.display = "none";
+  const search = document.getElementById("contactSearch"); if (search) search.value = "";
+  const dropdown = document.getElementById("dropdown-list-contacts"); if (dropdown) dropdown.style.display = "none";
+  const arrow = document.getElementById("dropdown-arrow-contacts"); if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
   if (window.loadedContacts && typeof renderContacts === "function") renderContacts(window.allContacts, window.loadedContacts);
 }
 
-/* ----------------------------- Resize Logic ----------------------------- */
+/* --------------------------- Kontakte / Suche ---------------------------- */
 
-/**
- * Initializes the textarea resize handle logic.
- */
-(() => {
-  const textarea = document.getElementById("descriptionInput");
-  const handle = document.querySelector(".resize-handle");
-  if (!textarea || !handle) return;
+async function loadContacts() {
+  if (typeof loadContactsInAddTask === "function") await loadContactsInAddTask();
+}
 
+function initContactsDropdownInput() {
+  const sel = $id("assignedToDropdownContacts"), arrow = $id("dropdown-arrow-contacts"), drop = $id("dropdown-list-contacts");
+  if (!sel || !arrow || !drop) return;
+  let open = false;
+
+  const toggle = (show) => {
+    drop.style.display = show ? "block" : "none";
+    arrow.style.transform = `translateY(-50%) rotate(${show ? 180 : 0}deg)`;
+    open = show;
+  };
+
+  sel.addEventListener("click", e => (e.stopPropagation(), toggle(!open)));
+  document.addEventListener("click", () => open && toggle(false));
+
+  drop.querySelectorAll(".dropdown-item-contact").forEach(it => it.addEventListener("click", e => {
+    e.stopPropagation();
+    const c = { id: it.dataset.id, name: it.dataset.name };
+    if (!window.assignedContacts.some(x => x.id === c.id)) window.assignedContacts.push(c);
+    const initials = $id("assignedToInitials");
+    if (initials) { initials.style.display = "block"; initials.textContent = window.assignedContacts.map(x => x.name[0]).join(", "); }
+    toggle(false);
+  }));
+}
+
+/* ---------------------------- Datepicker UX ------------------------------ */
+
+function initDateMinAndPicker() {
+  const input = $id("date");
+  if (!input) return;
+
+  input.min = new Date().toISOString().split("T")[0];
+
+  input.addEventListener("click", () => {
+    try {
+      const ua = navigator.userActivation;
+      const canShow = ua?.isActive || ua?.hasBeenActive;
+      input.showPicker?.call && canShow ? input.showPicker() : input.focus();
+    } catch {
+      input.focus();
+    }
+  });
+}
+
+/* ----------------------------- Live Search ------------------------------- */
+
+function initContactSearch() {
+  const search = $id("contactSearch"), drop = $id("dropdown-list-contacts");
+  if (!search || !drop) return;
+
+  const toggle = show => drop.style.display = show ? "block" : "none";
+  const filterContacts = q => window.allContacts.filter(n => n.toLowerCase().includes(q));
+
+  search.addEventListener("input", () => {
+    const q = search.value.toLowerCase().trim(), results = filterContacts(q);
+    if (window.loadedContacts) renderContacts(results, window.loadedContacts);
+    toggle(q && results.length);
+  });
+
+  document.addEventListener("click", e => {
+    if (!drop.contains(e.target) && e.target !== search) toggle(false);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initContactSearch);
+
+/* ------------------------------ Bootstraps ------------------------------- */
+
+document.addEventListener("DOMContentLoaded", () => {
+  initDateMinAndPicker();
+  initContactsDropdownInput();
+  initContactSearch();
+  loadContacts();
+});
+
+/* ------------------------------ Exports ---------------------------------- */
+
+window.createTask = window.createTask || createTask;
+window.clearTask = window.clearTask || clearTask;
+window.getSubtasksFromForm = window.getSubtasksFromForm || getSubtasksFromForm;
+window.setPrioColor = window.setPrioColor || setPrioColor;
+
+const CategoryDropdown = (() => {
+  // === Helpers ===
+  const $ = (id) => document.getElementById(id);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const on = (el, evt, fn) => el?.addEventListener(evt, fn);
+
+  // === Core Select Logic ===
+  const categories = ["User  story", "Technical Task"];
+
+  function selectCategory(index) {
+    const dd = $("assignedToDropdownCategory");
+    const ph = $("categoryPlaceholder");
+    const inputs = $$("input[name='category']");
+    const category = categories[index];
+
+    window.selectedCategory = category;
+    if (ph) ph.textContent = category;
+    dd?.classList.add("selected-red");
+
+    inputs.forEach((input, i) => (input.checked = i === index));
+
+    dd.style.border = "";
+    const nextEl = dd.nextElementSibling;
+    if (nextEl && nextEl.classList.contains("error-message")) {
+      nextEl.remove();
+    }
+
+    if (typeof resetSubtasksSpacing === "function") resetSubtasksSpacing();
+  }
+
+  function saveSelectedCategory(index) {
+    selectCategory(index);
+    closeDropdown();
+  }
+  let open = false;
+
+  function toggleDropdown() {
+    open ? closeDropdown() : openDropdown();
+  }
+
+  function openDropdown() {
+    const dd = $("assignedToDropdownCategory");
+    const arrow = $("dropdown-arrow-subtasks");
+    open = true;
+    dd?.classList.add("open");
+    if (arrow) arrow.style.transform = "translateY(-50%) rotate(180deg)";
+    dd?.setAttribute("aria-expanded", "true");
+  }
+
+  function closeDropdown() {
+    const dd = $("assignedToDropdownCategory");
+    const arrow = $("dropdown-arrow-subtasks");
+    open = false;
+    dd?.classList.remove("open");
+    if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
+    dd?.setAttribute("aria-expanded", "false");
+  }
+
+  function init() {
+    const dd = $("assignedToDropdownCategory");
+    const list = $("dropdown-list-category");
+    if (!dd || !list) return;
+
+    on(dd, "click", (ev) => {
+      ev.stopPropagation();
+      toggleDropdown();
+    });
+
+    on(dd, "keydown", (ev) => {
+      if (["Enter", " "].includes(ev.key)) {
+        ev.preventDefault();
+        toggleDropdown();
+      } else if (ev.key === "Escape") {
+        closeDropdown();
+      }
+    });
+
+    $$(".dropdown-item-category", list).forEach((item, idx) => {
+      on(item, "click", (ev) => {
+        ev.stopPropagation();
+        selectCategory(idx);
+        closeDropdown();
+      });
+    });
+
+    on(document, "click", () => {
+      if (open) closeDropdown();
+    });
+
+    window.saveSelectedCategory = saveSelectedCategory;
+  }
+  return { init, selectCategory, saveSelectedCategory };
+})();
+
+document.addEventListener("DOMContentLoaded", CategoryDropdown.init);
+
+const textarea = document.getElementById("descriptionInput");
+const handle = document.querySelector(".resize-handle");
+
+if (textarea && handle) {
   let isResizing = false;
-  let startY = 0;
-  let startHeight = 0;
+  let startY, startHeight;
 
-  function startResize(e) {
+  handle.addEventListener("mousedown", (e) => {
     isResizing = true;
     startY = e.clientY;
     startHeight = parseInt(getComputedStyle(textarea).height, 10);
-    attachListeners();
+    document.addEventListener("mousemove", resize);
+    document.addEventListener("mouseup", stopResize);
     e.preventDefault();
-  }
+  });
 
   function resize(e) {
     if (!isResizing) return;
-    const newHeight = calculateNewHeight(e.clientY - startY);
+    const deltaY = e.clientY - startY;
+    let newHeight = startHeight + deltaY;
+
+    const minHeight = parseInt(getComputedStyle(textarea).minHeight, 10);
+    const maxHeight = parseInt(getComputedStyle(textarea).maxHeight, 10);
+    newHeight = Math.max(minHeight, Math.min(maxHeight, newHeight));
+
     textarea.style.height = newHeight + "px";
   }
 
   function stopResize() {
     isResizing = false;
-    detachListeners();
-  }
-
-  function calculateNewHeight(deltaY) {
-    const minHeight = parseInt(getComputedStyle(textarea).minHeight, 10);
-    const maxHeight = parseInt(getComputedStyle(textarea).maxHeight, 10);
-    const newHeight = startHeight + deltaY;
-    return Math.max(minHeight, Math.min(maxHeight, newHeight));
-  }
-
-  function attachListeners() {
-    document.addEventListener("mousemove", resize);
-    document.addEventListener("mouseup", stopResize);
-  }
-
-  function detachListeners() {
     document.removeEventListener("mousemove", resize);
     document.removeEventListener("mouseup", stopResize);
   }
-
-  handle.addEventListener("mousedown", startResize);
-})();
-
-/* ----------------------------- Date Input ----------------------------- */
-
-/**
- * Returns the date input element.
- * @returns {HTMLInputElement|null} Date input element.
- */
-function getDateInput() {
-  return document.getElementById("date");
 }
 
-/**
- * Returns today's date in ISO format.
- * @returns {string} Today's date in YYYY-MM-DD format.
- */
-function todayISO() {
-  return new Date().toISOString().split("T")[0];
-}
+//document.addEventListener("DOMContentLoaded", () => {
+//  const dateInput = document.getElementById("date");
+//  if (!dateInput) return;
+//
+//  dateInput.addEventListener("input", (e) => {
+//    let val = dateInput.value.replace(/\D/g, "");
+//    if (val.length > 2) val = val.slice(0, 2) + "/" + val.slice(2);
+//    if (val.length > 5) val = val.slice(0, 5) + "/" + val.slice(5, 9);
+//    dateInput.value = val;
+//  });
+//});
 
-/**
- * Resets the date input if a past date is entered.
- * @param {HTMLInputElement} input - Date input element.
- */
-function resetIfPastDate(input) {
-  if (!input.value) return;
-  const inputDate = new Date(input.value).setHours(0, 0, 0, 0);
-  const today = new Date().setHours(0, 0, 0, 0);
-  if (inputDate < today) input.value = "";
-}
+//flatpickr("#date", {
+//  dateFormat: "d/m/Y",
+//  locale: "en",
+//  allowInput: true,
+//  minDate: "today",
+//  onClose: validateFutureDate,
+//});
 
-/**
- * Opens the date picker for an input field.
- * @param {HTMLInputElement} input - Date input element.
- */
-function openDatePicker(input) {
-  try {
-    if (typeof input.showPicker === "function") input.showPicker();
-    else input.focus();
-  } catch {
-    input.focus();
+function validateFutureDate(_, dateStr, instance) {
+  const parts = dateStr.split("/");
+  if (parts.length === 3) {
+    const [d, m, y] = parts;
+    const typedDate = new Date(`${y}-${m}-${d}`);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (!isNaN(typedDate) && typedDate >= today) {
+      instance.setDate(typedDate, true); // keep typed date
+    } else {
+      instance.clear();
+    }
+  } else {
+    instance.clear();
   }
 }
-
-/**
- * Binds events for date input (click and blur).
- * @param {HTMLInputElement} input - Date input element.
- */
-function bindDateInputEvents(input) {
-  input.addEventListener("click", () => openDatePicker(input));
-  input.addEventListener("blur", () => resetIfPastDate(input));
-}
-
-/**
- * Initializes the date input with minimum date and events.
- */
-function initDateInput() {
-  const input = getDateInput();
-  if (!input) return;
-  input.min = todayISO();
-  bindDateInputEvents(input);
-}
-
-document.addEventListener("DOMContentLoaded", initDateInput);
-
-/* ----------------------------- Exports ---------------------------------- */
-window.createTask = window.createTask || createTask;
-window.clearTask = window.clearTask || clearTask;
-window.getSubtasksFromForm = window.getSubtasksFromForm || collectSubtasksFromUI;
-window.setPrioColor = window.setPrioColor || setPrioColor;

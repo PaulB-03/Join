@@ -138,61 +138,59 @@
   }
 
   function initCategoryDropdownSubtask() {
-  const dd = document.getElementById("assignedToDropdownCategory");
-  const arrow = document.getElementById("dropdown-arrow-subtasks");
-  const list = document.getElementById("dropdown-list-category");
+    const dd = document.getElementById("assignedToDropdownCategory");
+    const arrow = document.getElementById("dropdown-arrow-subtasks");
+    const list = document.getElementById("dropdown-list-category");
 
-  if (!dd || !arrow || !list) return;
+    if (!dd || !arrow || !list) return;
 
-  let open = false;
-  let __subtasksBox = document.getElementById("subtasks");
-  const __subtasksStyles = {
-    marginTop: __subtasksBox?.style.marginTop || "24px",
-    paddingBottom: __subtasksBox?.style.paddingBottom || "50px",
-  };
+    let open = false;
+    let __subtasksBox = document.getElementById("subtasks");
+    const __subtasksStyles = {
+      marginTop: __subtasksBox?.style.marginTop || "24px",
+      paddingBottom: __subtasksBox?.style.paddingBottom || "50px",
+    };
 
-  dd.addEventListener("click", (ev) => {
-    ev.stopPropagation();
-    open = !open;
-    dd.classList.toggle("open", open);
-    arrow.style.transform = open
-      ? "translateY(-50%) rotate(180deg)"
-      : "translateY(-50%) rotate(0deg)";
+    dd.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      open = !open;
+      dd.classList.toggle("open", open);
+      arrow.style.transform = open ? "translateY(-50%) rotate(180deg)" : "translateY(-50%) rotate(0deg)";
 
-    if (open) {
-      if (__subtasksBox) {
-        const dropdownHeight = list.offsetHeight;
-        __subtasksBox.style.marginTop = dropdownHeight + 16 + "px"; // add extra spacing
-        __subtasksBox.style.paddingBottom = "50px";
-      }
-      const outsideClickHandler = (e) => {
-        if (!dd.contains(e.target)) {
-          dd.classList.remove("open");
-          arrow.style.transform = "translateY(-50%) rotate(0deg)";
-          __subtasksBox.style.marginTop = __subtasksStyles.marginTop;
-          document.removeEventListener("click", outsideClickHandler);
-          open = false;
+      if (open) {
+        if (__subtasksBox) {
+          const dropdownHeight = list.offsetHeight;
+          __subtasksBox.style.marginTop = dropdownHeight + 16 + "px"; // add extra spacing
+          __subtasksBox.style.paddingBottom = "50px";
         }
-      };
-      document.addEventListener("click", outsideClickHandler);
-    } else {
-      if (__subtasksBox) __subtasksBox.style.marginTop = __subtasksStyles.marginTop;
-    }
-  });
-
-  list.querySelectorAll(".dropdown-item-category").forEach((item) => {
-    item.addEventListener("click", () => {
-      if (__subtasksBox) __subtasksBox.style.marginTop = __subtasksStyles.marginTop;
-      dd.classList.remove("open");
-      arrow.style.transform = "translateY(-50%) rotate(0deg)";
-      open = false;
+        const outsideClickHandler = (e) => {
+          if (!dd.contains(e.target)) {
+            dd.classList.remove("open");
+            arrow.style.transform = "translateY(-50%) rotate(0deg)";
+            __subtasksBox.style.marginTop = __subtasksStyles.marginTop;
+            document.removeEventListener("click", outsideClickHandler);
+            open = false;
+          }
+        };
+        document.addEventListener("click", outsideClickHandler);
+      } else {
+        if (__subtasksBox) __subtasksBox.style.marginTop = __subtasksStyles.marginTop;
+      }
     });
-  });
-}
 
-document.addEventListener("DOMContentLoaded", () => {
-  initCategoryDropdownSubtask();
-});
+    list.querySelectorAll(".dropdown-item-category").forEach((item) => {
+      item.addEventListener("click", () => {
+        if (__subtasksBox) __subtasksBox.style.marginTop = __subtasksStyles.marginTop;
+        dd.classList.remove("open");
+        arrow.style.transform = "translateY(-50%) rotate(0deg)";
+        open = false;
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initCategoryDropdownSubtask();
+  });
 
   /* ------------------------------ Contacts Dropdown --------------------- */
   function dropdownFunction(arrow, dropDown, select, items, onSelect) {
