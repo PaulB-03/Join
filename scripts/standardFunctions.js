@@ -494,12 +494,6 @@
     resetSubtasksSpacing();
   }
 
-  /* ------------------------------ Prio-Init ------------------------------ */
-  function initialiseSavePrioImg() {
-    const items = $qsa(".prioGrade");
-    items.forEach((el, i) => on(el, "click", () => window.setPrioColor?.(i)));
-  }
-
   /* ------------------------------ Exports --------------------------------*/
   window.initials = window.initials || initials;
   window.colorForName = window.colorForName || colorForName;

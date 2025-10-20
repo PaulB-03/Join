@@ -1,7 +1,5 @@
 const baseURL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
 
-let prioGrade = "";
-let selectedPrio = "";
 let selectedCategory = "";
 let selectedContact = "";
 let selectedState = "";
@@ -33,34 +31,6 @@ function clearInlineErrors() {
   });
 }
 
-/* --------------------------- Prio-Auswahl ------------------------------ */
-
-function setPrioColor(index) {
-  const refs = document.getElementsByClassName("prioGrade");
-  const ref = refs[index],
-    img = ref?.querySelector("img");
-  document.querySelectorAll(".prioGrade .prioImage").forEach((i) => i.classList.remove("filterWhite"));
-  Array.from(refs).forEach((e) => e.classList.remove("removeHoverEffect", "redColor", "orangeColor", "greenColor"));
-  if (ref?.classList.contains("redColor") || ref?.classList.contains("orangeColor") || ref?.classList.contains("greenColor")) return;
-  addBackgroundColor(ref, img);
-}
-
-function addBackgroundColor(ref, img) {
-  ref.classList.add(ref.id === "urgent" ? "redColor" : ref.id === "medium" ? "orangeColor" : "greenColor");
-  addPrioImgColor(ref, img);
-  selectedPrio = ref.id;
-}
-
-function addPrioImgColor(ref, img) {
-  if (!ref || !img) return;
-  ref.classList.add("removeHoverEffect");
-  img.classList.add("filterWhite");
-}
-
-function getSelectedPriority() {
-  return typeof selectedPrio !== "undefined" ? selectedPrio : null;
-}
-
 /* --------------------------- Validierung -------------------------------- */
 
 function validateTaskFormFields() {
@@ -90,7 +60,7 @@ function buildTaskPayloadFromForm() {
     title: getFieldValue("titleInput"),
     description: getFieldValue("descriptionInput"),
     date: getFieldValue("date"),
-    priority: selectedPrio,
+    priority: priority.getSelectedPriority(),
     category: window.selectedCategory || "",
     assignedContacts: Array.isArray(window.assignedContacts) ? [...window.assignedContacts] : [],
     state: window.selectedState || "toDo",
@@ -205,12 +175,6 @@ function getSubtasksFromForm() {
 
 /* ---------------------------- Formular Reset ----------------------------- */
 
-function resetPrioUI() {
-  document.querySelectorAll(".prioGrade").forEach((el) => el.classList.remove("isClicked", "redColor", "orangeColor", "greenColor", "whitePrioFont"));
-  document.querySelectorAll(".prioGrade .prioImage").forEach((el) => el.classList.remove("filterWhite"));
-  selectedPrio = "";
-}
-
 function resetCategoryUI() {
   selectedCategory = "";
   const ph = $id("categoryPlaceholder");
@@ -323,7 +287,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.createTask = window.createTask || createTask;
 window.getSubtasksFromForm = window.getSubtasksFromForm || getSubtasksFromForm;
-window.setPrioColor = window.setPrioColor || setPrioColor;
 
 const CategoryDropdown = (() => {
   // === Helpers ===
