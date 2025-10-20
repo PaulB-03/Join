@@ -1,70 +1,107 @@
 // filters tasks based on user input
+/**
+ * Filters tasks by the search input and renders matches.
+ * Falls Query zu kurz/numerisch ist: Board zurücksetzen.
+ * @returns {Promise<void>}
+ */
 async function findTask() {
-  const input = document.getElementById("taskSearchInput"); // Get input field
-  const query = input.value.trim(); // Get text and remove spaces
-  const tooShort = query.length <= 1 || !isNaN(query); // Ignore if too short or numeric
-  if (tooShort) { hideNoResults(); init(); return; } // Reset board if input invalid
-  const tasks = await getTasks(); // Fetch all tasks
-  const pool = changeObjectToArray(tasks); // Convert tasks to searchable strings
-  const caps = capitalizeFirstLetter(query); // Capitalize first letter
-  const variants = [caps, query.toLowerCase()]; // Create two search variants
-  const lists = variants.map(v => filterArray(v, pool)); // Filter tasks by text
-  const results = [...new Set(lists.flat())]; // Remove duplicate matches
-  if (results.length === 0) { renderFoundTasks({}); return; } // No matches → show message
-  getIdsOfTasks(results); // Extract IDs and fetch details
+  const input = document.getElementById("taskSearchInput");
+  const query = input.value.trim();
+  const tooShort = query.length <= 1 || !isNaN(query);
+  if (tooShort) { hideNoResults(); init(); return; }
+  const tasks = await getTasks();
+  const pool = changeObjectToArray(tasks);
+  const caps = capitalizeFirstLetter(query);
+  const variants = [caps, query.toLowerCase()];
+  const lists = variants.map(v => filterArray(v, pool));
+  const results = [...new Set(lists.flat())];
+  if (results.length === 0) { renderFoundTasks({}); return; }
+  getIdsOfTasks(results);
 }
 
-// Extracts task IDs from found string entries
+/**
+ * Extracts task IDs from matched strings and triggers fetch.
+ * @param {string[]} foundTasksArray
+ * @returns {void}
+ */
 function getIdsOfTasks(foundTasksArray) {
   const idArray = [];
   for (let i = 0; i < foundTasksArray.length; i++) {
-    idArray.push(getLastElement(foundTasksArray, i)); // Get ID from end of string
+    idArray.push(getLastElement(foundTasksArray, i));
   }
-  getSingleTask(idArray); // Fetch full task details
+  getSingleTask(idArray);
 }
 
-// Fetches each task by its ID
+/**
+ * Fetches tasks by an array of IDs and renders them.
+ * @param {string[]} idArray
+ * @returns {Promise<void>}
+ */
 async function getSingleTask(idArray) {
   const taskArray = [];
   for (let i = 0; i < idArray.length; i++) {
     const id = idArray[i];
-    const single = await fetchSingleTask(id); // API call per ID
+    const single = await fetchSingleTask(id);
     taskArray[id] = single;
   }
-  renderFoundTasks(taskArray); // Render fetched tasks
+  renderFoundTasks(taskArray);
 }
 
-// Renders found tasks or shows “no results” message
+/**
+ * Renders found tasks or shows "no results".
+ * @param {Record<string, any>} taskArray
+ * @returns {Promise<void>}
+ */
 async function renderFoundTasks(taskArray) {
-  clearColumns(); // Reset the board
+  clearColumns();
   const has = taskArray && Object.keys(taskArray).length > 0;
   if (!has) {
-    showNoResults("No results found."); // Show info message
-    updateAllEmptyStates(); // Update empty board columns
+    showNoResults("No results found.");
+    updateAllEmptyStates();
     return;
   }
-  Object.entries(taskArray).forEach(([id, t]) => addTaskCard(id, t)); // Add task cards
+  Object.entries(taskArray).forEach(([id, t]) => addTaskCard(id, t));
   hideNoResults();
   updateAllEmptyStates();
 }
 
-// Filters an array for items containing the search value
+/**
+ * Returns items that contain the given value (case-sensitive).
+ * @param {string} value
+ * @param {string[]} arrayForFiltering
+ * @returns {string[]}
+ */
 function filterArray(value, arrayForFiltering) {
   return arrayForFiltering.filter((txt) => txt.includes(value));
 }
 
-// Capitalizes the first letter of a string
+/**
+ * Capitalizes the first letter of a string.
+ * @param {string} val
+ * @returns {string}
+ */
 function capitalizeFirstLetter(val) {
   const s = String(val);
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-// Returns the last element of a comma-separated string
+/**
+ * Returns the last comma-separated part of an array item.
+ * @param {string[]} arr
+ * @param {number} index
+ * @returns {string}
+ */
 function getLastElement(arr, index) {
   return arr[index].split(",").pop();
 }
 
-// Adds a delay to prevent too many search calls
+/**
+ * Debounces a function call to reduce rapid invocations.
+ * @template T
+ * @param {(this: any, ...args: T[]) => void} func
+ * @param {number} [timeout=1000]
+ * @returns {(...args: T[]) => void}
+ */
 function debounce(func, timeout = 1000) {
   let timer;
   return (...args) => {
@@ -73,10 +110,15 @@ function debounce(func, timeout = 1000) {
   };
 }
 
-// Runs findTask() with a typing delay
+/** Runs findTask() with a typing delay. */
 let processChanges = debounce(() => findTask());
 
-// Converts the tasks object into a searchable string array
+/**
+ * Flattens task objects into searchable strings.
+ * Format: "title, description, assignedContacts,ID"
+ * @param {Record<string, any>} tasksResponse
+ * @returns {string[]}
+ */
 function changeObjectToArray(tasksResponse) {
   const entries = Object.entries(tasksResponse);
   const out = [];
@@ -87,7 +129,11 @@ function changeObjectToArray(tasksResponse) {
   return out;
 }
 
-// Displays a message if no tasks were found
+/**
+ * Shows a "no results" message box.
+ * @param {string} msg
+ * @returns {void}
+ */
 function showNoResults(msg) {
   const box = document.getElementById("search-empty-state");
   if (!box) return;
@@ -95,7 +141,10 @@ function showNoResults(msg) {
   box.classList.remove("d_none");
 }
 
-// Hides the “no results” message
+/**
+ * Hides the "no results" message box.
+ * @returns {void}
+ */
 function hideNoResults() {
   const box = document.getElementById("search-empty-state");
   if (!box) return;

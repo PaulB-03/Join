@@ -1,7 +1,13 @@
-let dragged = null; // currently dragged card (container)
-let placeholder = null; // placeholder while dragging
+/** Currently dragged card (container). */
+let dragged = null;
+/** Placeholder element while dragging. */
+let placeholder = null;
 
-// Initialize Drag & Drop only once
+/**
+ * Initializes Drag & Drop functionality only once.
+ * Prevents re-binding duplicate listeners.
+ * @returns {void}
+ */
 function initDnd() {
   if (window.__dndInitialized) return;
   window.__dndInitialized = true;
@@ -10,19 +16,29 @@ function initDnd() {
   bindColumns();
 }
 
-// Create the placeholder element
+/**
+ * Creates a placeholder element to show during dragging.
+ * @returns {void}
+ */
 function makePlaceholder() {
   placeholder = document.createElement("div");
   placeholder.className = "task-placeholder";
 }
 
-// Bind global drag start/end listeners
+/**
+ * Binds global dragstart and dragend event listeners.
+ * @returns {void}
+ */
 function bindGlobalDrag() {
   document.addEventListener("dragstart", onDragStart);
   document.addEventListener("dragend", onDragEnd);
 }
 
-// On start: remember dragged card and add styles
+/**
+ * Creates a custom drag image used during dragging.
+ * @param {HTMLElement} box - The element being dragged.
+ * @returns {HTMLElement} clone - The cloned element used as drag image.
+ */
 function createDragImage(box) {
   const clone = box.cloneNode(true);
   clone.style.transform = "rotate(5deg)";
@@ -35,6 +51,11 @@ function createDragImage(box) {
   return clone;
 }
 
+/**
+ * Triggered on drag start: sets styles, placeholder size, and drag data.
+ * @param {DragEvent} e
+ * @returns {void}
+ */
 function onDragStart(e) {
   const box = e.target.closest(".task-container");
   if (!box) return;
@@ -51,7 +72,11 @@ function onDragStart(e) {
   placeholder.style.width = `${box.offsetWidth}px`;
 }
 
-// On end: clear styles and reset state
+/**
+ * Triggered on drag end: cleans up all drag-related styles and resets state.
+ * @param {DragEvent} e
+ * @returns {void}
+ */
 function onDragEnd(e) {
   const box = e.target.closest(".task-container");
   if (!box) return;
@@ -62,7 +87,11 @@ function onDragEnd(e) {
   dragged = null;
 }
 
-// Prepare drop zones (dragover, drop, leave)
+/**
+ * Binds dragover, dragleave, and drop events to all task columns.
+ * Ensures each column only binds once.
+ * @returns {void}
+ */
 function bindColumns() {
   document.querySelectorAll(".dropzone").forEach((zone) => {
     if (zone.__bound) return;
@@ -73,7 +102,12 @@ function bindColumns() {
   });
 }
 
-// Gentle autoscroll near top/bottom edges of the column
+/**
+ * Automatically scrolls a dropzone when dragging near edges.
+ * @param {HTMLElement} zone - The dropzone element.
+ * @param {number} clientY - Current mouse Y position.
+ * @returns {void}
+ */
 function autoScroll(zone, clientY) {
   const r = zone.getBoundingClientRect(),
     thr = 24;
@@ -81,7 +115,12 @@ function autoScroll(zone, clientY) {
   else if (clientY > r.bottom - thr) zone.scrollTop += 10;
 }
 
-// While dragging: position placeholder accordingly
+/**
+ * Handles dragover event: positions placeholder and manages styling.
+ * @param {DragEvent} e
+ * @param {HTMLElement} zone
+ * @returns {void}
+ */
 function onDragOver(e, zone) {
   if (!dragged) return;
   e.preventDefault();
@@ -91,19 +130,34 @@ function onDragOver(e, zone) {
   insertPlaceholder(zone, e.clientY);
 }
 
-// Replace placeholder with the dragged card
+/**
+ * Inserts the dragged card at the placeholder’s current position.
+ * @param {HTMLElement} zone
+ * @param {number} mouseY
+ * @returns {void}
+ */
 function insertDraggedInto(zone, mouseY) {
   insertPlaceholder(zone, mouseY);
   placeholder.replaceWith(dragged);
 }
 
-// After drop: save state to RTDB and update empty states
+/**
+ * Saves updated task state to Firebase and refreshes UI.
+ * @param {string} id - Task ID.
+ * @param {HTMLElement} zone - Target dropzone.
+ * @returns {Promise<void>}
+ */
 async function persistDragState(id, zone) {
   await updateTaskState(id, COL_TO_STATE[zone.id]);
   updateEmptyState(zone);
 }
 
-// Drop handler: move, persist, and revert on error
+/**
+ * Handles the drop event: moves element, persists state, and reverts on error.
+ * @param {DragEvent} e
+ * @param {HTMLElement} zone
+ * @returns {Promise<void>}
+ */
 async function onDrop(e, zone) {
   e.preventDefault();
   zone.classList.remove("is-over");
@@ -121,7 +175,12 @@ async function onDrop(e, zone) {
   }
 }
 
-// Compute placeholder position inside a column
+/**
+ * Calculates where to insert the placeholder within a dropzone.
+ * @param {HTMLElement} container - Dropzone element.
+ * @param {number} mouseY - Mouse Y position.
+ * @returns {void}
+ */
 function insertPlaceholder(container, mouseY) {
   const items = [...container.querySelectorAll(".task-container:not(.is-dragging)")];
   if (!container.contains(placeholder)) container.appendChild(placeholder);

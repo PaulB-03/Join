@@ -1,17 +1,36 @@
+/**
+ * Base URL to Firebase Realtime Database (no trailing slash in requests).
+ * @type {string}
+ */
 const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
+
+/**
+ * Kanban column -> task state mapping.
+ * @type {{[key:string]: "toDo"|"in progress"|"await feedback"|"done"}}
+ */
 const COL_TO_STATE = {
   todo: "toDo",
   "in-progress": "in progress",
   "await-feedback": "await feedback",
   done: "done",
 };
+
+/**
+ * Reverse map (task state -> kanban column id).
+ * @type {{[key in "toDo"|"in progress"|"await feedback"|"done"]: string}}
+ */
 const STATE_TO_COL = Object.fromEntries(Object.entries(COL_TO_STATE).map(([c, s]) => [s, c]));
 
-let __liveBound = false;  // avoid double-binding live listeners
-let __tasksRef = null;    // RTDB ref to "tasks"
-const __localEdits = new Set(); // mark local edits to detect echo updates
+/** Avoid double-binding live listeners. */
+let __liveBound = false;
+/** RTDB ref to "tasks". */
+let __tasksRef = null;
+/** Mark local edits to ignore echo updates from RTDB. */
+const __localEdits = new Set();
 
-// Entry point: init board, overlay buttons and subtask listener
+/**
+ * Entry point: init board, overlay buttons, subtask listener.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   init();
   bindOverlayButtons();
@@ -19,12 +38,15 @@ document.addEventListener("DOMContentLoaded", () => {
   //mountDatePickerMinToday();
 });
 
-// Main init: render, live sync, DnD, highlight, etc.
+/**
+ * Main init: render, live sync, DnD, highlight, etc.
+ * @returns {Promise<void>}
+ */
 async function init(){
   try { await renderAllTasks(); }
   catch (e) {
     console.error("Initial render failed:", e);
-    clearColumns();            // zeigt die Empty States statt weißer Fläche
+    clearColumns();            // shows empty states instead of blank page
   }
   startLiveSync();
   initDnd();
@@ -32,7 +54,10 @@ async function init(){
   checkSwapMenu();
 }
 
-// Briefly highlight newly created task card (via ?newTask=ID)
+/**
+ * Briefly highlight newly created task card (via ?newTask=ID).
+ * @returns {void}
+ */
 function highlightNewTask() {
   const id = new URLSearchParams(location.search).get("newTask");
   const el = id && document.querySelector(`.task-container[data-id="${id}"]`);
@@ -41,7 +66,11 @@ function highlightNewTask() {
   setTimeout(() => el.classList.remove("highlight"), 2000);
 }
 
-// Manage "No tasks …" empty-state visibility
+/**
+ * Manage "No tasks …" empty-state visibility for a column.
+ * @param {HTMLElement} zone
+ * @returns {void}
+ */
 function updateEmptyState(zone) {
   if (!zone) return;
   const hasTask = zone.querySelector(".task-container");
@@ -54,12 +83,18 @@ function updateEmptyState(zone) {
   }
 }
 
-// Refresh empty states in all columns
+/**
+ * Refresh empty states in all columns.
+ * @returns {void}
+ */
 function updateAllEmptyStates() {
   document.querySelectorAll(".dropzone").forEach(updateEmptyState);
 }
 
-// Clear all columns completely (full rebuild)
+/**
+ * Clear all columns and display empty states.
+ * @returns {void}
+ */
 function clearColumns() {
   document.querySelectorAll(".dropzone").forEach((z) => {
     const title = z.previousElementSibling?.textContent?.trim() || "";
@@ -67,7 +102,12 @@ function clearColumns() {
   });
 }
 
-// RTDB: update state (with short-lived local-edit mark to ignore echo)
+/**
+ * RTDB: update a task's state (with local-edit mark).
+ * @param {string} id
+ * @param {"toDo"|"in progress"|"await feedback"|"done"} state
+ * @returns {Promise<void>}
+ */
 async function updateTaskState(id, state) {
   __localEdits.add(id);
   setTimeout(() => __localEdits.delete(id), 1500);
@@ -79,31 +119,49 @@ async function updateTaskState(id, state) {
   if (!res.ok) throw new Error(`PATCH failed: ${res.status}`);
 }
 
-// Fetch all tasks; normalize array-form to object
+/**
+ * Fetch all tasks; normalize array-form to object.
+ * @returns {Promise<Record<string, any>>}
+ */
 async function fetchTasks() {
   const r = await fetch(`${BASE_URL}/tasks.json`);
   if (!r.ok) throw new Error(`GET tasks failed: ${r.status}`);
   const data = await r.json();
   if (!data) return {};
   if (Array.isArray(data)) {
-    return Object.fromEntries(data.map((t, i) => [i, t]).filter(([, t]) => t));}
+    return Object.fromEntries(data.map((t, i) => [i, t]).filter(([, t]) => t));
+  }
   return data;
 }
 
-// Fetch a single task by ID
+/**
+ * Fetch a single task by ID.
+ * @param {string} id
+ * @returns {Promise<any>}
+ */
 async function fetchSingleTask(id) {
   const r = await fetch(`${BASE_URL}/tasks/${id}.json`);
   if (!r.ok) throw new Error(`GET task ${id} failed: ${r.status}`);
   return (await r.json()) || {};
 }
 
-// Delete a task by ID
+/**
+ * Delete a task by ID.
+ * @param {string} id
+ * @returns {Promise<void>}
+ */
 async function deleteTask(id) {
   const r = await fetch(`${BASE_URL}/tasks/${id}.json`, { method: "DELETE" });
   if (!r.ok) throw new Error(`DELETE task ${id} failed: ${r.status}`);
 }
 
-// Toggle subtask checkbox and persist changes
+/**
+ * Toggle subtask checkbox and persist changes.
+ * @param {string} taskId
+ * @param {number} index
+ * @param {boolean} done
+ * @returns {Promise<void>}
+ */
 async function toggleSubtaskDone(taskId, index, done) {
   const t = await fetchSingleTask(taskId);
   const subs = normalizeSubtasks(t.subtasks);
@@ -113,15 +171,30 @@ async function toggleSubtaskDone(taskId, index, done) {
   await saveSubtasks(taskId, subs);
 }
 
-// Subtask helpers (normalize shape)
+/**
+ * Normalize subtasks into an array.
+ * @param {any} subs
+ * @returns {Array<any>}
+ */
 function normalizeSubtasks(subs) {
   return Array.isArray(subs) ? subs : [];
 }
+
+/**
+ * Ensure subtask is an object {text, done}.
+ * @param {any} x
+ * @returns {{text:string, done:boolean}}
+ */
 function toSubtask(x) {
   return typeof x === "string" ? { text: x, done: false } : x || { text: "", done: false };
 }
 
-// Save full subtasks array via PATCH
+/**
+ * Save full subtasks array via PATCH.
+ * @param {string} taskId
+ * @param {Array<any>} subs
+ * @returns {Promise<void>}
+ */
 async function saveSubtasks(taskId, subs) {
   const r = await fetch(`${BASE_URL}/tasks/${taskId}.json`, {
     method: "PATCH",
@@ -131,7 +204,10 @@ async function saveSubtasks(taskId, subs) {
   if (!r.ok) throw new Error(`PATCH subtasks failed: ${r.status}`);
 }
 
-// Rebuild board: clear, render all cards, update empties
+/**
+ * Rebuild board: clear, render all cards, update empties.
+ * @returns {Promise<void>}
+ */
 async function renderAllTasks() {
   const tasks = await fetchTasks();
   clearColumns();
@@ -139,13 +215,22 @@ async function renderAllTasks() {
   updateAllEmptyStates();
 }
 
-// Compute card HTML from your shared template
+/**
+ * Compute card HTML via shared template function.
+ * @param {any} t - task object
+ * @returns {string} innerHTML for the card
+ */
 function computeCardHTML(t) {
   const { total, done, percent } = subtaskProgress(t.subtasks);
   return window.taskCardInnerHtml(t, percent, done, total);
 }
 
-// Insert card into the proper column
+/**
+ * Insert a card into the proper column.
+ * @param {string} id
+ * @param {any} t
+ * @returns {void}
+ */
 function addTaskCard(id, t) {
   const zone = getZoneForTask(t);
   zone.querySelector(".empty")?.remove();
@@ -159,13 +244,21 @@ function addTaskCard(id, t) {
   zone.appendChild(wrap);
 }
 
-// Resolve correct dropzone element from task state
+/**
+ * Resolve correct dropzone element from task state.
+ * @param {{state?: string}} t
+ * @returns {HTMLElement}
+ */
 function getZoneForTask(t) {
   const colId = STATE_TO_COL[t?.state] || "todo";
   return document.getElementById(colId);
 }
 
-// Create DnD wrapper for a card
+/**
+ * Create DnD wrapper for a card.
+ * @param {string} id
+ * @returns {HTMLDivElement}
+ */
 function makeTaskWrapper(id) {
   const w = document.createElement("div");
   w.className = "task-container";
@@ -174,7 +267,11 @@ function makeTaskWrapper(id) {
   return w;
 }
 
-// Calculate subtask progress (done/total/percent)
+/**
+ * Calculate subtask progress metrics.
+ * @param {Array<any>} subs
+ * @returns {{total:number, done:number, percent:number}}
+ */
 function subtaskProgress(subs) {
   const list = Array.isArray(subs) ? subs : [];
   const total = list.length;
@@ -183,7 +280,13 @@ function subtaskProgress(subs) {
   return { total, done, percent };
 }
 
-// Click opens detail overlay; clicks during drag are ignored
+/**
+ * Bind click (open detail) and drag flags to a card.
+ * @param {HTMLElement} wrapper
+ * @param {HTMLElement} card
+ * @param {string} id
+ * @returns {void}
+ */
 function bindCardClickDrag(wrapper, card, id) {
   let draggedFlag = false;
   wrapper.addEventListener("dragstart", () => (draggedFlag = true));
@@ -191,40 +294,62 @@ function bindCardClickDrag(wrapper, card, id) {
   card.addEventListener("click", () => !draggedFlag && openTaskDetail(id));
 }
 
+/**
+ * Start live sync from RTDB (guarded once).
+ * @returns {void}
+ */
 function startLiveSync() {
   if (__liveBound) return;
   if (!window.rtdb) {
     console.warn("RTDB not initialized – skipping live sync.");
-    return;}
+    return;
+  }
   __liveBound = true;
   __tasksRef = window.rtdb.ref("tasks");
   bindLiveHandlers(__tasksRef);
 }
 
-// Bind RTDB event handlers
+/**
+ * Bind RTDB event handlers for tasks.
+ * @param {any} ref - RTDB ref
+ * @returns {void}
+ */
 function bindLiveHandlers(ref) {
   ref.on("child_added", onChildAdded);
   ref.on("child_changed", onChildChanged);
   ref.on("child_removed", onChildRemoved);
 }
 
-// RTDB: task added → insert card
+/**
+ * RTDB: task added → insert card.
+ * @param {{key:string,val:()=>any}} snap
+ * @returns {void}
+ */
 function onChildAdded(snap) {
   upsertTaskCard(snap.key, snap.val());
   updateAllEmptyStates();
 }
 
-// RTDB: task changed → update/move card
+/**
+ * RTDB: task changed → update/move card.
+ * @param {{key:string,val:()=>any}} snap
+ * @returns {void}
+ */
 function onChildChanged(snap) {
-  const id = snap.key,
-    t = snap.val();
+  const id = snap.key, t = snap.val();
   if (__localEdits.has(id)) {
     safeUpdateCardContent(id, t);
-    return;}
+    return;
+  }
   handleChangedPlacement(id, t);
 }
 
-// Move card if column changed; otherwise update content
+/**
+ * Move card if column changed; otherwise update content.
+ * @param {string} id
+ * @param {any} t
+ * @returns {void}
+ */
 function handleChangedPlacement(id, t) {
   const existing = document.querySelector(`.task-container[data-id="${id}"]`);
   const zone = getZoneForTask(t);
@@ -237,13 +362,22 @@ function handleChangedPlacement(id, t) {
   updateAllEmptyStates();
 }
 
-// RTDB: task removed → delete card
+/**
+ * RTDB: task removed → delete card.
+ * @param {{key:string}} snap
+ * @returns {void}
+ */
 function onChildRemoved(snap) {
   removeTaskCard(snap.key);
   updateAllEmptyStates();
 }
 
-// Safely replace card HTML (or recreate if missing)
+/**
+ * Safely replace card HTML (or recreate if missing).
+ * @param {string} id
+ * @param {any} t
+ * @returns {void}
+ */
 function safeUpdateCardContent(id, t) {
   const existing = document.querySelector(`.task-container[data-id="${id}"]`);
   if (!existing) {
@@ -255,7 +389,12 @@ function safeUpdateCardContent(id, t) {
   card.innerHTML = computeCardHTML(t);
 }
 
-// Create/update card and place it in the proper column
+/**
+ * Create/update card and place it in the proper column.
+ * @param {string} id
+ * @param {any} t
+ * @returns {void}
+ */
 function upsertTaskCard(id, t) {
   const existing = document.querySelector(`.task-container[data-id="${id}"]`);
   const zone = getZoneForTask(t);
@@ -268,17 +407,25 @@ function upsertTaskCard(id, t) {
   if (existing.parentElement !== zone) zone.appendChild(existing);
 }
 
-// Fully remove a card element
+/**
+ * Fully remove a card element by id.
+ * @param {string} id
+ * @returns {void}
+ */
 function removeTaskCard(id) {
   document.querySelector(`.task-container[data-id="${id}"]`)?.remove();
 }
 
-// On page unload: unsubscribe RTDB listeners
+/**
+ * Unsubscribe RTDB listeners on page unload.
+ */
 window.addEventListener("beforeunload", () => {
-  try {__tasksRef?.off();
-  } catch (e) { }
+  try { __tasksRef?.off(); } catch (e) { }
 });
 
+/**
+ * Public API exposure for other modules.
+ */
 window.Board = Object.assign(window.Board || {}, {
   renderAllTasks,
   fetchTasks,
