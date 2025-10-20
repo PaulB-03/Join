@@ -240,3 +240,7 @@
   transform: translateX(-45%);
   opacity: 1;
 }
+
+#editAvatar {
+  transform: translateY(-20px);
+}
