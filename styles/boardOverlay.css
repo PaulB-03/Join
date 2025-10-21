@@ -150,7 +150,6 @@ body.modal-open {
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(2px);
   z-index: 6000;
   opacity: 0;
   visibility: hidden;
@@ -234,7 +233,7 @@ body.modal-open {
   width: 530px;
   padding-top: 0;
   height: 88vh;
-  max-height: 1180px;
+  overflow: scroll;
 }
 
 #taskOverlay.edit-mode .divider,
