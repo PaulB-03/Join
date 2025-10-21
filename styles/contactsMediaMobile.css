@@ -49,6 +49,12 @@
     object-fit: contain;
     object-position: center;
   }
+
+  .overlay-body {
+    .detailsAvatar {
+      top: 310px;
+    }
+  }
 }
 
 @media (max-width: 425px) {
