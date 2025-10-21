@@ -183,3 +183,128 @@ function escapeHtml(text) {
  * Runs initialization after DOM is fully loaded.
  */
 document.addEventListener("DOMContentLoaded", initSubtaskUI);
+
+/* ------------------------- Subtasks im Detail-UI ------------------------- */
+
+/**
+ * Reads subtasks from detail overlay and saves them.
+ * @param {string} taskId
+ * @returns {Promise<{done:number,total:number}>}
+ */
+async function saveSubtasksFromOverlay(taskId) {
+  const items = [...document.querySelectorAll("#taskDetailOverlay .subtasks__item")];
+  const subs = items.map((el) => {
+    const chk = el.querySelector('input[type="checkbox"]');
+    const txt = (el.querySelector(".txt")?.textContent || "").trim();
+    return { text: txt, done: !!chk?.checked };
+  });
+  const res = await fetch(`${RTDB_BASE}tasks/${taskId}/subtasks.json`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(subs),
+  });
+  if (!res.ok) throw new Error(`Save failed: ${res.status}`);
+  return { done: subs.filter((s) => s.done).length, total: subs.length };
+}
+
+/**
+ * Updates subtask counters in detail overlay and on the card.
+ * @param {string} taskId
+ * @param {number} done
+ * @param {number} total
+ * @returns {void}
+ */
+function updateSubtaskCountersUI(taskId, done, total) {
+  const ov = byId("taskDetailOverlay"), c = ov?.querySelector(".subtasks-counter");
+  if (c) c.textContent = `${done}/${total} Subtasks`;
+  const card = document.querySelector(`.card[data-id="${taskId}"]`) || null;
+  if (!card) return;
+  const meta = card.querySelector(".meta span");
+  if (meta) meta.textContent = `${done}/${total} Subtasks`;
+  const bar = card.querySelector(".progress .bar");
+  if (bar && total > 0) bar.style.width = `${Math.round((done / total) * 100)}%`;
+}
+
+/**
+ * Mounts a delegated change listener for subtask checkboxes.
+ * @returns {void}
+ */
+function mountSubtaskCheckboxListener() {
+  document.addEventListener("change", onDetailSubtaskChange);
+}
+
+/**
+ * Handles subtask change events and persists them.
+ * @param {Event} e
+ * @returns {Promise<void>}
+ */
+async function onDetailSubtaskChange(e) {
+  const cb = e.target;
+  if (!cb.matches('#taskDetailOverlay input[type="checkbox"][data-sub-index]')) return;
+  const detail = cb.closest(".task-detail"), taskId = detail?.getAttribute("data-id");
+  if (!taskId) return;
+  const previous = !cb.checked;
+  try {
+    const { done, total } = await saveSubtasksFromOverlay(taskId);
+    updateSubtaskCountersUI(taskId, done, total);
+    document.dispatchEvent(new CustomEvent("task:updated", { detail: { taskId, done, total } }));
+  } catch (err) {
+    console.error(err);
+    cb.checked = previous;
+    alert("Konnte Subtask nicht speichern. Bitte später erneut versuchen.");
+  }
+}
+
+/* ----------------------- Assigned / Subtasks (Form) ---------------------- */
+
+/**
+ * Renders avatar initials for assigned contacts in the form.
+ * @param {string[]} contacts
+ * @returns {void}
+ */
+function fillAssignedContacts(contacts) {
+  const wrap = byId("assignedToInitials");
+  wrap.innerHTML = "";
+  if (!contacts?.length) { wrap.style.display = "none"; return; }
+  wrap.style.display = "flex";
+  contacts.forEach((c, i) => {
+    const div = document.createElement("div");
+    div.className = "av";
+    div.style.background = window.color(i);
+    div.textContent = initials(c);
+    wrap.appendChild(div);
+  });
+}
+
+/**
+ * Renders existing subtasks into the add/edit overlay list.
+ * @param {Array<string|{text:string,done?:boolean}>} subtasks
+ * @returns {void}
+ */
+function fillSubtasks(subtasks) {
+  const wrap = document.querySelector(".addedSubtaskWrapper");
+  wrap.innerHTML = "";
+  (subtasks || []).forEach((s) => {
+    let txt = typeof s === "string" ? s : s.text;
+    txt = txt.replace(/^•\s*/, "");
+    wrap.appendChild(createSubtaskElement(txt, !!(typeof s === "object" && s.done)));
+  });
+}
+
+/**
+ * Renders initials for globally selected assignedContacts.
+ * @returns {void}
+ */
+function renderAssignedInitials() {
+  const w = byId("assignedToInitials");
+  w.innerHTML = "";
+  if (!(assignedContacts && assignedContacts.length)) { w.style.display = "none"; return; }
+  w.style.display = "flex";
+  assignedContacts.forEach((c, i) => {
+    const d = document.createElement("div");
+    d.className = "av";
+    d.style.background = window.color(i);
+    d.textContent = initials(c);
+    w.appendChild(d);
+  });
+}

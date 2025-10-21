@@ -55,54 +55,6 @@ async function init(){
 }
 
 /**
- * Briefly highlight newly created task card (via ?newTask=ID).
- * @returns {void}
- */
-function highlightNewTask() {
-  const id = new URLSearchParams(location.search).get("newTask");
-  const el = id && document.querySelector(`.task-container[data-id="${id}"]`);
-  if (!el) return;
-  el.classList.add("highlight");
-  setTimeout(() => el.classList.remove("highlight"), 2000);
-}
-
-/**
- * Manage "No tasks …" empty-state visibility for a column.
- * @param {HTMLElement} zone
- * @returns {void}
- */
-function updateEmptyState(zone) {
-  if (!zone) return;
-  const hasTask = zone.querySelector(".task-container");
-  const empty = zone.querySelector(".empty");
-  if (!hasTask && !empty) {
-    const title = zone.previousElementSibling?.textContent?.trim() || "";
-    zone.innerHTML = `<div class="empty">No tasks ${title}</div>`;
-  } else if (hasTask && empty) {
-    empty.remove();
-  }
-}
-
-/**
- * Refresh empty states in all columns.
- * @returns {void}
- */
-function updateAllEmptyStates() {
-  document.querySelectorAll(".dropzone").forEach(updateEmptyState);
-}
-
-/**
- * Clear all columns and display empty states.
- * @returns {void}
- */
-function clearColumns() {
-  document.querySelectorAll(".dropzone").forEach((z) => {
-    const title = z.previousElementSibling?.textContent?.trim() || "";
-    z.innerHTML = `<div class="empty">No tasks ${title}</div>`;
-  });
-}
-
-/**
  * RTDB: update a task's state (with local-edit mark).
  * @param {string} id
  * @param {"toDo"|"in progress"|"await feedback"|"done"} state

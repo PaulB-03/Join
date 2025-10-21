@@ -282,4 +282,101 @@ function createToastMessage(){
     const [d,m,y]=parts; const typed=new Date(`${y}-${m}-${d}`); const today=new Date(); today.setHours(0,0,0,0);
     if(!isNaN(typed)&&typed>=today){ instance.setDate(typed,true); } else { instance.clear(); }
   }
+
+  /**
+ * Reads task data from the form into an object.
+ * @returns {{title:string,description:string,date:string,priority:any,assignedContacts:any,subtasks:any,state:string,category:string}}
+ */
+function readTaskForm() {
+  return {
+    title: byId("titleInput").value.trim(),
+    description: byId("descriptionInput").value.trim(),
+    date: byId("date").value,
+    priority: selectedPrio,
+    assignedContacts,
+    subtasks: getSubtasksFromForm(),
+    state: selectedState,
+    category: selectedCategory,
+  };
+}
   
+/* ----------------------------- Add / Edit ------------------------------- */
+
+/**
+ * Handles form submit: create or update task.
+ * @param {Event} [e]
+ * @returns {Promise<void>}
+ */
+async function handleAddOrEditTask(e) {
+  e && e.preventDefault();
+  const id = byId("add")?.getAttribute("data-editing-id");
+  if (!id) {
+    return typeof window.createTask === "function"
+      ? window.createTask()
+      : console.error("createTask not found");
+  }
+  await saveEditFlow(id);
+}
+
+/**
+ * Saves the edited task and manages UI flow.
+ * @param {string} id
+ * @returns {Promise<void>}
+ */
+async function saveEditFlow(id) {
+  const standalone = /\/html\/addTask\.html$/.test(location.pathname);
+  const reopen = !standalone;
+  await updateTask(id, standalone, true, reopen);
+  byId("add")?.removeAttribute("data-editing-id");
+  setOverlayButtonText(false);
+  byId("taskOverlay")?.classList.remove("edit-mode");
+}
+
+/**
+ * PUTs the full task JSON to RTDB at /tasks/:id.
+ * @param {string} id
+ * @param {Object} data
+ * @returns {Promise<void>}
+ */
+async function putTaskJson(id, data) {
+  const r = await fetch(`${RTDB_BASE}tasks/${id}.json`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!r.ok) throw new Error("PUT failed: " + r.status);
+}
+
+/**
+ * Post-update UI flow (close, rerender, navigate, reopen detail).
+ * @param {string} id
+ * @param {boolean} navigateToBoard
+ * @param {boolean} closeOverlayAfter
+ * @param {boolean} reopenDetail
+ * @returns {Promise<void>}
+ */
+async function afterUpdateUI(id, navigateToBoard, closeOverlayAfter, reopenDetail) {
+  if (closeOverlayAfter) closeOverlay(byId("taskOverlay"));
+  await window.Board?.renderAllTasks?.();
+  if (navigateToBoard) { location.href = "board.html"; return; }
+  if (reopenDetail) await openTaskDetail(id);
+}
+
+/**
+ * Updates task in RTDB and coordinates UI changes.
+ * @param {string} id
+ * @param {boolean} [navigateToBoard=false]
+ * @param {boolean} [closeTaskOverlayAfterUpdate=false]
+ * @param {boolean} [reopenDetail=false]
+ * @returns {Promise<void|null>}
+ */
+async function updateTask(id, navigateToBoard = false, closeTaskOverlayAfterUpdate = false, reopenDetail = false) {
+  if (!id) return typeof window.createTask === "function" ? window.createTask() : null;
+  try {
+    await putTaskJson(id, readTaskForm());
+    await afterUpdateUI(id, navigateToBoard, closeTaskOverlayAfterUpdate, reopenDetail);
+  } catch (err) {
+    console.error("Error updating task:", err);
+    alert("Failed to update task. Please try again.");
+  }
+}
