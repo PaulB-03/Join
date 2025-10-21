@@ -77,7 +77,7 @@
     overflow: hidden;   
   }
 
-  .task-desc {
+  /* .task-desc {
     font-size: 16px;
     color: var(--color-icon);
     line-height: 1.4;
@@ -87,8 +87,14 @@
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
-  }
+  } */
 
+  .task-desc {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
   .swapHoriz {
     visibility: visible;
   }
