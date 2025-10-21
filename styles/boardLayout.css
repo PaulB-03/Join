@@ -263,3 +263,26 @@ body.modal-open {
   padding: 0;
   max-width: 100%;
 }
+
+.swapMenu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 15px;
+  right: 22px;
+  background-color: var(--main-color);
+  padding: 15px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 20px;
+  gap: 16px;
+  z-index: 10;
+  list-style: none;
+  cursor: default;
+}
+
+.swapMenuHeading {
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+}
