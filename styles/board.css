@@ -79,6 +79,7 @@
   background: var(--contact-bg-blue);
   border-radius: 8px;
   padding: 6px 10px;
+  width: 113px;
 }
 
 .pill.tech {
@@ -86,6 +87,7 @@
   color: var(--white);
   border-radius: 8px;
   padding: 6px 10px;
+  width: 144px;
 }
 
 .task-title {
