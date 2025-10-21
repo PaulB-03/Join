@@ -324,8 +324,8 @@ body.modal-open {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 24px;
-  width: 24px;
+  height: 32px;
+  width: 32px;
 }
 
 .overlay-close:hover {
