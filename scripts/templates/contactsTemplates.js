@@ -35,7 +35,7 @@ function editOverlayHTML() {
 
       <form id="editContactForm" class="overlay-body" novalidate>
         <div id="editAvatar2" class="detailsAvatar editAvtrMbl"></div>
-        <button type="button" class="overlay-close" aria-label="Close">×</button>
+        <button type="button" id="closeEditContact" class="overlay-close" aria-label="Close"><img src="../assets/svg/contactCloseV1.svg" alt=""></button>
 
         <div class="add-contact-overlay-right">
           <div id="editAvatar" class="detailsAvatar editAvtrDsktp"></div>

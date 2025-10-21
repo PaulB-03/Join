@@ -241,6 +241,14 @@
   opacity: 1;
 }
 
-#editAvatar {
-  transform: translateY(-20px);
+#closeAddContact:active img[src$="contactCloseV1.svg"] {
+  content: url("..//assets/svg/contactCloseV2.svg");
+}
+
+#closeEditContact:active img[src$="contactCloseV1.svg"] {
+  content: url("..//assets/svg/contactCloseV2.svg");
+}
+
+.overlay-close:active { 
+  background-color: var(--contact-bg-light-blue);
 }
