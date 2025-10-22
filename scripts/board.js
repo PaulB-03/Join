@@ -34,6 +34,7 @@ const __localEdits = new Set();
 document.addEventListener("DOMContentLoaded", () => {
   init();
   bindOverlayButtons();
+  setupOverlayResponsiveRedirect();
   mountSubtaskCheckboxListener();
   //mountDatePickerMinToday();
 });
@@ -42,11 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
  * Main init: render, live sync, DnD, highlight, etc.
  * @returns {Promise<void>}
  */
-async function init(){
-  try { await renderAllTasks(); }
-  catch (e) {
+async function init() {
+  try {
+    await renderAllTasks();
+  } catch (e) {
     console.error("Initial render failed:", e);
-    clearColumns();            // shows empty states instead of blank page
+    clearColumns(); // shows empty states instead of blank page
   }
   startLiveSync();
   initDnd();
@@ -288,7 +290,8 @@ function onChildAdded(snap) {
  * @returns {void}
  */
 function onChildChanged(snap) {
-  const id = snap.key, t = snap.val();
+  const id = snap.key,
+    t = snap.val();
   if (__localEdits.has(id)) {
     safeUpdateCardContent(id, t);
     return;
@@ -372,7 +375,9 @@ function removeTaskCard(id) {
  * Unsubscribe RTDB listeners on page unload.
  */
 window.addEventListener("beforeunload", () => {
-  try { __tasksRef?.off(); } catch (e) { }
+  try {
+    __tasksRef?.off();
+  } catch (e) {}
 });
 
 /**
