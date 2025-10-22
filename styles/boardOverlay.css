@@ -183,7 +183,7 @@ body.modal-open {
   width: 33px;
   height: 33px;
   position: absolute;
-  top: 62px;
+  top: 52px;
   right: 36px;
   background-image: url(../assets/svg/cancel.svg);
   background-repeat: no-repeat;

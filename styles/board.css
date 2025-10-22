@@ -186,6 +186,7 @@
   padding: 48px 40px 24px 40px;
   width: 525px;
   height: auto;
+  border-radius: 30px;
 }
 
 .task-detail .pill {
