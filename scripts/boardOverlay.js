@@ -364,10 +364,11 @@ function toggleClearButton(isEditing) {
  * Sets up a listener that monitors viewport width and redirects
  * to addTask.html when the task overlay is open and the screen width
  * is 850px or smaller. Closes the overlay before redirecting.
+ * Will **not redirect** if the overlay has the class "edit-mode".
  *
  * @function setupOverlayResponsiveRedirect
  * @example
- * Initialize responsive redirect behavior
+ * // Initialize responsive redirect behavior
  * setupOverlayResponsiveRedirect();
  */
 function setupOverlayResponsiveRedirect() {
@@ -377,7 +378,7 @@ function setupOverlayResponsiveRedirect() {
 
   /**
    * Handles the media query change event.
-   * If the task overlay is open and the screen width matches the media query,
+   * If the task overlay is open, not in edit mode, and the screen width matches the media query,
    * closes the overlay and redirects to the add task page.
    *
    * @param {MediaQueryListEvent|MediaQueryList} e - The media query event or object.
@@ -385,7 +386,14 @@ function setupOverlayResponsiveRedirect() {
    */
   function redirectIfMobile(e) {
     const ov = byId("taskOverlay");
-    if (!ov?.classList.contains("open") || !e.matches || redirecting) return;
+    if (
+      !ov?.classList.contains("open") ||
+      ov.classList.contains("edit-mode") || // <-- skip if edit-mode
+      !e.matches ||
+      redirecting
+    )
+      return;
+
     redirecting = true;
     hideTaskOverlay();
     setTimeout(() => location.assign("../html/addTask.html"), 200);
