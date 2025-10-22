@@ -358,11 +358,8 @@
 
   .overlay {
     .detailsAvatar {
-      min-width: 120px;
-      max-width: 120px;
-      height: 120px;
       position: absolute;
-      top: 290px;
+      top: 312px;
       justify-self: center;
       margin: 0;
       border: 3px solid white;
