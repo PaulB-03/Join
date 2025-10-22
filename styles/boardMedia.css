@@ -299,4 +299,8 @@
   #taskOverlay.edit-mode .addTaskFormRight {
     width: 100%;
   }
+
+  #taskOverlay.edit-mode .prioDivsWrapper h6 {
+    display: none;
+  }
 }
