@@ -221,6 +221,38 @@
   }
 }
 
+@media (max-height: 720px) {
+  .overlay-left {
+    height: 250px;
+  }
+
+  #editContactImgMobile {
+    height: 250px;
+  }
+
+  #addContactMobileOverlay {
+    height: 250px;
+  }
+
+  .overlay-panel {
+    height: 550px;
+  }
+
+  .avatar {
+    top: 240px;
+  }
+
+  .add-contact-overlay-form {
+    gap: 0;
+  }
+
+  .overlay-body {
+    .detailsAvatar {
+      top: 210px;
+    }
+  }
+}
+
 @media (max-height: 690px) {
   .add-contact-overlay-form {
     gap: 0px;
