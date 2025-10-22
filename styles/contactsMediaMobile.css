@@ -201,24 +201,19 @@
     overflow-y: hidden;
   }
 
-  .avatar {
-    top: 260px;
-  }
-
   #editContactImgMobile {
     height: 300px;
-  }
-
-  .overlay {
-    .detailsAvatar {
-      top: 240px;
-    }
   }
 
   #editContactForm {
     height: 350px;
   }
+
+  .avatar {
+    top: 340px;
+  }
 }
+
 
 @media (max-height: 730px) {
   .overlay-close {
