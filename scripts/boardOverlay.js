@@ -51,8 +51,13 @@ function inertParts() {
  */
 function setBackgroundInert(on) {
   inertParts().forEach((el) => {
-    if (on) { el.setAttribute("inert", ""); el.setAttribute("aria-hidden", "true"); }
-    else { el.removeAttribute("inert"); el.removeAttribute("aria-hidden"); }
+    if (on) {
+      el.setAttribute("inert", "");
+      el.setAttribute("aria-hidden", "true");
+    } else {
+      el.removeAttribute("inert");
+      el.removeAttribute("aria-hidden");
+    }
   });
 }
 
@@ -105,7 +110,9 @@ function closeOverlay(overlay) {
   document.removeEventListener("keydown", onEscCloseOnce);
   if (overlay.contains(document.activeElement)) document.activeElement.blur();
   const next = __lastActive && document.contains(__lastActive) ? __lastActive : document.body;
-  try { next?.focus?.(); } catch {}
+  try {
+    next?.focus?.();
+  } catch {}
   __lastActive = null;
   closeSemantics(overlay);
 }
@@ -117,7 +124,8 @@ function closeOverlay(overlay) {
  */
 function onEscCloseOnce(e) {
   if (e.key !== "Escape") return;
-  const d = byId("taskDetailOverlay"), a = byId("taskOverlay");
+  const d = byId("taskDetailOverlay"),
+    a = byId("taskOverlay");
   if (d?.classList.contains("open")) return closeOverlay(d);
   if (a?.classList.contains("open")) return closeOverlay(a);
 }
@@ -130,7 +138,8 @@ function onEscCloseOnce(e) {
  * @returns {Promise<void>}
  */
 async function openTaskDetail(id) {
-  const ov = byId("taskDetailOverlay"), ct = byId("taskDetailContent");
+  const ov = byId("taskDetailOverlay"),
+    ct = byId("taskDetailContent");
   if (!ov || !ct) return;
   showOverlay(ov, { focus: false });
   const task = await window.Board?.fetchSingleTask?.(id);
@@ -148,9 +157,7 @@ async function openTaskDetail(id) {
  * @returns {void}
  */
 function wireDetailActions(overlay, content, id, task) {
-  content.querySelectorAll('input[type="checkbox"][data-sub-index]').forEach((cb) =>
-    cb.addEventListener("change", (e) => onSubtaskToggle(id, e))
-  );
+  content.querySelectorAll('input[type="checkbox"][data-sub-index]').forEach((cb) => cb.addEventListener("change", (e) => onSubtaskToggle(id, e)));
   byId("taskDetailClose")?.addEventListener("click", () => closeOverlay(overlay), { once: true });
   byId("taskDelete")?.addEventListener("click", () => onDeleteTask(id, overlay));
   byId("taskEdit")?.addEventListener("click", () => onEditTask(id, task, overlay));
@@ -351,4 +358,31 @@ function toggleClearButton(isEditing) {
   const c = byId("clear");
   if (!c) return;
   c.style.display = isEditing ? "none" : "inline-flex";
+}
+
+function setupOverlayResponsiveRedirect() {
+  const mediaQuery = window.matchMedia("(max-width: 850px)");
+  let redirecting = false;
+
+  function handleResponsiveRedirect(e) {
+    const ov = byId("taskOverlay");
+    // If overlay is open and viewport <= 850px
+    if (ov?.classList.contains("open") && e.matches && !redirecting) {
+      redirecting = true;
+
+      // Close the overlay using your existing logic
+      hideTaskOverlay();
+
+      // Optional: small delay for smooth transition
+      setTimeout(() => {
+        location.assign("../html/addTask.html");
+      }, 200);
+    }
+  }
+
+  // Run once on load (in case overlay is already open on mobile)
+  handleResponsiveRedirect(mediaQuery);
+
+  // Watch for screen width changes
+  mediaQuery.addEventListener("change", handleResponsiveRedirect);
 }
