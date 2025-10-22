@@ -360,29 +360,37 @@ function toggleClearButton(isEditing) {
   c.style.display = isEditing ? "none" : "inline-flex";
 }
 
+/**
+ * Sets up a listener that monitors viewport width and redirects
+ * to addTask.html when the task overlay is open and the screen width
+ * is 850px or smaller. Closes the overlay before redirecting.
+ *
+ * @function setupOverlayResponsiveRedirect
+ * @example
+ * Initialize responsive redirect behavior
+ * setupOverlayResponsiveRedirect();
+ */
 function setupOverlayResponsiveRedirect() {
-  const mediaQuery = window.matchMedia("(max-width: 850px)");
+  /** @type {MediaQueryList} */
+  const mq = window.matchMedia("(max-width: 850px)");
   let redirecting = false;
 
-  function handleResponsiveRedirect(e) {
+  /**
+   * Handles the media query change event.
+   * If the task overlay is open and the screen width matches the media query,
+   * closes the overlay and redirects to the add task page.
+   *
+   * @param {MediaQueryListEvent|MediaQueryList} e - The media query event or object.
+   * @returns {void}
+   */
+  function redirectIfMobile(e) {
     const ov = byId("taskOverlay");
-    // If overlay is open and viewport <= 850px
-    if (ov?.classList.contains("open") && e.matches && !redirecting) {
-      redirecting = true;
-
-      // Close the overlay using your existing logic
-      hideTaskOverlay();
-
-      // Optional: small delay for smooth transition
-      setTimeout(() => {
-        location.assign("../html/addTask.html");
-      }, 200);
-    }
+    if (!ov?.classList.contains("open") || !e.matches || redirecting) return;
+    redirecting = true;
+    hideTaskOverlay();
+    setTimeout(() => location.assign("../html/addTask.html"), 200);
   }
 
-  // Run once on load (in case overlay is already open on mobile)
-  handleResponsiveRedirect(mediaQuery);
-
-  // Watch for screen width changes
-  mediaQuery.addEventListener("change", handleResponsiveRedirect);
+  redirectIfMobile(mq);
+  mq.addEventListener("change", redirectIfMobile);
 }
