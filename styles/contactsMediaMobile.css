@@ -201,28 +201,55 @@
     overflow-y: hidden;
   }
 
-  .avatar {
-    top: 260px;
-  }
-
   #editContactImgMobile {
     height: 300px;
-  }
-
-  .overlay {
-    .detailsAvatar {
-      top: 240px;
-    }
   }
 
   #editContactForm {
     height: 350px;
   }
+
+  .avatar {
+    top: 340px;
+  }
 }
+
 
 @media (max-height: 730px) {
   .overlay-close {
     top: 48px;
+  }
+}
+
+@media (max-height: 720px) {
+  .overlay-left {
+    height: 250px;
+  }
+
+  #editContactImgMobile {
+    height: 250px;
+  }
+
+  #addContactMobileOverlay {
+    height: 250px;
+  }
+
+  .overlay-panel {
+    height: 550px;
+  }
+
+  .avatar {
+    top: 240px;
+  }
+
+  .add-contact-overlay-form {
+    gap: 0;
+  }
+
+  .overlay-body {
+    .detailsAvatar {
+      top: 210px;
+    }
   }
 }
 
