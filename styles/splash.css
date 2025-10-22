@@ -65,6 +65,8 @@
   display: flex;
   justify-content: flex-end; /* rechts bleibt frei */
   padding: 64px 64px 0 64px;
+  background: unset;
+  box-shadow: unset;
 }
 
 .indexHeader .logo {
