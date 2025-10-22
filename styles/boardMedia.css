@@ -176,7 +176,7 @@
 
   #taskOverlay.edit-mode .task-overlay-panel {
     height: 88vh;
-    margin: 20px;
+    margin: 8px;
   }
 
   #taskOverlay.edit-mode .overlay-panel {
