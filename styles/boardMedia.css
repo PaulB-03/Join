@@ -290,3 +290,13 @@
     height: 350px;
   }
 }
+
+@media (max-width: 399px) {
+  #taskOverlay.edit-mode .addTaskOverlayWrapper {
+    padding-top: 0;
+    width: 100%;
+  }
+  #taskOverlay.edit-mode .addTaskFormRight {
+    width: 100%;
+  }
+}
