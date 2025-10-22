@@ -134,6 +134,8 @@ a:hover {
   font-weight: 400;
   cursor: pointer;
   outline: none;
+  background-color: white;
+  width: 100%;
 }
 
 .input::placeholder {
