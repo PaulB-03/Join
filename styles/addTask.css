@@ -160,7 +160,8 @@ textarea::placeholder {
 
 .dropdown-item-contact {
   border-radius: 10px;
-  padding: 8px 16px;
+  padding: 7px 16px;
+  border-bottom: 1px solid white;
 }
 
 .dropdown-item-contact:hover {
