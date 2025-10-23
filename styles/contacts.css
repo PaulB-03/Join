@@ -6,8 +6,6 @@
   transition: padding 0.3s;
 }
 
-/* main { min-height: 100dvh; } */
-
 .contactList {
   position: relative;
   background: var(--white);
