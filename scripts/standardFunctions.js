@@ -90,7 +90,7 @@
     const dd = $id("assignedToDropdownCategory"), arrow = $id("dropdown-arrow-subtasks"), list = $id("dropdown-list-category");
     if (!dd || !arrow || !list) return;
     let open = false;
-    on(dd, "click", (ev) => { ev.stopPropagation(); open = !open; dd.classList.toggle("open", open); arrow.style.transform = open ? "translateY(-50%) rotate(180deg)" : "translateY(-50%) rotate(0deg)"; if (open) adjustForDropdown(list); });
+    on(dd, "click", (ev) => { ev.stopPropagation(); open = !open; dd.classList.toggle("open", open); arrow.style.transform = open ? "translateY(-50%) rotate(180deg)" : "translateY(-50%) rotate(0deg)"; if (open) adjustForDropdown(list); if (!open) resetSubtasksSpacing(); });
     $qsa(".dropdown-item-category", list).forEach((item, i) => on(item, "click", (ev) => { ev.stopPropagation(); selectCategory(i); close(); }));
     on(document, "click", () => open && close());
     function close(){ dd.classList.remove("open"); arrow.style.transform = "translateY(-50%) rotate(0deg)"; open=false; resetSubtasksSpacing(); }
