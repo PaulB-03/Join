@@ -77,7 +77,7 @@
     }
   }
   /** Reset moved boxes to their original spacing. */
-  window.resetSubtasksSpacing = function resetSubtasksSpacing() {
+  function resetSubtasksSpacing() {
     ensureLayoutRefs();
     const sb = window.__subtasksBox, ss = window.__subtasksStyles, cb = window.__categoryBox, cs = window.__categoryStyles;
     if (sb && ss) { sb.style.marginTop = ss.marginTop; sb.style.paddingBottom = ss.paddingBottom; }
@@ -202,13 +202,10 @@
     if (open) {
       if (window.__categoryBox) window.__categoryBox.style.marginTop = "264px";
       if (window.__subtasksBox) { window.__subtasksBox.style.marginTop = "24px"; window.__subtasksBox.style.paddingBottom = "50px"; }
-      const h = (e) => { if (dd.contains(e.target)) return; dd.classList.remove("open"); resetAssignedDropdown(); document.removeEventListener("click", h); };
+      const h = (e) => { if (dd.contains(e.target)) return; dd.classList.remove("open"); resetSubtasksSpacing(); document.removeEventListener("click", h); };
       setTimeout(() => document.addEventListener("click", h), 0);
-    } else resetAssignedDropdown();
+    } else resetSubtasksSpacing();
   }
-  /** Reset spacing after closing contacts dropdown. */
-  function resetAssignedDropdown() { resetSubtasksSpacing(); }
-
   /* ------------------------------ Boot ---------------------------------- */
   document.addEventListener("DOMContentLoaded", () => { initCategoryDropdown(); });
 
@@ -229,6 +226,6 @@
   window.renderContacts ??= renderContacts;
   window.initContactsDropdown ??= initContactsDropdown;
   window.toggleAssignedDropdown ??= toggleAssignedDropdown;
-  window.resetAssignedDropdown ??= resetAssignedDropdown;
   window.initialiseSavePrioImg ??= window.initialiseSavePrioImg; // belassen, falls extern definiert
+  window.resetSubtasksSpacing ??= resetSubtasksSpacing;
 })();
