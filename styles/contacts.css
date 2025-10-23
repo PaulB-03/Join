@@ -6,6 +6,8 @@
   transition: padding 0.3s;
 }
 
+/* main { min-height: 100dvh; } */
+
 .contactList {
   position: relative;
   background: var(--white);
@@ -13,6 +15,7 @@
   overflow-y: auto;
   padding: 32px 24px;
   flex: 0 0 450px;
+  overflow-x: hidden;
 }
 
 .newContactBtn {

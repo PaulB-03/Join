@@ -25,7 +25,7 @@
         <img src="../assets/svg/join_logo_small.svg" class="headerLogo" style="height: 39px" alt="Join Logo" />
         <h6>Kanban Projekt Management Tool</h6>
         <nav id="headerNav" class="header-nav">
-          <a href="../html/help.html" class="help-link" aria-label="Help">
+          <a href="../html/help.html" class="help-link">
             <img class="helper" src="../assets/svg/help.svg" alt="Hilfe" />
           </a>
           <div id="userAvatar" class="header-avatar" title="Profil" onclick="toggleProfileMenu(event)"></div>
@@ -96,15 +96,15 @@
       </div>
       <div id="contactToast" class="contactToast">Contact successfully created</div>
     </div>
-    <div id="contactOverlay" class="overlay" aria-hidden="true">
-      <div class="overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+    <div id="contactOverlay" class="overlay">
+      <div class="overlay-panel" role="dialog" onclick="event.stopPropagation()">
         <div class="overlay-left">
           <img src="../assets/svg/newContactForm.svg" alt="" id="addContactDesktopOverlay" />
           <img src="../assets/svg/addContactMobileOverlay.svg" alt="" id="addContactMobileOverlay" />
         </div>
         <form id="addContactForm" class="overlay-body" novalidate>
           <div class="avatar" id="avatar-mobile"><img src="../assets/svg/unknown_person.svg" alt="" /></div>
-          <button type="button" id="closeAddContact" class="overlay-close" aria-label="Close"><img src="../assets/svg/contactCloseV1.svg" alt="" /></button>
+          <button type="button" id="closeAddContact" class="overlay-close"><img src="../assets/svg/contactCloseV1.svg" alt="" /></button>
           <div class="add-contact-overlay-right">
             <div class="avatar" id="avatar-Desktop"><img src="../assets/svg/unknown_person.svg" alt="" /></div>
             <div class="add-contact-overlay-form">
@@ -135,14 +135,14 @@
         </form>
       </div>
     </div>
-    <button id="openAddContactFab" class="addContactFab" type="button" aria-label="Add new contact">
+    <button id="openAddContactFab" class="addContactFab" type="button">
       <img src="../assets/svg/person_add.svg" alt="" />
     </button>
-    <div class="contactActionsFab" id="contactActionsFab" aria-live="polite">
-      <button id="contactActionsToggle" class="fab-main" type="button" aria-expanded="false" aria-controls="contactActionsMenu" aria-label="Open contact actions">
+    <div class="contactActionsFab" id="contactActionsFab">
+      <button id="contactActionsToggle" class="fab-main" type="button">
         <img src="../assets/svg/more_vert.svg" alt="" />
       </button>
-      <div id="contactActionsMenu" class="fab-menu" role="menu" aria-hidden="true">
+      <div id="contactActionsMenu" class="fab-menu" role="menu">
         <button id="fabEdit" class="fab-item" type="button" role="menuitem">
           <span class="icon"><img src="../assets/svg/edit_blue.svg" alt="" /></span> Edit
         </button>
