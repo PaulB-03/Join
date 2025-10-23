@@ -77,7 +77,7 @@
     }
   }
   /** Reset moved boxes to their original spacing. */
-  function resetSubtasksSpacing() {
+  window.resetSubtasksSpacing = function resetSubtasksSpacing() {
     ensureLayoutRefs();
     const sb = window.__subtasksBox, ss = window.__subtasksStyles, cb = window.__categoryBox, cs = window.__categoryStyles;
     if (sb && ss) { sb.style.marginTop = ss.marginTop; sb.style.paddingBottom = ss.paddingBottom; }
