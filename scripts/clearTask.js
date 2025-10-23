@@ -10,6 +10,7 @@ function clearTask() {
   resetUISections();
   clearSubtasks();
   resetContactDropdown();
+  resetSubtasksSpacing();
   rerenderContactsIfLoaded();
 }
 
