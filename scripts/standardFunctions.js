@@ -179,7 +179,7 @@
     const av = document.createElement("span"); av.className = "contact-initial"; av.textContent = initials(contact.name); av.style.backgroundColor = colorForName(contact.name);
     const nm = document.createElement("span"); nm.className = "contact-name"; nm.textContent = contact.name;
     const img = document.createElement("img"); img.className = "checkbox-svg"; img.src = (window.assignedContacts||[]).includes(contact.name) ? "../assets/svg/checked.svg" : "../assets/svg/check_button.svg";
-    on(label, "click", (e) => { e.stopPropagation(); img.src = img.src.includes("check_button.svg") ? "../assets/svg/checked.svg" : "../assets/svg/check_button.svg"; toggleContact(contact.name); });
+    on(li, "click", (e) => { e.stopPropagation(); img.src = img.src.includes("check_button.svg") ? "../assets/svg/checked.svg" : "../assets/svg/check_button.svg"; toggleContact(contact.name); });
     label.append(av, nm, img); li.appendChild(label); return li;
   }
   /** Init contacts dropdown with data + behavior. */
