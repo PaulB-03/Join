@@ -108,7 +108,7 @@
     let open = false;
     on(select, "click", (ev) => { ev.stopPropagation(); open = !open; dropDown.style.display = open ? "block" : "none"; arrow.style.transform = open ? "translateY(-50%) rotate(180deg)" : "translateY(-50%) rotate(0deg)"; if (typeof resetSubtasksSpacing==="function"); });
     Array.from(items).forEach((it) => on(it, "click", (ev) => { ev.stopPropagation(); onSelect&&onSelect(it); }));
-    on(document, "click", (e) => { if (!open) return; const t = e.target; if (select.contains(t) || dropDown.contains(t)) return; open=false; dropDown.style.display="none"; arrow.style.transform="translateY(-50%) rotate(0deg)"; if (typeof resetSubtasksSpacing==="function") resetSubtasksSpacing(); }, true);
+    on(document, "click", (e) => { if (!open) return; const t = e.target; if (select.contains(t) || dropDown.contains(t)) return; open=false; dropDown.style.display="none"; arrow.style.transform="translateY(-50%) rotate(0deg)"; if (typeof resetSubtasksSpacing==="function") resetSubtasksSpacing(); select.classList.remove("open")}, true);
   }
   /** Keep selected names readable in the trigger. */
   function updateDropdownText() {
