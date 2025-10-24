@@ -73,6 +73,7 @@
 .assignedToSearch {
   border: none;
   font-size: 20px;
+  cursor: pointer;
 }
 
 .assignedToSearch::placeholder {
