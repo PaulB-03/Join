@@ -5,16 +5,26 @@
  * @returns {string} HTML markup for avatar row and priority icon.
  */
 function renderAvatarsWithPriority(names = [], prio) {
-  const avatars = names
+  const MAX_AVATARS = 3;
+  const shown = names.slice(0, MAX_AVATARS);
+  const extra = names.length - shown.length;
+
+  const avatars = shown
     .map(
       (n, i) =>
         `<div class="av" style="background:${bgForNameOrIndex(n, i)}">${initials(n)}</div>`
     )
     .join("");
+
+  const more = extra > 0
+    ? `<div class="av more">+${extra}</div>`
+    : "";
+
   const prioIcon = getPriorityIcon(prio);
+
   return `
     <div class="row">
-      <div class="avatars">${avatars}</div>
+      <div class="avatars">${avatars}${more}</div>
       <div class="priority-slot">${prioIcon || ""}</div>
     </div>
   `;

@@ -121,6 +121,11 @@
   border: 1px solid #fff;
 }
 
+.avatars .av.more {
+  background: var(--main-color); 
+  font-size: 11px;
+}
+
 .av.orange {
   background: var(--contact-bg-orange);
 }
