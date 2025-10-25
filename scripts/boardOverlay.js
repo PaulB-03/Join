@@ -202,7 +202,7 @@ async function onDeleteTask(id, overlay) {
 function onEditTask(id, task, overlay) {
   closeOverlay(overlay);
   if (typeof openTaskOverlay !== "function") return;
-  openTaskOverlay();
+  openTaskOverlay({ animate: false });
   byId("taskOverlay")?.classList.add("edit-mode");
   fillTaskFormFromExisting?.(id, task);
 }
@@ -240,7 +240,7 @@ function onOpenAddClick(e) {
   e.preventDefault();
   if (window.innerWidth <= 850) return location.assign("../html/addTask.html");
   clearTask();
-  openTaskOverlay();
+  openTaskOverlay({ animate: true });
 }
 
 /**
@@ -253,18 +253,21 @@ function onQuickAddClick(e) {
   const colId = zone && zone.classList.contains("dropzone") ? zone.id : "todo";
   window.selectedState = __COL_TO_STATE[colId] || "toDo";
   clearTask();
-  openTaskOverlay();
+  openTaskOverlay({ animate: true });
 }
 
 /**
  * Shows the add/edit overlay and initializes form.
  * @returns {void}
  */
-function openTaskOverlay() {
-  const ov = byId("taskOverlay");
-  if (!ov) return;
+/** Opens Add/Edit overlay, animation optional. */
+function openTaskOverlay({ animate = true } = {}) {
+  const ov = byId("taskOverlay"); if (!ov) return;
+  const p = ov.querySelector(".task-overlay-panel");
+  if (!animate) { p?.classList.add("no-anim"); ov.classList.add("no-fade"); }
   ov.classList.remove("edit-mode");
   showOverlay(ov, { focus: false });
+  if (!animate) { setTimeout(() => p?.classList.remove("no-anim"), 0); setTimeout(() => ov.classList.remove("no-fade"), 0); }
   byId("add")?.removeAttribute("data-editing-id");
   setOverlayButtonText(false);
   toggleClearButton(false);
@@ -361,11 +364,6 @@ function toggleClearButton(isEditing) {
 }
 
 /**
- * Sets up a listener that monitors viewport width and redirects
- * to addTask.html when the task overlay is open and the screen width
- * is 850px or smaller. Closes the overlay before redirecting.
- * Will **not redirect** if the overlay has the class "edit-mode".
- *
  * @function setupOverlayResponsiveRedirect
  * @example
  * // Initialize responsive redirect behavior
@@ -377,10 +375,6 @@ function setupOverlayResponsiveRedirect() {
   let redirecting = false;
 
   /**
-   * Handles the media query change event.
-   * If the task overlay is open, not in edit mode, and the screen width matches the media query,
-   * closes the overlay and redirects to the add task page.
-   *
    * @param {MediaQueryListEvent|MediaQueryList} e - The media query event or object.
    * @returns {void}
    */
