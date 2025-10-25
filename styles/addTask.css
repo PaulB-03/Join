@@ -23,7 +23,8 @@
   flex-direction: column;
   max-width: 1920px;
   padding: 150px 20px 64px 320px;
-  transition: padding-left 0.3s ease; /* smooth shrink */
+  transition: padding-left 0.3s ease;
+  /* smooth shrink */
 }
 
 .addTaskForm {
@@ -68,6 +69,7 @@
   flex-direction: column;
   width: 440px;
   gap: 8px;
+  transition: margin-top 0.3s ease, padding-bottom 0.3s ease;
 }
 
 .assignedToSearch {
@@ -94,7 +96,8 @@ textarea::placeholder {
 }
 
 .description {
-  position: relative; /* ensures z-index works predictably */
+  position: relative;
+  /* ensures z-index works predictably */
   z-index: 1;
   appearance: none;
   -webkit-appearance: none;
@@ -120,10 +123,12 @@ textarea::placeholder {
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 28px; /* slightly bigger click zone */
+  width: 28px;
+  /* slightly bigger click zone */
   height: 28px;
   cursor: ns-resize;
-  z-index: 2; /* must be higher than textarea */
+  z-index: 2;
+  /* must be higher than textarea */
 }
 
 .description:focus {
@@ -300,6 +305,7 @@ textarea::placeholder {
 
 .redColor {
   background-color: var(--button-urgent);
+
   h6 {
     color: white;
   }
@@ -307,6 +313,7 @@ textarea::placeholder {
 
 .orangeColor {
   background-color: var(--button-medium);
+
   h6 {
     color: white;
   }
@@ -314,6 +321,7 @@ textarea::placeholder {
 
 .greenColor {
   background-color: var(--button-low);
+
   h6 {
     color: white;
   }
