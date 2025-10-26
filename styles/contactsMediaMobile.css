@@ -280,3 +280,11 @@
     top: 96px;
   }
 }
+
+@media (min-width: 490px) and (max-width: 925px) and (min-height: 720px) and (max-height: 790px) {
+  .overlay {
+    .detailsAvatar {
+      top: 260px;
+    }
+  }
+}
