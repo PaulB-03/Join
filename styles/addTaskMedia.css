@@ -3,18 +3,16 @@
     gap: 20px;
   }
 
+  .addTaskWrapper {
+    padding: 170px 16px 48px 300px;
+  }
+
   .addTaskFooter {
     width: 927px;
   }
 
   .addTaskBody::-webkit-scrollbar {
     display: none;
-  }
-}
-
-@media (max-width: 1270px) {
-  .addTaskWrapper {
-    padding-left: 255px;
   }
 }
 
@@ -25,17 +23,12 @@
 }
 
 @media (max-width: 1210px) {
-  .addTaskWrapper {
-    padding-top: 166px;
-    padding-left: 300px;
-  }
-
   .addTaskWrapper h1 {
     position: fixed;
     top: 0;
     background: var(--main-bg-color);
     width: 100%;
-    padding-top: 120px;
+    padding-top: 160px;
     z-index: 4;
   }
 

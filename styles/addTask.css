@@ -17,6 +17,10 @@
   background-color: var(--color-placeholder);
 }
 
+.heading {
+  margin: 20px 0px;
+}
+
 .addTaskWrapper {
   position: relative;
   display: flex;
