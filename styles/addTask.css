@@ -143,6 +143,10 @@ textarea::placeholder {
   display: none;
 }
 
+input[type="date"]::-moz-calendar-picker-indicator {
+  display: none;
+}
+
 .dateIcon {
   background-image: url("../assets/svg/event.svg");
 }
@@ -366,7 +370,8 @@ textarea::placeholder {
 }
 
 .clearBtn:hover img {
-  filter: brightness(0) saturate(100%) invert(44%) sepia(95%) saturate(2474%) hue-rotate(180deg) brightness(90%) contrast(70%);
+  filter: brightness(0) saturate(100%) invert(44%) sepia(95%) saturate(2474%)
+    hue-rotate(180deg) brightness(90%) contrast(70%);
 }
 
 .dropdown-checkbox {
