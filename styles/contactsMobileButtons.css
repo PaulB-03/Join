@@ -245,6 +245,16 @@
   content: url("..//assets/svg/contactCloseV2.svg");
 }
 
+@media (max-width: 925px) {
+  #closeAddContact img[src$="contactCloseV1.svg"] {
+    content: url("../assets/svg/cancel_clicked_white.svg");
+  }
+
+  #closeEditContact img[src$="contactCloseV1.svg"] {
+    content: url("../assets/svg/cancel_clicked_white.svg"); 
+  }
+}
+
 #closeEditContact:active img[src$="contactCloseV1.svg"] {
   content: url("..//assets/svg/contactCloseV2.svg");
 }
