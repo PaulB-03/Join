@@ -165,11 +165,9 @@ a.btn:active {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: background-image 0.3s ease;
   border: none;
   margin-left: auto;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 .add-card-btn:hover {
