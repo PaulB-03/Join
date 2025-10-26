@@ -1,10 +1,11 @@
 @media (max-width: 1413px) {
   .addTaskForm {
     gap: 20px;
+    padding-top: 30px;
   }
 
   .addTaskWrapper {
-    padding: 170px 16px 48px 300px;
+    padding: 150px 16px 48px 300px;
   }
 
   .addTaskFooter {
@@ -20,6 +21,10 @@
   .hideDesktop {
     display: none;
   }
+
+  .addTaskWrapper {
+    padding: 180px 16px 48px 300px;
+  }
 }
 
 @media (max-width: 1210px) {
@@ -28,7 +33,7 @@
     top: 0;
     background: var(--main-bg-color);
     width: 100%;
-    padding-top: 160px;
+    padding-top: 100px;
     z-index: 4;
   }
 
@@ -36,11 +41,16 @@
     display: none;
   }
 
+  .heading {
+    margin: 0px;
+  }
+
   .addTaskForm {
     flex-direction: column;
     overflow-y: auto;
     gap: 16px;
     padding-bottom: 42px;
+    padding-top: 40px;
   }
 
   .hideMobile {
