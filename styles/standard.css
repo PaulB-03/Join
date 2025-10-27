@@ -167,10 +167,10 @@ a:hover {
   background-color: var(--bottom-gradient);
 }
 
-.checkBox {
-  width: 16px;
-  height: 16px;
-}
+/* .checkBox { */
+/* width: 16px; */
+/* height: 16px; */
+/* } */
 
 .task-added-message {
   display: flex;

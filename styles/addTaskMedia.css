@@ -4,10 +4,6 @@
     padding-top: 30px;
   }
 
-  .addTaskWrapper {
-    padding: 150px 16px 48px 300px;
-  }
-
   .addTaskFooter {
     width: 927px;
   }
@@ -24,6 +20,33 @@
 
   .addTaskWrapper {
     padding: 180px 16px 48px 300px;
+  }
+}
+
+@media (max-height: 739px) {
+  .addTaskWrapper {
+    padding-top: 90px;
+  }
+  .heading {
+    margin: 0;
+  }
+  .addTaskWrapper h1 {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .addTaskForm {
+    padding-top: 4px;
+  }
+
+  .addTaskFooter {
+    top: calc(100vh - 72px);
+  }
+}
+
+@media (max-height: 690px) {
+  .addTaskWrapper h1 {
+    font-size: 47px;
   }
 }
 

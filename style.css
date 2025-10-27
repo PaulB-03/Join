@@ -332,3 +332,9 @@ header {
     display: none; /* hide the rest of the UI */
   }
 }
+
+@media (max-height: 739px) {
+  .header-content {
+    height: 80px;
+  }
+}
