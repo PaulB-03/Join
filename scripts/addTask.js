@@ -117,19 +117,6 @@ async function createTask(){
 }
 
 /**
- * Handles add or edit button click.
- * @param {Event} e
- * @returns {void}
- */
-function handleAddOrEditTask(e){
-  e?.preventDefault();
-  const b=$id("add"); const id=b?.getAttribute("data-editing-id");
-  if(id){
-    updateTask(id,false,true,true).catch(err=>{ console.error(err); alert("Konnte Änderung nicht speichern."); });
-  }else{ createTask(); }
-}
-
-/**
  * Selects a contact and updates initials preview.
  * @param {{id:string,name:string}} contact
  * @returns {void}
@@ -150,7 +137,3 @@ document.addEventListener("DOMContentLoaded",()=>{
   const b=document.getElementById("add");
   if(b) b.onclick=handleAddOrEditTask;
 });
-
-/* ------------------------------ Exports --------------------------------- */
-window.createTask=window.createTask||createTask;
-window.getSubtasksFromForm=window.getSubtasksFromForm||getSubtasksFromForm;

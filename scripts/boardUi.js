@@ -49,13 +49,3 @@ function highlightNewTask() {
     });
   }
   
-  /**
-   * (Optional) Returns the correct dropzone element for a given task state.
-   * Uses the global STATE_TO_COL mapping (from board.js) and defaults to "todo" if missing.
-   * @param {{state?: string}} t - The task object containing a state property.
-   * @returns {HTMLElement} The dropzone element that corresponds to the task state.
-   */
-  function getZoneForTask(t) {
-    const colId = (typeof STATE_TO_COL !== "undefined" && STATE_TO_COL[t?.state]) || "todo";
-    return document.getElementById(colId);
-  }
