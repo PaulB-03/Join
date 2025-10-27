@@ -136,6 +136,10 @@
     width: 100%;
   }
 
+  .board-viewport {
+    margin-top: 50px;
+  }
+
   .task-overlay-panel {
     .addTaskOverlayFooter {
       margin-bottom: 0px !important;
