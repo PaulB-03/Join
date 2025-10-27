@@ -308,3 +308,14 @@
     display: none;
   }
 }
+
+@media (max-height: 739px) {
+  .app {
+    padding-top: 80px;
+  }
+}
+@media (max-height: 739px) and (min-width: 1401px) {
+  .dropzone {
+    padding-bottom: 300px;
+  }
+}
