@@ -35,14 +35,15 @@
     width: 100%;
     height: 367px;
     display: flex;
-    justify-content: center
+    justify-content: center;
   }
 
   .overlay-body {
     width: 100% !important;
   }
 
-  #addContactMobileOverlay, #editContactImgMobile {
+  #addContactMobileOverlay,
+  #editContactImgMobile {
     width: 90%;
     max-width: 395px;
     height: 367px;
@@ -164,7 +165,7 @@
     padding-left: 0;
   }
 
-  .add-contact-overlay-right{
+  .add-contact-overlay-right {
     margin: 0;
   }
 
@@ -172,8 +173,9 @@
     width: 250px;
   }
 
-  #addContactImgMobile, #editContactImgMobile {
-    width: 80%
+  #addContactImgMobile,
+  #editContactImgMobile {
+    width: 80%;
   }
 }
 
@@ -214,6 +216,15 @@
   }
 }
 
+@media (max-height: 739px) {
+  .contactPage {
+    padding-top: 80px;
+  }
+
+  .contactDetails {
+    padding-top: 12px;
+  }
+}
 
 @media (max-height: 730px) and (max-width: 925px) {
   .overlay-close {
