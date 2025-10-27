@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join</title>
-    <link rel="shortcut icon" href="./assets/svg/join_logo.svg" type="image/x-icon" />
+    <link
+      rel="shortcut icon"
+      href="./assets/svg/join_logo.svg"
+      type="image/x-icon"
+    />
     <link rel="stylesheet" href="./styles/standard.css" />
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./styles/fonts.css" />
@@ -15,16 +19,29 @@
   </head>
   <body onload="logout()">
     <header class="indexHeader hidden">
-      <div class="logo"><img src="./assets/svg/join_logo.svg" alt="Join Logo" /></div>
-      <div class="mobileLogo"><img src="./assets/svg/join_logo_small.svg" alt="Join Logo" /></div>
+      <div class="logo">
+        <img src="./assets/svg/join_logo.svg" alt="Join Logo" />
+      </div>
+      <div class="mobileLogo">
+        <img src="./assets/svg/join_logo_small.svg" alt="Join Logo" />
+      </div>
       <div id="showSignUp" class="indexHeaderRight">
         <h6>Not a Join user?</h6>
-        <button onclick="showSignupScreen()" class="btn-dark font_700_16 signupBtn">Sign up</button>
+        <button
+          onclick="showSignupScreen()"
+          class="btn-dark font_700_16 signupBtn"
+        >
+          Sign up
+        </button>
       </div>
     </header>
     <main class="indexMain">
       <img class="startLogo" src="./assets/svg/join_logo.svg" alt="Join-Logo" />
-      <img class="startLogoMobile" src="./assets/svg/join_logo_white.svg" alt="Join-Logo" />
+      <img
+        class="startLogoMobile"
+        src="./assets/svg/join_logo_white.svg"
+        alt="Join-Logo"
+      />
       <div class="startLogoMobileBg"></div>
       <div id="signupOverlay" class="signupOverlay d_none">
         <h6 class="signupSuccess">You Signed Up successfully</h6>
@@ -36,39 +53,113 @@
         </div>
         <form id="signinForm" class="signupFormContainer">
           <div class="inputGroup">
-            <input class="input formMailIcon" id="signinEmail" name="email" type="text" placeholder="Email" />
-            <input class="input formLockIcon passwordMarginTop" id="signinPassword" name="password" type="password" placeholder="Password" />
-            <p id="loginError" class="errors">Check your email and password. Please try again.</p>
+            <input
+              class="input formMailIcon"
+              id="signinEmail"
+              name="email"
+              type="text"
+              placeholder="Email"
+            />
+            <input
+              class="input formLockIcon passwordMarginTop"
+              id="signinPassword"
+              name="password"
+              type="password"
+              placeholder="Password"
+            />
+            <p id="loginError" class="errors">
+              Check your email and password. Please try again.
+            </p>
           </div>
           <div class="actions">
-            <button class="btn-dark font_700_21 loginBtn" type="submit" id="loginBtn">Log in</button>
-            <button class="btn-white font_700_21 loginBtn" type="button" id="guestLogin">Guest Log in</button>
+            <button
+              class="btn-dark font_700_21 loginBtn"
+              type="submit"
+              id="loginBtn"
+            >
+              Log in
+            </button>
+            <button
+              class="btn-white font_700_21 loginBtn"
+              type="button"
+              id="guestLogin"
+            >
+              Guest Log in
+            </button>
           </div>
         </form>
       </div>
       <div id="signupScreen" class="signupContainer hidden d_none">
-        <div onclick="showLoginScreen()" class="signupReturnArrowContainer"><img class="signupReturnArrow" src="./assets/svg/Default-arrow.svg" alt="back-arrow" /></div>
+        <div onclick="showLoginScreen()" class="signupReturnArrowContainer">
+          <img
+            class="signupReturnArrow"
+            src="./assets/svg/Default-arrow.svg"
+            alt="back-arrow"
+          />
+        </div>
         <div class="indexHeadline">
           <h1>Sign up</h1>
           <div class="loginDivider"></div>
         </div>
         <form id="signUpForm" class="signupFormContainer">
           <div class="inputGroup">
-            <input class="input formPersonIcon" id="signupName" name="name" type="text" placeholder="Name" />
+            <input
+              class="input formPersonIcon"
+              id="signupName"
+              name="name"
+              type="text"
+              placeholder="Name"
+            />
             <p id="nameError" class="errors">Please use first and last name.</p>
-            <input class="input formMailIcon" id="signupEmail" name="email" type="text" placeholder="Email" />
-            <p id="emailError" class="errors">Please use a valid email-adress.</p>
-            <input class="input formLockIcon" id="signupPassword" name="password" type="password" placeholder="Password" />
-            <input class="input formLockIcon passwordMarginTop" id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm Password" />
-            <p id="passwordMatchError" class="errors">Your passwords don't match. Please try again.</p>
+            <input
+              class="input formMailIcon"
+              id="signupEmail"
+              name="email"
+              type="text"
+              placeholder="Email"
+            />
+            <p id="emailError" class="errors">
+              Please use a valid email-adress.
+            </p>
+            <input
+              class="input formLockIcon"
+              id="signupPassword"
+              name="password"
+              type="password"
+              placeholder="Password"
+            />
+            <input
+              class="input formLockIcon passwordMarginTop"
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder="Confirm Password"
+            />
+            <p id="passwordMatchError" class="errors">
+              Your passwords don't match. Please try again.
+            </p>
             <div class="acceptPolicy">
-              <div class="checkBoxContainer"><img class="checkBox" id="policyCheckboxImg" src="./assets/svg/check_button.svg" alt="" /></div>
-              <p>I accept the <a href="./html/privacyPolicy.html">Privacy policy</a></p>
+              <div class="checkBoxContainer">
+                <img
+                  class="checkBox"
+                  id="policyCheckboxImg"
+                  src="./assets/svg/check_button.svg"
+                  alt=""
+                />
+              </div>
+              <p>
+                I accept the
+                <a href="./html/privacyPolicy.html">Privacy policy</a>
+              </p>
             </div>
-            <p id="policyError" class="errors policyErrorMarginLeft">Please accept the policy.</p>
+            <p id="policyError" class="errors policyErrorMarginLeft">
+              Please accept the policy.
+            </p>
           </div>
           <div class="actions">
-            <button class="btn-dark font_700_21" type="submit" id="signupBtn">Sign up</button>
+            <button class="btn-dark font_700_21" type="submit" id="signupBtn">
+              Sign up
+            </button>
           </div>
         </form>
       </div>
@@ -76,7 +167,12 @@
     <footer class="indexFooter hidden">
       <div id="showSignUpMobile" class="mobileSignUpChoice">
         <h6>Not a Join user?</h6>
-        <button onclick="showSignupScreen()" class="btn-dark font_700_16 signupBtn">Sign up</button>
+        <button
+          onclick="showSignupScreen()"
+          class="btn-dark font_700_16 signupBtn"
+        >
+          Sign up
+        </button>
       </div>
       <div class="indexFooterLegal">
         <a class="legalLink" href="./html/privacyPolicy.html">Privacy Policy</a>
@@ -86,12 +182,16 @@
     <script>
       window.addEventListener("pageshow", function (event) {
         // event.persisted is true if the page was restored from the cache
-        if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+        if (
+          event.persisted ||
+          performance.getEntriesByType("navigation")[0].type === "back_forward"
+        ) {
           logout();
         }
       });
     </script>
     <script src="script.js"></script>
+    <script src="./scripts/standardFunktionUI.js"></script>
     <script src="./scripts/header.js"></script>
     <script src="./scripts/logIn.js"></script>
     <script src="./scripts/signIn.js"></script>
@@ -99,6 +199,9 @@
     <script src="./scripts/formValidation.js"></script>
     <script src="./scripts/contacts.js"></script>
     <script src="./scripts/standardFunctions.js"></script>
-    <div id="rotateWarning" class="rotate-warning">Please rotate your device to portrait mode.</div>
+
+    <div id="rotateWarning" class="rotate-warning">
+      Please rotate your device to portrait mode.
+    </div>
   </body>
 </html>
