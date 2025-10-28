@@ -397,18 +397,55 @@
     setTimeout(() => document.addEventListener("click", h), 0);
   }
   
-  function toggleAssignedDropdown(ev) {
-    const dd = getElementById("assignedToDropdownContacts"); if (!dd) return;
-    ev?.stopPropagation(); ensureLayoutReferences();
-    const open = !dd.classList.contains("open");
-    if (open) closeCategoryDropdown();
-    setContactsOpen(open);
-    if (open) {
+  function toggleAssignedDropdown(event) {
+    const dd = document.getElementById("assignedToDropdownContacts");
+    const arrow = document.getElementById("dropdown-arrow-contacts");
+    const list = document.getElementById("dropdown-list-contacts");
+    if (!dd || !arrow || !list) return;
+
+    event?.stopPropagation?.();
+
+    const isOpen = dd.classList.contains("open");
+
+    function resetLayout() {
+      dd.classList.remove("open");
+      list.style.display = "none";
+      arrow.style.transform = "translateY(-50%) rotate(0deg)";
+      if (window.__categoryBox) window.__categoryBox.style.marginTop = "";
+      if (window.__subtasksBox) {
+        window.__subtasksBox.style.marginTop = "";
+        window.__subtasksBox.style.paddingBottom = "";
+      }
+    }
+
+    if (!isOpen) {
+      closeCategoryDropdown?.();
+      dd.classList.add("open");
+      list.style.display = "block";
+      arrow.style.transform = "translateY(-50%) rotate(180deg)";
       if (window.__categoryBox) window.__categoryBox.style.marginTop = "264px";
-      if (window.__subtasksBox) { window.__subtasksBox.style.marginTop = "24px"; window.__subtasksBox.style.paddingBottom = "50px"; }
-      attachOutsideCloser();
-    } else resetSubtasksSpacing();
-  }  
+      if (window.__subtasksBox) {
+        window.__subtasksBox.style.marginTop = "24px";
+        window.__subtasksBox.style.paddingBottom = "50px";
+      }
+
+      window.assignedDropdownHandler = (e) => {
+        if (!dd.contains(e.target)) {
+          resetLayout();
+          document.removeEventListener("pointerdown", window.assignedDropdownHandler, true);
+          window.assignedDropdownHandler = null;
+        }
+      };
+
+      setTimeout(() => document.addEventListener("pointerdown", window.assignedDropdownHandler, true), 0);
+    } else {
+      resetLayout();
+      if (window.assignedDropdownHandler) {
+        document.removeEventListener("pointerdown", window.assignedDropdownHandler, true);
+        window.assignedDropdownHandler = null;
+      }
+    }
+  }
 
   /* ----------- Auto Init ----------- */
 
