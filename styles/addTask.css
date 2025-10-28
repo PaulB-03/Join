@@ -415,3 +415,35 @@ input[type="date"]::-moz-calendar-picker-indicator {
   outline: none;
   font-size: 16px;
 }
+
+/* Date Input Wrapper */
+.date-input-wrapper {
+  position: relative;
+  width: 100%;
+  display: inline-block;
+}
+
+/* Custom Calendar Overlay */
+.custom-calendar-overlay {
+  animation: fadeInScale 0.2s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Firefox: Verstecke den nativen Kalender-Icon */
+input[type="text"].date-input-firefox {
+  cursor: pointer;
+}
+
+input[type="text"].date-input-firefox::-webkit-calendar-picker-indicator {
+  display: none;
+}

@@ -97,22 +97,6 @@
     drop.querySelectorAll(".dropdown-item-contact").forEach(it=>wireContactItem(it,()=>toggle(false)));
   }
   
-  /* ---------------------------- Datepicker UX ------------------------------ */
-  /**
-   * Initializes min date and opens native picker.
-   * @returns {void}
-   */
-  function initDateMinAndPicker(){
-    const input=$id("date"); if(!input) return;
-    input.min=new Date().toISOString().split("T")[0];
-    input.addEventListener("click",()=>{
-      try{
-        const ua=navigator.userActivation; const canShow=ua?.isActive||ua?.hasBeenActive;
-        input.showPicker?.call&&canShow?input.showPicker():input.focus();
-      }catch{ input.focus(); }
-    });
-  }
-  
   /* ----------------------------- Live Search ------------------------------- */
   /**
    * Filters contacts and toggles dropdown for results.
