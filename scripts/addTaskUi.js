@@ -332,3 +332,24 @@ async function updateTask(id, navigateToBoard = false, closeTaskOverlayAfterUpda
     alert("Failed to update task. Please try again.");
   }
 }
+
+function setDefaultMediumPriority() {
+  try {
+    if (window.priority && typeof window.priority.setSelectedPriority === "function") {
+      window.priority.setSelectedPriority("medium"); 
+    }
+  } catch {}
+  window.selectedPrio = "medium";
+  try {
+    if (typeof window.setPrioColor === "function") {
+      window.setPrioColor("medium");
+      return; 
+    }
+  } catch {}
+
+  document.querySelectorAll(".prioGrade").forEach(el => el.classList.remove("active"));
+  const mediumBtn =
+    document.querySelector(".prioGrade.medium") ||
+    document.querySelector('[data-prio="medium"]');
+  if (mediumBtn) mediumBtn.classList.add("active");
+}

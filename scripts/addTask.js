@@ -133,7 +133,19 @@ function selectContact(contact){
  * Wires main button on DOM ready.
  * @returns {void}
  */
-document.addEventListener("DOMContentLoaded",()=>{
-  const b=document.getElementById("add");
-  if(b) b.onclick=handleAddOrEditTask;
+document.addEventListener("DOMContentLoaded", () => {
+  const addBtn = document.getElementById("add");
+  if (addBtn) addBtn.onclick = handleAddOrEditTask;
+  setDefaultMediumPriority();
+
+  const clearBtn = document.getElementById("clear");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      setTimeout(setDefaultMediumPriority, 0);
+    });
+  }
+  const form = document.getElementById("addTaskForm");
+  if (form) {
+    form.addEventListener("reset", () => setTimeout(setDefaultMediumPriority, 0));
+  }
 });
