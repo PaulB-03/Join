@@ -111,49 +111,6 @@
   }
 
   /* ===============================
-   *  Layout Spacing
-   * =============================== */
-
-  /**
-   * Stores references to key layout elements used for dynamic spacing
-   * when dropdowns open and close.
-   */
-  function ensureLayoutReferences() {
-    if (!window.__subtasksBox) {
-      const box = getElementById("subtasks");
-      window.__subtasksBox = box;
-      window.__subtasksStyles = {
-        marginTop: box?.style.marginTop || "24px",
-        paddingBottom: box?.style.paddingBottom || "50px",
-      };
-    }
-    if (!window.__categoryBox) {
-      const box = getElementById("category");
-      window.__categoryBox = box;
-      window.__categoryStyles = { marginTop: box?.style.marginTop || "24px" };
-    }
-  }
-
-  /**
-   * Resets spacing changes made by dropdown UI adjustments.
-   */
-  function resetSubtasksSpacing() {
-    ensureLayoutReferences();
-    const subtasksBox = window.__subtasksBox;
-    const subtasksStyles = window.__subtasksStyles;
-    const categoryBox = window.__categoryBox;
-    const categoryStyles = window.__categoryStyles;
-
-    if (subtasksBox && subtasksStyles) {
-      subtasksBox.style.marginTop = subtasksStyles.marginTop;
-      subtasksBox.style.paddingBottom = subtasksStyles.paddingBottom;
-    }
-    if (categoryBox && categoryStyles) {
-      categoryBox.style.marginTop = categoryStyles.marginTop;
-    }
-  }
-
-  /* ===============================
    *  Global API Exposure
    * =============================== */
 
@@ -172,6 +129,4 @@
   window.httpPatchJson ??= httpPatchJson;
   window.initials ??= initials;
   window.colorForName ??= colorForName;
-  window.ensureLayoutReferences ??= ensureLayoutReferences;
-  window.resetSubtasksSpacing ??= resetSubtasksSpacing;
 })();

@@ -12,30 +12,6 @@
       .filter(Boolean);
   }
   
-  /* ---------------------------- Formular Reset ---------------------------- */
-  /**
-   * Resets category UI state.
-   * @returns {void}
-   */
-  function resetCategoryUI(){
-    selectedCategory=""; const ph=$id("categoryPlaceholder");
-    if(ph) ph.textContent="Select task category";
-    $id("assignedToDropdownCategory")?.classList.remove("selected-red");
-    document.querySelectorAll("#dropdown-list-category input[type='checkbox']")
-      .forEach(cb=>cb.checked=false);
-  }
-  
-  /**
-   * Resets assigned contacts UI.
-   * @returns {void}
-   */
-  function resetAssignedUI(){
-    window.assignedContacts=[]; selectedContact="";
-    const initials=document.getElementById("assignedToInitials");
-    if(initials) initials.innerHTML="";
-    const span=document.querySelector("#assignedToDropdownContacts .dropdown-selected span");
-    if(span) span.textContent="Select contact";
-  }
   
   /* --------------------------- Kontakte / Suche ---------------------------- */
   /**
@@ -51,11 +27,6 @@
    * @param {boolean} show
    * @returns {boolean}
    */
-  function toggleContactsDropdown(drop,arrow,show){
-    drop.style.display=show?"block":"none";
-    if(arrow) arrow.style.transform=`translateY(-50%) rotate(${show?180:0}deg)`;
-    return show;
-  }
   
   /**
    * Updates initials preview bubble.
@@ -84,38 +55,6 @@
     });
   }
   
-  /**
-   * Initializes contacts dropdown trigger & list.
-   * @returns {void}
-   */
-  function initContactsDropdownInput(){
-    const sel=$id("assignedToDropdownContacts"),arrow=$id("dropdown-arrow-contacts"),drop=$id("dropdown-list-contacts");
-    if(!sel||!arrow||!drop) return; let open=false;
-    const toggle=(s)=>{ open=toggleContactsDropdown(drop,arrow,s); };
-    sel.addEventListener("click",(e)=>{ e.stopPropagation(); toggle(!open); });
-    document.addEventListener("click",()=>open&&toggle(false));
-    drop.querySelectorAll(".dropdown-item-contact").forEach(it=>wireContactItem(it,()=>toggle(false)));
-  }
-  
-  /* ----------------------------- Live Search ------------------------------- */
-  /**
-   * Filters contacts and toggles dropdown for results.
-   * @returns {void}
-   */
-  function initContactSearch(){
-    const search=$id("contactSearch"),drop=$id("dropdown-list-contacts");
-    if(!search||!drop) return;
-    const toggle=(s)=>drop.style.display=s?"block":"none";
-    const filter=(q)=>window.allContacts.filter(n=>n.toLowerCase().includes(q));
-    search.addEventListener("input",()=>{
-      const q=search.value.toLowerCase().trim(), results=filter(q);
-      if(window.loadedContacts) renderContacts(results,window.loadedContacts);
-      toggle(q&&results.length);
-    });
-    document.addEventListener("click",(e)=>{ if(!drop.contains(e.target)&&e.target!==search) toggle(false); });
-  }
-  document.addEventListener("DOMContentLoaded",initContactSearch);
-  
   /* ------------------------------ Bootstraps ------------------------------- */
   /**
    * Wires UI initializers on DOM ready.
@@ -123,63 +62,7 @@
    */
   document.addEventListener("DOMContentLoaded",()=>{
     initDateMinAndPicker();
-    initContactsDropdownInput();
-    initContactSearch();
-    loadContacts();
   });
-  
-  /* --------------------------- Category Dropdown --------------------------- */
-  const CategoryDropdown=(()=>{
-    /** @param {string} id */ const $=(id)=>document.getElementById(id);
-    /** @param {string} s @param {ParentNode} r */ const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-    /** @param {Element} el @param {string} evt @param {Function} fn */ const on=(el,evt,fn)=>el?.addEventListener(evt,fn);
-    const categories=["User  story","Technical Task"]; let open=false;
-  
-    /**
-     * Applies selected category by index.
-     * @param {number} index
-     * @returns {void}
-     */
-    function selectCategory(index){
-      const dd=$("assignedToDropdownCategory"), ph=$("categoryPlaceholder"), inputs=$$("input[name='category']");
-      const category=categories[index]; window.selectedCategory=category;
-      if(ph) ph.textContent=category; dd?.classList.add("selected-red");
-      inputs.forEach((input,i)=>input.checked=i===index);
-      dd&&(dd.style.border=""); const nxt=dd?.nextElementSibling;
-      if(nxt&&nxt.classList.contains("error-message")) nxt.remove();
-      if(typeof resetSubtasksSpacing==="function") resetSubtasksSpacing();
-    }
-  
-    /**
-     * Saves and closes.
-     * @param {number} index
-     * @returns {void}
-     */
-    function saveSelectedCategory(index){ selectCategory(index); closeDropdown(); }
-  
-    /** @returns {void} */
-    function toggleDropdown(){ open?closeDropdown():openDropdown(); }
-    /** @returns {void} */
-    function openDropdown(){ const dd=$("assignedToDropdownCategory"),a=$("dropdown-arrow-subtasks");
-      open=true; dd?.classList.add("open"); if(a) a.style.transform="translateY(-50%) rotate(180deg)"; dd?.setAttribute("aria-expanded","true"); }
-    /** @returns {void} */
-    function closeDropdown(){ const dd=$("assignedToDropdownCategory"),a=$("dropdown-arrow-subtasks");
-      open=false; dd?.classList.remove("open"); if(a) a.style.transform="translateY(-50%) rotate(0deg)"; dd?.setAttribute("aria-expanded","false"); }
-  
-    /**
-     * Initializes dropdown interactions.
-     * @returns {void}
-     */
-    function init(){
-      const dd=$("assignedToDropdownCategory"), list=$("dropdown-list-category"); if(!dd||!list) return;
-      on(dd,"click",(ev)=>{ ev.stopPropagation(); toggleDropdown(); });
-      on(dd,"keydown",(ev)=>{ if(["Enter"," "].includes(ev.key)){ ev.preventDefault(); toggleDropdown(); } else if(ev.key==="Escape"){ closeDropdown(); } });
-      $$(".dropdown-item-category",list).forEach((item,idx)=>on(item,"click",(ev)=>{ ev.stopPropagation(); selectCategory(idx); closeDropdown(); }));
-      on(document,"click",()=>{ if(open) closeDropdown(); }); window.saveSelectedCategory=saveSelectedCategory;
-    }
-    return { init, selectCategory, saveSelectedCategory };
-  })();
-  document.addEventListener("DOMContentLoaded",CategoryDropdown.init);
   
   /* --------------------------- Textarea Resize ----------------------------- */
   let _isResizing=false,_startY=0,_startH=0;

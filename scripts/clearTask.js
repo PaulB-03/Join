@@ -10,7 +10,6 @@ function clearTask() {
   resetUISections();
   clearSubtasks();
   resetContactDropdown();
-  resetSubtasksSpacing();
   rerenderContactsIfLoaded();
 }
 
@@ -70,8 +69,7 @@ function resetFieldBorders() {
  */
 function resetUISections() {
   if (typeof resetPrioUI === "function") resetPrioUI();
-  if (typeof resetCategoryUI === "function") resetCategoryUI();
-  if (typeof resetAssignedUI === "function") resetAssignedUI();
+  
 }
 
 /**
