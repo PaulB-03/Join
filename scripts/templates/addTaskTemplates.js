@@ -8,17 +8,11 @@ function renderAvatarsWithPriority(names = [], prio) {
   const MAX_AVATARS = 3;
   const shown = names.slice(0, MAX_AVATARS);
   const extra = names.length - shown.length;
+  console.log(names);
 
-  const avatars = shown
-    .map(
-      (n, i) =>
-        `<div class="av" style="background:${bgForNameOrIndex(n, i)}">${initials(n)}</div>`
-    )
-    .join("");
+  const avatars = shown.map((n) => `<div class="av" style="background-color:${colorForName(n)}">${initials(n)}</div>`).join("");
 
-  const more = extra > 0
-    ? `<div class="av more">+${extra}</div>`
-    : "";
+  const more = extra > 0 ? `<div class="av more">+${extra}</div>` : "";
 
   const prioIcon = getPriorityIcon(prio);
 
@@ -42,9 +36,7 @@ function renderAvatarsWithPriority(names = [], prio) {
 function taskCardInnerHtml(t, percent, doneCount, total) {
   return `
   <img onclick="swapState(event)" class="swapHoriz" src="../assets/svg/swap_horiz.svg" alt="Pfeil nach Oben und Nach unten">
-    <span class="pill ${
-      t?.category?.toLowerCase?.().includes("tech") ? "tech" : "user"
-    }">
+    <span class="pill ${t?.category?.toLowerCase?.().includes("tech") ? "tech" : "user"}">
       ${escapeHtml(t?.category || "")}
     </span>
     <div class="task-title">${escapeHtml(t?.title || "")}</div>
@@ -90,12 +82,9 @@ function taskDetailTemplate(id, t = {}) {
   const assigned =
     (t.assignedContacts || [])
       .map(
-        (n, i) => `
+        (n) => `
       <div class="task-assigned__item">
-        <div class="av" style="background:${
-          (window.colorForName && window.colorForName(n)) ||
-          bgForNameOrIndex(n, i)
-        }">${initials(n)}</div>
+        <div class="av" style="background-color:${colorForName(n)}">${initials(n)}</div>
         <h6 class="task-assigned__name">${escapeHtml(n)}</h6>
       </div>`
       )
@@ -109,9 +98,7 @@ function taskDetailTemplate(id, t = {}) {
         const idc = `subtask-${id}-${i}`;
         return `
         <label class="subtasks__item" for="${idc}">
-          <input type="checkbox" id="${idc}" data-sub-index="${i}" ${
-          done ? "checked" : ""
-        }/>
+          <input type="checkbox" id="${idc}" data-sub-index="${i}" ${done ? "checked" : ""}/>
           <div class="cb cb--unchecked" aria-hidden="true"></div>
           <div class="cb cb--checked" aria-hidden="true"></div>
           <span class="txt">${escapeHtml(txt)}</span>
@@ -122,10 +109,7 @@ function taskDetailTemplate(id, t = {}) {
   return `
     <div class="task-detail" data-id="${id}">
       <span class="pill">${cat}</span>
-      <h1 id="taskDetailTitle" class="task-detail__title">${title.replace(
-        /\n/g,
-        "<br>"
-      )}</h1>
+      <h1 id="taskDetailTitle" class="task-detail__title">${title.replace(/\n/g, "<br>")}</h1>
 
       ${desc ? `<h6 class="task-detail__desc">${desc}</h6>` : ""}
 
