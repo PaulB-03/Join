@@ -254,6 +254,10 @@ input[type="date"]::-moz-calendar-picker-indicator {
   z-index: 4;
 }
 
+#assignedToDropdownContacts.open #dropdown-list-contacts {
+  display: block;
+}
+
 #assignedToDropdownCategory.open #dropdown-list-category {
   display: block;
 }
@@ -370,8 +374,7 @@ input[type="date"]::-moz-calendar-picker-indicator {
 }
 
 .clearBtn:hover img {
-  filter: brightness(0) saturate(100%) invert(44%) sepia(95%) saturate(2474%)
-    hue-rotate(180deg) brightness(90%) contrast(70%);
+  filter: brightness(0) saturate(100%) invert(44%) sepia(95%) saturate(2474%) hue-rotate(180deg) brightness(90%) contrast(70%);
 }
 
 .dropdown-checkbox {
