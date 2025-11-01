@@ -61,6 +61,7 @@ function openAssignedToContacts(event) {
   if (!assignedToDropDownContacts.classList.contains('open')) {
     resetDropDown("category")
     assignedToDropDownContacts.classList.add('open')
+    addMarginSpacingForDropDownMenue("contacts")
     rotateArrowDropDown(dropDownArrow)
   } else {
     resetDropDown()
@@ -75,6 +76,8 @@ function openCategoryDropDown(event) {
   if (!assignedToDropdownCategory.classList.contains('open')) {
     resetDropDown("contacts")
     assignedToDropdownCategory.classList.add('open')
+    resetMargin("category")
+    addMarginSpacingForDropDownMenue("category")
     rotateArrowDropDown(dropDownArrow)
   } else {
     resetDropDown()
@@ -88,6 +91,7 @@ function rotateArrowDropDown(dropDownArrow) {
 function resetDropDown() {
   resetDropDownMenues()
   resetDropDownArrow()
+  resetMargin()
 }
 
 function resetDropDownMenues(element) {
@@ -109,4 +113,29 @@ function resetDropDownArrow() {
   let dropDownArrowAssignedTo = document.getElementById('dropdown-arrow-contacts')
   dropDownArrowContacts.style = ""
   dropDownArrowAssignedTo.style = ""
+}
+
+function addMarginSpacingForDropDownMenue(htmlElement) {
+  let subTasks = document.getElementById('subtasks')
+  let dropdownListCategory = document.getElementById('dropdown-list-category')
+  let category = document.getElementById('category')
+  let dropdownListContacts = document.getElementById('dropdown-list-contacts')
+  if (htmlElement == "category") {
+    subTasks.style.marginTop = dropdownListCategory.offsetHeight + (dropdownListCategory.offsetHeight * 0.1) + "px"
+  } else if (htmlElement == "contacts") {
+    category.style.marginTop = dropdownListContacts.offsetHeight + (dropdownListContacts.offsetHeight * 0.1) + "px"
+  }
+}
+
+function resetMargin(element) {
+  let category = document.getElementById('category')
+  let subTasks = document.getElementById('subtasks')
+  if (element == "category") {
+    category.style.marginTop = "";
+  } else if (element == "contacts") {
+    subTasks.style.marginTop = "";
+  } else {
+    subTasks.style.marginTop = "";
+    category.style.marginTop = "";
+  }
 }
