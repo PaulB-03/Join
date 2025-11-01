@@ -7,9 +7,9 @@ function clearTask() {
   clearFormInputs();
   hideFormErrors();
   resetFieldBorders();
-  resetUISections();
+  resetAssignedContacts();
   clearSubtasks();
-  resetDropDownMenues();
+  resetDropDown();
 }
 
 /* ---------------- Helper Functions ---------------- */
@@ -57,14 +57,6 @@ function resetFieldBorders() {
 }
 
 /**
- * Resets priority, category, and assigned UI sections if available.
- * @returns {void}
- */
-function resetUISections() {
-  if (typeof resetPrioUI === "function") resetPrioUI();
-}
-
-/**
  * Clears all subtasks and hides the subtask control images.
  * @returns {void}
  */
@@ -76,28 +68,9 @@ function clearSubtasks() {
   if (imgContainer) imgContainer.style.display = "none";
 }
 
-// /**
-//  * Resets contact dropdown search field, closes dropdown, resets arrow.
-//  * @returns {void}
-//  */
-// function resetContactDropdown() {
-// const search = document.getElementById("contactSearch");
-// if (search) search.value = "";
-//
-// const dropdown = document.getElementById("dropdown-list-contacts");
-// if (dropdown) dropdown.style.display = "none";
-//
-// const arrow = document.getElementById("dropdown-arrow-contacts");
-// if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
-// }
-//
-// /**
-//  * Re-renders the contact list if contacts are already loaded.
-//  * Used to visually reset dropdown state.
-//  * @returns {void}
-//  */
-// function rerenderContactsIfLoaded() {
-// if (window.loadedContacts && typeof renderContacts === "function") {
-// renderContacts(window.allContacts, window.loadedContacts);
-// }
-// }
+function resetAssignedContacts() {
+  window.assignedContacts = [];
+  selectedContact = "";
+  document.getElementById("assignedToInitials").innerHTML = "";
+  updateDropdownHighlight();
+}

@@ -205,35 +205,10 @@ function toggleContact(name) {
   const isOpen = dd?.classList.contains("open");
   const before = isOpen && window.__categoryBox ? window.__categoryBox.offsetTop : 0;
 
-  updateDropdownText();
   renderAssignedContacts();
   updateDropdownHighlight();
-  updateDropdownBackground("assignedToDropdownContacts");
 
   if (isOpen) adjustCategoryBoxAfter(before);
-}
-
-/**
- * Updates the visible text of selected contacts in the dropdown button.
- */
-function updateDropdownText() {
-  const span = querySelector("#assignedToDropdownContacts .dropdown-selected span");
-  if (!span) return;
-  const names = Array.isArray(window.assignedContacts) ? [...window.assignedContacts] : [];
-  if (!names.length) {
-    span.textContent = "Select contacts";
-    return;
-  }
-  const out = [];
-  for (let i = 0; i < names.length; i++) {
-    out.push(names[i]);
-    span.textContent = out.join(", ");
-    if (span.scrollWidth > span.clientWidth) {
-      out.pop();
-      break;
-    }
-  }
-  span.textContent = out.join(", ");
 }
 
 /**
@@ -254,16 +229,6 @@ function updateDropdownHighlight() {
     label.style.color = sel ? "white" : "";
     if (item) item.classList.toggle("selected", sel);
   });
-}
-
-/**
- * Highlights the dropdown trigger if any contacts are selected.
- */
-function updateDropdownBackground(dropdownId) {
-  const d = getElementById(dropdownId);
-  if (!d) return;
-  const checked = d.querySelectorAll("img[src*='checked.svg']").length > 0;
-  d.classList.toggle("selected", checked);
 }
 
 /**
@@ -320,7 +285,6 @@ function handleContactClick(e, contact) {
   e.stopPropagation();
   toggleContact(contact.name);
   updateDropdownHighlight();
-  updateDropdownText();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
