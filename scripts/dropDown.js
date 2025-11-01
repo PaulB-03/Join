@@ -194,6 +194,135 @@ function makeLabel(contact) {
   return label;
 }
 
+/**
+ * Toggles a contact in the selected list and updates UI.
+ */
+function toggleContact(name) {
+  const list = getAssignedList();
+  toggleName(list, name);
+
+  const dd = getElementById("assignedToDropdownContacts");
+  const isOpen = dd?.classList.contains("open");
+  const before = isOpen && window.__categoryBox ? window.__categoryBox.offsetTop : 0;
+
+  updateDropdownText();
+  renderAssignedContacts();
+  updateDropdownHighlight();
+  updateDropdownBackground("assignedToDropdownContacts");
+
+  if (isOpen) adjustCategoryBoxAfter(before);
+}
+
+/**
+ * Updates the visible text of selected contacts in the dropdown button.
+ */
+function updateDropdownText() {
+  const span = querySelector("#assignedToDropdownContacts .dropdown-selected span");
+  if (!span) return;
+  const names = Array.isArray(window.assignedContacts) ? [...window.assignedContacts] : [];
+  if (!names.length) {
+    span.textContent = "Select contacts";
+    return;
+  }
+  const out = [];
+  for (let i = 0; i < names.length; i++) {
+    out.push(names[i]);
+    span.textContent = out.join(", ");
+    if (span.scrollWidth > span.clientWidth) {
+      out.pop();
+      break;
+    }
+  }
+  span.textContent = out.join(", ");
+}
+
+/**
+ * Highlights selected contacts inside the dropdown list.
+ */
+function updateDropdownHighlight() {
+  const list = getElementById("dropdown-list-contacts");
+  if (!list) return;
+  querySelectorAll("label.dropdown-checkbox", list).forEach((label) => {
+    const name = querySelector("span.contact-name", label)?.textContent?.trim() || "";
+    const img = querySelector("img.checkbox-svg", label);
+    const sel = window.assignedContacts?.includes(name);
+    const item = label.closest(".dropdown-item-contact");
+    if (img) {
+      img.src = sel ? "../assets/svg/checked.svg" : "../assets/svg/check_button.svg";
+      img.classList.toggle("checked", sel);
+    }
+    label.style.color = sel ? "white" : "";
+    if (item) item.classList.toggle("selected", sel);
+  });
+}
+
+/**
+ * Highlights the dropdown trigger if any contacts are selected.
+ */
+function updateDropdownBackground(dropdownId) {
+  const d = getElementById(dropdownId);
+  if (!d) return;
+  const checked = d.querySelectorAll("img[src*='checked.svg']").length > 0;
+  d.classList.toggle("selected", checked);
+}
+
+/**
+ * Renders up to 3 selected contacts as colored initials.
+ */
+function renderAssignedContacts() {
+  const box = getElementById("assignedToInitials");
+  if (!box) return;
+  const names = Array.isArray(window.assignedContacts) ? window.assignedContacts : [];
+  setInnerHTML(box, "");
+  if (!names.length) return hideElement(box);
+  showElement(box, "flex");
+  addInitials(box, names.slice(0, 3));
+  addOverflowCount(box, names);
+}
+
+function addInitials(box, names) {
+  names.forEach((name) => {
+    const item = document.createElement("span");
+    item.className = "contact-initial";
+    item.textContent = initials(name);
+    item.style.backgroundColor = colorForName(name);
+    box.appendChild(item);
+  });
+}
+
+function addOverflowCount(box, names) {
+  if (names.length <= 3) return;
+  const extra = document.createElement("span");
+  extra.className = "contact-initial more-count";
+  extra.textContent = `+${names.length - 3}`;
+  extra.style.backgroundColor = "#999";
+  box.appendChild(extra);
+}
+
+function adjustCategoryBoxAfter(before) {
+  const box = window.__categoryBox;
+  if (!box) return;
+  const delta = box.offsetTop - before;
+  const cur = parseFloat(box.style.marginTop) || parseFloat(getComputedStyle(box).marginTop) || 0;
+  box.style.marginTop = Math.max(0, cur - delta) + "px";
+}
+
+function getAssignedList() {
+  return Array.isArray(window.assignedContacts) ? window.assignedContacts : (window.assignedContacts = []);
+}
+
+function toggleName(list, name) {
+  const i = list.indexOf(name);
+  i >= 0 ? list.splice(i, 1) : list.push(name);
+}
+
+function handleContactClick(e, contact) {
+  e.stopPropagation();
+  toggleContact(contact.name);
+  updateDropdownHighlight();
+  updateDropdownText();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   loadContactsInAddTask();
 });
