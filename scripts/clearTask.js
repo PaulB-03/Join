@@ -9,8 +9,7 @@ function clearTask() {
   resetFieldBorders();
   resetUISections();
   clearSubtasks();
-  resetContactDropdown();
-  rerenderContactsIfLoaded();
+  resetDropDownMenues();
 }
 
 /* ---------------- Helper Functions ---------------- */
@@ -50,13 +49,7 @@ function hideFormErrors() {
  * @returns {void}
  */
 function resetFieldBorders() {
-  const selectors = [
-    "#titleInput",
-    "#descriptionInput",
-    "#date",
-    "#assignedToDropdownContacts",
-    "#assignedToDropdownCategory",
-  ];
+  const selectors = ["#titleInput", "#descriptionInput", "#date", "#assignedToDropdownContacts", "#assignedToDropdownCategory"];
   selectors.forEach((s) => {
     const el = $(s);
     if (el) el.style.border = "";
@@ -69,7 +62,6 @@ function resetFieldBorders() {
  */
 function resetUISections() {
   if (typeof resetPrioUI === "function") resetPrioUI();
-  
 }
 
 /**
@@ -84,28 +76,28 @@ function clearSubtasks() {
   if (imgContainer) imgContainer.style.display = "none";
 }
 
-/**
- * Resets contact dropdown search field, closes dropdown, resets arrow.
- * @returns {void}
- */
-function resetContactDropdown() {
-  const search = document.getElementById("contactSearch");
-  if (search) search.value = "";
-
-  const dropdown = document.getElementById("dropdown-list-contacts");
-  if (dropdown) dropdown.style.display = "none";
-
-  const arrow = document.getElementById("dropdown-arrow-contacts");
-  if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
-}
-
-/**
- * Re-renders the contact list if contacts are already loaded.
- * Used to visually reset dropdown state.
- * @returns {void}
- */
-function rerenderContactsIfLoaded() {
-  if (window.loadedContacts && typeof renderContacts === "function") {
-    renderContacts(window.allContacts, window.loadedContacts);
-  }
-}
+// /**
+//  * Resets contact dropdown search field, closes dropdown, resets arrow.
+//  * @returns {void}
+//  */
+// function resetContactDropdown() {
+// const search = document.getElementById("contactSearch");
+// if (search) search.value = "";
+//
+// const dropdown = document.getElementById("dropdown-list-contacts");
+// if (dropdown) dropdown.style.display = "none";
+//
+// const arrow = document.getElementById("dropdown-arrow-contacts");
+// if (arrow) arrow.style.transform = "translateY(-50%) rotate(0deg)";
+// }
+//
+// /**
+//  * Re-renders the contact list if contacts are already loaded.
+//  * Used to visually reset dropdown state.
+//  * @returns {void}
+//  */
+// function rerenderContactsIfLoaded() {
+// if (window.loadedContacts && typeof renderContacts === "function") {
+// renderContacts(window.allContacts, window.loadedContacts);
+// }
+// }
