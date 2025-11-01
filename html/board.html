@@ -193,7 +193,8 @@
     </div>
 
     <div id="taskOverlay" class="overlay" aria-hidden="true">
-      <div class="task-overlay-panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+      <div id="task-overlay-panel" class="task-overlay-panel" role="dialog" aria-modal="true"
+        onclick="event.stopPropagation()">
         <div class="addTaskOverlayWrapper">
           <div class="overlay-close" id="closeTaskOverlay" aria-label="Close"></div>
           <h1>Add Task</h1>
@@ -310,7 +311,7 @@
   </div>
   <script src="../scripts/clearTask.js"></script>
   <script src="../scripts/standardFunctions.js"></script>
-  <script src="../scripts/dropDown.js"></script>
+  <script src="../scripts/dropDown.js" defer></script>
   <script src="../scripts/priority.js"></script>
   <script src="../scripts/addTaskUi.js"></script>
   <script src="../scripts/firefoxCalendar.js"></script>
