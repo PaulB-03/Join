@@ -165,7 +165,7 @@ function readTaskForm() {
  */
 async function handleAddOrEditTask(e) {
   e && e.preventDefault();
-  const id = byId("add")?.getAttribute("data-editing-id");
+  const id = document.getElementById("add")?.getAttribute("data-editing-id");
   if (!id) {
     return typeof window.createTask === "function" ? window.createTask() : console.error("createTask not found");
   }
