@@ -7,16 +7,16 @@ function byId(id) {
   return document.getElementById(id);
 }
 
-(function () {
-  /**
-   * Fallback-Farbpalette, falls window.color fehlt.
-   * @returns {void}
-   */
-  if (typeof window.color !== "function") {
-    const __PALETTE = ["#f44336", "#2196F3", "#FF9800", "#9C27B0", "#4CAF50", "#00BCD4", "#FFC107"];
-    window.color = (i) => __PALETTE[i % __PALETTE.length];
-  }
-})();
+// (function () {
+// /**
+//  * Fallback-Farbpalette, falls window.color fehlt.
+//  * @returns {void}
+//  */
+// if (typeof window.color !== "function") {
+// const __PALETTE = ["#f44336", "#2196F3", "#FF9800", "#9C27B0", "#4CAF50", "#00BCD4", "#FFC107"];
+// window.color = (i) => __PALETTE[i % __PALETTE.length];
+// }
+// })();
 
 /** @type {Record<string,string>} */
 const __COL_TO_STATE = { "todo": "toDo", "in-progress": "in progress", "await-feedback": "await feedback", "done": "done" };
@@ -277,29 +277,36 @@ function onQuickAddClick(e) {
  */
 /** Opens Add/Edit overlay, animation optional. */
 function openTaskOverlay({ animate = true } = {}) {
-  const ov = byId("taskOverlay"); if (!ov) return;
+  const ov = byId("taskOverlay");
+  if (!ov) return;
   const p = ov.querySelector(".task-overlay-panel");
-  if (!animate) { p?.classList.add("no-anim"); ov.classList.add("no-fade"); }
+  if (!animate) {
+    p?.classList.add("no-anim");
+    ov.classList.add("no-fade");
+  }
   ov.classList.remove("edit-mode");
   showOverlay(ov, { focus: false });
-  if (!animate) { setTimeout(() => p?.classList.remove("no-anim"), 0); setTimeout(() => ov.classList.remove("no-fade"), 0); }
+  if (!animate) {
+    setTimeout(() => p?.classList.remove("no-anim"), 0);
+    setTimeout(() => ov.classList.remove("no-fade"), 0);
+  }
   byId("add")?.removeAttribute("data-editing-id");
   setOverlayButtonText(false);
   toggleClearButton(false);
   clearTask();
-  initTaskFormEnhancements();
+  // initTaskFormEnhancements();
   (byId("titleInput") || firstFocusable(ov) || ov).focus();
 }
 
-/**
- * Initializes form enhancements (dropdowns, prio images).
- * @returns {void}
- */
-function initTaskFormEnhancements() {
-  typeof initCategoryDropdown === "function" && initCategoryDropdown();
-  typeof initContactsDropdown === "function" && initContactsDropdown();
-  typeof initialiseSavePrioImg === "function" && initialiseSavePrioImg();
-}
+// /**
+//  * Initializes form enhancements (dropdowns, prio images).
+//  * @returns {void}
+//  */
+// function initTaskFormEnhancements() {
+// typeof initCategoryDropdown === "function" && initCategoryDropdown();
+// typeof initContactsDropdown === "function" && initContactsDropdown();
+// typeof initialiseSavePrioImg === "function" && initialiseSavePrioImg();
+// }
 
 /**
  * Fills the add/edit form with an existing task.
@@ -312,6 +319,7 @@ function fillTaskFormFromExisting(id, task) {
   setPrioFromTask(task);
   assignedContacts = task.assignedContacts ? [...task.assignedContacts] : [];
   renderAssignedInitials();
+  updateDropdownHighlight();
   fillSubtasks(task.subtasks || []);
   selectedCategory = task.category || "Task";
   selectedState = task.state || "toDo";

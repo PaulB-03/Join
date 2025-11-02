@@ -43,19 +43,19 @@ function formatDate(value) {
   return `${dd}/${mm}/${d.getFullYear()}`;
 }
 
-/**
- * Returns a background color for a name or index.
- * Delegates to window.colorForName when available.
- * @param {string} name
- * @param {number} i
- * @returns {string}
- */
-function bgForNameOrIndex(name, i) {
-  if (typeof window !== "undefined" && typeof window.colorForName === "function") {
-    return window.colorForName(name || "");
-  }
-  return "#999";
-}
+// /**
+//  * Returns a background color for a name or index.
+//  * Delegates to window.colorForName when available.
+//  * @param {string} name
+//  * @param {number} i
+//  * @returns {string}
+//  */
+// function bgForNameOrIndex(name, i) {
+// if (typeof window !== "undefined" && typeof window.colorForName === "function") {
+// return window.colorForName(name || "");
+// }
+// return "#999";
+// }
 
 /**
  * Returns priority icon HTML snippet.
@@ -64,10 +64,14 @@ function bgForNameOrIndex(name, i) {
  */
 function getPriorityIcon(prio) {
   switch ((prio || "").toLowerCase()) {
-    case "urgent": return `<img src="../assets/svg/double_arrow_red.svg" alt="Urgent" class="priority-icon" />`;
-    case "medium": return `<img src="../assets/svg/double_lines.svg" alt="Medium" class="priority-icon" />`;
-    case "low":    return `<img src="../assets/svg/double_arrow_down.svg" alt="Low" class="priority-icon" />`;
-    default:       return "";
+    case "urgent":
+      return `<img src="../assets/svg/double_arrow_red.svg" alt="Urgent" class="priority-icon" />`;
+    case "medium":
+      return `<img src="../assets/svg/double_lines.svg" alt="Medium" class="priority-icon" />`;
+    case "low":
+      return `<img src="../assets/svg/double_arrow_down.svg" alt="Low" class="priority-icon" />`;
+    default:
+      return "";
   }
 }
 

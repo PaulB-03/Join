@@ -112,14 +112,8 @@ function enterEditMode(item, title, actions) {
   const editActions = createEditActions();
   item.insertBefore(editInput, actions);
   item.replaceChild(editActions, actions);
-  editActions
-    .querySelector(".saveEdit")
-    .addEventListener("click", () =>
-      exitEdit(item, title, editInput, actions, editActions, true)
-    );
-  editActions
-    .querySelector(".cancelEdit")
-    .addEventListener("click", () => item.remove());
+  editActions.querySelector(".saveEdit").addEventListener("click", () => exitEdit(item, title, editInput, actions, editActions, true));
+  editActions.querySelector(".cancelEdit").addEventListener("click", () => item.remove());
   editInput.focus();
 }
 
@@ -215,7 +209,8 @@ async function saveSubtasksFromOverlay(taskId) {
  * @returns {void}
  */
 function updateSubtaskCountersUI(taskId, done, total) {
-  const ov = byId("taskDetailOverlay"), c = ov?.querySelector(".subtasks-counter");
+  const ov = byId("taskDetailOverlay"),
+    c = ov?.querySelector(".subtasks-counter");
   if (c) c.textContent = `${done}/${total} Subtasks`;
   const card = document.querySelector(`.card[data-id="${taskId}"]`) || null;
   if (!card) return;
@@ -241,7 +236,8 @@ function mountSubtaskCheckboxListener() {
 async function onDetailSubtaskChange(e) {
   const cb = e.target;
   if (!cb.matches('#taskDetailOverlay input[type="checkbox"][data-sub-index]')) return;
-  const detail = cb.closest(".task-detail"), taskId = detail?.getAttribute("data-id");
+  const detail = cb.closest(".task-detail"),
+    taskId = detail?.getAttribute("data-id");
   if (!taskId) return;
   const previous = !cb.checked;
   try {
@@ -257,24 +253,24 @@ async function onDetailSubtaskChange(e) {
 
 /* ----------------------- Assigned / Subtasks (Form) ---------------------- */
 
-/**
- * Renders avatar initials for assigned contacts in the form.
- * @param {string[]} contacts
- * @returns {void}
- */
-function fillAssignedContacts(contacts) {
-  const wrap = byId("assignedToInitials");
-  wrap.innerHTML = "";
-  if (!contacts?.length) { wrap.style.display = "none"; return; }
-  wrap.style.display = "flex";
-  contacts.forEach((c, i) => {
-    const div = document.createElement("div");
-    div.className = "av";
-    div.style.background = window.color(i);
-    div.textContent = initials(c);
-    wrap.appendChild(div);
-  });
-}
+// /**
+//  * Renders avatar initials for assigned contacts in the form.
+//  * @param {string[]} contacts
+//  * @returns {void}
+//  */
+// function fillAssignedContacts(contacts) {
+// const wrap = byId("assignedToInitials");
+// wrap.innerHTML = "";
+// if (!contacts?.length) { wrap.style.display = "none"; return; }
+// wrap.style.display = "flex";
+// contacts.forEach((c, i) => {
+// const div = document.createElement("div");
+// div.className = "av";
+// div.style.background = window.color(i);
+// div.textContent = initials(c);
+// wrap.appendChild(div);
+// });
+// }
 
 /**
  * Renders existing subtasks into the add/edit overlay list.
@@ -298,13 +294,16 @@ function fillSubtasks(subtasks) {
 function renderAssignedInitials() {
   const w = byId("assignedToInitials");
   w.innerHTML = "";
-  if (!(assignedContacts && assignedContacts.length)) { w.style.display = "none"; return; }
+  if (!(assignedContacts && assignedContacts.length)) {
+    w.style.display = "none";
+    return;
+  }
   w.style.display = "flex";
-  assignedContacts.forEach((c, i) => {
+  assignedContacts.forEach((i) => {
     const d = document.createElement("div");
     d.className = "av";
-    d.style.background = window.color(i);
-    d.textContent = initials(c);
+    d.style.background = colorForName(i);
+    d.textContent = initials(i);
     w.appendChild(d);
   });
 }
