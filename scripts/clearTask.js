@@ -78,6 +78,6 @@ function resetAssignedContacts() {
 
 function clearCategory() {
   let categoryPlaceholder = document.getElementById('categoryPlaceholder')
-
+  window.selectedCategory = undefined
   categoryPlaceholder.innerHTML = "Select task category"
 }
