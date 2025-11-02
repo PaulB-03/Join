@@ -36,7 +36,7 @@ function taskCardInnerHtml(t, percent, doneCount, total) {
   return `
   <img onclick="swapState(event)" class="swapHoriz" src="../assets/svg/swap_horiz.svg" alt="Pfeil nach Oben und Nach unten">
     <span class="pill ${t?.category?.toLowerCase?.().includes("tech") ? "tech" : "user"}">
-      ${escapeHtml(t?.category || "")}
+      ${escapeHtml(t?.category)}
     </span>
     <div class="task-title">${escapeHtml(t?.title || "")}</div>
     <div class="task-desc">${escapeHtml(t?.description || "")}</div>
@@ -73,10 +73,10 @@ function taskCardInnerHtml(t, percent, doneCount, total) {
  * @returns {string} HTML markup for the task detail overlay.
  */
 function taskDetailTemplate(id, t = {}) {
-  const title = escapeHtml(t.title || "");
+  const title = escapeHtml(t.title);
   const desc = escapeHtml(t.description || "");
-  const cat = escapeHtml(t.category || "Task");
-  const date = formatDate(t.date || "-");
+  const cat = escapeHtml(t.category);
+  const date = formatDate(t.date);
 
   const assigned =
     (t.assignedContacts || [])
@@ -107,7 +107,7 @@ function taskDetailTemplate(id, t = {}) {
 
   return `
     <div class="task-detail" data-id="${id}">
-      <span class="pill">${cat}</span>
+      <span class="pill ${t?.category?.toLowerCase?.().includes("tech") ? "tech" : "user"}">${cat}</span>
       <h1 id="taskDetailTitle" class="task-detail__title">${title.replace(/\n/g, "<br>")}</h1>
 
       ${desc ? `<h6 class="task-detail__desc">${desc}</h6>` : ""}
