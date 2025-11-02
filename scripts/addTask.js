@@ -132,7 +132,6 @@ async function createTask() {
     showAddedToastAndRedirect();
   } catch (e) {
     console.error(e);
-    alert("Die Aufgabe konnte nicht gespeichert werden.");
   } finally {
     b?.removeAttribute("disabled");
   }

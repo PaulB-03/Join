@@ -234,7 +234,6 @@ async function updateTask(id, navigateToBoard = false, closeTaskOverlayAfterUpda
     await afterUpdateUI(id, navigateToBoard, closeTaskOverlayAfterUpdate, reopenDetail);
   } catch (err) {
     console.error("Error updating task:", err);
-    alert("Failed to update task. Please try again.");
   }
 }
 

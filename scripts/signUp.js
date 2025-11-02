@@ -64,7 +64,6 @@ async function saveNewUser(newUser, nextIndex) {
     console.error("Error saving:", response.status, errorText);
     return null;
   }
-  console.log(`User added as ${newKey}`);
   return newKey;
 }
 
