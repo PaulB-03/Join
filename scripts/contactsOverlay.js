@@ -55,13 +55,22 @@ function getAddContactRefs() {
   };
 }
 
-
+/**
+ * Get references to Edit Contact form fields and their associated error nodes.
+ * @param {HTMLElement} root - The overlay root element containing the edit form.
+ * @returns {object} References to form, input fields, and error elements.
+ */
 function getEditRefs(root) {
   const form = root.querySelector("#editContactForm");
   return { form, name:  form?.elements?.name, email: form?.elements?.email, phone: form?.elements?.phone, nameErr:  root.querySelector('[data-edit-error="name"]'), emailErr: root.querySelector('[data-edit-error="email"]'), phoneErr: root.querySelector('[data-edit-error="phone"]')};
 }
 
 
+/**
+ * Validate the Edit Contact form values. Ensures name and email are non-empty and match allowed patterns; phone must be empty or match allowed characters.
+ * @param {HTMLElement} root - The overlay element containing the form.
+ * @returns {boolean} True if all fields are valid.
+ */
 function validateEditContactForm(root) {
   const { name, email, phone, nameErr, emailErr, phoneErr } = getEditRefs(root);
   if (!name || !email || !phone) return false;
@@ -110,6 +119,7 @@ async function deleteContact(id) {
   if (!res.ok) throw new Error("Failed to delete contact"); 
   await loadContacts(); 
   const body = document.querySelector(".contactDetailsBody"); 
+  body.classList.add("d_none");
   if (body) body.innerHTML = "";
   document.body.classList.remove("showing-details");
 }
@@ -170,6 +180,11 @@ async function updateContact(id, updates) {
 }
 
 
+/**
+ * Wires live validation for the Edit Contact form. Runs validation on input and blur events and initializes error states.
+ * @param {HTMLElement} overlay - The overlay element containing the form.
+ * @returns {void}
+ */
 function wireEditValidationLive(overlay) {
   const f = overlay.querySelector("#editContactForm");
   const run = () => validateEditContactForm(overlay);
