@@ -122,9 +122,9 @@ function addMarginSpacingForDropDownMenue(htmlElement) {
   let category = document.getElementById("category");
   let dropdownListContacts = document.getElementById("dropdown-list-contacts");
   if (htmlElement == "category") {
-    subTasks.style.marginTop = dropdownListCategory.offsetHeight + dropdownListCategory.offsetHeight * 0.1 + "px";
+    subTasks.style.marginTop = dropdownListCategory.offsetHeight + (dropdownListCategory.offsetHeight * 0.1) + "px";
   } else if (htmlElement == "contacts") {
-    category.style.marginTop = dropdownListContacts.offsetHeight + dropdownListContacts.offsetHeight * 0.1 + "px";
+    category.style.marginTop = dropdownListContacts.offsetHeight + (dropdownListContacts.offsetHeight * 0.1) + "px";
   }
 }
 
