@@ -10,7 +10,7 @@ function clearTask() {
   resetAssignedContacts();
   clearSubtasks();
   resetDropDown();
-  clearCategory()
+  clearCategory();
 }
 
 /* ---------------- Helper Functions ---------------- */
@@ -50,7 +50,7 @@ function hideFormErrors() {
  * @returns {void}
  */
 function resetFieldBorders() {
-  const selectors = ["#titleInput", "#descriptionInput", "#date", "#assignedToDropdownContacts", "#assignedToDropdownCategory"];
+  const selectors = ["#titleInput", "#descriptionInput", "#date", "#assignedToDropdownContacts", "#assignedToDropdownCategory", "#input-category"];
   selectors.forEach((s) => {
     const el = $(s);
     if (el) el.style.border = "";
@@ -77,7 +77,7 @@ function resetAssignedContacts() {
 }
 
 function clearCategory() {
-  let categoryPlaceholder = document.getElementById('categoryPlaceholder')
-  window.selectedCategory = undefined
-  categoryPlaceholder.innerHTML = "Select task category"
+  let categoryPlaceholder = document.getElementById("categoryPlaceholder");
+  window.selectedCategory = undefined;
+  categoryPlaceholder.innerHTML = "Select task category";
 }
