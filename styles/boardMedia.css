@@ -130,7 +130,7 @@
   }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 900px) {
   .board {
     margin-top: 40px;
     width: 100%;
@@ -216,11 +216,6 @@
     padding-top: 24px;
   }
 
-  .app {
-    padding: 20px 16px 120px 16px;
-    max-width: 100%;
-  }
-
   .controls {
     position: static;
     width: 100%;
@@ -265,6 +260,12 @@
     width: 20px;
     height: 20px;
     display: inline-block;
+  }
+}
+@media (max-width: 850px) {
+  .app {
+    padding: 20px 16px 120px 16px;
+    max-width: 100%;
   }
 }
 
