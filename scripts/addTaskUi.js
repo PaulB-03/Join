@@ -16,34 +16,6 @@ function getSubtasksFromForm() {
     .filter(Boolean);
 }
 
-// /**
-//  * Updates initials preview bubble.
-//  * @returns {void}
-//  */
-// function updateInitialsPreview() {
-// const initials = $id("assignedToInitials");
-// if (initials) {
-// initials.style.display = "block";
-// initials.textContent = window.assignedContacts.map((x) => x.name[0]).join(", ");
-// }
-// }
-
-// /**
-//  * Attaches click handler to one contact item.
-//  * @param {Element} it
-//  * @param {Function} closeFn
-//  * @returns {void}
-//  */
-// function wireContactItem(it, closeFn) {
-// it.addEventListener("click", (e) => {
-// e.stopPropagation();
-// const c = { id: it.dataset.id, name: it.dataset.name };
-// if (!window.assignedContacts.some((x) => x.id === c.id)) window.assignedContacts.push(c);
-// updateInitialsPreview();
-// closeFn();
-// });
-// }
-
 /* ------------------------------ Bootstraps ------------------------------- */
 /**
  * Wires UI initializers on DOM ready.
