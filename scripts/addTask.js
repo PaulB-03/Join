@@ -70,6 +70,9 @@ function validateTaskFormFields() {
     showInlineError($id("date"), $id("dateError"));
     ok = false;
   }
+  if (!window.selectedCategory) {
+    ok = false;
+  }
   return ok;
 }
 
