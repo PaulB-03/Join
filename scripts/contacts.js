@@ -275,7 +275,7 @@ function removeSelected() {
 function backToList() {
   document.querySelector(".contactDetails")?.classList.remove("show");
   document.querySelector(".contactList")?.classList.remove("hide");
-  const body = document.querySelector(".contactDetailsBody").classList.remove("d_none");
+  // const body = document.querySelector(".contactDetailsBody").classList.remove("d_none");
   document.body.classList.remove("showing-details");
   removeSelected();
 }
@@ -288,7 +288,7 @@ function backToList() {
 function renderContactDetails(contact) {
   const body = document.querySelector(".contactDetailsBody");
   if (!body) return;
-  body.classList.remove("d_none");
+  // body.classList.remove("d_none");
   body.innerHTML = "";
   const top = detailsTop(contact);
   const info = detailsInfo(contact);

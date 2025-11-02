@@ -11,13 +11,13 @@
  * Must include at least two words.
  * @type {RegExp}
  */
-const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+(?:\s+[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+)+$/;
+const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß'-]{1,12}(?:\s+[a-zA-ZÀ-ÖØ-öø-ÿß'-]{1,12})+$/;
 
 /**
  * Validates standard email addresses.
  * @type {RegExp}
  */
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
 
 /* ─────────────── DOM References ─────────────── */
 

@@ -79,12 +79,14 @@
   padding: 32px 40px;
   flex-direction: column;
   gap: 21px;
-  opacity: 1;
+  opacity: 0;
+  transform: translateX(220%);
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .showDetails {
   transform: translateX(0);
+  opacity: 1;
 }
 
 .contactListItems {
