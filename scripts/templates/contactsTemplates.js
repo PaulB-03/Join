@@ -5,10 +5,7 @@
  */
 function detailsInfoHTML(contact) {
   const phoneIsMissing = isMissingPhone(contact.phone);
-  const phoneMarkup = phoneIsMissing
-    ? `<a href="#" id="editPhoneTrigger" class="value link">add phone number</a>`
-    : `<div class="value">${contact.phone || ""}</div>`;
-
+  const phoneMarkup = phoneIsMissing ? `<a href="#" id="editPhoneTrigger" class="value link">add phone number</a>` : `<div class="value">${contact.phone || ""}</div>`;
   return `
     <h6 class="sectionTitle">Contact Information</h6>
     <div class="infoRow"><div class="label">Email</div>
@@ -19,7 +16,6 @@ function detailsInfoHTML(contact) {
     </div>
   `;
 }
-
 
 /**
  * Returns the HTML string for the edit contact overlay.
@@ -32,14 +28,11 @@ function editOverlayHTML() {
         <img src="../assets/svg/editContactForm.svg" alt="Edit contact artwork" id="editContactImgDesktop" />
         <img src="../assets/svg/editContactFormMobile.svg" alt="Edit contact artwork" id="editContactImgMobile" />
       </div>
-
       <form id="editContactForm" class="overlay-body" novalidate>
         <div id="editAvatar2" class="detailsAvatar editAvtrMbl"></div>
         <button type="button" id="closeEditContact" class="overlay-close" aria-label="Close"><img src="../assets/svg/contactCloseV1.svg" alt=""></button>
-
         <div class="add-contact-overlay-right">
           <div id="editAvatar" class="detailsAvatar editAvtrDsktp"></div>
-
           <div class="add-contact-overlay-form">
             <div class="field">
               <input name="name" class="has-icon icon-user input" placeholder="Name" required>
@@ -50,7 +43,6 @@ function editOverlayHTML() {
             <div class="field">
               <input name="phone" class="has-icon icon-phone input" placeholder="Phone">
             </div>
-
             <div class="overlay-actions">
               <button type="button" class="btn-white" id="editDeleteBtn">Delete</button>
               <button type="submit" class="btn-dark" id="editSaveBtn">Save <img src="../assets/svg/check.svg" alt="Save icon"></button>

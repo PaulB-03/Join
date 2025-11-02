@@ -79,6 +79,7 @@ function beginResize(e) {
   document.addEventListener("mouseup", endResize);
   e.preventDefault();
 }
+
 /**
  * Performs resize on mousemove.
  * @param {MouseEvent} e
@@ -95,6 +96,7 @@ function doResize(e) {
   nh = Math.max(min, Math.min(max, nh));
   t.style.height = nh + "px";
 }
+
 /**
  * Ends resize and unbinds listeners.
  * @returns {void}
@@ -104,6 +106,7 @@ function endResize() {
   document.removeEventListener("mousemove", doResize);
   document.removeEventListener("mouseup", endResize);
 }
+
 /**
  * Wires custom textarea resize handle.
  * @returns {void}
@@ -237,6 +240,18 @@ async function updateTask(id, navigateToBoard = false, closeTaskOverlayAfterUpda
   }
 }
 
+/**
+ * Sets the default priority to "medium" in the UI and related global handlers.
+ *
+ * This function attempts to:
+ * 1. Update the selected priority via a global `window.priority` object (if available).
+ * 2. Set the global variable `window.selectedPrio` to `"medium"`.
+ * 3. Call a global function `window.setPrioColor` (if defined) to update priority colors.
+ * 4. Update the DOM elements to visually reflect the "medium" priority selection.
+ *
+ * @function setDefaultMediumPriority
+ * @returns {void} This function does not return a value.
+ */
 function setDefaultMediumPriority() {
   try {
     if (window.priority && typeof window.priority.setSelectedPriority === "function") {
@@ -250,35 +265,51 @@ function setDefaultMediumPriority() {
       return;
     }
   } catch {}
-
   document.querySelectorAll(".prioGrade").forEach((el) => el.classList.remove("active"));
   const mediumBtn = document.querySelector(".prioGrade.medium") || document.querySelector('[data-prio="medium"]');
   if (mediumBtn) mediumBtn.classList.add("active");
 }
 
-function createToastMessage(){
-    const msg=document.createElement("div");
-    msg.className="task-added-message";
-    msg.innerHTML=`Task added to board 
-      <img src="../assets/svg/board.svg" alt="Board icon"
-           style="width:30px;height:30px;margin-left:10px;vertical-align:middle">`;
-    document.body.append(msg); return msg;
-  }
-  
-  /**
-   * Animates toast into view.
-   * @param {HTMLElement} msg
-   * @returns {void}
-   */
-  function animateToastIn(msg){
-    requestAnimationFrame(()=>{ msg.style.transform="translate(-50%, -50%)"; });
-  }
-  
-  /**
-   * Shows toast and redirects to board.
-   * @returns {void}
-   */
-  function showAddedToastAndRedirect(){
-    const msg=createToastMessage(); animateToastIn(msg);
-    setTimeout(()=>{ msg.remove(); location.href="board.html"; },900);
-  }
+/**
+ * Creates and displays a toast message indicating that a task
+ * has been added to the board.
+ *
+ * The toast includes a text message and a small board icon.
+ * The created element is appended to the document body.
+ *
+ * @function createToastMessage
+ * @returns {HTMLDivElement} The created toast message element.
+ */
+function createToastMessage() {
+  const msg = document.createElement("div");
+  msg.className = "task-added-message";
+  msg.innerHTML = `Task added to board 
+    <img src="../assets/svg/board.svg" alt="Board icon"
+         style="width:30px;height:30px;margin-left:10px;vertical-align:middle">`;
+  document.body.append(msg);
+  return msg;
+}
+
+/**
+ * Animates toast into view.
+ * @param {HTMLElement} msg
+ * @returns {void}
+ */
+function animateToastIn(msg) {
+  requestAnimationFrame(() => {
+    msg.style.transform = "translate(-50%, -50%)";
+  });
+}
+
+/**
+ * Shows toast and redirects to board.
+ * @returns {void}
+ */
+function showAddedToastAndRedirect() {
+  const msg = createToastMessage();
+  animateToastIn(msg);
+  setTimeout(() => {
+    msg.remove();
+    location.href = "board.html";
+  }, 900);
+}

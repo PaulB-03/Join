@@ -250,27 +250,6 @@ async function onDetailSubtaskChange(e) {
   }
 }
 
-/* ----------------------- Assigned / Subtasks (Form) ---------------------- */
-
-// /**
-//  * Renders avatar initials for assigned contacts in the form.
-//  * @param {string[]} contacts
-//  * @returns {void}
-//  */
-// function fillAssignedContacts(contacts) {
-// const wrap = byId("assignedToInitials");
-// wrap.innerHTML = "";
-// if (!contacts?.length) { wrap.style.display = "none"; return; }
-// wrap.style.display = "flex";
-// contacts.forEach((c, i) => {
-// const div = document.createElement("div");
-// div.className = "av";
-// div.style.background = window.color(i);
-// div.textContent = initials(c);
-// wrap.appendChild(div);
-// });
-// }
-
 /**
  * Renders existing subtasks into the add/edit overlay list.
  * @param {Array<string|{text:string,done?:boolean}>} subtasks

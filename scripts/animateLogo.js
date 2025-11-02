@@ -142,7 +142,6 @@
       onFinish();
       return;
     }
-
     startLogo.addEventListener(
       "transitionend",
       (e) => {
@@ -150,7 +149,6 @@
       },
       { once: true }
     );
-
     setTimeout(onFinish, timeout);
   }
 
@@ -164,13 +162,12 @@
    */
   function showHiddenElements(startLogo, onDone) {
     let finished = false;
-
     const handleFinish = () => {
       finished = triggerSplashFinish(finished, startLogo, onDone);
     };
-
     waitForTransitionOrTimeout(startLogo, handleFinish);
   }
+
   /** ========== MAIN ANIMATION FLOW ========== */
 
   /**
@@ -222,16 +219,13 @@
     const startLogo = document.querySelector(isMobile ? ".startLogoMobile" : ".startLogo");
     const finalLogo = document.querySelector(isMobile ? ".mobileLogo img" : ".logo img");
     const overlay = isMobile ? document.querySelector(".startLogoMobileBg") : null;
-
     if (!startLogo || !finalLogo) return revealHidden(), hideAllSplash();
-
     if (sessionStorage.getItem(LOGO_KEY)) {
       revealHidden();
       hideAllSplash();
       unlockLogos();
       return;
     }
-
     runSplash(startLogo, finalLogo, overlay, isMobile);
   }
 

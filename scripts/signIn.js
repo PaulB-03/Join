@@ -41,7 +41,6 @@ document.getElementById("signinForm").addEventListener("submit", handleSignIn);
 async function handleSignIn(event) {
   event.preventDefault();
   const { email, password } = getSigninFormData();
-
   try {
     const users = await fetchUsers();
     const foundUser = findUser(users, email, password);

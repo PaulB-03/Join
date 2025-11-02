@@ -8,13 +8,9 @@ function renderAvatarsWithPriority(names = [], prio) {
   const MAX_AVATARS = 3;
   const shown = names.slice(0, MAX_AVATARS);
   const extra = names.length - shown.length;
-
   const avatars = shown.map((n) => `<div class="av" style="background-color:${colorForName(n)}">${initials(n)}</div>`).join("");
-
   const more = extra > 0 ? `<div class="av more">+${extra}</div>` : "";
-
   const prioIcon = getPriorityIcon(prio);
-
   return `
     <div class="row">
       <div class="avatars">${avatars}${more}</div>
@@ -40,7 +36,6 @@ function taskCardInnerHtml(t, percent, doneCount, total) {
     </span>
     <div class="task-title">${escapeHtml(t?.title || "")}</div>
     <div class="task-desc">${escapeHtml(t?.description || "")}</div>
-
     ${
       total
         ? `
@@ -116,17 +111,14 @@ function taskDetailTemplate(id, t = {}) {
         <dt><h6>Due date:</h6></dt><dd><h6>${date}</h6></dd>
         <dt><h6>Priority:</h6></dt><dd>${getPriorityBadge(t.priority)}</dd>
       </dl>
-
       <div class="task-assigned">
         <h6 class="section-title">Assigned to:</h6></div>
         <div class="task-assigned__list task-name">${assigned}</div>
       </div>
-
       <div class="subtasks">
         <h6div class="section-title"><h6>Subtasks</h6></div>
         <div class="subtasks__list">${subtasks}</div>
       </div>
-
       <div class="task-actions">
         <button type="button" id="taskDelete" class="danger">
           <img class="icon" src="../assets/svg/subdelete.svg" alt="" aria-hidden="true" />

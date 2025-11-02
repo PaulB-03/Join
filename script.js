@@ -10,16 +10,12 @@
 function sidebarHeaderInit() {
   /** @const {Set<string>} Public routes accessible without login */
   const PUB = new Set(["/", "/index.html", "/html/privacyPolicy.html", "/html/legalNotice.html"]);
-
   /** @type {string} Normalized current path */
   const path = location.pathname.replace(/\/+$/, "") || "/";
-
   /** @type {boolean} True if the current page is public */
   const isPub = PUB.has(path) || document.body?.dataset.public === "true";
-
   /** @type {boolean} True if no user is stored in localStorage */
   const noUser = !localStorage.getItem("currentUser");
-
   // Redirect guests away from internal routes
   if (!isPub && noUser) {
     const exc = ["/Join/html/legalNotice.html", "/Join/html/privacyPolicy.html"];
@@ -59,9 +55,7 @@ function toggleSidebarAndHeader(user) {
   const internal = document.getElementById("internalSidebar");
   const external = document.getElementById("externalSidebar");
   const headerNav = document.getElementById("headerNav");
-
   if (!internal || !external || !headerNav) return;
-
   const u = user ?? getCurrentUser();
   if (!u.type) showExternalSidebar(external, internal, headerNav);
   else showInternalSidebar(external, internal, headerNav);
@@ -110,9 +104,7 @@ function showInternalSidebar(external, internal, headerNav) {
 function highlightActiveLink() {
   let currentPath = location.pathname.replace(/\/+$/, "") || "/";
   currentPath = currentPath.replace(/^\/Join/, "") || "/";
-
   document.querySelectorAll(".nav-link.active").forEach((el) => el.classList.remove("active"));
-
   document.querySelectorAll(".nav-link").forEach((link) => {
     const href = link.getAttribute("href") || link.href;
     const linkPath = new URL(href, location.origin).pathname.replace(/\/+$/, "") || "/";
@@ -164,17 +156,14 @@ function highlightActiveLink() {
     let startX = 0;
     let startScrollLeft = 0;
     let originTarget = null;
-
     zone.addEventListener("mousedown", (e) => {
       if (e.button !== 0) return;
       originTarget = e.target;
-
       if (isCard(originTarget) || isInteractive(originTarget)) {
         isMouseDown = false;
         isScrolling = false;
         return;
       }
-
       isMouseDown = true;
       isScrolling = false;
       startX = e.clientX;
@@ -193,18 +182,14 @@ function highlightActiveLink() {
       };
       zone.addEventListener("click", suppress, { capture: true, once: true });
     }
-
     zone.addEventListener("mousemove", (e) => {
       if (!isMouseDown) return;
-
       const dx = e.clientX - startX;
       if (!isScrolling && Math.abs(dx) < THRESHOLD) return;
-
       if (!isScrolling) {
         isScrolling = true;
         zone.classList.add("drag-scroll");
       }
-
       e.preventDefault();
       zone.scrollLeft = startScrollLeft - dx;
     });
@@ -220,7 +205,6 @@ function highlightActiveLink() {
       zone.classList.remove("drag-scroll");
       originTarget = null;
     }
-
     zone.addEventListener("mouseup", endDrag);
     zone.addEventListener("mouseleave", endDrag);
     document.addEventListener("mouseup", endDrag, { capture: true });

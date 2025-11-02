@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
   bindOverlayButtons();
   setupOverlayResponsiveRedirect();
   mountSubtaskCheckboxListener();
-  //mountDatePickerMinToday();
 });
 
 /**

@@ -19,15 +19,20 @@ async function saveTask(path, data) {
 
 // ----------------------------------------dropDownMenue--------------------------------------------------
 
-initDropDownMenue();
-
+/**
+ * Initializes dropdown menus for contacts and categories.
+ *
+ * - Binds click event listeners to open contact/category dropdowns.
+ * - Binds click event on overlay or HTML container to reset dropdowns.
+ *
+ * @function initDropDownMenue
+ * @returns {void}
+ */
 function initDropDownMenue() {
   let assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
   let assignedToDropdownCategory = document.getElementById("assignedToDropdownCategory");
-
   assignedToDropDownContacts.addEventListener("click", openAssignedToContacts);
   assignedToDropdownCategory.addEventListener("click", openCategoryDropDown);
-
   if (document.getElementById("task-overlay-panel")) {
     let addTaskOverlayPanel = document.getElementById("task-overlay-panel");
     addTaskOverlayPanel.addEventListener("click", resetDropDown);
@@ -37,13 +42,18 @@ function initDropDownMenue() {
   }
 }
 
+/**
+ * Opens or closes the "Assigned To" contacts dropdown.
+ *
+ * @function openAssignedToContacts
+ * @param {MouseEvent} event - The click event triggering the function.
+ * @returns {void}
+ */
 function openAssignedToContacts(event) {
   let assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
   let dropDownArrow = document.getElementById("dropdown-arrow-contacts");
   let dropdownList = document.getElementById("dropdown-list-contacts");
-
   event.stopPropagation();
-
   if (!assignedToDropDownContacts.classList.contains("open")) {
     resetDropDown("category");
     document.getElementById("assignedToInitials").style.display = "none";
@@ -56,11 +66,17 @@ function openAssignedToContacts(event) {
   }
 }
 
+/**
+ * Opens or closes the category dropdown.
+ *
+ * @function openCategoryDropDown
+ * @param {MouseEvent} event - The click event triggering the function.
+ * @returns {void}
+ */
 function openCategoryDropDown(event) {
   let assignedToDropdownCategory = document.getElementById("assignedToDropdownCategory");
   let dropDownArrow = document.getElementById("dropdown-arrow-subtasks");
   event.stopPropagation();
-  // resetDropDown()
   if (!assignedToDropdownCategory.classList.contains("open")) {
     resetDropDown("contacts");
     assignedToDropdownCategory.classList.add("open");
@@ -72,10 +88,23 @@ function openCategoryDropDown(event) {
   }
 }
 
+/**
+ * Rotates a dropdown arrow icon to indicate the menu is open.
+ *
+ * @function rotateArrowDropDown
+ * @param {HTMLElement} dropDownArrow - The arrow element to rotate.
+ * @returns {void}
+ */
 function rotateArrowDropDown(dropDownArrow) {
   dropDownArrow.style.transform = "rotate(180deg) translateY(50%)";
 }
 
+/**
+ * Resets all dropdown menus, arrows, and margin adjustments to default state.
+ *
+ * @function resetDropDown
+ * @returns {void}
+ */
 function resetDropDown() {
   resetDropDownMenues();
   resetDropDownArrow();
@@ -83,6 +112,13 @@ function resetDropDown() {
   document.getElementById("assignedToInitials").style.display = "flex";
 }
 
+/**
+ * Closes dropdown menus based on the given element type.
+ *
+ * @function resetDropDownMenues
+ * @param {"category"|"contacts"} [element] - The dropdown type to reset.
+ * @returns {void}
+ */
 function resetDropDownMenues(element) {
   let assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
   let assignedToDropdownCategory = document.getElementById("assignedToDropdownCategory");
@@ -96,6 +132,12 @@ function resetDropDownMenues(element) {
   }
 }
 
+/**
+ * Resets the styles of dropdown arrow icons.
+ *
+ * @function resetDropDownArrow
+ * @returns {void}
+ */
 function resetDropDownArrow() {
   let dropDownArrowContacts = document.getElementById("dropdown-arrow-subtasks");
   let dropDownArrowAssignedTo = document.getElementById("dropdown-arrow-contacts");
@@ -103,6 +145,13 @@ function resetDropDownArrow() {
   dropDownArrowAssignedTo.style = "";
 }
 
+/**
+ * Adds margin spacing below dropdowns to prevent overlapping with other elements.
+ *
+ * @function addMarginSpacingForDropDownMenue
+ * @param {"category"|"contacts"} htmlElement - Determines which element's margin to adjust.
+ * @returns {void}
+ */
 function addMarginSpacingForDropDownMenue(htmlElement) {
   let subTasks = document.getElementById("subtasks");
   let dropdownListCategory = document.getElementById("dropdown-list-category");
@@ -115,6 +164,13 @@ function addMarginSpacingForDropDownMenue(htmlElement) {
   }
 }
 
+/**
+ * Resets element margins modified by dropdowns.
+ *
+ * @function resetMargin
+ * @param {"category"|"contacts"} [element] - The specific element to reset margins for.
+ * @returns {void}
+ */
 function resetMargin(element) {
   let category = document.getElementById("category");
   let subTasks = document.getElementById("subtasks");
@@ -129,7 +185,12 @@ function resetMargin(element) {
 }
 
 /**
- * Renders the contact list dropdown UI.
+ * Renders the contact list inside the dropdown menu.
+ *
+ * @function renderContacts
+ * @param {string[]} names - Array of contact names.
+ * @param {Object.<string, {name: string}>} contacts - Object containing contact data.
+ * @returns {void}
  */
 function renderContacts(names, contacts) {
   const list = getElementById("dropdown-list-contacts");
@@ -137,13 +198,16 @@ function renderContacts(names, contacts) {
   setInnerHTML(list, "");
   names.forEach((name) => {
     const entry = Object.values(contacts).find((c) => c.name === name);
-
     if (entry) list.appendChild(createContactListItem(entry));
   });
 }
 
 /**
- * Creates a list item for one contact in the dropdown list.
+ * Creates a list item element for a single contact.
+ *
+ * @function createContactListItem
+ * @param {{name: string}} contact - Contact object containing name data.
+ * @returns {HTMLDivElement} The generated contact list item element.
  */
 function createContactListItem(contact) {
   const li = makeLi();
@@ -153,50 +217,64 @@ function createContactListItem(contact) {
   return li;
 }
 
+/**
+ * Creates a basic container element for a contact dropdown item.
+ *
+ * @function makeLi
+ * @returns {HTMLDivElement} A new div element for a contact item.
+ */
 function makeLi() {
   const li = document.createElement("div");
   li.className = "dropdown-item-contact";
   return li;
 }
 
+/**
+ * Builds a label element for a contact with name, initials, and checkbox image.
+ *
+ * @function makeLabel
+ * @param {{name: string}} contact - Contact data.
+ * @returns {HTMLLabelElement} A label element with contact info and checkbox.
+ */
 function makeLabel(contact) {
   const label = document.createElement("label");
   label.className = "dropdown-checkbox";
-
   const av = document.createElement("span");
   av.className = "contact-initial";
   av.textContent = initials(contact.name);
   av.style.backgroundColor = colorForName(contact.name);
-
   const nm = document.createElement("span");
   nm.className = "contact-name";
   nm.textContent = contact.name;
-
   const img = document.createElement("img");
   img.className = "checkbox-svg";
   img.src = (window.assignedContacts || []).includes(contact.name) ? "../assets/svg/checked.svg" : "../assets/svg/check_button.svg";
-
   label.append(av, nm, img);
   return label;
 }
 
 /**
- * Toggles a contact in the selected list and updates UI.
+ * Toggles a contact selection and updates the dropdown display.
+ *
+ * @function toggleContact
+ * @param {string} name - Name of the contact to toggle.
+ * @returns {void}
  */
 function toggleContact(name) {
   const list = getAssignedList();
   toggleName(list, name);
-
   const dd = getElementById("assignedToDropdownContacts");
   const isOpen = dd?.classList.contains("open");
   const before = isOpen && window.__categoryBox ? window.__categoryBox.offsetTop : 0;
-
   renderAssignedContacts();
   updateDropdownHighlight();
 }
 
 /**
- * Highlights selected contacts inside the dropdown list.
+ * Updates the UI highlight state for contacts inside the dropdown.
+ *
+ * @function updateDropdownHighlight
+ * @returns {void}
  */
 function updateDropdownHighlight() {
   const list = getElementById("dropdown-list-contacts");
@@ -216,19 +294,29 @@ function updateDropdownHighlight() {
 }
 
 /**
- * Renders up to 3 selected contacts as colored initials.
+ * Displays up to 3 selected contacts as colored initials in the UI.
+ *
+ * @function renderAssignedContacts
+ * @returns {void}
  */
 function renderAssignedContacts() {
   const box = getElementById("assignedToInitials");
   if (!box) return;
   const names = Array.isArray(window.assignedContacts) ? window.assignedContacts : [];
   setInnerHTML(box, "");
-  if (!names.length) return; //hideElement(box);
-  // showElement(box, "flex");
+  if (!names.length) return;
   addInitials(box, names.slice(0, 3));
   addOverflowCount(box, names);
 }
 
+/**
+ * Adds colored initials for selected contacts in the UI.
+ *
+ * @function addInitials
+ * @param {HTMLElement} box - The container element to append initials into.
+ * @param {string[]} names - List of contact names.
+ * @returns {void}
+ */
 function addInitials(box, names) {
   names.forEach((name) => {
     const item = document.createElement("span");
@@ -239,6 +327,14 @@ function addInitials(box, names) {
   });
 }
 
+/**
+ * Adds an overflow counter (+N) when more than 3 contacts are selected.
+ *
+ * @function addOverflowCount
+ * @param {HTMLElement} box - The container element to append the counter into.
+ * @param {string[]} names - Array of selected contact names.
+ * @returns {void}
+ */
 function addOverflowCount(box, names) {
   if (names.length <= 3) return;
   const extra = document.createElement("span");
@@ -248,34 +344,59 @@ function addOverflowCount(box, names) {
   box.appendChild(extra);
 }
 
+/**
+ * Retrieves or initializes the global assigned contacts list.
+ *
+ * @function getAssignedList
+ * @returns {string[]} The array of assigned contact names.
+ */
 function getAssignedList() {
   return Array.isArray(window.assignedContacts) ? window.assignedContacts : (window.assignedContacts = []);
 }
 
+/**
+ * Toggles a contact name within a contact list.
+ *
+ * @function toggleName
+ * @param {string[]} list - Array of contact names.
+ * @param {string} name - Name of the contact to toggle.
+ * @returns {void}
+ */
 function toggleName(list, name) {
   const i = list.indexOf(name);
   i >= 0 ? list.splice(i, 1) : list.push(name);
 }
 
+/**
+ * Handles contact item click events to toggle selection.
+ *
+ * @function handleContactClick
+ * @param {MouseEvent} e - The click event.
+ * @param {{name: string}} contact - The clicked contact.
+ * @returns {void}
+ */
 function handleContactClick(e, contact) {
   e.stopPropagation();
   toggleContact(contact.name);
   updateDropdownHighlight();
 }
-
 document.addEventListener("DOMContentLoaded", () => {
   loadContactsInAddTask();
 });
 
+/**
+ * Saves the selected category and updates the placeholder text.
+ *
+ * @function saveSelectedCategory
+ * @param {MouseEvent} event - The click event.
+ * @param {number} index - Index of the selected category (0 = Userstory, 1 = Technical Task).
+ * @returns {void}
+ */
 function saveSelectedCategory(event, index) {
   event.stopPropagation();
   let placeHolder = document.getElementById("categoryPlaceholder");
   let categories = ["Userstory", "Technical Task"];
   window.selectedCategory = categories[index];
-  if (index == 0) {
-    placeHolder.innerHTML = "Userstory";
-  } else {
-    placeHolder.innerHTML = "Technical Task";
-  }
+  placeHolder.innerHTML = index === 0 ? "Userstory" : "Technical Task";
   resetDropDown();
 }

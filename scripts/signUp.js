@@ -10,14 +10,11 @@ const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.a
  */
 function checkForUser(users, contacts, email) {
   const emailExistsInUsers = users && Object.values(users).some((u) => u.email === email);
-
   const emailExistsInContacts = contacts && Object.values(contacts).some((c) => c.email === email);
-
   if (emailExistsInUsers || emailExistsInContacts) {
     setEmailError("This email address is already used.", true);
     return true;
   }
-
   setEmailError("Please use a valid email address.", false);
   return false;
 }
@@ -82,12 +79,10 @@ async function addUser(name, email, password) {
   const users = await res.json();
   const contactCheck = await fetch(`${BASE_URL}/contacts.json`);
   const contacts = await contactCheck.json();
-
   if (checkForUser(users, contacts, email)) return false;
   const nextIndex = checkIndexPosition(users);
   const newKey = await saveNewUser(newUser, nextIndex);
   if (!newKey) return false;
-
   await addContact({ name, email, phone });
   return true;
 }
@@ -180,10 +175,8 @@ function togglePasswordVisibilityOnClick(input, state) {
   input.addEventListener("click", (e) => {
     const iconAreaClicked = e.offsetX > input.clientWidth - 30;
     if (!iconAreaClicked || input.value.trim() === "") return;
-
     if (state.visible) hidePassword(input);
     else makePasswordVisible(input);
-
     state.visible = !state.visible;
   });
 }
@@ -268,28 +261,21 @@ function syncSignupBtn() {
  * Attaches input event listeners to form fields.
  */
 function setupInputListeners() {
-  ["signupName", "signupEmail", "signupPassword", "confirmPassword"].forEach(
-    (id) => document.getElementById(id)?.addEventListener("input", syncSignupBtn)
-  );
+  ["signupName", "signupEmail", "signupPassword", "confirmPassword"].forEach((id) => document.getElementById(id)?.addEventListener("input", syncSignupBtn));
 }
 
 /**
  * Attaches click listener to policy checkbox image.
  */
 function setupPolicyListener() {
-  document
-    .getElementById("policyCheckboxImg")
-    ?.addEventListener("click", () => setTimeout(syncSignupBtn, 0));
+  document.getElementById("policyCheckboxImg")?.addEventListener("click", () => setTimeout(syncSignupBtn, 0));
 }
 
 /**
  * Prevents form submission if fields are incomplete.
  */
 function setupFormSubmitBlock() {
-  (window.signupForm || document.getElementById("signUpForm"))?.addEventListener(
-    "submit",
-    (e) => !canSubmitSignup() && e.preventDefault()
-  );
+  (window.signupForm || document.getElementById("signUpForm"))?.addEventListener("submit", (e) => !canSubmitSignup() && e.preventDefault());
 }
 
 /**

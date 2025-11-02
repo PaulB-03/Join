@@ -76,12 +76,10 @@ const validateSignupForm = () => {
   const isNameValid = nameRegex.test(signupName.value);
   const isEmailValid = emailRegex.test(signupEmail.value.toLowerCase());
   const doPasswordsMatch = signupPassword.value && signupPassword.value === confirmPassword.value;
-
   updateFieldError(isNameValid, signupName, nameError);
   updateFieldError(isEmailValid, signupEmail, emailError);
   updateFieldError(doPasswordsMatch, signupPassword, passwordMatchError);
   updateFieldError(doPasswordsMatch, confirmPassword, passwordMatchError);
-
   // Check policy acceptance
   policyError.style.visibility = policyChecked ? "hidden" : "visible";
 
@@ -111,11 +109,9 @@ acceptPolicyImg.addEventListener("click", () => {
 signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   if (!validateSignupForm()) return;
-
   const name = signupName.value;
   const email = signupEmail.value.toLowerCase();
   const password = signupPassword.value;
-
   try {
     await signupProcess(name, email, password);
   } catch (err) {
@@ -137,11 +133,9 @@ signupForm.addEventListener("submit", async (e) => {
  */
 async function signupProcess(name, email, password) {
   const success = await addUser(name, email, password);
-
   if (!success) {
     return; // Stop on failure
   }
-
   // Success flow
   showSignupSuccess();
   await new Promise((resolve) => setTimeout(resolve, 1000));

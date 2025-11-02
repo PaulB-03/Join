@@ -166,7 +166,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const addBtn = document.getElementById("add");
   if (addBtn) addBtn.onclick = handleAddOrEditTask;
   setDefaultMediumPriority();
-
   const clearBtn = document.getElementById("clear");
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {

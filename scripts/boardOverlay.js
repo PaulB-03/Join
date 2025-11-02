@@ -7,17 +7,6 @@ function byId(id) {
   return document.getElementById(id);
 }
 
-// (function () {
-// /**
-//  * Fallback-Farbpalette, falls window.color fehlt.
-//  * @returns {void}
-//  */
-// if (typeof window.color !== "function") {
-// const __PALETTE = ["#f44336", "#2196F3", "#FF9800", "#9C27B0", "#4CAF50", "#00BCD4", "#FFC107"];
-// window.color = (i) => __PALETTE[i % __PALETTE.length];
-// }
-// })();
-
 /** @type {Record<string,string>} */
 const __COL_TO_STATE = { "todo": "toDo", "in-progress": "in progress", "await-feedback": "await feedback", "done": "done" };
 /** @type {string} Firebase RTDB Base URL */
@@ -279,19 +268,8 @@ function openTaskOverlay({ animate = true } = {}) {
   setOverlayButtonText(false);
   toggleClearButton(false);
   clearTask();
-  // initTaskFormEnhancements();
   (byId("titleInput") || firstFocusable(ov) || ov).focus();
 }
-
-// /**
-//  * Initializes form enhancements (dropdowns, prio images).
-//  * @returns {void}
-//  */
-// function initTaskFormEnhancements() {
-// typeof initCategoryDropdown === "function" && initCategoryDropdown();
-// typeof initContactsDropdown === "function" && initContactsDropdown();
-// typeof initialiseSavePrioImg === "function" && initialiseSavePrioImg();
-// }
 
 /**
  * Fills the add/edit form with an existing task.
@@ -374,14 +352,12 @@ function toggleClearButton(isEditing) {
 /**
  * @function setupOverlayResponsiveRedirect
  * @example
- * // Initialize responsive redirect behavior
  * setupOverlayResponsiveRedirect();
  */
 function setupOverlayResponsiveRedirect() {
   /** @type {MediaQueryList} */
   const mq = window.matchMedia("(max-width: 850px)");
   let redirecting = false;
-
   /**
    * @param {MediaQueryListEvent|MediaQueryList} e - The media query event or object.
    * @returns {void}
@@ -395,12 +371,10 @@ function setupOverlayResponsiveRedirect() {
       redirecting
     )
       return;
-
     redirecting = true;
     hideTaskOverlay();
     setTimeout(() => location.assign("../html/addTask.html"), 200);
   }
-
   redirectIfMobile(mq);
   mq.addEventListener("change", redirectIfMobile);
 }
