@@ -148,21 +148,6 @@ async function openTaskDetail(id) {
   (firstFocusable(ov) || ov).focus();
 }
 
-const oldOpenTaskOverlay = openTaskOverlay;
-openTaskOverlay = function (opts = {}) {
-  oldOpenTaskOverlay(opts);
-
-  if (typeof setPrioColor === "function") {
-    setPrioColor("medium");
-  } else if (window.priority && typeof window.priority.setSelectedPriority === "function") {
-    window.priority.setSelectedPriority("medium");
-  } else {
-    const btn = document.querySelector(".prioGrade.medium");
-    if (btn) btn.classList.add("active");
-    window.selectedPrio = "medium";
-  }
-};
-
 /**
  * Binds detail overlay actions: subtasks, close, delete, edit, esc.
  * @param {HTMLElement} overlay
