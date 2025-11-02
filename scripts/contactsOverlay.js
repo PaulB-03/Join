@@ -122,6 +122,7 @@ async function deleteContact(id) {
   body.classList.add("d_none");
   if (body) body.innerHTML = "";
   document.body.classList.remove("showing-details");
+  backToList();
 }
 
 
