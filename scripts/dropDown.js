@@ -191,7 +191,6 @@ function toggleContact(name) {
   renderAssignedContacts();
   updateDropdownHighlight();
 
-  if (isOpen) adjustCategoryBoxAfter(before);
 }
 
 /**
@@ -247,14 +246,6 @@ function addOverflowCount(box, names) {
   box.appendChild(extra);
 }
 
-function adjustCategoryBoxAfter(before) {
-  const box = window.__categoryBox;
-  if (!box) return;
-  const delta = box.offsetTop - before;
-  const cur = parseFloat(box.style.marginTop) || parseFloat(getComputedStyle(box).marginTop) || 0;
-  box.style.marginTop = Math.max(0, cur - delta) + "px";
-}
-
 function getAssignedList() {
   return Array.isArray(window.assignedContacts) ? window.assignedContacts : (window.assignedContacts = []);
 }
@@ -273,3 +264,14 @@ function handleContactClick(e, contact) {
 document.addEventListener("DOMContentLoaded", () => {
   loadContactsInAddTask();
 });
+
+function saveSelectedCategory(event, index) {
+  event.stopPropagation()
+  let placeHolder = document.getElementById('categoryPlaceholder')
+  if (index == 0) {
+    placeHolder.innerHTML = "Userstory"
+  } else {
+    placeHolder.innerHTML = "Technical Task"
+  }
+  resetDropDown()
+}
