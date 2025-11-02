@@ -43,13 +43,17 @@ function showInlineError(field, errorMessage) {
   errorMessage.style.visibility = "visible";
 }
 
+function showCategoryError(field) {
+  field.style.border = "1px solid red";
+}
+
 /**
  * Clears all inline form errors.
  * @returns {void}
  */
 function clearInlineErrors() {
   document.querySelectorAll(".addTaskErrors").forEach((e) => (e.style.visibility = "hidden"));
-  ["titleInput", "date"].forEach((id) => {
+  ["titleInput", "date", "input-category"].forEach((id) => {
     const f = $id(id);
     if (f) f.style.border = "";
   });
@@ -71,7 +75,7 @@ function validateTaskFormFields() {
     ok = false;
   }
   if (window.selectedCategory == undefined) {
-    document.getElementById("input-category").style.border = "1px solid red";
+    showCategoryError($id("input-category"));
     ok = false;
   }
   return ok;
