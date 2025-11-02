@@ -71,6 +71,7 @@ function validateTaskFormFields() {
     ok = false;
   }
   if (window.selectedCategory == undefined) {
+    document.getElementById("input-category").style.border = "1px solid red";
     ok = false;
   }
   return ok;
