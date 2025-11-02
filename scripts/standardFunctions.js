@@ -4,9 +4,7 @@
    * =============================== */
 
   /** Base URL for Firebase Realtime Database requests. */
-  const DATABASE_BASE_URL =
-    (typeof baseURL !== "undefined" && baseURL) ||
-    "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
+  const DATABASE_BASE_URL = (typeof baseURL !== "undefined" && baseURL) || "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
 
   /** List of CSS variable names used for contact background colors. */
   const CONTACT_BG_CSS_VARS = [
@@ -32,13 +30,19 @@
    * =============================== */
 
   /** Returns an element by its ID. */
-  function getElementById(id) { return document.getElementById(id); }
+  function getElementById(id) {
+    return document.getElementById(id);
+  }
 
   /** Returns the first element matching the selector. */
-  function querySelector(selector, root = document) { return root.querySelector(selector); }
+  function querySelector(selector, root = document) {
+    return root.querySelector(selector);
+  }
 
   /** Returns an array of elements matching the selector. */
-  function querySelectorAll(selector, root = document) { return Array.from(root.querySelectorAll(selector)); }
+  function querySelectorAll(selector, root = document) {
+    return Array.from(root.querySelectorAll(selector));
+  }
 
   /** Safely attaches an event listener if the element exists. */
   function onEvent(element, eventName, handler, options) {
@@ -46,16 +50,24 @@
   }
 
   /** Sets the text content of an element. */
-  function setTextContent(element, text) { if (element) element.textContent = text; }
+  function setTextContent(element, text) {
+    if (element) element.textContent = text;
+  }
 
   /** Sets the HTML content of an element. */
-  function setInnerHTML(element, html) { if (element) element.innerHTML = html; }
+  function setInnerHTML(element, html) {
+    if (element) element.innerHTML = html;
+  }
 
   /** Shows an element with an optional display value. */
-  function showElement(element, display = "block") { if (element) element.style.display = display; }
+  function showElement(element, display = "block") {
+    if (element) element.style.display = display;
+  }
 
   /** Hides an element. */
-  function hideElement(element) { if (element) element.style.display = "none"; }
+  function hideElement(element) {
+    if (element) element.style.display = "none";
+  }
 
   /* ===============================
    *  HTTP Utilities
@@ -110,6 +122,22 @@
     return `var(${varName})`;
   }
 
+  async function loadContactsInAddTask() {
+    try {
+      const contacts = await httpGetJson("contacts.json");
+      const list = getElementById("dropdown-list-contacts");
+      if (!contacts || !list) return;
+      window.loadedContacts = contacts;
+      window.allContacts = Object.values(contacts)
+        .map((c) => c.name)
+        .filter(Boolean)
+        .sort((a, b) => a.localeCompare(b));
+      renderContacts(window.allContacts, contacts);
+    } catch (e) {
+      console.error("Could not load contacts:", e);
+    }
+  }
+
   /* ===============================
    *  Global API Exposure
    * =============================== */
@@ -129,4 +157,5 @@
   window.httpPatchJson ??= httpPatchJson;
   window.initials ??= initials;
   window.colorForName ??= colorForName;
+  window.loadContactsInAddTask ??= loadContactsInAddTask;
 })();

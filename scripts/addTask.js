@@ -17,15 +17,18 @@ window.assignedContacts = window.assignedContacts || [];
  * @param {string} id
  * @returns {HTMLElement|null}
  */
-function $id(id){ return document.getElementById(id); }
+function $id(id) {
+  return document.getElementById(id);
+}
 
 /**
  * Returns trimmed value of input by id.
  * @param {string} id
  * @returns {string}
  */
-function getFieldValue(id){
-  const el=$id(id); return el?el.value.trim():"";
+function getFieldValue(id) {
+  const el = $id(id);
+  return el ? el.value.trim() : "";
 }
 
 /**
@@ -34,19 +37,22 @@ function getFieldValue(id){
  * @param {HTMLElement} errorMessage
  * @returns {void}
  */
-function showInlineError(field,errorMessage){
-  if(!field||!errorMessage) return;
-  field.style.border="1px solid red";
-  errorMessage.style.visibility="visible";
+function showInlineError(field, errorMessage) {
+  if (!field || !errorMessage) return;
+  field.style.border = "1px solid red";
+  errorMessage.style.visibility = "visible";
 }
 
 /**
  * Clears all inline form errors.
  * @returns {void}
  */
-function clearInlineErrors(){
-  document.querySelectorAll(".addTaskErrors").forEach(e=>e.style.visibility="hidden");
-  ["titleInput","date"].forEach(id=>{ const f=$id(id); if(f) f.style.border=""; });
+function clearInlineErrors() {
+  document.querySelectorAll(".addTaskErrors").forEach((e) => (e.style.visibility = "hidden"));
+  ["titleInput", "date"].forEach((id) => {
+    const f = $id(id);
+    if (f) f.style.border = "";
+  });
 }
 
 /* --------------------------- Validation --------------------------------- */
@@ -54,10 +60,16 @@ function clearInlineErrors(){
  * Validates required fields of task form.
  * @returns {boolean}
  */
-function validateTaskFormFields(){
-  let ok=true;
-  if(!getFieldValue("titleInput")){ showInlineError($id("titleInput"),$id("titleError")); ok=false; }
-  if(!getFieldValue("date")){ showInlineError($id("date"),$id("dateError")); ok=false; }
+function validateTaskFormFields() {
+  let ok = true;
+  if (!getFieldValue("titleInput")) {
+    showInlineError($id("titleInput"), $id("titleError"));
+    ok = false;
+  }
+  if (!getFieldValue("date")) {
+    showInlineError($id("date"), $id("dateError"));
+    ok = false;
+  }
   return ok;
 }
 
@@ -66,25 +78,26 @@ function validateTaskFormFields(){
  * Collects subtasks from UI.
  * @returns {string[]}
  */
-function collectSubtasksFromUI(){
+function collectSubtasksFromUI() {
   return Array.from(document.querySelectorAll(".subtaskTitle"))
-    .map(el=>el.textContent.trim()).filter(Boolean);
+    .map((el) => el.textContent.trim())
+    .filter(Boolean);
 }
 
 /**
  * Builds payload from form fields.
  * @returns {object}
  */
-function buildTaskPayloadFromForm(){
+function buildTaskPayloadFromForm() {
   return {
-    title:getFieldValue("titleInput"),
-    description:getFieldValue("descriptionInput"),
-    date:getFieldValue("date"),
-    priority:priority.getSelectedPriority(),
-    category:window.selectedCategory||"",
-    assignedContacts:Array.isArray(window.assignedContacts)?[...window.assignedContacts]:[],
-    state:window.selectedState||"toDo",
-    subtasks:collectSubtasksFromUI(),
+    title: getFieldValue("titleInput"),
+    description: getFieldValue("descriptionInput"),
+    date: getFieldValue("date"),
+    priority: priority.getSelectedPriority(),
+    category: window.selectedCategory || "",
+    assignedContacts: Array.isArray(window.assignedContacts) ? [...window.assignedContacts] : [],
+    state: window.selectedState || "toDo",
+    subtasks: collectSubtasksFromUI(),
   };
 }
 
@@ -94,11 +107,13 @@ function buildTaskPayloadFromForm(){
  * @param {object} payload
  * @returns {Promise<any>}
  */
-async function persistTask(payload){
-  const res=await fetch(`${baseURL}tasks.json`,{
-    method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)
+async function persistTask(payload) {
+  const res = await fetch(`${baseURL}tasks.json`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
   });
-  if(!res.ok) throw new Error("POST /tasks failed: "+res.status);
+  if (!res.ok) throw new Error("POST /tasks failed: " + res.status);
   return res.json();
 }
 
@@ -107,13 +122,20 @@ async function persistTask(payload){
  * Handles task creation.
  * @returns {Promise<void>}
  */
-async function createTask(){
+async function createTask() {
   clearInlineErrors();
-  if(!validateTaskFormFields()) return;
-  const b=$id("add"); b?.setAttribute("disabled",true);
-  try{ await persistTask(buildTaskPayloadFromForm()); showAddedToastAndRedirect(); }
-  catch(e){ console.error(e); alert("Die Aufgabe konnte nicht gespeichert werden."); }
-  finally{ b?.removeAttribute("disabled"); }
+  if (!validateTaskFormFields()) return;
+  const b = $id("add");
+  b?.setAttribute("disabled", true);
+  try {
+    await persistTask(buildTaskPayloadFromForm());
+    showAddedToastAndRedirect();
+  } catch (e) {
+    console.error(e);
+    alert("Die Aufgabe konnte nicht gespeichert werden.");
+  } finally {
+    b?.removeAttribute("disabled");
+  }
 }
 
 /**
@@ -121,11 +143,11 @@ async function createTask(){
  * @param {{id:string,name:string}} contact
  * @returns {void}
  */
-function selectContact(contact){
-  if(!contact) return;
-  if(!window.assignedContacts.some(c=>c.id===contact.id)) window.assignedContacts.push(contact);
-  const initials=$id("assignedToInitials");
-  if(initials) initials.textContent=window.assignedContacts.map(c=>c.name[0]).join(", ");
+function selectContact(contact) {
+  if (!contact) return;
+  if (!window.assignedContacts.some((c) => c.id === contact.id)) window.assignedContacts.push(contact);
+  const initials = $id("assignedToInitials");
+  if (initials) initials.textContent = window.assignedContacts.map((c) => c.name[0]).join(", ");
 }
 
 /* ---------------------------- Bootstraps -------------------------------- */

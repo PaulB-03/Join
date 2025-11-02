@@ -8,7 +8,6 @@ function renderAvatarsWithPriority(names = [], prio) {
   const MAX_AVATARS = 3;
   const shown = names.slice(0, MAX_AVATARS);
   const extra = names.length - shown.length;
-  console.log(names);
 
   const avatars = shown.map((n) => `<div class="av" style="background-color:${colorForName(n)}">${initials(n)}</div>`).join("");
 

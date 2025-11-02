@@ -17,22 +17,6 @@ async function saveTask(path, data) {
   return httpPostJson(path + ".json", data);
 }
 
-async function loadContactsInAddTask() {
-  try {
-    const contacts = await httpGetJson("contacts.json");
-    const list = getElementById("dropdown-list-contacts");
-    if (!contacts || !list) return;
-    window.loadedContacts = contacts;
-    window.allContacts = Object.values(contacts)
-      .map((c) => c.name)
-      .filter(Boolean)
-      .sort((a, b) => a.localeCompare(b));
-    renderContacts(window.allContacts, contacts);
-  } catch (e) {
-    console.error("Could not load contacts:", e);
-  }
-}
-
 // ----------------------------------------dropDownMenue--------------------------------------------------
 
 initDropDownMenue();
@@ -122,9 +106,9 @@ function addMarginSpacingForDropDownMenue(htmlElement) {
   let category = document.getElementById("category");
   let dropdownListContacts = document.getElementById("dropdown-list-contacts");
   if (htmlElement == "category") {
-    subTasks.style.marginTop = dropdownListCategory.offsetHeight + (dropdownListCategory.offsetHeight * 0.1) + "px";
+    subTasks.style.marginTop = dropdownListCategory.offsetHeight + dropdownListCategory.offsetHeight * 0.1 + "px";
   } else if (htmlElement == "contacts") {
-    category.style.marginTop = dropdownListContacts.offsetHeight + (dropdownListContacts.offsetHeight * 0.05) + "px";
+    category.style.marginTop = dropdownListContacts.offsetHeight + dropdownListContacts.offsetHeight * 0.05 + "px";
   }
 }
 
@@ -153,7 +137,6 @@ function renderContacts(names, contacts) {
 
     if (entry) list.appendChild(createContactListItem(entry));
   });
-  console.log(list);
 }
 
 /**
