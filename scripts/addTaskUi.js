@@ -16,40 +16,33 @@ function getSubtasksFromForm() {
     .filter(Boolean);
 }
 
-/* --------------------------- Kontakte / Suche ---------------------------- */
 // /**
-//  * Loads contacts list (delegates to external loader).
-//  * @returns {Promise<void>}
+//  * Updates initials preview bubble.
+//  * @returns {void}
 //  */
-// async function loadContacts(){ if(typeof loadContactsInAddTask==="function") await loadContactsInAddTask(); }
+// function updateInitialsPreview() {
+// const initials = $id("assignedToInitials");
+// if (initials) {
+// initials.style.display = "block";
+// initials.textContent = window.assignedContacts.map((x) => x.name[0]).join(", ");
+// }
+// }
 
-/**
- * Updates initials preview bubble.
- * @returns {void}
- */
-function updateInitialsPreview() {
-  const initials = $id("assignedToInitials");
-  if (initials) {
-    initials.style.display = "block";
-    initials.textContent = window.assignedContacts.map((x) => x.name[0]).join(", ");
-  }
-}
-
-/**
- * Attaches click handler to one contact item.
- * @param {Element} it
- * @param {Function} closeFn
- * @returns {void}
- */
-function wireContactItem(it, closeFn) {
-  it.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const c = { id: it.dataset.id, name: it.dataset.name };
-    if (!window.assignedContacts.some((x) => x.id === c.id)) window.assignedContacts.push(c);
-    updateInitialsPreview();
-    closeFn();
-  });
-}
+// /**
+//  * Attaches click handler to one contact item.
+//  * @param {Element} it
+//  * @param {Function} closeFn
+//  * @returns {void}
+//  */
+// function wireContactItem(it, closeFn) {
+// it.addEventListener("click", (e) => {
+// e.stopPropagation();
+// const c = { id: it.dataset.id, name: it.dataset.name };
+// if (!window.assignedContacts.some((x) => x.id === c.id)) window.assignedContacts.push(c);
+// updateInitialsPreview();
+// closeFn();
+// });
+// }
 
 /* ------------------------------ Bootstraps ------------------------------- */
 /**
@@ -219,7 +212,7 @@ async function afterUpdateUI(id, navigateToBoard, closeOverlayAfter, reopenDetai
     location.href = "board.html";
     return;
   }
-  if (reopenDetail) await openTaskDetail(id);
+  // if (reopenDetail) await openTaskDetail(id);
 }
 
 /**
