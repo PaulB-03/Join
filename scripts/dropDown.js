@@ -124,7 +124,7 @@ function addMarginSpacingForDropDownMenue(htmlElement) {
   if (htmlElement == "category") {
     subTasks.style.marginTop = dropdownListCategory.offsetHeight + (dropdownListCategory.offsetHeight * 0.1) + "px";
   } else if (htmlElement == "contacts") {
-    category.style.marginTop = dropdownListContacts.offsetHeight + (dropdownListContacts.offsetHeight * 0.1) + "px";
+    category.style.marginTop = dropdownListContacts.offsetHeight + (dropdownListContacts.offsetHeight * 0.05) + "px";
   }
 }
 
