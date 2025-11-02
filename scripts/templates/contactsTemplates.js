@@ -35,13 +35,16 @@ function editOverlayHTML() {
           <div id="editAvatar" class="detailsAvatar editAvtrDsktp"></div>
           <div class="add-contact-overlay-form">
             <div class="field">
-              <input name="name" class="has-icon icon-user input" placeholder="Name" required>
+              <input name="name" class="has-icon icon-user input" placeholder="Name" maxlength="28" required>
+              <small class="field-error" data-edit-error="name" style="visibility:hidden"> Name can’t be empty and must contain only letters (no digits). </small>
             </div>
             <div class="field">
-              <input name="email" class="has-icon icon-mail input" type="email" placeholder="Email" required>
+              <input name="email" class="has-icon icon-mail input" type="email" placeholder="Email" maxlength="28" required>
+              <small class="field-error" data-edit-error="email" style="visibility:hidden"> Use format firstName.lastName@domain.com </small>
             </div>
             <div class="field">
-              <input name="phone" class="has-icon icon-phone input" placeholder="Phone">
+              <input name="phone" class="has-icon icon-phone input" placeholder="Phone" maxlength="28">
+              <small class="field-error" data-edit-error="phone" style="visibility:hidden"> Only digits, spaces, +, - or * allowed </small>
             </div>
             <div class="overlay-actions">
               <button type="button" class="btn-white" id="editDeleteBtn">Delete</button>

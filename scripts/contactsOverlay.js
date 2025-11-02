@@ -8,13 +8,13 @@ const addNameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+(?:\s+[a-zA-ZÀ-ÖØ-öø-�
  * Regex for validating an email address.
  * @constant {RegExp}
  */
-const addEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const addEmailRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß]+\.[a-zA-ZÀ-ÖØ-öø-ÿß]+@[a-zA-ZÀ-ÖØ-öø-ÿß]+\.[a-zA-ZÀ-ÖØ-öø-ÿß]+$/;
 
 /**
  * Regex for validating a phone number (optional).
  * @constant {RegExp}
  */
-const addPhoneRegex = /^\s*$|^\+?[0-9\s\-()]{6,}$/;
+const addPhoneRegex = /^\s*$|^[0-9+\-\*\s]+$/;
 
 /**
  * Update the error UI state for a field.
@@ -56,17 +56,40 @@ function getAddContactRefs() {
 }
 
 
+function getEditRefs(root) {
+  const form = root.querySelector("#editContactForm");
+  return { form, name:  form?.elements?.name, email: form?.elements?.email, phone: form?.elements?.phone, nameErr:  root.querySelector('[data-edit-error="name"]'), emailErr: root.querySelector('[data-edit-error="email"]'), phoneErr: root.querySelector('[data-edit-error="phone"]')};
+}
+
+
+function validateEditContactForm(root) {
+  const { name, email, phone, nameErr, emailErr, phoneErr } = getEditRefs(root);
+  if (!name || !email || !phone) return false;
+  const n = name.value.trim();
+  const e = email.value.trim();
+  const p = (phone.value || "").trim();
+  const nameOk  = !!n && addNameRegex.test(n);                  
+  const emailOk = !!e && addEmailRegex.test(e);
+  const phoneOk = addPhoneRegex.test(p);
+  updateFieldErr(nameOk,  name,  nameErr);
+  updateFieldErr(emailOk, email, emailErr);
+  updateFieldErr(phoneOk, phone, phoneErr);
+  return nameOk && emailOk && phoneOk;
+}
+
+
 /**
  * Validate the Add Contact form values.
  * @returns {boolean} True if all fields are valid.
  */
 function validateAddContactForm() {
-  const { name, email, phone, nameErr, emailErr, phoneErr } = getAddContactRefs(); 
-  if (!name || !email || !phone) return false; 
-  const validName = addNameRegex.test(name.value.trim()); 
-  const validEmail = addEmailRegex.test(email.value.trim());
-  const validPhone = addPhoneRegex.test((phone.value || "").trim());
-  updateFieldErr(validName, name, nameErr); 
+  const { name, email, phone, nameErr, emailErr, phoneErr } = getAddContactRefs();
+  if (!name || !email || !phone) return false;
+  const n = name.value.trim(), e = email.value.trim(), p = (phone.value || "").trim();
+  const validName = addNameRegex.test(n); 
+  const validEmail = addEmailRegex.test(e);
+  const validPhone = addPhoneRegex.test(p);
+  updateFieldErr(validName, name, nameErr);
   updateFieldErr(validEmail, email, emailErr);
   updateFieldErr(validPhone, phone, phoneErr);
   return validName && validEmail && validPhone;
@@ -147,6 +170,16 @@ async function updateContact(id, updates) {
 }
 
 
+function wireEditValidationLive(overlay) {
+  const f = overlay.querySelector("#editContactForm");
+  const run = () => validateEditContactForm(overlay);
+  ["input","blur"].forEach(evt =>
+    ["name","email","phone"].forEach(k => f.elements[k]?.addEventListener(evt, run))
+  );
+  run();
+}
+
+
 /**
  * Opens the edit overlay for a given contact and wires all interactions.
  * @param {Contact} contact - The contact to edit.
@@ -160,7 +193,8 @@ function openEdit(contact) {
   const overlay = makeEditOverlay();
   mountAndShow(overlay); 
   wireCloseHandlers(overlay); 
-  prefillEditForm(overlay, contact); 
+  prefillEditForm(overlay, contact);
+  wireEditValidationLive(overlay);
   wireLiveAvatar(overlay); 
   wireDelete(overlay, contact);
   wireSave(overlay, contact);
@@ -271,15 +305,16 @@ function wireDelete(overlay, contact) {
  * @see updateContact
  */
 function wireSave(overlay, contact) {
-  overlay
-    .querySelector("#editContactForm")
-    .addEventListener("submit", async (e) => {
-      e.preventDefault(); 
-      const f = e.currentTarget; 
-      const updates = {name: f.elements.name.value.trim(), email: f.elements.email.value.trim(), phone: f.elements.phone.value.trim()};
-      await updateContact(contact.id, updates);
-      closeEditDialog();
-    });
+  overlay.querySelector("#editContactForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!validateEditContactForm(overlay)) return; // <-- shows errors
+    const f = e.currentTarget,
+      n = f.elements.name.value.trim(),
+      em = f.elements.email.value.trim(),
+      ph = (f.elements.phone.value || "").replace(/[^0-9+\-\*\s]/g, "").trim();
+    await updateContact(contact.id, { name: n, email: em, phone: ph });
+    closeEditDialog();
+  });
 }
 
 
