@@ -270,6 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function saveSelectedCategory(event, index) {
   event.stopPropagation();
   let placeHolder = document.getElementById("categoryPlaceholder");
+  window.selectedCategory = index;
   if (index == 0) {
     placeHolder.innerHTML = "Userstory";
   } else {
