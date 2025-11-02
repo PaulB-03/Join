@@ -149,7 +149,6 @@ async function addInState(id, event, state) {
   await updateTaskState(id, state);
   init();
   closeSwapMenu();
-  console.log("addInProgress");
 }
 
 /**

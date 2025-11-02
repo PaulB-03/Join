@@ -258,14 +258,14 @@
                     <img src="../assets/svg/arrow_drop_down.svg" class="dropdownArrow" id="dropdown-arrow-subtasks" />
                   </div>
                   <ul id="dropdown-list-category" class="addTaskCategoryList">
-                    <li class="dropdown-item-category" onclick="saveSelectedCategory(0)">
+                    <li class="dropdown-item-category" onclick="saveSelectedCategory(event, 0)">
                       <label class="custom-checkbox">
                         Userstory
                         <input type="checkbox" id="category-userstory" name="category" value="Userstory" required />
                         <span style="display: none"></span>
                       </label>
                     </li>
-                    <li class="dropdown-item-category" onclick="saveSelectedCategory(1)">
+                    <li class="dropdown-item-category" onclick="saveSelectedCategory(event, 1)">
                       <label class="custom-checkbox">
                         Technical Task
                         <input type="checkbox" id="category-technical" name="category" value="Technical Task"

@@ -247,7 +247,6 @@ async function onDetailSubtaskChange(e) {
   } catch (err) {
     console.error(err);
     cb.checked = previous;
-    alert("Konnte Subtask nicht speichern. Bitte später erneut versuchen.");
   }
 }
 
