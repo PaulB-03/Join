@@ -255,3 +255,30 @@ function setDefaultMediumPriority() {
   const mediumBtn = document.querySelector(".prioGrade.medium") || document.querySelector('[data-prio="medium"]');
   if (mediumBtn) mediumBtn.classList.add("active");
 }
+
+function createToastMessage(){
+    const msg=document.createElement("div");
+    msg.className="task-added-message";
+    msg.innerHTML=`Task added to board 
+      <img src="../assets/svg/board.svg" alt="Board icon"
+           style="width:30px;height:30px;margin-left:10px;vertical-align:middle">`;
+    document.body.append(msg); return msg;
+  }
+  
+  /**
+   * Animates toast into view.
+   * @param {HTMLElement} msg
+   * @returns {void}
+   */
+  function animateToastIn(msg){
+    requestAnimationFrame(()=>{ msg.style.transform="translate(-50%, -50%)"; });
+  }
+  
+  /**
+   * Shows toast and redirects to board.
+   * @returns {void}
+   */
+  function showAddedToastAndRedirect(){
+    const msg=createToastMessage(); animateToastIn(msg);
+    setTimeout(()=>{ msg.remove(); location.href="board.html"; },900);
+  }
