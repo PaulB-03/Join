@@ -41,10 +41,12 @@ function openAssignedToContacts(event) {
   let assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
   let dropDownArrow = document.getElementById("dropdown-arrow-contacts");
   let dropdownList = document.getElementById("dropdown-list-contacts");
+
   event.stopPropagation();
 
   if (!assignedToDropDownContacts.classList.contains("open")) {
     resetDropDown("category");
+    document.getElementById("assignedToInitials").style.display = "none";
     assignedToDropDownContacts.classList.add("open");
     dropdownList.classList.add("open");
     addMarginSpacingForDropDownMenue("contacts");
@@ -78,6 +80,7 @@ function resetDropDown() {
   resetDropDownMenues();
   resetDropDownArrow();
   resetMargin();
+  document.getElementById("assignedToInitials").style.display = "flex";
 }
 
 function resetDropDownMenues(element) {
@@ -190,7 +193,6 @@ function toggleContact(name) {
 
   renderAssignedContacts();
   updateDropdownHighlight();
-
 }
 
 /**
@@ -221,8 +223,8 @@ function renderAssignedContacts() {
   if (!box) return;
   const names = Array.isArray(window.assignedContacts) ? window.assignedContacts : [];
   setInnerHTML(box, "");
-  if (!names.length) return hideElement(box);
-  showElement(box, "flex");
+  if (!names.length) return; //hideElement(box);
+  // showElement(box, "flex");
   addInitials(box, names.slice(0, 3));
   addOverflowCount(box, names);
 }
@@ -266,12 +268,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function saveSelectedCategory(event, index) {
-  event.stopPropagation()
-  let placeHolder = document.getElementById('categoryPlaceholder')
+  event.stopPropagation();
+  let placeHolder = document.getElementById("categoryPlaceholder");
   if (index == 0) {
-    placeHolder.innerHTML = "Userstory"
+    placeHolder.innerHTML = "Userstory";
   } else {
-    placeHolder.innerHTML = "Technical Task"
+    placeHolder.innerHTML = "Technical Task";
   }
-  resetDropDown()
+  resetDropDown();
 }
