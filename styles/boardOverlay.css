@@ -302,6 +302,11 @@ body.modal-open {
   align-items: center;
 }
 
+#taskOverlay.edit-mode .addTaskErrors {
+  align-self: flex-start;
+  margin-left: 35px;
+}
+
 .task-overlay .task-modal {
   transform: translateX(100%);
   opacity: 0;

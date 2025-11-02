@@ -174,8 +174,11 @@ async function handleAddOrEditTask(e) {
  * @returns {Promise<void>}
  */
 async function saveEditFlow(id) {
+  window.selectedCategory = 1;
   const standalone = /\/html\/addTask\.html$/.test(location.pathname);
   const reopen = !standalone;
+  clearInlineErrors();
+  if (!validateTaskFormFields()) return;
   await updateTask(id, standalone, true, reopen);
   byId("add")?.removeAttribute("data-editing-id");
   setOverlayButtonText(false);
@@ -223,11 +226,11 @@ async function afterUpdateUI(id, navigateToBoard, closeOverlayAfter, reopenDetai
  * @param {boolean} [reopenDetail=false]
  * @returns {Promise<void|null>}
  */
-async function updateTask(id, navigateToBoard = false, closeTaskOverlayAfterUpdate = false, reopenDetail = false) {
+async function updateTask(id, navigateToBoard = false, closeTaskOverlayAfterUpdate = false) {
   if (!id) return typeof window.createTask === "function" ? window.createTask() : null;
   try {
     await putTaskJson(id, readTaskForm());
-    await afterUpdateUI(id, navigateToBoard, closeTaskOverlayAfterUpdate, reopenDetail);
+    await afterUpdateUI(id, navigateToBoard, closeTaskOverlayAfterUpdate);
   } catch (err) {
     console.error("Error updating task:", err);
   }

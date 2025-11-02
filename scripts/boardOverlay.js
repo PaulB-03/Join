@@ -284,7 +284,7 @@ function fillTaskFormFromExisting(id, task) {
   renderAssignedInitials();
   updateDropdownHighlight();
   fillSubtasks(task.subtasks || []);
-  selectedCategory = task.category || "Task";
+  selectedCategory = task.category;
   selectedState = task.state || "toDo";
   setOverlayButtonText(true);
   toggleClearButton(true);
