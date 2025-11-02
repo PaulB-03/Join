@@ -10,6 +10,7 @@ function clearTask() {
   resetAssignedContacts();
   clearSubtasks();
   resetDropDown();
+  clearCategory()
 }
 
 /* ---------------- Helper Functions ---------------- */
@@ -73,4 +74,10 @@ function resetAssignedContacts() {
   selectedContact = "";
   document.getElementById("assignedToInitials").innerHTML = "";
   updateDropdownHighlight();
+}
+
+function clearCategory() {
+  let categoryPlaceholder = document.getElementById('categoryPlaceholder')
+
+  categoryPlaceholder.innerHTML = "Select task category"
 }
