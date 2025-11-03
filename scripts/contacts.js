@@ -75,6 +75,7 @@ function showContactToast(message = "Contact successfully created") {
 function openAddContactDialog() {
   var overlay = document.getElementById("contactOverlay");
   if (overlay) {
+    resetAddContactValidationUI();
     overlay.classList.add("open");
     document.body.classList.add("modal-open");
   }
@@ -92,6 +93,7 @@ function closeAddContactDialog() {
     document.body.classList.remove("modal-open");
   }
   if (form) form.reset();
+  resetAddContactValidationUI();
 }
 
 /**

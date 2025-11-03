@@ -105,6 +105,26 @@ function validateAddContactForm() {
   return validName && validEmail && validPhone;
 }
 
+
+/**
+ * Resets the UI validation state for the Add Contact form. Removes validation error styles, accessibility attributes, and hides displayed error messages for name, email, and phone inputs.
+ * @returns {void}
+ */
+function resetAddContactValidationUI() {
+  const { name, email, phone, nameErr, emailErr, phoneErr } = getAddContactRefs();
+  [
+    [name, nameErr],
+    [email, emailErr],
+    [phone, phoneErr],
+  ].forEach(([input, err]) => {
+    if (!input || !err) return;
+    input.classList.remove("input-error");
+    input.removeAttribute("aria-invalid");
+    err.style.visibility = "hidden";
+  });
+}
+
+
 /**
  * Delete a contact by id and update the UI.
  * @async
