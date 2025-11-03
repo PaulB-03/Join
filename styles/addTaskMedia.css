@@ -13,7 +13,7 @@
   }
 }
 
-@media (min-width: 1211px) {
+@media (min-width: 1300px) {
   .hideDesktop {
     display: none;
   }
@@ -50,7 +50,7 @@
   }
 }
 
-@media (max-width: 1210px) {
+@media (max-width: 1300px) {
   .addTaskWrapper h1 {
     position: fixed;
     top: 0;
