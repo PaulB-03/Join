@@ -136,7 +136,7 @@ a.btn:active {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: start;
-  width: 1136px;
+  width: 1146px;
   opacity: 1;
   margin-top: 20px;
 }
@@ -206,7 +206,7 @@ a.btn:active {
   overflow-y: auto;
   gap: 10px;
   padding: 16px;
-  padding-bottom: 200px;
+  /* padding-bottom: 200px; */
   scrollbar-width: thin;
 }
 

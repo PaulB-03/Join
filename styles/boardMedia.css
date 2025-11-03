@@ -1,3 +1,9 @@
+@media (max-width: 1450px) {
+  .app {
+    padding: 150px 20px 64px 250px;
+  }
+}
+
 @media (min-width: 1401px) {
   body {
     overflow: hidden;
@@ -6,7 +12,7 @@
 
 @media (max-width: 1400px) {
   .app {
-    padding: 150px 16px 48px 300px;
+    padding: 150px 16px 48px 250px;
   }
 
   .board {
