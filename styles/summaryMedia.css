@@ -74,7 +74,7 @@
     }
 
     h6 {
-      font-size: 15px;
+      font-size: 16px;
     }
   }
 
@@ -142,7 +142,7 @@
     }
 
     h6 {
-      font-size: 14px;
+      font-size: 16px;
     }
   }
 
@@ -207,7 +207,7 @@
 
 @media (max-width: 410px) {
   main {
-    font-size: 12px !important;
+    font-size: 16px !important;
   }
 
   .summaryHeadline {
@@ -251,11 +251,11 @@
   }
 
   .deadlineText {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .urgencyDate {
-    font-size: 14px !important;
+    font-size: 16px !important;
   }
 
   .taskBox {

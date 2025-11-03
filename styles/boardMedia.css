@@ -25,6 +25,7 @@
 
   .col-head {
     width: 100%;
+    padding-top: 16px;
   }
 
   .col-head .add-card-btn {
@@ -195,7 +196,7 @@
 
   .dropzone .empty {
     padding: 10px;
-    font-size: 12px;
+    font-size: 16px;
     min-width: 200px;
   }
 
