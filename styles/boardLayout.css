@@ -38,6 +38,7 @@
 }
 
 .search input {
+  cursor: pointer;
   border: none;
   outline: none;
   font-size: 20px;

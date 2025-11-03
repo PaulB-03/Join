@@ -136,7 +136,7 @@ a:hover {
   background-size: 22px 22px;
   font-size: 20px;
   font-weight: 400;
-  cursor: text;
+  cursor: pointer;
   outline: none;
   background-color: white;
   width: 100%;
