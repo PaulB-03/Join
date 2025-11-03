@@ -128,20 +128,42 @@ async function persistTask(payload) {
 /* ------------------------------ Create ---------------------------------- */
 /**
  * Handles task creation.
+ * @param {Event} [event]
  * @returns {Promise<void>}
  */
-async function createTask() {
-  clearInlineErrors();
-  if (!validateTaskFormFields()) return;
+
+let isCreatingTask = false;
+
+async function createTask(event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
   const b = $id("add");
-  b?.setAttribute("disabled", true);
+  if (b) {
+    b.setAttribute("disabled", true);
+  }
+  if (isCreatingTask) return;
+  isCreatingTask = true;
+
+  clearInlineErrors();
+  if (!validateTaskFormFields()) {
+    b?.removeAttribute("disabled");
+    isCreatingTask = false;
+    return;
+  }
+
   try {
     await persistTask(buildTaskPayloadFromForm());
     showAddedToastAndRedirect();
   } catch (e) {
     console.error(e);
-  } finally {
     b?.removeAttribute("disabled");
+    isCreatingTask = false;
+  } finally {
+    if (!isCreatingTask) {
+      b?.removeAttribute("disabled");
+    }
   }
 }
 
