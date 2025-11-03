@@ -94,7 +94,7 @@ const validateSignupForm = () => {
  */
 acceptPolicyImg.addEventListener("click", () => {
   policyChecked = !policyChecked;
-  acceptPolicyImg.src = policyChecked ? "./assets/svg/checked.svg" : "./assets/svg/check_button.svg";
+  acceptPolicyImg.src = policyChecked ? "./assets/svg/checked.svg" : "./assets/svg/checkbox.svg";
   policyError.style.visibility = policyChecked ? "hidden" : "visible";
 });
 
