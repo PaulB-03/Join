@@ -25,7 +25,11 @@ async function saveTask(path, data) {
 
 // ----------------------------------------dropDownMenue--------------------------------------------------
 
-initDropDownMenue();
+document.addEventListener("DOMContentLoaded", () => {
+  const contacts = document.getElementById("assignedToDropdownContacts");
+  const category = document.getElementById("assignedToDropdownCategory");
+  if (contacts || category) initDropDownMenue();
+});
 
 /**
  * Initializes event listeners for the dropdown menus.
