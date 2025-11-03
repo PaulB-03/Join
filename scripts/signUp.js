@@ -179,6 +179,10 @@ function togglePasswordVisibilityOnClick(input, state) {
     else makePasswordVisible(input);
     state.visible = !state.visible;
   });
+  input.addEventListener("mousemove", (e) => {
+    const iconArea = e.offsetX > input.clientWidth - 30;
+    input.style.cursor = iconArea ? "pointer" : "text";
+  });
 }
 
 /**
