@@ -79,7 +79,6 @@
 .assignedToSearch {
   border: none;
   font-size: 20px;
-  cursor: pointer;
 }
 
 .assignedToSearch::placeholder {
@@ -101,7 +100,6 @@ textarea::placeholder {
 
 .description {
   position: relative;
-  /* ensures z-index works predictably */
   z-index: 1;
   appearance: none;
   -webkit-appearance: none;
@@ -119,7 +117,6 @@ textarea::placeholder {
   border-radius: 10px;
   padding: 12px 21px;
   font-size: 20px;
-  cursor: pointer;
   outline: none;
 }
 
