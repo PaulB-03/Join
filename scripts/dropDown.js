@@ -230,9 +230,7 @@ function makeLabel(contact) {
 
   const img = document.createElement("img");
   img.className = "checkbox-svg";
-  img.src = (window.assignedContacts || []).includes(contact.name)
-    ? "../assets/svg/checked.svg"
-    : "../assets/svg/check_button.svg";
+  img.src = (window.assignedContacts || []).includes(contact.name) ? "../assets/svg/checked.svg" : "../assets/svg/checkbox.svg";
 
   label.append(av, nm, img);
   return label;
@@ -266,7 +264,7 @@ function updateDropdownHighlight() {
     const sel = window.assignedContacts?.includes(name);
     const item = label.closest(".dropdown-item-contact");
     if (img) {
-      img.src = sel ? "../assets/svg/checked.svg" : "../assets/svg/check_button.svg";
+      img.src = sel ? "../assets/svg/checked.svg" : "../assets/svg/checkbox.svg";
       img.classList.toggle("checked", sel);
     }
     label.style.color = sel ? "white" : "";
@@ -321,9 +319,7 @@ function addOverflowCount(box, names) {
  * @returns {string[]} The list of assigned contact names.
  */
 function getAssignedList() {
-  return Array.isArray(window.assignedContacts)
-    ? window.assignedContacts
-    : (window.assignedContacts = []);
+  return Array.isArray(window.assignedContacts) ? window.assignedContacts : (window.assignedContacts = []);
 }
 
 /**
