@@ -22,13 +22,14 @@
 }
 
 .addTaskWrapper {
+  height: 924px;
   position: relative;
   display: flex;
   flex-direction: column;
   max-width: 1920px;
   padding: 150px 16px 48px 300px;
   transition: padding-left 0.3s ease;
-  /* smooth shrink */
+  margin-bottom: 20px;
 }
 
 .addTaskForm {
@@ -59,7 +60,7 @@
 }
 
 .addTaskFooter {
-  top: 880px;
+  bottom: 0;
   position: absolute;
   width: 977px;
   display: flex;
@@ -69,7 +70,7 @@
 }
 
 .input {
-   cursor: text !important;
+  cursor: text !important;
 }
 
 .inputFlexbox {

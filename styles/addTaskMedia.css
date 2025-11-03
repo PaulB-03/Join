@@ -26,6 +26,7 @@
 @media (max-height: 739px) {
   .addTaskWrapper {
     padding-top: 100px;
+    height: 776px;
   }
   .heading {
     margin: 0;
@@ -51,6 +52,10 @@
 }
 
 @media (max-width: 1300px) {
+  .addTaskWrapper {
+    height: unset;
+  }
+
   .addTaskWrapper h1 {
     position: fixed;
     top: 0;
