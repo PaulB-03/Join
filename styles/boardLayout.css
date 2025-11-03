@@ -206,13 +206,8 @@ a.btn:active {
   overflow-y: auto;
   gap: 10px;
   padding: 16px;
-  padding-bottom: 250px;
-  /* For Firefox */
-  scrollbar-width: none;
-  /* For Chrome, Safari, and Opera */
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  padding-bottom: 200px;
+  scrollbar-width: thin;
 }
 
 .dropzone .empty {
