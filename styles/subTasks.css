@@ -106,3 +106,22 @@ li:focus-within::before {
   border-radius: 50%;
   background-color: #eee;
 }
+
+.addedSubtaskWrapper {
+  max-height: calc(4 * 28px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #aaa #f1f1f1;
+  padding-right: 4px;
+}
+
+.addedSubtaskWrapper::-webkit-scrollbar {
+  width: 6px;
+}
+.addedSubtaskWrapper::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 10px;
+}
+.addedSubtaskWrapper::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
