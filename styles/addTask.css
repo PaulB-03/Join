@@ -68,6 +68,10 @@
   z-index: 2;
 }
 
+.input {
+   cursor: text !important;
+}
+
 .inputFlexbox {
   display: flex;
   flex-direction: column;
@@ -119,7 +123,7 @@ textarea::placeholder {
   border-radius: 10px;
   padding: 12px 21px;
   font-size: 20px;
-  cursor: pointer;
+  cursor: text;
   outline: none;
 }
 
