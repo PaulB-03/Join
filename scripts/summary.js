@@ -58,6 +58,7 @@ async function getDataForTasks() {
   responseToJson = "";
   responseToJson = await response.json();
   countForSummary(responseToJson);
+  toggleUrgentIconByGlobalUrgent(responseToJson); // neu
 }
 
 // Counts how many tasks are in each state + handles deadlines
@@ -77,6 +78,7 @@ function countForSummary(responseToJson) {
   }
   filterNextUpcomingDeadline(datesObject, responseToJson);
   changeInnerHtmlOfSummary(countStatesObj);
+  updateUrgentCountGlobal(responseToJson); // neu
 }
 
 /**
