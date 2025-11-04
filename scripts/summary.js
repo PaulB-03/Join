@@ -1,6 +1,6 @@
 // Initializes the summary page (sidebar, box listeners, load data)
 /**
- * Initializes summary page: greeting overlay, header, box listeners, data.
+ * Initializes summary page: greeting overlay, header, box listeners, and data loading.
  * @returns {void}
  */
 function initForSummary() {
@@ -12,18 +12,18 @@ function initForSummary() {
 
 // Loads task data, gets current time, and shows greeting
 /**
- * Loads tasks, gets time, and shows greeting.
+ * Loads tasks from Firebase, retrieves current time, and displays summary greeting.
  * @returns {void}
  */
 function dataForSummary() {
   getDataForTasks();
   getCurrentTime();
-  showSummaryGreeting(); // comes from logIn_Malte.js and logIn.js
+  showSummaryGreeting(); // comes from logIn.js
 }
 
 // Gets current time and updates greeting
 /**
- * Reads current time and updates greeting text.
+ * Reads the current time and updates the greeting text accordingly.
  * @returns {void}
  */
 function getCurrentTime() {
@@ -35,8 +35,8 @@ function getCurrentTime() {
 
 // Displays greeting depending on the current hour
 /**
- * Sets greeting based on hour of day.
- * @param {number|string} hours
+ * Sets the greeting message based on the hour of the day.
+ * @param {number|string} hours - Current hour (0-23)
  * @returns {void}
  */
 function changeInnerHtmlOfSummaryGreeting(hours) {
@@ -49,7 +49,7 @@ function changeInnerHtmlOfSummaryGreeting(hours) {
 
 // Fetches Data from Firebase
 /**
- * Fetches data from Firebase and triggers counting.
+ * Fetches tasks from Firebase Realtime Database and triggers summary counting.
  * @returns {Promise<void>}
  */
 async function getDataForTasks() {
@@ -58,13 +58,13 @@ async function getDataForTasks() {
   responseToJson = "";
   responseToJson = await response.json();
   countForSummary(responseToJson);
-  // toggleUrgentIconByGlobalUrgent(responseToJson); // neu
+  // toggleUrgentIconByGlobalUrgent(responseToJson); // optional
 }
 
 // Counts how many tasks are in each state + handles deadlines
 /**
- * Counts task states and resolves next deadline/priority.
- * @param {Object} responseToJson
+ * Processes the task data to count states, filter upcoming deadlines, and update priority counts.
+ * @param {Object} responseToJson - Parsed JSON response from Firebase
  * @returns {void}
  */
 function countForSummary(responseToJson) {
@@ -78,13 +78,14 @@ function countForSummary(responseToJson) {
   }
   filterNextUpcomingDeadline(datesObject, responseToJson);
   changeInnerHtmlOfSummary(countStatesObj);
-  updateUrgentCountGlobal(responseToJson); // neu
+  updateUrgentCountGlobal(responseToJson); // optional
 }
 
+// Increments counters by state
 /**
- * Increments counters by state.
- * @param {{progressCount:number,toDoCount:number,doneCount:number,awaitFeedbackCount:number}} obj
- * @param {string} state
+ * Increments the count for a specific task state.
+ * @param {{progressCount:number,toDoCount:number,doneCount:number,awaitFeedbackCount:number}} obj - Counters object
+ * @param {string} state - Task state ("in progress", "toDo", "done", "await feedback")
  * @returns {void}
  */
 function incrementStateCount(obj, state) {
@@ -104,45 +105,51 @@ function incrementStateCount(obj, state) {
   }
 }
 
-// creates obj for countForSummary
+// Creates object for countForSummary
 /**
- * Creates dates/priority aggregation object.
- * @returns {{dates:string[], prioritys:string[]}}
+ * Creates an object to aggregate task dates and priorities for summary processing.
+ * @returns {{dates:string[], prioritys:string[]}} - Aggregation object
  */
 function createDatesObject() {
   return { dates: [], prioritys: [] };
 }
 
-// creates obj for countForSummary
+// Creates object for countForSummary
 /**
- * Creates counters object for task states.
- * @returns {{progressCount:number,toDoCount:number,doneCount:number,awaitFeedbackCount:number}}
+ * Creates an object to store counters for different task states.
+ * @returns {{progressCount:number,toDoCount:number,doneCount:number,awaitFeedbackCount:number}} - Counters object
  */
 function createCountObject() {
   return { progressCount: 0, toDoCount: 0, doneCount: 0, awaitFeedbackCount: 0 };
 }
 
-// Push task’s date and priority if it's not "done"
+// Checks task state and adds urgent tasks to datesObject
 /**
- * Collects date/priority for non-done tasks.
- * @param {{dates:string[],prioritys:string[]}} datesObject
- * @param {string} taskState
- * @param {number} index
- * @param {Array} objectToArray
- * @returns {{dates:string[],prioritys:string[]}|void}
+ * Checks a task's state and priority, and adds urgent tasks to the aggregation object.
+ * @param {{dates:string[],prioritys:string[]}} datesObject - Object to store dates and priorities
+ * @param {string} taskState - State of the task
+ * @param {number} index - Index of the task in objectToArray
+ * @param {Array} objectToArray - Array of task entries [key, value]
+ * @returns {{dates:string[],prioritys:string[]}} - Updated aggregation object
  */
 function checkState(datesObject, taskState, index, objectToArray) {
   if (taskState === "done") return;
-  let dateToPush = objectToArray[index][1].date;
-  datesObject.dates.push(dateToPush);
-  datesObject.prioritys.push(objectToArray[index][1].priority);
+
+  const task = objectToArray[index][1];
+
+  // Only push if priority is "urgent"
+  if (task.priority === "urgent") {
+    datesObject.dates.push(task.date);
+    datesObject.prioritys.push(task.priority);
+  }
+
   return datesObject;
 }
 
 // Updates task counts in summary boxes
 /**
- * Updates summary counters and total task count.
- * @param {{progressCount:number,toDoCount:number,doneCount:number,awaitFeedbackCount:number}} countStatesObj
+ * Updates the HTML of summary boxes to reflect current task counts.
+ * @param {{progressCount:number,toDoCount:number,doneCount:number,awaitFeedbackCount:number}} countStatesObj - Counters object
  * @returns {void}
  */
 function changeInnerHtmlOfSummary(countStatesObj) {
@@ -160,9 +167,9 @@ function changeInnerHtmlOfSummary(countStatesObj) {
 
 // Returns total number of tasks
 /**
- * Sums all task state counters.
- * @param {{progressCount:number,toDoCount:number,doneCount:number,awaitFeedbackCount:number}} countStatesObj
- * @returns {number}
+ * Sums all task state counters to get total tasks.
+ * @param {{progressCount:number,toDoCount:number,doneCount:number,awaitFeedbackCount:number}} countStatesObj - Counters object
+ * @returns {number} Total task count
  */
 function calcAllTasksInBoard(countStatesObj) {
   return countStatesObj.progressCount + countStatesObj.toDoCount + countStatesObj.doneCount + countStatesObj.awaitFeedbackCount;
@@ -170,7 +177,7 @@ function calcAllTasksInBoard(countStatesObj) {
 
 // Adds click event to summary boxes -> redirects to board.html
 /**
- * Adds click redirect to each summary box.
+ * Adds click event listeners to summary boxes that redirect to the board page.
  * @returns {void}
  */
 function boxListener() {
@@ -184,7 +191,7 @@ function boxListener() {
 
 // Shows or resets greeting overlay on mobile
 /**
- * Displays or resets mobile greeting overlay.
+ * Displays or resets the mobile greeting overlay based on viewport width and localStorage flag.
  * @returns {void}
  */
 function greetingOverlayMobile() {
@@ -198,8 +205,8 @@ function greetingOverlayMobile() {
 
 // Fades out greeting overlay after delay
 /**
- * Fades out greeting overlay with delay.
- * @param {HTMLElement} sumGreetingContainer
+ * Fades out the greeting overlay with a 1.5s delay.
+ * @param {HTMLElement} sumGreetingContainer - Container element to fade
  * @returns {void}
  */
 function fadeOutGreetingOverlay(sumGreetingContainer) {
@@ -210,8 +217,8 @@ function fadeOutGreetingOverlay(sumGreetingContainer) {
 
 // Resets inline styles of greeting overlay and summary section
 /**
- * Resets inline styles for greeting container.
- * @param {HTMLElement} sumGreetingContainer
+ * Resets all inline styles of the greeting container.
+ * @param {HTMLElement} sumGreetingContainer - Container element to reset
  * @returns {void}
  */
 function resetHTMLOfGreetingContainer(sumGreetingContainer) {
@@ -220,8 +227,8 @@ function resetHTMLOfGreetingContainer(sumGreetingContainer) {
 
 // Applies mobile greeting overlay styles and sets localStorage flag
 /**
- * Applies overlay styles and sets localStorage flag.
- * @param {HTMLElement} sumGreetingContainer
+ * Sets inline styles to display the mobile greeting overlay and updates localStorage.
+ * @param {HTMLElement} sumGreetingContainer - Container element to style
  * @returns {void}
  */
 function changeHTMLOfGreetingContainer(sumGreetingContainer) {
@@ -232,9 +239,9 @@ function changeHTMLOfGreetingContainer(sumGreetingContainer) {
 
 // Saves a key/value pair to localStorage
 /**
- * Saves a key/value pair to localStorage.
- * @param {string} key
- * @param {string} value
+ * Saves a key-value pair to localStorage.
+ * @param {string} key - Storage key
+ * @param {string} value - Storage value
  * @returns {void}
  */
 function setLocalStorageItem(key, value) {
@@ -243,10 +250,10 @@ function setLocalStorageItem(key, value) {
 
 // Gets a value from localStorage by key
 /**
- * Reads a value from localStorage by key.
- * @param {string} key
- * @param {string} [value] - Unused; kept for compatibility.
- * @returns {string|null}
+ * Retrieves a value from localStorage by key.
+ * @param {string} key - Storage key
+ * @param {string} [value] - Optional; not used (kept for compatibility)
+ * @returns {string|null} Stored value or null if not found
  */
 function getLocalLocalStorageItem(key, value) {
   return localStorage.getItem(`${key}`, `${value}`);

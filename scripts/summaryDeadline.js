@@ -1,21 +1,7 @@
-// If no deadline found, push "Nothing to worry"
-/**
- * Sets low urgency visuals and pushes fallback text.
- * @param {string[]} nextUpcomingDeadlineArray
- * @returns {number} New length of array
- */
-// function stringIfNoDateFound(nextUpcomingDeadlineArray) {
-//     urgencyImgContainer.style = "background-color:  var(--button-low)";
-//     urgencyImg.src = "../assets/svg/check_2.svg";
-//     return nextUpcomingDeadlineArray.push("Nothing to worry");
-//   }
-
 function stringIfNoDateFound(nextUpcomingDeadlineArray) {
-  const urgencyImgContainer = document.getElementById("urgencyImgContainer");
-  const urgencyImg = document.getElementById("urgencyImg");
+  const deadlineText = document.getElementById("deadLineText");
+  deadlineText.style.display = "none";
 
-  // if (urgencyImgContainer) urgencyImgContainer.style.backgroundColor = "transparent";
-  // if (urgencyImg) urgencyImg.style.display = "none";
   return nextUpcomingDeadlineArray.push("Nothing to worry");
 }
 
@@ -32,8 +18,8 @@ function getHighestPriority(datesObject, nextUpcomingDeadline) {
   for (let i = 0; i < datesObject.prioritys.length; i++) {
     const p = datesObject.prioritys[i];
     if (p === "urgent") numberArray.push(1);
-    else if (p === "medium") numberArray.push(2);
-    else if (p === "low") numberArray.push(3);
+    // else if (p === "medium") numberArray.push(2);
+    // else if (p === "low") numberArray.push(3);
   }
   sortNumberArray(numberArray);
 }
@@ -49,6 +35,7 @@ function filterIrrelevantPrioritys(datesObject, nextUpcomingDeadline) {
   for (let index = 0; index < datesObject.dates.length; index++) {
     let dateToFilter = new Date(datesObject.dates[index]);
     let nextDeadline = new Date(nextUpcomingDeadline);
+
     if (dateToFilter < nextDeadline || dateToFilter > nextDeadline) {
       datesObject.dates.splice(index, 1);
       datesObject.prioritys.splice(index, 1);
@@ -67,60 +54,7 @@ function filterIrrelevantPrioritys(datesObject, nextUpcomingDeadline) {
 function sortNumberArray(numberArray) {
   let sortedArray = numberArray.sort();
   let highesValue = sortedArray[0];
-  // changeBackgroundColorOfUrgencyImg(highesValue);
-  // changeUrgencyImg(highesValue);
 }
-
-// Changes background color of urgency image based on priority value
-/**
- * Sets background color for urgency indicator.
- * @param {1|2|3} highesValue
- * @returns {void}
- */
-// function changeBackgroundColorOfUrgencyImg(highesValue) {
-//   let urgencyImgContainer = document.getElementById("urgencyImgContainer");
-//   if (highesValue === 1) urgencyImgContainer.style = "background-color:  var(--button-urgent)";
-//   else if (highesValue === 2) urgencyImgContainer.style = "background-color:  var(--button-medium)";
-//   else if (highesValue === 3) urgencyImgContainer.style = "background-color:  var(--button-low)";
-// }
-
-// function changeBackgroundColorOfUrgencyImg(highesValue) {
-// const urgencyImgContainer = document.getElementById("urgencyImgContainer");
-// if (!urgencyImgContainer) return;
-//
-// if (highesValue === 1) {
-//
-// urgencyImgContainer.style.backgroundColor = "var(--button-urgent)";
-// } else {
-//
-// urgencyImgContainer.style.backgroundColor = "transparent";
-// }
-// }
-
-// Updates the urgency image depending on the numeric priority
-/**
- * Chooses urgency icon by numeric priority.
- * @param {1|2|3} highesValue
- * @returns {void}
- */
-// function changeUrgencyImg(highesValue) {
-//   let urgencyImg = document.getElementById("urgencyImg");
-//   if (highesValue === 1) urgencyImg.src = "../assets/svg/double_arrow_up.svg";
-//   else if (highesValue === 2) urgencyImg.src = "../assets/svg/double_lines_white.svg";
-//   else if (highesValue === 3) urgencyImg.src = "../assets/svg/double_arrow_down_white.svg";
-// }
-
-// function changeUrgencyImg(highesValue) {
-// const urgencyImg = document.getElementById("urgencyImg");
-// if (!urgencyImg) return;
-//
-// if (highesValue === 1) {
-// urgencyImg.style.display = "";
-// urgencyImg.src = "../assets/svg/double_arrow_up.svg";
-// } else {
-// urgencyImg.style.display = "none";
-// }
-// }
 
 // Filters for next upcoming deadline and for missed deadLines
 /**
@@ -244,41 +178,16 @@ function changeInnerHtmlForDeadline(nextUpcomingDeadline) {
 }
 
 /**
- * Forces the display or hiding of the urgency icon
- * based on whether there are any tasks with priority "urgent".
- * This runs independently from the next deadline calculation
- * to ensure the summary always reflects global urgency status.
- *
- * @param {Object} data - The full Firebase response object containing all tasks.
- */
-// function toggleUrgentIconByGlobalUrgent(data) {
-// const tasks = data && data.tasks ? Object.values(data.tasks) : [];
-// const hasUrgent = tasks.some((t) => String(t?.priority || "").toLowerCase() === "urgent");
-//
-// const img = document.getElementById("urgencyImg");
-// const container = document.getElementById("urgencyImgContainer");
-// if (!img || !container) return;
-//
-// if (hasUrgent) {
-// img.style.display = "";
-// img.src = "../assets/svg/double_arrow_up.svg";
-// container.style.backgroundColor = "var(--button-urgent)";
-// } else {
-// img.style.display = "none";
-// container.style.backgroundColor = "transparent";
-// }
-// }
-
-/**
- * Updates the global urgent task counter in the summary.
- * Displays the count only if there is at least one urgent task.
- * Hides icon, background, and count when there are none.
- *
- * @param {Object} data - The full Firebase response object containing all tasks.
+ * Updates the global urgent task count in the UI.
+ * Only counts tasks with priority "urgent" that are not done.
+ * @param {Object} data - Task data object from Firebase
+ * @returns {void}
  */
 function updateUrgentCountGlobal(data) {
   const tasks = data && data.tasks ? Object.values(data.tasks) : [];
-  const urgentCount = tasks.filter((t) => String(t?.priority || "").toLowerCase() === "urgent").length;
+
+  // Count only urgent tasks that are not done
+  const urgentCount = tasks.filter((t) => String(t?.priority || "").toLowerCase() === "urgent" && t?.state !== "done").length;
 
   const countEl = document.getElementById("urgencyCountBox");
   const img = document.getElementById("urgencyImg");
@@ -286,13 +195,9 @@ function updateUrgentCountGlobal(data) {
   if (!countEl || !img || !container) return;
 
   if (urgentCount > 0) {
-    // img.style.display = "";
-    // img.src = "../assets/svg/double_arrow_up.svg";
-    // container.style.backgroundColor = "var(--button-urgent)";
     countEl.textContent = urgentCount;
   } else {
-    // img.style.display = "none";
-    // container.style.backgroundColor = "transparent";
     countEl.textContent = "0";
+    // stringIfUrgencyCountZero();
   }
 }
