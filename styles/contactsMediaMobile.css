@@ -254,7 +254,7 @@
   }
 
   .add-contact-overlay-form {
-    gap: 0;
+    gap: 16;
   }
 
   .overlay-body {
@@ -266,7 +266,7 @@
 
 @media (max-height: 690px) and (max-width: 925px) {
   .add-contact-overlay-form {
-    gap: 0px;
+    gap: 16px;
   }
 }
 

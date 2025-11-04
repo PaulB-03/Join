@@ -25,7 +25,7 @@ const addPhoneRegex = /^\s*$|^\+?[0-9\-\*\s]+$/;
  */
 function updateFieldErr(isValid, inputEl, errorEl) {
   if (!inputEl || !errorEl) return;
-  errorEl.style.visibility = isValid ? "hidden" : "visible";
+  errorEl.style.display = isValid ? "none" : "block";
   inputEl.classList.toggle("input-error", !isValid);
   inputEl.setAttribute("aria-invalid", String(!isValid));
 }
@@ -120,7 +120,7 @@ function resetAddContactValidationUI() {
     if (!input || !err) return;
     input.classList.remove("input-error");
     input.removeAttribute("aria-invalid");
-    err.style.visibility = "hidden";
+    err.style.display = "none";
   });
 }
 
