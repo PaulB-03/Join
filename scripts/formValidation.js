@@ -141,7 +141,7 @@ async function signupProcess(name, email, password) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   signupForm.reset();
   policyChecked = false;
-  acceptPolicyImg.src = "./assets/svg/check_button.svg";
+  acceptPolicyImg.src = "./assets/svg/checkbox.svg";
   showLoginScreen();
 }
 
