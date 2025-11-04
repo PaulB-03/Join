@@ -214,6 +214,11 @@
   .avatar {
     top: 340px;
   }
+
+  .overlay-panel {
+    height: 96vh;
+    max-height: unset;
+  }
 }
 
 @media (max-height: 739px) {
@@ -243,10 +248,6 @@
 
   #addContactMobileOverlay {
     height: 250px;
-  }
-
-  .overlay-panel {
-    height: 550px;
   }
 
   .avatar {

@@ -251,7 +251,7 @@
 
   .editAvtrMbl {
     display: flex !important;
-    margin: 0 auto 16px auto; 
+    margin: 0 auto 16px auto;
     justify-content: center;
     align-items: center;
   }
@@ -329,7 +329,7 @@
     gap: 8px;
   }
 
-  .add-contact-overlay-form  input{
+  .add-contact-overlay-form input {
     width: 350px;
   }
 
@@ -350,7 +350,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100% !important;  
+    width: 100% !important;
     .add-contact-overlay-form {
       gap: 16px !important;
     }
