@@ -91,6 +91,8 @@ async function addUser(name, email, password) {
  * Shows the signup screen and hides login.
  */
 function showSignupScreen() {
+  signinForm.reset();
+  resetInputErrors("signinForm");
   document.getElementById("loginScreen").classList.add("d_none");
   document.getElementById("showSignUp").classList.add("hidden");
   document.getElementById("showSignUpMobile").classList.add("hidden");

@@ -140,6 +140,7 @@ async function signupProcess(name, email, password) {
   showSignupSuccess();
   await new Promise((resolve) => setTimeout(resolve, 1000));
   signupForm.reset();
+  resetInputErrors("signUpForm");
   policyChecked = false;
   acceptPolicyImg.src = "./assets/svg/checkbox.svg";
   showLoginScreen();
@@ -156,4 +157,19 @@ function showSignupSuccess() {
   overlay.classList.remove("d_none");
   void overlay.offsetWidth; // Force reflow for CSS animation
   overlay.classList.add("show");
+}
+
+function resetInputErrors(id) {
+  const container = document.getElementById(id);
+  if (!container) return;
+
+  // Remove input-error class from inputs
+  const errorInputs = container.querySelectorAll(".input-error");
+  errorInputs.forEach((input) => input.classList.remove("input-error"));
+
+  // Hide all error message elements
+  const errorMessages = container.querySelectorAll(".errors");
+  errorMessages.forEach((el) => {
+    el.style.visibility = "hidden";
+  });
 }
