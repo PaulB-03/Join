@@ -58,7 +58,7 @@ async function getDataForTasks() {
   responseToJson = "";
   responseToJson = await response.json();
   countForSummary(responseToJson);
-  toggleUrgentIconByGlobalUrgent(responseToJson); // neu
+  // toggleUrgentIconByGlobalUrgent(responseToJson); // neu
 }
 
 // Counts how many tasks are in each state + handles deadlines
@@ -89,10 +89,18 @@ function countForSummary(responseToJson) {
  */
 function incrementStateCount(obj, state) {
   switch (state) {
-    case "in progress": obj.progressCount++; break;
-    case "toDo": obj.toDoCount++; break;
-    case "done": obj.doneCount++; break;
-    case "await feedback": obj.awaitFeedbackCount++; break;
+    case "in progress":
+      obj.progressCount++;
+      break;
+    case "toDo":
+      obj.toDoCount++;
+      break;
+    case "done":
+      obj.doneCount++;
+      break;
+    case "await feedback":
+      obj.awaitFeedbackCount++;
+      break;
   }
 }
 
@@ -168,7 +176,9 @@ function calcAllTasksInBoard(countStatesObj) {
 function boxListener() {
   const boxes = document.getElementsByClassName("summaryBox");
   for (let i = 0; i < boxes.length; i++) {
-    boxes[i].addEventListener("click", () => { window.location.href = "../html/board.html"; });
+    boxes[i].addEventListener("click", () => {
+      window.location.href = "../html/board.html";
+    });
   }
 }
 
@@ -193,7 +203,9 @@ function greetingOverlayMobile() {
  * @returns {void}
  */
 function fadeOutGreetingOverlay(sumGreetingContainer) {
-  setTimeout(() => { sumGreetingContainer.style.opacity = "0"; }, 1500);
+  setTimeout(() => {
+    sumGreetingContainer.style.opacity = "0";
+  }, 1500);
 }
 
 // Resets inline styles of greeting overlay and summary section
