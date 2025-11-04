@@ -1,6 +1,6 @@
 .legalContent {
   max-width: 1920px;
-  padding: 150px 20px 64px 380px;
+  padding: 150px 20px 64px 300px;
   line-height: 1.6;
 }
 
@@ -28,7 +28,7 @@
   margin-left: 24px;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 850px) {
   .legalContent {
     padding: 110px 20px 100px 20px;
   }
