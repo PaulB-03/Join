@@ -8,13 +8,13 @@ const addNameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+(?:\s+[a-zA-ZÀ-ÖØ-öø-�
  * Regex for validating an email address.
  * @constant {RegExp}
  */
-const addEmailRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß]+(?:\.[a-zA-ZÀ-ÖØ-öø-ÿß]+)?@[a-zA-ZÀ-ÖØ-öø-ÿß]+\.[a-zA-ZÀ-ÖØ-öø-ÿß]+$/;
+const addEmailRegex = /^[\p{L}0-9]+(?:\.[\p{L}0-9]+)*@[\p{L}0-9]+\.[\p{L}]+$/u;
 
 /**
  * Regex for validating a phone number (optional).
  * @constant {RegExp}
  */
-const addPhoneRegex = /^\s*$|^\+?[0-9\-\*\s]+$/;
+const addPhoneRegex = /^\s*$|^\+?[0-9\-\*\s]+$|^add phone number$/i;
 
 /**
  * Update the error UI state for a field.
