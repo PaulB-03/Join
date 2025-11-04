@@ -286,7 +286,7 @@ function fillTaskFormFromExisting(id, task) {
   setFormValues(task);
   setPrioFromTask(task);
   assignedContacts = task.assignedContacts ? [...task.assignedContacts] : [];
-  renderAssignedInitials();
+  renderAssignedContacts();
   updateDropdownHighlight();
   fillSubtasks(task.subtasks || []);
   selectedCategory = task.category;
