@@ -22,7 +22,7 @@
     <header id="header">
       <div class="header-content" id="header">
         <img src="../assets/svg/join_logo_small.svg" class="headerLogo" style="height: 39px" alt="Join Logo" />
-        <h6>Kanban Projekt Management Tool</h6>
+        <p>Kanban Projekt Management Tool</p>
         <nav id="headerNav" class="header-nav">
           <a href="../html/help.html" class="help-link" aria-label="Help">
             <img class="helper" src="../assets/svg/help.svg" alt="Hilfe" />
@@ -94,8 +94,8 @@
                   <img class="editIcon" src="" alt="" />
                 </div>
                 <div class="summaryCount">
-                  <h2 id="toDoNumberBox"></h2>
-                  <h6 class="summaryText font_400_20">To-do</h6>
+                  <p id="toDoNumberBox" class="summaryNumber" aria-live="polite"></p>
+                  <p class="summaryText font_400_20">To-do</p>
                 </div>
               </div>
               <div class="summaryBox">
@@ -103,8 +103,8 @@
                   <img class="checkIcon" src="" alt="" />
                 </div>
                 <div class="summaryCount">
-                  <h2 id="doneNumberBox"></h2>
-                  <h6 class="summaryText">Done</h6>
+                  <p id="doneNumberBox"></p>
+                  <p class="summaryText">Done</p>
                 </div>
               </div>
             </div>
@@ -114,8 +114,8 @@
                   <img id="urgencyImg" src="../assets/svg/double_arrow_up.svg" alt="" />
                 </div>
                 <div class="summaryCount">
-                  <h2 id="urgencyCountBox"></h2>
-                  <span class="summaryText">Urgent</span>
+                  <p id="urgencyCountBox" class="summaryNumber" aria-live="polite"></p>
+                  <p class="summaryText">Urgent</p>
                 </div>
               </div>
               <div class="dividerUrgency"></div>
@@ -126,22 +126,22 @@
             </div>
             <div class="summaryTasks">
               <div class="summaryBox taskBox summaryCount">
-                <h2 id="allTaskCountBox"></h2>
-                <h6 class="summaryText">Tasks in Board</h6>
+                <p id="allTaskCountBox"></p>
+                <p class="summaryText">Tasks in Board</p>
               </div>
               <div class="summaryBox taskBox summaryCount">
-                <h2 id="progressCountBox"></h2>
-                <h6 class="summaryText">Tasks in Progress</h6>
+                <h3 id="progressCountBox"></h3>
+                <p class="summaryText">Tasks in Progress</p>
               </div>
               <div class="summaryBox taskBox summaryCount">
-                <h2 id="awaitFreedbackCountBox"></h2>
-                <h6 class="summaryText">Awaiting Feedback</h6>
+                <h3 id="awaitFreedbackCountBox"></h3>
+                <p class="summaryText">Awaiting Feedback</p>
               </div>
             </div>
           </div>
           <div id="sumGreetingContainer" class="sumGreetingContainer">
             <p class="sumGreeting"><span id="sumGreeting">Good morning</span><span id="markDestinction">,</span></p>
-            <h2 class="sumName" id="logInName"></h2>
+            <p class="sumName" id="logInName"></p>
           </div>
         </div>
       </section>
