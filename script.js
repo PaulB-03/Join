@@ -71,7 +71,7 @@ function toggleSidebarAndHeader(user) {
 function showExternalSidebar(external, internal, headerNav) {
   external.classList.remove("d_none");
   internal.classList.add("d_none");
-  headerNav.style.visibility = "hidden";
+  headerNav.classList.add("d_none");
 }
 
 /**
@@ -87,7 +87,7 @@ function showExternalSidebar(external, internal, headerNav) {
 function showInternalSidebar(external, internal, headerNav) {
   internal.classList.remove("d_none");
   external.classList.add("d_none");
-  headerNav.style.visibility = "visible";
+  headerNav.classList.remove("d_none");
 }
 
 /**
@@ -144,11 +144,6 @@ function highlightActiveLink() {
    */
   function isCard(el) {
     return !!el.closest(".card, .task-container");
-  }
-
-  function logout() {
-    localStorage.removeItem("showedOnce");
-    localStorage.removeItem("currentUser");
   }
 
   // Apply drag-scroll to all dropzones
@@ -212,3 +207,17 @@ function highlightActiveLink() {
     document.addEventListener("mouseup", endDrag, { capture: true });
   });
 })();
+
+function logout() {
+  localStorage.removeItem("showedOnce");
+  localStorage.removeItem("currentUser");
+}
+
+function backArrow() {
+  const noUser = !localStorage.getItem("currentUser");
+  if (noUser) {
+    window.location.href = "../index.html";
+  } else {
+    history.back();
+  }
+}

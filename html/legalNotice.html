@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="../styles/standard.css" />
     <link rel="stylesheet" href="../styles/legal.css" />
     <link rel="stylesheet" href="../styles/colors.css" />
-    <script src="../script.js"></script>
-    <script src="../scripts/logIn.js"></script>
-    <script src="../scripts/header.js"></script>
   </head>
   <body onload="sidebarHeaderInit()">
     <header id="header">
@@ -88,7 +85,7 @@
     </aside>
     <main class="legalContent">
       <h1>Legal Notice</h1>
-      <img class="scroll-arrow" src="../assets/svg/Default-arrow.svg" alt="Go back" onclick="history.back()" />
+      <img class="scroll-arrow" src="../assets/svg/Default-arrow.svg" alt="Go back" onclick="backArrow()" />
       <h3 class="font_700_27">Imprint</h3>
       <ul>
         <li>Paul Burmester</li>
@@ -139,5 +136,9 @@
       <p>For any questions or notices, please contact us at <a href="">mustermann@example.com.</a></p>
       <p>Date: 30.08.2025</p>
     </main>
+    <script src="../scripts/signUp.js"></script>
+    <script src="../scripts/logIn.js"></script>
+    <script src="../script.js"></script>
+    <script src="../scripts/header.js"></script>
   </body>
 </html>

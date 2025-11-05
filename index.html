@@ -69,13 +69,14 @@
             <input class="input formLockIcon passwordMarginTop" id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirm Password" />
             <p id="passwordMatchError" class="errors">Your passwords don't match. Please try again.</p>
             <div class="acceptPolicy">
-              <div class="checkBoxContainer">
-                <img class="checkBox" id="policyCheckboxImg" src="./assets/svg/checkbox.svg" alt="" />
-              </div>
-              <p>
-                I accept the
-                <a href="./html/privacyPolicy.html">Privacy policy</a>
-              </p>
+              <label class="checkBoxContainer">
+                <input type="checkbox" id="policyCheckbox" class="checkBoxInput" />
+                <span class="checkBoxIcon"></span>
+                <p>
+                  I accept the
+                  <a href="./html/privacyPolicy.html">Privacy policy</a>
+                </p>
+              </label>
             </div>
             <p id="policyError" class="errors policyErrorMarginLeft">Please accept the policy.</p>
           </div>
