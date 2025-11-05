@@ -1,13 +1,3 @@
-/**
- * @fileoverview Handles user and guest login functionality.
- * Includes event listeners for guest login and user sign-in form submission.
- * Fetches user data from Firebase Realtime Database and validates credentials.
- */
-
-/**
- * Guest login button element.
- * @type {HTMLButtonElement | null}
- */
 const guestLoginButton = document.getElementById("guestLogin");
 
 /**
@@ -49,8 +39,6 @@ async function handleSignIn(event) {
     handleLoginError(error);
   }
 }
-
-/* ─────────────── Helper functions ─────────────── */
 
 /**
  * Retrieves the user's email and password from the sign-in form fields.

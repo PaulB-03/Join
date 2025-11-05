@@ -4,7 +4,7 @@
 
 .logo img,
 .mobileLogo img {
-  visibility: hidden; /* hidden initially */
+  visibility: hidden;
 }
 
 .startLogo {
@@ -15,7 +15,7 @@
   height: 400px;
   transition: transform 1.2s ease-in-out, opacity 0.4s ease;
   z-index: 999;
-  display: block; /* desktop default */
+  display: block; 
 }
 
 .startLogoMobile {
@@ -39,14 +39,13 @@
   top: 0;
   left: 0;
   opacity: 1;
-  transition: opacity 0.4s ease; /* shorter fade */
+  transition: opacity 0.4s ease;
 }
 .startLogoMobileBg.fade-out {
   opacity: 0;
-  pointer-events: none; /* so UI is clickable immediately */
+  pointer-events: none; 
 }
 
-/* Fade-in utility */
 .fade-in {
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
@@ -58,12 +57,12 @@
 
 .indexHeader {
   height: 120px;
-  position: relative; /* wichtig, damit .logo absolut dazu positioniert */
+  position: relative; 
   max-width: 1920px;
   margin-right: auto;
   margin-left: auto;
   display: flex;
-  justify-content: flex-end; /* rechts bleibt frei */
+  justify-content: flex-end; 
   padding: 64px 64px 0 64px;
   background: unset;
   box-shadow: unset;
@@ -303,13 +302,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Start off-screen */
   transform: translateY(100vh);
   opacity: 0;
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Active state when overlay is shown */
 .signupOverlay.show .signupSuccess {
   transform: translateY(0);
   opacity: 1;

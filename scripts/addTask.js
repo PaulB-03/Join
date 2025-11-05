@@ -3,7 +3,7 @@
  * Base URL for backend.
  * @type {string}
  */
-const baseURL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
+const baseURL = DB_ROOT;
 
 let selectedCategory = "";
 let selectedContact = "";
@@ -11,7 +11,6 @@ let selectedState = "";
 let allContacts = [];
 window.assignedContacts = window.assignedContacts || [];
 
-/* ----------------------------- UI-Helpers ------------------------------ */
 /**
  * Returns element by id.
  * @param {string} id
@@ -59,7 +58,6 @@ function clearInlineErrors() {
   });
 }
 
-/* --------------------------- Validation --------------------------------- */
 /**
  * Validates required fields of task form.
  * @returns {boolean}
@@ -81,7 +79,6 @@ function validateTaskFormFields() {
   return ok;
 }
 
-/* ------------------------------ Payload --------------------------------- */
 /**
  * Collects subtasks from UI.
  * @returns {string[]}
@@ -109,7 +106,6 @@ function buildTaskPayloadFromForm() {
   };
 }
 
-/* ----------------------------- API Calls -------------------------------- */
 /**
  * Persists a task to backend.
  * @param {object} payload
@@ -125,7 +121,6 @@ async function persistTask(payload) {
   return res.json();
 }
 
-/* ------------------------------ Create ---------------------------------- */
 /**
  * Handles task creation.
  * @param {Event} [event]
@@ -179,7 +174,6 @@ function selectContact(contact) {
   if (initials) initials.textContent = window.assignedContacts.map((c) => c.name[0]).join(", ");
 }
 
-/* ---------------------------- Bootstraps -------------------------------- */
 /**
  * Wires main button on DOM ready.
  * @returns {void}

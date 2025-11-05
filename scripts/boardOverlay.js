@@ -7,14 +7,11 @@ function byId(id) {
   return document.getElementById(id);
 }
 
-/** @type {Record<string,string>} */
 const __COL_TO_STATE = { "todo": "toDo", "in-progress": "in progress", "await-feedback": "await feedback", "done": "done" };
 /** @type {string} Firebase RTDB Base URL */
-const RTDB_BASE = (typeof baseURL !== "undefined" && baseURL) || "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
+const RTDB_BASE = (typeof baseURL !== "undefined" && baseURL) || DB_ROOT;
 /** @type {HTMLElement|null} remembers last focused element before overlay */
 let __lastActive = null;
-
-/* -------------------------- Overlay-Utilities -------------------------- */
 
 /**
  * First focusable element inside root.
@@ -119,8 +116,6 @@ function onEscCloseOnce(e) {
   if (a?.classList.contains("open")) return closeOverlay(a);
 }
 
-/* ---------------------------- Detail-Overlay ---------------------------- */
-
 /**
  * Opens the task detail overlay and wires actions.
  * @param {string} id - Task ID
@@ -178,8 +173,6 @@ async function onDeleteTask(id, overlay) {
   await window.Board?.renderAllTasks?.();
   window.Board?.updateAllEmptyStates?.();
 }
-
-/* ----------------------------- Add/Edit-UI ------------------------------ */
 
 /**
  * Enters edit mode: closes detail, opens add/edit, fills data.

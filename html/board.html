@@ -18,11 +18,12 @@
     <link rel="stylesheet" href="../styles/addTaskMedia.css" />
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="../scripts/config.js"></script>
     <script>
       const firebaseConfig = {
         apiKey: "…",
         authDomain: "…",
-        databaseURL: "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app",
+        databaseURL: DB_ROOT,
         projectId: "…",
         storageBucket: "…",
         messagingSenderId: "…",
@@ -42,6 +43,13 @@
     <script src="../scripts/subTask.js" defer></script>
     <script src="../scripts/logIn.js" defer></script>
     <script src="../scripts/header.js" defer></script>
+    <script src="../scripts/clearTask.js"></script>
+    <script src="../scripts/standardFunctions.js"></script>
+    <script src="../scripts/dropDown.js" defer></script>
+    <script src="../scripts/priority.js"></script>
+    <script src="../scripts/addTaskUi.js"></script>
+    <script src="../scripts/firefoxCalendar.js"></script>
+    <script src="../scripts/addTask.js"></script>
     <noscript>
       <style>
         .app {
@@ -283,13 +291,5 @@
         </div>
       </div>
     </div>
-    <script src="../scripts/clearTask.js"></script>
-    <script src="../scripts/standardFunctions.js"></script>
-    <script src="../scripts/dropDown.js" defer></script>
-    <script src="../scripts/priority.js"></script>
-    <script src="../scripts/addTaskUi.js"></script>
-    <script src="../scripts/firefoxCalendar.js"></script>
-    <script src="../scripts/addTask.js"></script>
-    <div id="rotateWarning" class="rotate-warning">Please rotate your device to portrait mode.</div>
   </body>
 </html>

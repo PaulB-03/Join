@@ -11,7 +11,6 @@ function sidebarHeaderInit() {
   const path = location.pathname.replace(/\/+$/, "") || "/";
   const isPub = PUB.has(path) || document.body?.dataset.public === "true";
   const noUser = !localStorage.getItem("currentUser");
-
   if (!isPub && noUser) {
     const exc = ["/Join/html/legalNotice.html", "/Join/html/privacyPolicy.html"];
     if (!exc.includes(path)) {
@@ -145,6 +144,11 @@ function highlightActiveLink() {
    */
   function isCard(el) {
     return !!el.closest(".card, .task-container");
+  }
+
+  function logout() {
+    localStorage.removeItem("showedOnce");
+    localStorage.removeItem("currentUser");
   }
 
   // Apply drag-scroll to all dropzones

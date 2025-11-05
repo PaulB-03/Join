@@ -1,5 +1,4 @@
 .addTaskBody {
-  /* overflow: hidden; */
   background-color: var(--main-bg-color);
   height: 100%;
   overflow: scroll;
@@ -106,7 +105,6 @@ textarea::placeholder {
 
 .description {
   position: relative;
-  /* ensures z-index works predictably */
   z-index: 1;
   appearance: none;
   -webkit-appearance: none;
@@ -133,11 +131,9 @@ textarea::placeholder {
   bottom: 0;
   right: 0;
   width: 28px;
-  /* slightly bigger click zone */
   height: 28px;
   cursor: ns-resize;
   z-index: 2;
-  /* must be higher than textarea */
 }
 
 .description:focus {
@@ -424,14 +420,12 @@ input[type="date"]::-moz-calendar-picker-indicator {
   font-size: 16px;
 }
 
-/* Date Input Wrapper */
 .date-input-wrapper {
   position: relative;
   width: 100%;
   display: inline-block;
 }
 
-/* Custom Calendar Overlay */
 .custom-calendar-overlay {
   animation: fadeInScale 0.2s ease-out;
 }
@@ -447,7 +441,6 @@ input[type="date"]::-moz-calendar-picker-indicator {
   }
 }
 
-/* Firefox: Verstecke den nativen Kalender-Icon */
 input[type="text"].date-input-firefox {
   cursor: pointer;
 }
