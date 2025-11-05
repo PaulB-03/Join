@@ -74,55 +74,6 @@ function hideElement(element) {
 }
 
 /**
- * Sends a GET request to the Firebase Realtime Database and returns parsed JSON.
- *
- * @param {string} path
- * @returns {Promise<any>}
- * @throws {Error}
- */
-async function httpGetJson(path) {
-  const response = await fetch(DB_ROOT + path);
-  if (!response.ok) throw new Error(`GET ${path} -> ${response.status}`);
-  return response.json();
-}
-
-/**
- * Sends a POST request with a JSON body to the Firebase database.
- *
- * @param {string} path
- * @param {Object} body
- * @returns {Promise<any>}
- * @throws {Error}
- */
-async function httpPostJson(path, body) {
-  const response = await fetch(DB_ROOT + path, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  if (!response.ok) throw new Error(`POST ${path} -> ${response.status}`);
-  return response.json();
-}
-
-/**
- * Sends a PATCH request with a JSON body to the Firebase database.
- *
- * @param {string} path
- * @param {Object} body
- * @returns {Promise<any>}
- * @throws {Error}
- */
-async function httpPatchJson(path, body) {
-  const response = await fetch(DB_ROOT + path, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  if (!response.ok) throw new Error(`PATCH ${path} -> ${response.status}`);
-  return response.json();
-}
-
-/**
  * Converts a full name into uppercase initials.
  *
  * @param {string} [name=""]
