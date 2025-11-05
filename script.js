@@ -2,26 +2,44 @@
  * Initializes header and sidebar, sets avatars and active links
  * and shows hidden elements to avoid flicker.
  */
-function sidebarHeaderInit() {
-  const PUB = new Set(["/", "/index.html", "/html/privacyPolicy.html", "/html/legalNotice.html"]);
+/**
+ * Checks whether the user can access the current page and redirects to login if not.
+ *
+ * @function checkUserAccess
+ * @description Redirects unauthenticated users away from private pages, except for explicitly allowed ones.
+ * @returns {boolean} Returns `true` if access is allowed, otherwise triggers a redirect.
+ */
+function checkUserAccess() {
+  const PUBLIC_PATHS = new Set(["/", "/index.html", "/html/privacyPolicy.html", "/html/legalNotice.html"]);
   const path = location.pathname.replace(/\/+$/, "") || "/";
-  const isPub = PUB.has(path) || document.body?.dataset.public === "true";
+  const isPublic = PUBLIC_PATHS.has(path) || document.body?.dataset.public === "true";
   const noUser = !localStorage.getItem("currentUser");
-  if (!isPub && noUser) {
-    const exc = ["/html/legalNotice.html", "/html/privacyPolicy.html"];
-    if (!exc.includes(path)) {
-      const toIndex = path.includes("/html/") ? "../index.html" : "./index.html";
-      return (window.location.href = toIndex);
+
+  if (!isPublic && noUser) {
+    const exceptions = ["/html/legalNotice.html", "/html/privacyPolicy.html"];
+    if (!exceptions.includes(path)) {
+      const redirect = path.includes("/html/") ? "../index.html" : "./index.html";
+      window.location.href = redirect;
+      return false;
     }
   }
+  return true;
+}
 
-  // Load user and set up interface
+/**
+ * Initializes the sidebar header and updates UI components for the logged-in user.
+ *
+ * @function initSidebarHeader
+ * @description Loads the current user session, updates header avatars, highlights active links,
+ * and applies initial layout classes.
+ * @returns {void}
+ */
+function initSidebarHeader() {
+  if (!checkUserAccess()) return;
   const user = loadLoginStatus();
   updateHeaderAvatars(user);
   highlightActiveLink();
   toggleSidebarAndHeader(user);
-
-  // Show avatars and helper after initialization
   document.querySelector("header").classList.add("header-initialized");
 }
 
@@ -107,11 +125,28 @@ function highlightActiveLink() {
   });
 }
 
+/**
+ * Logs the user out of the application.
+ *
+ * @function logout
+ * @description Removes user-related data from local storage to end the current session.
+ * @returns {void}
+ */
 function logout() {
   localStorage.removeItem("showedOnce");
   localStorage.removeItem("currentUser");
 }
 
+/**
+ * Handles the back navigation arrow behavior.
+ *
+ * @function backArrow
+ * @description Determines where to navigate when the user clicks the "back" button:
+ * - If no user is logged in (`currentUser` is missing), redirects to the login page.
+ * - Otherwise, navigates to the previous page in browser history.
+ *
+ * @returns {void}
+ */
 function backArrow() {
   const noUser = !localStorage.getItem("currentUser");
   if (noUser) {
@@ -121,6 +156,16 @@ function backArrow() {
   }
 }
 
+/**
+ * Ensures user logout when navigating back to this page from the browser cache.
+ *
+ * @event pageshow
+ * @description The `pageshow` event is triggered when a page is loaded from cache or directly.
+ * If the page is restored from the browser's back/forward cache, it calls {@link logout}.
+ *
+ * @param {PageTransitionEvent} event - The event object containing navigation information.
+ * @listens window#pageshow
+ */
 window.addEventListener("pageshow", function (event) {
   // event.persisted is true if the page was restored from the cache
   if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
