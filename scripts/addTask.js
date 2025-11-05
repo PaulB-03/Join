@@ -5,21 +5,12 @@ let allContacts = [];
 window.assignedContacts = window.assignedContacts || [];
 
 /**
- * Returns element by id.
- * @param {string} id
- * @returns {HTMLElement|null}
- */
-function $id(id) {
-  return document.getElementById(id);
-}
-
-/**
  * Returns trimmed value of input by id.
  * @param {string} id
  * @returns {string}
  */
 function getFieldValue(id) {
-  const el = $id(id);
+  const el = document.getElementById(id);
   return el ? el.value.trim() : "";
 }
 
@@ -46,7 +37,7 @@ function showCategoryError(field) {
 function clearInlineErrors() {
   document.querySelectorAll(".addTaskErrors").forEach((e) => (e.style.visibility = "hidden"));
   ["titleInput", "date", "input-category"].forEach((id) => {
-    const f = $id(id);
+    const f = document.getElementById(id);
     if (f) f.style.border = "";
   });
 }
@@ -58,15 +49,15 @@ function clearInlineErrors() {
 function validateTaskFormFields() {
   let ok = true;
   if (!getFieldValue("titleInput")) {
-    showInlineError($id("titleInput"), $id("titleError"));
+    showInlineError(document.getElementById("titleInput"), document.getElementById("titleError"));
     ok = false;
   }
   if (!getFieldValue("date")) {
-    showInlineError($id("date"), $id("dateError"));
+    showInlineError(document.getElementById("date"), document.getElementById("dateError"));
     ok = false;
   }
   if (window.selectedCategory == undefined) {
-    showCategoryError($id("input-category"));
+    showCategoryError(document.getElementById("input-category"));
     ok = false;
   }
   return ok;
@@ -127,7 +118,7 @@ async function createTask(event) {
     event.preventDefault();
     event.stopPropagation();
   }
-  const b = $id("add");
+  const b = document.getElementById("add");
   if (b) {
     b.setAttribute("disabled", true);
   }
@@ -163,7 +154,7 @@ async function createTask(event) {
 function selectContact(contact) {
   if (!contact) return;
   if (!window.assignedContacts.some((c) => c.id === contact.id)) window.assignedContacts.push(contact);
-  const initials = $id("assignedToInitials");
+  const initials = document.getElementById("assignedToInitials");
   if (initials) initials.textContent = window.assignedContacts.map((c) => c.name[0]).join(", ");
 }
 
