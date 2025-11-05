@@ -1,12 +1,4 @@
 /**
- * @fileoverview Handles sign-up form validation, user registration process,
- * and policy agreement logic for a web app. Includes real-time field validation
- * and visual feedback for users.
- */
-
-/* ─────────────── Regex Patterns ─────────────── */
-
-/**
  * Validates full names with support for accented characters, spaces, hyphens, and apostrophes.
  * Must include at least two words.
  * @type {RegExp}
@@ -51,8 +43,6 @@ const policyCheckbox = document.getElementById("policyCheckbox");
  */
 let policyChecked = false;
 
-/* ─────────────── Helper Functions ─────────────── */
-
 /**
  * Updates visibility and styling of a field's error message based on validation result.
  *
@@ -86,8 +76,6 @@ const validateSignupForm = () => {
   return isNameValid && isEmailValid && doPasswordsMatch && policyChecked;
 };
 
-/* ─────────────── Event Listeners ─────────────── */
-
 policyCheckbox.addEventListener("change", () => {
   policyChecked = policyCheckbox.checked;
   policyError.style.visibility = policyChecked ? "hidden" : "visible";
@@ -113,8 +101,6 @@ signupForm.addEventListener("submit", async (e) => {
     console.error("Signup failed:", err);
   }
 });
-
-/* ─────────────── Signup Process ─────────────── */
 
 /**
  * Handles the asynchronous sign-up process.

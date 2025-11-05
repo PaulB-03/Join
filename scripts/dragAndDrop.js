@@ -1,6 +1,4 @@
-/** Currently dragged card (container). */
 let dragged = null;
-/** Placeholder element while dragging. */
 let placeholder = null;
 
 /**
