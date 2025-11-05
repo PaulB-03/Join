@@ -59,7 +59,7 @@ function getSigninFormData() {
  * @throws {Error} Throws an error if no users are found or if the fetch request fails.
  */
 async function fetchUsers() {
-  const res = await fetch(`${BASE_URL}/users.json`);
+  const res = await fetch(`${DB_ROOT}/users.json`);
   const data = await res.json();
   if (!data) throw new Error("No users found!");
   return data;
