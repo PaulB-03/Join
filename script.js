@@ -1,7 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-  sidebarHeaderInit();
-});
-
 /**
  * Initializes header and sidebar, sets avatars and active links
  * and shows hidden elements to avoid flicker.
@@ -124,3 +120,10 @@ function backArrow() {
     history.back();
   }
 }
+
+window.addEventListener("pageshow", function (event) {
+  // event.persisted is true if the page was restored from the cache
+  if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+    logout();
+  }
+});

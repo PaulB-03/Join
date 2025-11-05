@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="./styles/colors.css" />
     <link rel="stylesheet" href="./styles/splash.css" />
     <link rel="stylesheet" href="./styles/splashMedia.css" />
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="../scripts/config.js"></script>
   </head>
   <body onload="logout()">
@@ -95,14 +97,6 @@
         <a class="legalLink" href="./html/legalNotice.html">Legal Notice</a>
       </div>
     </footer>
-    <script>
-      window.addEventListener("pageshow", function (event) {
-        // event.persisted is true if the page was restored from the cache
-        if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
-          logout();
-        }
-      });
-    </script>
     <script src="script.js"></script>
     <script src="./scripts/animateLogo.js"></script>
     <script src="./scripts/dropDown.js"></script>

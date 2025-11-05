@@ -48,3 +48,14 @@ function clearColumns() {
     z.innerHTML = `<div class="empty">No tasks ${title}</div>`;
   });
 }
+
+/**
+ * Global assignments for backward compatibility.
+ * Ensures existing code using window references continues to work.
+ * @type {void}
+ */
+taskCardInnerHtml = taskCardInnerHtml;
+taskDetailTemplate = taskDetailTemplate;
+getSwapTemplate = getSwapTemplate;
+renderAvatarsWithPriority = renderAvatarsWithPriority;
+  
