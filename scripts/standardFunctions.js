@@ -1,8 +1,4 @@
 (() => {
-  /* ===============================
-   *  Base Configuration
-   * =============================== */
-
   /**
    * Base URL for Firebase Realtime Database requests.
    *

@@ -182,7 +182,6 @@ async function afterUpdateUI(id, navigateToBoard, closeOverlayAfter, reopenDetai
     location.href = "board.html";
     return;
   }
-  // if (reopenDetail) await openTaskDetail(id);
 }
 
 /**

@@ -1,229 +1,236 @@
-(function () {
-  const LOGO_KEY = "logoAnimated";
+/**
+ * @fileoverview Handles splash screen animation, logo transitions,
+ * and page reveal for both desktop and mobile views.
+ */
 
-  /**
-   * Reveals all elements that were hidden at startup,
-   * including the login screen.
-   * @returns {void}
-   */
-  function revealHidden() {
-    document.querySelectorAll(".hidden").forEach((el) => el.classList.remove("hidden"));
-    const loginScreen = document.querySelector("#loginScreen");
-    if (loginScreen) loginScreen.classList.remove("d_none");
+const LOGO_KEY = "logoAnimated";
+
+/* ─────────────── Visibility Control ─────────────── */
+
+/**
+ * Reveals hidden elements and shows the login screen.
+ * @returns {void}
+ */
+function revealHidden() {
+  document.querySelectorAll(".hidden").forEach((el) => el.classList.remove("hidden"));
+  const loginScreen = document.querySelector("#loginScreen");
+  if (loginScreen) loginScreen.classList.remove("d_none");
+}
+
+/**
+ * Hides all splash-related elements (desktop, mobile, and overlays).
+ * @returns {void}
+ */
+function hideAllSplash() {
+  [".startLogo", ".startLogoMobile", ".startLogoMobileBg"].forEach((sel) => {
+    const el = document.querySelector(sel);
+    if (el) el.classList.add("d_none");
+  });
+}
+
+/**
+ * Makes all logo images visible on the page.
+ * @returns {void}
+ */
+function unlockLogos() {
+  document.querySelectorAll(".logo img, .mobileLogo img").forEach((el) => {
+    el.style.visibility = "visible";
+  });
+}
+
+/* ─────────────── Fade & Animation ─────────────── */
+
+/**
+ * Fades in key page elements like header and login screen.
+ * @returns {void}
+ */
+function fadeInElements() {
+  const header = document.querySelector(".indexHeader");
+  const loginScreen = document.querySelector("#loginScreen");
+  [header, loginScreen].forEach(fadeInElement);
+}
+
+/**
+ * Applies a fade-in transition to an element.
+ * @param {HTMLElement|null} el - The element to animate.
+ * @returns {void}
+ */
+function fadeInElement(el) {
+  if (!el) return;
+  el.classList.remove("hidden", "d_none");
+  el.classList.add("fade-in");
+  setTimeout(() => el.classList.add("visible"), 50);
+}
+
+/**
+ * Calculates translation and scaling values
+ * between two bounding boxes for smooth animation.
+ * @param {DOMRect} startRect - Starting element bounding box.
+ * @param {DOMRect} targetRect - Target element bounding box.
+ * @returns {{deltaX: number, deltaY: number, scale: number}}
+ */
+function calculateTransform(startRect, targetRect) {
+  const startCenterX = startRect.left + startRect.width / 2;
+  const startCenterY = startRect.top + startRect.height / 2;
+  const targetCenterX = targetRect.left + targetRect.width / 2;
+  const targetCenterY = targetRect.top + targetRect.height / 2;
+  return {
+    deltaX: targetCenterX - startCenterX,
+    deltaY: targetCenterY - startCenterY,
+    scale: targetRect.width / startRect.width,
+  };
+}
+
+/**
+ * Animates logo transformation using calculated deltas.
+ * @param {HTMLElement} startLogo - The starting splash logo element.
+ * @param {number} deltaX - Horizontal translation in pixels.
+ * @param {number} deltaY - Vertical translation in pixels.
+ * @param {number} scale - Scaling factor for logo size.
+ * @returns {void}
+ */
+function animateLogo(startLogo, deltaX, deltaY, scale) {
+  requestAnimationFrame(() => {
+    startLogo.style.transform = `translate(-50%, -50%) translate(${deltaX}px, ${deltaY}px) scale(${scale})`;
+  });
+}
+
+/* ─────────────── Splash Finish Logic ─────────────── */
+
+/**
+ * Completes splash animation, hides logos, and sets session flag.
+ * @param {HTMLElement|null} startLogo - The splash logo element.
+ * @param {Function} [onDone] - Optional callback executed after completion.
+ * @returns {void}
+ */
+function finishSplash(startLogo, onDone) {
+  revealHidden();
+  unlockLogos();
+  if (startLogo) {
+    startLogo.style.opacity = "0";
+    setTimeout(() => startLogo.classList.add("d_none"), 400);
   }
+  sessionStorage.setItem(LOGO_KEY, "true");
+  if (typeof onDone === "function") onDone();
+}
 
-  /**
-   * Fades in the header and login screen elements.
-   * @returns {void}
-   */
-  function fadeInElements() {
-    const header = document.querySelector(".indexHeader");
-    const loginScreen = document.querySelector("#loginScreen");
-    [header, loginScreen].forEach(fadeInElement);
+/**
+ * Ensures splash finalization runs only once.
+ * @param {boolean} finished - Whether splash is already finalized.
+ * @param {HTMLElement|null} startLogo - The splash logo element.
+ * @param {Function} [onDone] - Callback after finalization.
+ * @returns {boolean} Updated finished state.
+ */
+function triggerSplashFinish(finished, startLogo, onDone) {
+  if (!finished) {
+    finishSplash(startLogo, onDone);
+    return true;
   }
+  return finished;
+}
 
-  /**
-   * Applies fade-in animation to a single element.
-   * @param {HTMLElement|null} el - The DOM element to fade in.
-   * @returns {void}
-   */
-  function fadeInElement(el) {
-    if (!el) return;
-    el.classList.remove("hidden", "d_none");
-    el.classList.add("fade-in");
-    setTimeout(() => el.classList.add("visible"), 50);
-  }
+/**
+ * Waits for a CSS transition or timeout before calling the handler.
+ * @param {HTMLElement|null} startLogo - Element being animated.
+ * @param {Function} onFinish - Callback when transition completes.
+ * @param {number} [timeout=2200] - Fallback timeout in milliseconds.
+ * @returns {void}
+ */
+function waitForTransitionOrTimeout(startLogo, onFinish, timeout = 2200) {
+  if (!startLogo) return onFinish();
+  startLogo.addEventListener(
+    "transitionend",
+    (e) => {
+      if (!e.propertyName || e.propertyName === "transform") onFinish();
+    },
+    { once: true }
+  );
+  setTimeout(onFinish, timeout);
+}
 
-  /**
-   * Makes both desktop and mobile logos visible.
-   * @returns {void}
-   */
-  function unlockLogos() {
-    document.querySelectorAll(".logo img, .mobileLogo img").forEach((el) => {
-      el.style.visibility = "visible";
-    });
-  }
+/**
+ * Waits for logo animation to complete, then reveals the page.
+ * @param {HTMLElement|null} startLogo - Splash logo element.
+ * @param {Function} [onDone] - Callback after splash completion.
+ * @returns {void}
+ */
+function showHiddenElements(startLogo, onDone) {
+  let finished = false;
+  const handleFinish = () => {
+    finished = triggerSplashFinish(finished, startLogo, onDone);
+  };
+  waitForTransitionOrTimeout(startLogo, handleFinish);
+}
 
-  /**
-   * Hides all splash-related elements (desktop, mobile, overlay).
-   * @returns {void}
-   */
-  function hideAllSplash() {
-    [".startLogo", ".startLogoMobile", ".startLogoMobileBg"].forEach((sel) => {
-      const el = document.querySelector(sel);
-      if (el) el.classList.add("d_none");
-    });
-  }
+/* ─────────────── Mobile Overlay ─────────────── */
 
-  /**
-   * Calculates translation and scaling values to transform
-   * the splash logo into the target logo position.
-   * @param {DOMRect} startRect - Bounding box of the splash logo.
-   * @param {DOMRect} targetRect - Bounding box of the final logo.
-   * @returns {{deltaX: number, deltaY: number, scale: number}}
-   */
-  function calculateTransform(startRect, targetRect) {
-    const startCenterX = startRect.left + startRect.width / 2;
-    const startCenterY = startRect.top + startRect.height / 2;
-    const targetCenterX = targetRect.left + targetRect.width / 2;
-    const targetCenterY = targetRect.top + targetRect.height / 2;
+/**
+ * Fades out mobile overlay and swaps splash logo.
+ * @param {HTMLElement} startLogo - Mobile splash logo element.
+ * @param {HTMLElement} overlay - Background overlay element.
+ * @returns {void}
+ */
+function handleMobileOverlay(startLogo, overlay) {
+  overlay.classList.add("fade-out");
+  setTimeout(() => overlay.classList.add("d_none"), 450);
+  setTimeout(() => (startLogo.src = "./assets/svg/join_logo_small.svg"), 200);
+}
 
-    const deltaX = targetCenterX - startCenterX;
-    const deltaY = targetCenterY - startCenterY;
-    const scale = targetRect.width / startRect.width;
-    return { deltaX, deltaY, scale };
-  }
+/* ─────────────── Main Splash Logic ─────────────── */
 
-  /**
-   * Applies the transform animation to the splash logo.
-   * @param {HTMLElement} startLogo - The splash logo element.
-   * @param {number} deltaX - Horizontal movement in px.
-   * @param {number} deltaY - Vertical movement in px.
-   * @param {number} scale - Scale factor for resizing.
-   * @returns {void}
-   */
-  function animateLogo(startLogo, deltaX, deltaY, scale) {
-    requestAnimationFrame(() => {
-      startLogo.style.transform = `translate(-50%, -50%) translate(${deltaX}px, ${deltaY}px) scale(${scale})`;
-    });
-  }
-
-  /**
-   * Finalizes splash animation: reveals hidden content,
-   * unlocks logos, fades out splash, and sets session flag.
-   * @param {HTMLElement|null} startLogo - The splash logo.
-   * @param {Function} [onDone] - Callback executed after completion.
-   * @returns {void}
-   */
-  function finishSplash(startLogo, onDone) {
-    revealHidden();
-    unlockLogos();
-    if (startLogo) {
-      startLogo.style.opacity = "0";
-      setTimeout(() => startLogo.classList.add("d_none"), 400);
-    }
-    sessionStorage.setItem(LOGO_KEY, "true");
-    if (typeof onDone === "function") onDone();
-  }
-
-  /**
-   * Safely finalizes the splash screen once, preventing multiple executions.
-   *
-   * @param {boolean} finished - Whether the finalization has already been triggered.
-   * @param {HTMLElement|null} startLogo - The splash logo element.
-   * @param {Function} [onDone] - Optional callback after completion.
-   * @returns {boolean} Updated finished state.
-   */
-  function triggerSplashFinish(finished, startLogo, onDone) {
-    if (!finished) {
-      finishSplash(startLogo, onDone);
-      return true;
-    }
-    return finished;
-  }
-
-  /**
-   * Waits for a transition end event on an element or a timeout as fallback,
-   * then calls a provided completion handler.
-   *
-   * @param {HTMLElement|null} startLogo - The splash logo element.
-   * @param {Function} onFinish - The callback to execute when finished.
-   * @param {number} [timeout=2200] - Fallback timeout in milliseconds.
-   * @returns {void}
-   */
-  function waitForTransitionOrTimeout(startLogo, onFinish, timeout = 2200) {
-    if (!startLogo) {
-      onFinish();
-      return;
-    }
-    startLogo.addEventListener(
-      "transitionend",
-      (e) => {
-        if (!e.propertyName || e.propertyName === "transform") onFinish();
-      },
-      { once: true }
-    );
-    setTimeout(onFinish, timeout);
-  }
-
-  /**
-   * Waits for splash logo animation to complete, then triggers finalization.
-   * This is the main entry point that coordinates event and timeout handling.
-   *
-   * @param {HTMLElement|null} startLogo - The splash logo element.
-   * @param {Function} [onDone] - Optional callback after splash completion.
-   * @returns {void}
-   */
-  function showHiddenElements(startLogo, onDone) {
-    let finished = false;
-    const handleFinish = () => {
-      finished = triggerSplashFinish(finished, startLogo, onDone);
-    };
-    waitForTransitionOrTimeout(startLogo, handleFinish);
-  }
-
-  /**
-   * Runs the splash sequence with delays, transitions,
-   * and mobile-specific overlay handling.
-   * @param {HTMLElement} startLogo - The splash logo element.
-   * @param {HTMLElement} finalLogo - The target logo element.
-   * @param {HTMLElement|null} overlay - Mobile overlay element.
-   * @param {boolean} isMobile - True if mobile layout is active.
-   * @returns {void}
-   */
-  function runSplash(startLogo, finalLogo, overlay, isMobile) {
-    setTimeout(() => {
-      fadeInElements();
-      const startRect = startLogo.getBoundingClientRect();
-      const targetRect = finalLogo.getBoundingClientRect();
-      startLogo.style.transition = "transform 0.7s ease-in-out, opacity 0.1s ease";
-      const { deltaX, deltaY, scale } = calculateTransform(startRect, targetRect);
-      animateLogo(startLogo, deltaX, deltaY, scale);
-      if (isMobile && overlay) handleMobileOverlay(startLogo, overlay);
-      showHiddenElements(startLogo, () => {
-        hideAllSplash();
-        unlockLogos();
-      });
-    }, 1000);
-  }
-
-  /**
-   * Handles fading out the mobile overlay
-   * and swapping splash logo asset.
-   * @param {HTMLElement} startLogo - The mobile splash logo.
-   * @param {HTMLElement} overlay - Mobile overlay background.
-   * @returns {void}
-   */
-  function handleMobileOverlay(startLogo, overlay) {
-    overlay.classList.add("fade-out");
-    setTimeout(() => overlay.classList.add("d_none"), 450);
-    setTimeout(() => (startLogo.src = "./assets/svg/join_logo_small.svg"), 200);
-  }
-
-  /**
-   * Entry point for splash animation logic.
-   * Decides whether to run splash or skip it
-   * based on device type and sessionStorage flag.
-   * @returns {void}
-   */
-  function startAnimation() {
-    const isMobile = window.matchMedia("(max-width: 496px)").matches;
-    const startLogo = document.querySelector(isMobile ? ".startLogoMobile" : ".startLogo");
-    const finalLogo = document.querySelector(isMobile ? ".mobileLogo img" : ".logo img");
-    const overlay = isMobile ? document.querySelector(".startLogoMobileBg") : null;
-    if (!startLogo || !finalLogo) return revealHidden(), hideAllSplash();
-    if (sessionStorage.getItem(LOGO_KEY)) {
-      revealHidden();
+/**
+ * Runs splash sequence with logo animation and transitions.
+ * @param {HTMLElement} startLogo - Splash logo element.
+ * @param {HTMLElement} finalLogo - Target logo element.
+ * @param {HTMLElement|null} overlay - Optional mobile overlay.
+ * @param {boolean} isMobile - Whether device is mobile-sized.
+ * @returns {void}
+ */
+function runSplash(startLogo, finalLogo, overlay, isMobile) {
+  setTimeout(() => {
+    fadeInElements();
+    const startRect = startLogo.getBoundingClientRect();
+    const targetRect = finalLogo.getBoundingClientRect();
+    startLogo.style.transition = "transform 0.7s ease-in-out, opacity 0.1s ease";
+    const { deltaX, deltaY, scale } = calculateTransform(startRect, targetRect);
+    animateLogo(startLogo, deltaX, deltaY, scale);
+    if (isMobile && overlay) handleMobileOverlay(startLogo, overlay);
+    showHiddenElements(startLogo, () => {
       hideAllSplash();
       unlockLogos();
-      return;
-    }
-    runSplash(startLogo, finalLogo, overlay, isMobile);
+    });
+  }, 1000);
+}
+
+/* ─────────────── Entry Point ─────────────── */
+
+/**
+ * Initializes splash animation depending on device and session state.
+ * @returns {void}
+ */
+function startAnimation() {
+  const isMobile = window.matchMedia("(max-width: 496px)").matches;
+  const startLogo = document.querySelector(isMobile ? ".startLogoMobile" : ".startLogo");
+  const finalLogo = document.querySelector(isMobile ? ".mobileLogo img" : ".logo img");
+  const overlay = isMobile ? document.querySelector(".startLogoMobileBg") : null;
+
+  if (!startLogo || !finalLogo) {
+    revealHidden();
+    hideAllSplash();
+    return;
   }
 
-  /**
-   * Initializes splash animation
-   * when the page is shown or restored from cache.
-   */
-  window.addEventListener("pageshow", startAnimation);
-})();
+  if (sessionStorage.getItem(LOGO_KEY)) {
+    revealHidden();
+    hideAllSplash();
+    unlockLogos();
+    return;
+  }
+
+  runSplash(startLogo, finalLogo, overlay, isMobile);
+}
+
+/**
+ * Binds splash initialization to browser page load or cache restore.
+ */
+window.addEventListener("pageshow", startAnimation);

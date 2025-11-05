@@ -178,7 +178,6 @@ function escapeHtml(text) {
  */
 document.addEventListener("DOMContentLoaded", initSubtaskUI);
 
-
 /**
  * Reads subtasks from detail overlay and saves them.
  * @param {string} taskId
@@ -263,24 +262,3 @@ function fillSubtasks(subtasks) {
     wrap.appendChild(createSubtaskElement(txt, !!(typeof s === "object" && s.done)));
   });
 }
-
-// /**
-//  * Renders initials for globally selected assignedContacts.
-//  * @returns {void}
-//  */
-// function renderAssignedInitials() {
-// const w = byId("assignedToInitials");
-// w.innerHTML = "";
-// if (!(assignedContacts && assignedContacts.length)) {
-// w.style.display = "none";
-// return;
-// }
-// w.style.display = "flex";
-// assignedContacts.forEach((i) => {
-// const d = document.createElement("div");
-// d.className = "av";
-// d.style.background = colorForName(i);
-// d.textContent = initials(i);
-// w.appendChild(d);
-// });
-// }
