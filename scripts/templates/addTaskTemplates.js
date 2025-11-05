@@ -151,13 +151,3 @@ function getSwapTemplate() {
           </ul>
   `;
 }
-
-/**
- * Global assignments for backward compatibility.
- * Ensures existing code using window references continues to work.
- * @type {void}
- */
-window.taskCardInnerHtml = taskCardInnerHtml;
-window.taskDetailTemplate = taskDetailTemplate;
-window.getSwapTemplate = getSwapTemplate;
-window.renderAvatarsWithPriority = renderAvatarsWithPriority;
