@@ -146,11 +146,6 @@ function highlightActiveLink() {
     return !!el.closest(".card, .task-container");
   }
 
-  function logout() {
-    localStorage.removeItem("showedOnce");
-    localStorage.removeItem("currentUser");
-  }
-
   // Apply drag-scroll to all dropzones
   document.querySelectorAll(".dropzone").forEach((zone) => {
     let isMouseDown = false;
@@ -212,3 +207,17 @@ function highlightActiveLink() {
     document.addEventListener("mouseup", endDrag, { capture: true });
   });
 })();
+
+function logout() {
+  localStorage.removeItem("showedOnce");
+  localStorage.removeItem("currentUser");
+}
+
+function backArrow() {
+  const noUser = !localStorage.getItem("currentUser");
+  if (noUser) {
+    window.location.href = "../index.html";
+  } else {
+    history.back();
+  }
+}
