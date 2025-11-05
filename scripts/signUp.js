@@ -1,5 +1,3 @@
-// const BASE_URL = DB_ROOT;
-
 /**
  * Checks if a user with the given email already exists.
  * Updates the UI with an error if duplicate found.
@@ -267,7 +265,7 @@ function setupInputListeners() {
  * Attaches click listener to policy checkbox image.
  */
 function setupPolicyListener() {
-  document.getElementById("policyCheckboxImg")?.addEventListener("click", () => setTimeout(syncSignupBtn, 0));
+  document.getElementById("policyCheckbox")?.addEventListener("click", () => setTimeout(syncSignupBtn, 50));
 }
 
 /**

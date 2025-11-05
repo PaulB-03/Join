@@ -3,13 +3,13 @@
  * Must include at least two words.
  * @type {RegExp}
  */
-const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß'-]{1,12}(?:\s+[a-zA-ZÀ-ÖØ-öø-ÿß'-]{1,12})+$/;
+const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+(?:\s+[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+)+$/;
 
 /**
  * Validates standard email addresses.
  * @type {RegExp}
  */
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
+const emailRegex = /^[\p{L}0-9]+(?:\.[\p{L}0-9]+)*@[\p{L}0-9]+\.[\p{L}]+$/u;
 
 /* ─────────────── DOM References ─────────────── */
 
@@ -70,7 +70,6 @@ const validateSignupForm = () => {
   updateFieldError(isEmailValid, signupEmail, emailError);
   updateFieldError(doPasswordsMatch, signupPassword, passwordMatchError);
   updateFieldError(doPasswordsMatch, confirmPassword, passwordMatchError);
-  // Check policy acceptance
   policyError.style.visibility = policyChecked ? "hidden" : "visible";
 
   return isNameValid && isEmailValid && doPasswordsMatch && policyChecked;
