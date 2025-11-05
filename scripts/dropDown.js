@@ -23,8 +23,6 @@ async function saveTask(path, data) {
   return httpPostJson(path + ".json", data);
 }
 
-// ----------------------------------------dropDownMenue--------------------------------------------------
-
 document.addEventListener("DOMContentLoaded", () => {
   const contacts = document.getElementById("assignedToDropdownContacts");
   const category = document.getElementById("assignedToDropdownCategory");
@@ -36,18 +34,22 @@ document.addEventListener("DOMContentLoaded", () => {
  * Handles both the contacts and category dropdowns.
  */
 function initDropDownMenue() {
-  let assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
-  let assignedToDropdownCategory = document.getElementById("assignedToDropdownCategory");
+  const assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
+  const assignedToDropdownCategory = document.getElementById("assignedToDropdownCategory");
 
-  assignedToDropDownContacts.addEventListener("click", openAssignedToContacts);
-  assignedToDropdownCategory.addEventListener("click", openCategoryDropDown);
+  if (assignedToDropDownContacts) {
+    assignedToDropDownContacts.addEventListener("click", openAssignedToContacts);
+  }
+  if (assignedToDropdownCategory) {
+    assignedToDropdownCategory.addEventListener("click", openCategoryDropDown);
+  }
 
   if (document.getElementById("task-overlay-panel")) {
-    let addTaskOverlayPanel = document.getElementById("task-overlay-panel");
+    const addTaskOverlayPanel = document.getElementById("task-overlay-panel");
     addTaskOverlayPanel.addEventListener("click", resetDropDown);
   } else {
-    let htmlDiv = document.getElementById("htmlDiv");
-    htmlDiv.addEventListener("click", resetDropDown);
+    const htmlDiv = document.getElementById("htmlDiv");
+    if (htmlDiv) htmlDiv.addEventListener("click", resetDropDown);
   }
 }
 
@@ -56,19 +58,20 @@ function initDropDownMenue() {
  * @param {MouseEvent} event - The click event.
  */
 function openAssignedToContacts(event) {
-  let assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
-  let dropDownArrow = document.getElementById("dropdown-arrow-contacts");
-  let dropdownList = document.getElementById("dropdown-list-contacts");
+  const assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
+  const dropDownArrow = document.getElementById("dropdown-arrow-contacts");
+  const dropdownList = document.getElementById("dropdown-list-contacts");
 
   event.stopPropagation();
 
   if (!assignedToDropDownContacts.classList.contains("open")) {
     resetDropDown("category");
-    document.getElementById("assignedToInitials").style.display = "none";
+    const initialsBox = document.getElementById("assignedToInitials");
+    if (initialsBox) initialsBox.style.display = "none";
     assignedToDropDownContacts.classList.add("open");
-    dropdownList.classList.add("open");
+    if (dropdownList) dropdownList.classList.add("open");
     addMarginSpacingForDropDownMenue("contacts");
-    rotateArrowDropDown(dropDownArrow);
+    if (dropDownArrow) rotateArrowDropDown(dropDownArrow);
   } else {
     resetDropDown();
   }
@@ -79,15 +82,15 @@ function openAssignedToContacts(event) {
  * @param {MouseEvent} event - The click event.
  */
 function openCategoryDropDown(event) {
-  let assignedToDropdownCategory = document.getElementById("assignedToDropdownCategory");
-  let dropDownArrow = document.getElementById("dropdown-arrow-subtasks");
+  const assignedToDropdownCategory = document.getElementById("assignedToDropdownCategory");
+  const dropDownArrow = document.getElementById("dropdown-arrow-subtasks");
   event.stopPropagation();
   if (!assignedToDropdownCategory.classList.contains("open")) {
     resetDropDown("contacts");
     assignedToDropdownCategory.classList.add("open");
     resetMargin("category");
     addMarginSpacingForDropDownMenue("category");
-    rotateArrowDropDown(dropDownArrow);
+    if (dropDownArrow) rotateArrowDropDown(dropDownArrow);
   } else {
     resetDropDown();
   }
@@ -108,7 +111,8 @@ function resetDropDown() {
   resetDropDownMenues();
   resetDropDownArrow();
   resetMargin();
-  document.getElementById("assignedToInitials").style.display = "flex";
+  const initialsBox = document.getElementById("assignedToInitials");
+  if (initialsBox) initialsBox.style.display = "flex";
 }
 
 /**
@@ -116,15 +120,15 @@ function resetDropDown() {
  * @param {string} [element] - Optional. "category" or "contacts" to reset a specific dropdown.
  */
 function resetDropDownMenues(element) {
-  let assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
-  let assignedToDropdownCategory = document.getElementById("assignedToDropdownCategory");
-  if (element == "category") {
-    assignedToDropdownCategory.classList.remove("open");
-  } else if (element == "contacts") {
-    assignedToDropDownContacts.classList.remove("open");
+  const assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
+  const assignedToDropdownCategory = document.getElementById("assignedToDropdownCategory");
+  if (element === "category") {
+    assignedToDropdownCategory?.classList.remove("open");
+  } else if (element === "contacts") {
+    assignedToDropDownContacts?.classList.remove("open");
   } else {
-    assignedToDropdownCategory.classList.remove("open");
-    assignedToDropDownContacts.classList.remove("open");
+    assignedToDropdownCategory?.classList.remove("open");
+    assignedToDropDownContacts?.classList.remove("open");
   }
 }
 
@@ -132,10 +136,10 @@ function resetDropDownMenues(element) {
  * Resets dropdown arrow icons to their default state.
  */
 function resetDropDownArrow() {
-  let dropDownArrowContacts = document.getElementById("dropdown-arrow-subtasks");
-  let dropDownArrowAssignedTo = document.getElementById("dropdown-arrow-contacts");
-  dropDownArrowContacts.style = "";
-  dropDownArrowAssignedTo.style = "";
+  const dropDownArrowContacts = document.getElementById("dropdown-arrow-subtasks");
+  const dropDownArrowAssignedTo = document.getElementById("dropdown-arrow-contacts");
+  if (dropDownArrowContacts) dropDownArrowContacts.style = "";
+  if (dropDownArrowAssignedTo) dropDownArrowAssignedTo.style = "";
 }
 
 /**
@@ -143,13 +147,13 @@ function resetDropDownArrow() {
  * @param {string} htmlElement - "category" or "contacts" indicating which dropdown was opened.
  */
 function addMarginSpacingForDropDownMenue(htmlElement) {
-  let subTasks = document.getElementById("subtasks");
-  let dropdownListCategory = document.getElementById("dropdown-list-category");
-  let category = document.getElementById("category");
-  let dropdownListContacts = document.getElementById("dropdown-list-contacts");
-  if (htmlElement == "category") {
+  const subTasks = document.getElementById("subtasks");
+  const dropdownListCategory = document.getElementById("dropdown-list-category");
+  const category = document.getElementById("category");
+  const dropdownListContacts = document.getElementById("dropdown-list-contacts");
+  if (htmlElement === "category" && subTasks && dropdownListCategory) {
     subTasks.style.marginTop = dropdownListCategory.offsetHeight + dropdownListCategory.offsetHeight * 0.1 + "px";
-  } else if (htmlElement == "contacts") {
+  } else if (htmlElement === "contacts" && category && dropdownListContacts) {
     category.style.marginTop = dropdownListContacts.offsetHeight + dropdownListContacts.offsetHeight * 0.05 + "px";
   }
 }
@@ -159,15 +163,15 @@ function addMarginSpacingForDropDownMenue(htmlElement) {
  * @param {string} [element] - Optional. "category" or "contacts" to reset specific spacing.
  */
 function resetMargin(element) {
-  let category = document.getElementById("category");
-  let subTasks = document.getElementById("subtasks");
-  if (element == "category") {
+  const category = document.getElementById("category");
+  const subTasks = document.getElementById("subtasks");
+  if (element === "category" && category) {
     category.style.marginTop = "";
-  } else if (element == "contacts") {
+  } else if (element === "contacts" && subTasks) {
     subTasks.style.marginTop = "";
   } else {
-    subTasks.style.marginTop = "";
-    category.style.marginTop = "";
+    if (subTasks) subTasks.style.marginTop = "";
+    if (category) category.style.marginTop = "";
   }
 }
 
@@ -177,12 +181,11 @@ function resetMargin(element) {
  * @param {Object} contacts - Object containing all contact details.
  */
 function renderContacts(names, contacts) {
-  const list = getElementById("dropdown-list-contacts");
+  const list = document.getElementById("dropdown-list-contacts");
   if (!list) return;
-  setInnerHTML(list, "");
+  list.innerHTML = "";
   names.forEach((name) => {
     const entry = Object.values(contacts).find((c) => c.name === name);
-
     if (entry) list.appendChild(createContactListItem(entry));
   });
 }
@@ -195,7 +198,7 @@ function renderContacts(names, contacts) {
 function createContactListItem(contact) {
   const li = makeLi();
   const label = makeLabel(contact);
-  onEvent(li, "click", (e) => handleContactClick(e, contact));
+  li.addEventListener("click", (e) => handleContactClick(e, contact));
   li.appendChild(label);
   return li;
 }
@@ -244,9 +247,9 @@ function toggleContact(name) {
   const list = getAssignedList();
   toggleName(list, name);
 
-  const dd = getElementById("assignedToDropdownContacts");
+  const dd = document.getElementById("assignedToDropdownContacts");
   const isOpen = dd?.classList.contains("open");
-  const before = isOpen && window.__categoryBox ? window.__categoryBox.offsetTop : 0;
+  const before = isOpen && window.__categoryBox ? window.__categoryBox.offsetTop : 0; 
 
   renderAssignedContacts();
   updateDropdownHighlight();
@@ -256,19 +259,22 @@ function toggleContact(name) {
  * Highlights selected contacts inside the dropdown list.
  */
 function updateDropdownHighlight() {
-  const list = getElementById("dropdown-list-contacts");
+  const list = document.getElementById("dropdown-list-contacts");
   if (!list) return;
-  querySelectorAll("label.dropdown-checkbox", list).forEach((label) => {
-    const name = querySelector("span.contact-name", label)?.textContent?.trim() || "";
-    const img = querySelector("img.checkbox-svg", label);
+
+  const labels = list.querySelectorAll("label.dropdown-checkbox");
+  labels.forEach((label) => {
+    const name = label.querySelector("span.contact-name")?.textContent?.trim() || "";
+    const img = label.querySelector("img.checkbox-svg");
     const sel = window.assignedContacts?.includes(name);
     const item = label.closest(".dropdown-item-contact");
+
     if (img) {
       img.src = sel ? "../assets/svg/checked.svg" : "../assets/svg/checkbox.svg";
-      img.classList.toggle("checked", sel);
+      img.classList.toggle("checked", !!sel);
     }
     label.style.color = sel ? "white" : "";
-    if (item) item.classList.toggle("selected", sel);
+    if (item) item.classList.toggle("selected", !!sel);
   });
 }
 
@@ -276,10 +282,10 @@ function updateDropdownHighlight() {
  * Renders up to three selected contacts as colored initials.
  */
 function renderAssignedContacts() {
-  const box = getElementById("assignedToInitials");
+  const box = document.getElementById("assignedToInitials");
   if (!box) return;
   const names = Array.isArray(window.assignedContacts) ? window.assignedContacts : [];
-  setInnerHTML(box, "");
+  box.innerHTML = "";
   if (!names.length) return;
   addInitials(box, names.slice(0, 3));
   addOverflowCount(box, names);
@@ -354,13 +360,11 @@ document.addEventListener("DOMContentLoaded", () => {
  */
 function saveSelectedCategory(event, index) {
   event.stopPropagation();
-  let placeHolder = document.getElementById("categoryPlaceholder");
-  let categories = ["Userstory", "Technical Task"];
+  const placeHolder = document.getElementById("categoryPlaceholder");
+  const categories = ["Userstory", "Technical Task"];
   window.selectedCategory = categories[index];
-  if (index == 0) {
-    placeHolder.innerHTML = "Userstory";
-  } else {
-    placeHolder.innerHTML = "Technical Task";
+  if (placeHolder) {
+    placeHolder.innerHTML = index === 0 ? "Userstory" : "Technical Task";
   }
   resetDropDown();
 }
