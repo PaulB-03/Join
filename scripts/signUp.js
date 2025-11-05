@@ -1,6 +1,5 @@
 const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
 
-// 1. Check for existing user by email
 /**
  * Checks if a user with the given email already exists.
  * Updates the UI with an error if duplicate found.
@@ -124,8 +123,6 @@ function resetSignupErrors() {
   policyError.style.visibility = "hidden";
 }
 
-// ========== INPUT HANDLERS ==========
-
 /**
  * Attaches behavior to all form inputs (password + text).
  */
@@ -153,8 +150,6 @@ function removeInputErrorOnInput(input, errorElement) {
     input.classList.remove("input-error");
   });
 }
-
-// ========== PASSWORD HANDLING ==========
 
 /**
  * Updates the password input icon depending on value.
@@ -237,8 +232,6 @@ function setupPasswordInput(input) {
   updatePasswordIconOnInput(input, state);
   togglePasswordVisibilityOnClick(input, state);
 }
-
-// ========== SIGNUP BUTTON ENABLE/DISABLE HANDLING ==========
 
 /**
  * Checks if all required signup inputs are filled and policy accepted.

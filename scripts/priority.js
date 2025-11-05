@@ -1,12 +1,9 @@
-// --- Internal state ---
 /**
  * Currently selected priority level (`urgent` | `medium` | `low`).
  *
  * @type {string}
  */
 let selectedPrio = "";
-
-// --- Core Logic ---
 
 /**
  * Activates a priority option by its index and applies corresponding styles.
@@ -115,8 +112,6 @@ function buildTaskPayloadFromForm() {
   };
 }
 
-// --- Initialization ---
-
 /**
  * Binds click event handlers to all `.prioGrade` buttons.
  *
@@ -150,7 +145,6 @@ window.priority = {
   initialisePriorityHandlers, // Optional manual call if needed
 };
 
-// --- Auto-init when DOM is ready ---
 /**
  * Automatically binds priority button event handlers when the DOM is fully loaded.
  *

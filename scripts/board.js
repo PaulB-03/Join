@@ -1,13 +1,4 @@
-/**
- * Base URL to Firebase Realtime Database (no trailing slash in requests).
- * @type {string}
- */
 const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
-
-/**
- * Kanban column -> task state mapping.
- * @type {{[key:string]: "toDo"|"in progress"|"await feedback"|"done"}}
- */
 const COL_TO_STATE = {
   todo: "toDo",
   "in-progress": "in progress",
@@ -15,17 +6,10 @@ const COL_TO_STATE = {
   done: "done",
 };
 
-/**
- * Reverse map (task state -> kanban column id).
- * @type {{[key in "toDo"|"in progress"|"await feedback"|"done"]: string}}
- */
 const STATE_TO_COL = Object.fromEntries(Object.entries(COL_TO_STATE).map(([c, s]) => [s, c]));
 
-/** Avoid double-binding live listeners. */
 let __liveBound = false;
-/** RTDB ref to "tasks". */
 let __tasksRef = null;
-/** Mark local edits to ignore echo updates from RTDB. */
 const __localEdits = new Set();
 
 /**

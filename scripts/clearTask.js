@@ -13,8 +13,6 @@ function clearTask() {
   clearCategory();
 }
 
-/* ---------------- Helper Functions ---------------- */
-
 /**
  * Shorthand for document.querySelector().
  * @param {string} s - CSS selector.
