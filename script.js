@@ -71,7 +71,7 @@ function toggleSidebarAndHeader(user) {
 function showExternalSidebar(external, internal, headerNav) {
   external.classList.remove("d_none");
   internal.classList.add("d_none");
-  headerNav.style.visibility = "hidden";
+  headerNav.classList.add("d_none");
 }
 
 /**
@@ -87,7 +87,7 @@ function showExternalSidebar(external, internal, headerNav) {
 function showInternalSidebar(external, internal, headerNav) {
   internal.classList.remove("d_none");
   external.classList.add("d_none");
-  headerNav.style.visibility = "visible";
+  headerNav.classList.remove("d_none");
 }
 
 /**
