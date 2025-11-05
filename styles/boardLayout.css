@@ -217,13 +217,10 @@ a.btn:active {
 }
 
 .dropzone-scrollable {
-  /* For Firefox */
   scrollbar-width: none;
-  /* For Chrome, Safari, and Opera */
   &::-webkit-scrollbar {
     display: none;
   }
-  /* For IE and Edge */
   -ms-overflow-style: none;
 }
 

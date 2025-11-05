@@ -53,13 +53,11 @@ body.modal-open {
   transition: transform 0.35s ease;
 }
 
-/* Panel ohne Slide-Animation öffnen (für Edit) */
 .task-overlay-panel.no-anim {
   transform: translateX(0) !important;
   transition: none !important;
 }
 
-/* Backdrop/Fade unterdrücken (für Edit) */
 #taskOverlay.no-fade {
   transition: none !important;
   animation: none !important;
@@ -182,10 +180,7 @@ body.modal-open {
   overflow: auto;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.16);
   position: relative;
-  /* For Firefox */
   scrollbar-width: none;
-
-  /* For Chrome, Safari, and Opera */
   &::-webkit-scrollbar {
     display: none;
   }
