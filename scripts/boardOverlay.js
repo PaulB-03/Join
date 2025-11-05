@@ -1,16 +1,4 @@
-/**
- * Shorthand for document.getElementById().
- * @param {string} id
- * @returns {HTMLElement|null}
- */
-function byId(id) {
-  return document.getElementById(id);
-}
-
 const __COL_TO_STATE = { "todo": "toDo", "in-progress": "in progress", "await-feedback": "await feedback", "done": "done" };
-/** @type {string} Firebase RTDB Base URL */
-const RTDB_BASE = (typeof baseURL !== "undefined" && baseURL) || DB_ROOT;
-/** @type {HTMLElement|null} remembers last focused element before overlay */
 let __lastActive = null;
 
 /**
@@ -27,7 +15,7 @@ function firstFocusable(root = document) {
  * @returns {HTMLElement[]}
  */
 function inertParts() {
-  return [document.querySelector("header"), byId("sidebar"), document.querySelector(".app")].filter(Boolean);
+  return [document.querySelector("header"), document.getElementById("sidebar"), document.querySelector(".app")].filter(Boolean);
 }
 
 /**
@@ -110,8 +98,8 @@ function closeOverlay(overlay) {
  */
 function onEscCloseOnce(e) {
   if (e.key !== "Escape") return;
-  const d = byId("taskDetailOverlay"),
-    a = byId("taskOverlay");
+  const d = document.getElementById("taskDetailOverlay"),
+    a = document.getElementById("taskOverlay");
   if (d?.classList.contains("open")) return closeOverlay(d);
   if (a?.classList.contains("open")) return closeOverlay(a);
 }
@@ -122,8 +110,8 @@ function onEscCloseOnce(e) {
  * @returns {Promise<void>}
  */
 async function openTaskDetail(id) {
-  const ov = byId("taskDetailOverlay"),
-    ct = byId("taskDetailContent");
+  const ov = document.getElementById("taskDetailOverlay"),
+    ct = document.getElementById("taskDetailContent");
   if (!ov || !ct) return;
   showOverlay(ov, { focus: false });
   const task = await window.Board?.fetchSingleTask?.(id);
@@ -142,9 +130,9 @@ async function openTaskDetail(id) {
  */
 function wireDetailActions(overlay, content, id, task) {
   content.querySelectorAll('input[type="checkbox"][data-sub-index]').forEach((cb) => cb.addEventListener("change", (e) => onSubtaskToggle(id, e)));
-  byId("taskDetailClose")?.addEventListener("click", () => closeOverlay(overlay), { once: true });
-  byId("taskDelete")?.addEventListener("click", () => onDeleteTask(id, overlay));
-  byId("taskEdit")?.addEventListener("click", () => onEditTask(id, task, overlay));
+  document.getElementById("taskDetailClose")?.addEventListener("click", () => closeOverlay(overlay), { once: true });
+  document.getElementById("taskDelete")?.addEventListener("click", () => onDeleteTask(id, overlay));
+  document.getElementById("taskEdit")?.addEventListener("click", () => onEditTask(id, task, overlay));
   overlay.addEventListener("click", (e) => e.target === overlay && closeOverlay(overlay), { once: true });
   document.addEventListener("keydown", onEscCloseOnce);
 }
@@ -185,7 +173,7 @@ function onEditTask(id, task, overlay) {
   closeOverlay(overlay);
   if (typeof openTaskOverlay !== "function") return;
   openTaskOverlay({ animate: false });
-  byId("taskOverlay")?.classList.add("edit-mode");
+  document.getElementById("taskOverlay")?.classList.add("edit-mode");
   fillTaskFormFromExisting?.(id, task);
 }
 
@@ -194,11 +182,11 @@ function onEditTask(id, task, overlay) {
  * @returns {void}
  */
 function bindOverlayButtons() {
-  byId("openAddTask")?.addEventListener("click", onOpenAddClick);
+  document.getElementById("openAddTask")?.addEventListener("click", onOpenAddClick);
   document.querySelectorAll(".add-card-btn").forEach((b) => b.addEventListener("click", onQuickAddClick));
-  byId("closeTaskOverlay")?.addEventListener("click", hideTaskOverlay);
-  byId("cancelTask")?.addEventListener("click", hideTaskOverlay);
-  byId("taskOverlay")?.addEventListener("click", (e) => e.target.id === "taskOverlay" && hideTaskOverlay());
+  document.getElementById("closeTaskOverlay")?.addEventListener("click", hideTaskOverlay);
+  document.getElementById("cancelTask")?.addEventListener("click", hideTaskOverlay);
+  document.getElementById("taskOverlay")?.addEventListener("click", (e) => e.target.id === "taskOverlay" && hideTaskOverlay());
   document.addEventListener("keydown", (e) => e.key === "Escape" && hideTaskOverlay());
 }
 
@@ -207,7 +195,7 @@ function bindOverlayButtons() {
  * @returns {void}
  */
 function hideTaskOverlay() {
-  const ov = byId("taskOverlay");
+  const ov = document.getElementById("taskOverlay");
   if (!ov) return;
   closeOverlay(ov);
   typeof clearTask === "function" && clearTask();
@@ -249,7 +237,7 @@ function onQuickAddClick(e) {
  */
 /** Opens Add/Edit overlay, animation optional. */
 function openTaskOverlay({ animate = true } = {}) {
-  const ov = byId("taskOverlay");
+  const ov = document.getElementById("taskOverlay");
   if (!ov) return;
   const p = ov.querySelector(".task-overlay-panel");
   if (!animate) {
@@ -262,11 +250,11 @@ function openTaskOverlay({ animate = true } = {}) {
     setTimeout(() => p?.classList.remove("no-anim"), 0);
     setTimeout(() => ov.classList.remove("no-fade"), 0);
   }
-  byId("add")?.removeAttribute("data-editing-id");
+  document.getElementById("add")?.removeAttribute("data-editing-id");
   setOverlayButtonText(false);
   toggleClearButton(false);
   clearTask();
-  (byId("titleInput") || firstFocusable(ov) || ov).focus();
+  (document.getElementById("titleInput") || firstFocusable(ov) || ov).focus();
 }
 
 /**
@@ -286,7 +274,7 @@ function fillTaskFormFromExisting(id, task) {
   selectedState = task.state || "toDo";
   setOverlayButtonText(true);
   toggleClearButton(true);
-  byId("add").setAttribute("data-editing-id", id);
+  document.getElementById("add").setAttribute("data-editing-id", id);
 }
 
 /**
@@ -295,9 +283,9 @@ function fillTaskFormFromExisting(id, task) {
  * @returns {void}
  */
 function setFormValues(task) {
-  byId("titleInput").value = task.title || "";
-  byId("descriptionInput").value = task.description || "";
-  byId("date").value = task.date || "";
+  document.getElementById("titleInput").value = task.title || "";
+  document.getElementById("descriptionInput").value = task.description || "";
+  document.getElementById("date").value = task.date || "";
 }
 
 /**
@@ -324,7 +312,7 @@ function resetPrioSelection() {
  * @returns {void}
  */
 function setOverlayButtonText(isEditing) {
-  const btn = byId("add");
+  const btn = document.getElementById("add");
   if (!btn) return;
   btn.textContent = "";
   const p = document.createElement("p");
@@ -342,7 +330,7 @@ function setOverlayButtonText(isEditing) {
  * @returns {void}
  */
 function toggleClearButton(isEditing) {
-  const c = byId("clear");
+  const c = document.getElementById("clear");
   if (!c) return;
   c.style.display = isEditing ? "none" : "inline-flex";
 }
@@ -354,14 +342,14 @@ function toggleClearButton(isEditing) {
  */
 function setupOverlayResponsiveRedirect() {
   /** @type {MediaQueryList} */
-  const mq = window.matchMedia("(max-width: 850px)");
+  const mq = matchMedia("(max-width: 850px)");
   let redirecting = false;
   /**
    * @param {MediaQueryListEvent|MediaQueryList} e - The media query event or object.
    * @returns {void}
    */
   function redirectIfMobile(e) {
-    const ov = byId("taskOverlay");
+    const ov = document.getElementById("taskOverlay");
     if (!ov?.classList.contains("open") || ov.classList.contains("edit-mode") || !e.matches || redirecting) return;
     redirecting = true;
     hideTaskOverlay();

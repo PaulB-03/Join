@@ -4,7 +4,6 @@
  */
 function highlightNewTask() {
     const id = new URLSearchParams(location.search).get("newTask");
-    /** @type {HTMLElement|null} */
     const el = id && document.querySelector(`.task-container[data-id="${id}"]`);
     if (!el) return;
     el.classList.add("highlight");

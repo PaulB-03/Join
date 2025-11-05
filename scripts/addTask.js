@@ -1,10 +1,3 @@
-/* ----------------------------- Config/State ------------------------------ */
-/**
- * Base URL for backend.
- * @type {string}
- */
-const baseURL = DB_ROOT;
-
 let selectedCategory = "";
 let selectedContact = "";
 let selectedState = "";

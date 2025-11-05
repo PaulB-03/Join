@@ -1,13 +1,4 @@
-/**
- * Base URL to Firebase Realtime Database (no trailing slash in requests).
- * @type {string}
- */
 const BASE_URL = DB_ROOT;
-
-/**
- * Kanban column -> task state mapping.
- * @type {{[key:string]: "toDo"|"in progress"|"await feedback"|"done"}}
- */
 const COL_TO_STATE = {
   todo: "toDo",
   "in-progress": "in progress",
@@ -168,7 +159,7 @@ async function renderAllTasks() {
  */
 function computeCardHTML(t) {
   const { total, done, percent } = subtaskProgress(t.subtasks);
-  return window.taskCardInnerHtml(t, percent, done, total);
+  return taskCardInnerHtml(t, percent, done, total);
 }
 
 /**
@@ -246,12 +237,12 @@ function bindCardClickDrag(wrapper, card, id) {
  */
 function startLiveSync() {
   if (__liveBound) return;
-  if (!window.rtdb) {
+  if (typeof rtdb === "undefined" || !rtdb) {
     console.warn("RTDB not initialized – skipping live sync.");
     return;
   }
   __liveBound = true;
-  __tasksRef = window.rtdb.ref("tasks");
+  __tasksRef = rtdb.ref("tasks");
   bindLiveHandlers(__tasksRef);
 }
 
@@ -366,16 +357,14 @@ function removeTaskCard(id) {
 /**
  * Unsubscribe RTDB listeners on page unload.
  */
-window.addEventListener("beforeunload", () => {
-  try {
-    __tasksRef?.off();
-  } catch (e) {}
+addEventListener("beforeunload", () => {
+  try { __tasksRef?.off(); } catch (e) {}
 });
 
 /**
  * Public API exposure for other modules.
  */
-window.Board = Object.assign(window.Board || {}, {
+globalThis.Board = Object.assign(globalThis.Board || {}, {
   renderAllTasks,
   fetchTasks,
   fetchSingleTask,

@@ -110,9 +110,9 @@ function validateFutureDate(_, dateStr, instance) {
  */
 function readTaskForm() {
   return {
-    title: byId("titleInput").value.trim(),
-    description: byId("descriptionInput").value.trim(),
-    date: byId("date").value,
+    title: document.getElementById("titleInput").value.trim(),
+    description: document.getElementById("descriptionInput").value.trim(),
+    date: document.getElementById("date").value,
     priority: selectedPrio,
     assignedContacts,
     subtasks: getSubtasksFromForm(),
@@ -147,9 +147,9 @@ async function saveEditFlow(id) {
   clearInlineErrors();
   if (!validateTaskFormFields()) return;
   await updateTask(id, standalone, true, reopen);
-  byId("add")?.removeAttribute("data-editing-id");
+  document.getElementById("add")?.removeAttribute("data-editing-id");
   setOverlayButtonText(false);
-  byId("taskOverlay")?.classList.remove("edit-mode");
+  document.getElementById("taskOverlay")?.classList.remove("edit-mode");
 }
 
 /**
@@ -159,7 +159,8 @@ async function saveEditFlow(id) {
  * @returns {Promise<void>}
  */
 async function putTaskJson(id, data) {
-  const r = await fetch(`${RTDB_BASE}tasks/${id}.json`, {
+  const base = (typeof BASE_URL !== "undefined" ? BASE_URL : (typeof DB_ROOT !== "undefined" ? DB_ROOT : "")).replace(/\/+$/, "");
+  const r = await fetch(`${base}/tasks/${id}.json`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -176,7 +177,7 @@ async function putTaskJson(id, data) {
  * @returns {Promise<void>}
  */
 async function afterUpdateUI(id, navigateToBoard, closeOverlayAfter, reopenDetail) {
-  if (closeOverlayAfter) closeOverlay(byId("taskOverlay"));
+  if (closeOverlayAfter) closeOverlay(document.getElementById("taskOverlay"));
   await window.Board?.renderAllTasks?.();
   if (navigateToBoard) {
     location.href = "board.html";
