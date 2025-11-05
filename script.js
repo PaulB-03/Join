@@ -12,7 +12,7 @@ function sidebarHeaderInit() {
   const isPub = PUB.has(path) || document.body?.dataset.public === "true";
   const noUser = !localStorage.getItem("currentUser");
   if (!isPub && noUser) {
-    const exc = ["/Join/html/legalNotice.html", "/Join/html/privacyPolicy.html"];
+    const exc = ["/html/legalNotice.html", "/html/privacyPolicy.html"];
     if (!exc.includes(path)) {
       const toIndex = path.includes("/html/") ? "../index.html" : "./index.html";
       return (window.location.href = toIndex);

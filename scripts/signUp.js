@@ -1,4 +1,4 @@
-const BASE_URL = DB_ROOT;
+// const BASE_URL = DB_ROOT;
 
 /**
  * Checks if a user with the given email already exists.
@@ -50,7 +50,7 @@ function checkIndexPosition(users) {
  */
 async function saveNewUser(newUser, nextIndex) {
   const newKey = `user${nextIndex}`;
-  const response = await fetch(`${BASE_URL}/users/${newKey}.json`, {
+  const response = await fetch(`${DB_ROOT}/users/${newKey}.json`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(newUser),
@@ -74,9 +74,9 @@ async function saveNewUser(newUser, nextIndex) {
 async function addUser(name, email, password) {
   const phone = "add phone number";
   const newUser = { name, email, password };
-  const res = await fetch(`${BASE_URL}/users.json`);
+  const res = await fetch(`${DB_ROOT}/users.json`);
   const users = await res.json();
-  const contactCheck = await fetch(`${BASE_URL}/contacts.json`);
+  const contactCheck = await fetch(`${DB_ROOT}/contacts.json`);
   const contacts = await contactCheck.json();
   if (checkForUser(users, contacts, email)) return false;
   const nextIndex = checkIndexPosition(users);
