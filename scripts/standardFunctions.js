@@ -5,7 +5,7 @@
    * @constant
    * @type {string}
    */
-  const DATABASE_BASE_URL = (typeof baseURL !== "undefined" && baseURL) || DB_ROOT;
+  // const DATABASE_BASE_URL = (typeof baseURL !== "undefined" && baseURL) || DB_ROOT;
 
   /**
    * List of CSS variable names used for contact background colors.
@@ -137,7 +137,7 @@
    * @throws {Error} If the response status is not OK.
    */
   async function httpGetJson(path) {
-    const response = await fetch(DATABASE_BASE_URL + path);
+    const response = await fetch(DB_ROOT + path);
     if (!response.ok) throw new Error(`GET ${path} -> ${response.status}`);
     return response.json();
   }
@@ -153,7 +153,7 @@
    * @throws {Error} If the response status is not OK.
    */
   async function httpPostJson(path, body) {
-    const response = await fetch(DATABASE_BASE_URL + path, {
+    const response = await fetch(DB_ROOT + path, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -173,7 +173,7 @@
    * @throws {Error} If the response status is not OK.
    */
   async function httpPatchJson(path, body) {
-    const response = await fetch(DATABASE_BASE_URL + path, {
+    const response = await fetch(DB_ROOT + path, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -248,7 +248,7 @@
    *
    * @namespace window
    */
-  window.DATABASE_BASE_URL ??= DATABASE_BASE_URL;
+  window.DB_ROOT ??= DB_ROOT;
   window.CONTACT_BG_CSS_VARS ??= CONTACT_BG_CSS_VARS;
   window.getElementById ??= getElementById;
   window.querySelector ??= querySelector;
