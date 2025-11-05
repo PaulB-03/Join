@@ -210,18 +210,6 @@ header {
   display: block;
 }
 
-.rotate-warning {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000;
-  color: #fff;
-  font-size: 1.5rem;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
 .external-sb-footer {
   display: flex;
   gap: 4px;
@@ -359,16 +347,6 @@ header {
 
   .nav-item span {
     font-size: 12px;
-  }
-}
-
-@media screen and (orientation: landscape) and (max-width: 1000px) and (max-height: 650px) {
-  .rotate-warning {
-    display: flex;
-  }
-
-  body > *:not(.rotate-warning) {
-    display: none; 
   }
 }
 
