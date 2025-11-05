@@ -5,7 +5,6 @@ function stringIfNoDateFound(nextUpcomingDeadlineArray) {
   return nextUpcomingDeadlineArray.push("Nothing to worry");
 }
 
-// Converts priority strings to numbers and sorts them
 /**
  * Converts priorities to numbers and updates visuals.
  * @param {{prioritys:string[]}} datesObject
@@ -24,7 +23,6 @@ function getHighestPriority(datesObject, nextUpcomingDeadline) {
   sortNumberArray(numberArray);
 }
 
-// filters and cuts out the unnecessary prioritys
 /**
  * Keeps priorities matching the exact deadline.
  * @param {{dates:string[],prioritys:string[]}} datesObject
@@ -45,7 +43,6 @@ function filterIrrelevantPrioritys(datesObject, nextUpcomingDeadline) {
   return datesObject;
 }
 
-// Sorts numbers and gets the highest priority
 /**
  * Sorts numeric priorities and applies visuals.
  * @param {number[]} numberArray
@@ -56,7 +53,6 @@ function sortNumberArray(numberArray) {
   let highesValue = sortedArray[0];
 }
 
-// Filters for next upcoming deadline and for missed deadLines
 /**
  * Resolves next upcoming or missed deadline and updates UI.
  * @param {{dates:string[],prioritys:string[]}} datesObject
@@ -74,7 +70,6 @@ function filterNextUpcomingDeadline(datesObject, responseToJson) {
   getDateFromDataBankAndChangeFormat(nextUpcoming, responseToJson);
 }
 
-// changes Html Text in DeadlineBox p element
 /**
  * Sets "Missed Deadline" label.
  * @returns {void}
@@ -85,7 +80,6 @@ function changeHtmlForMissedDeadlines() {
   deadLineText.innerHTML = "Missed Deadline";
 }
 
-// handles missed deadlines by setting HTML
 /**
  * Handles missed deadlines and returns all dates.
  * @param {string[]} nextUpcomingDeadlineArray
@@ -97,7 +91,6 @@ function missedDeadlineCall(nextUpcomingDeadlineArray, datesObject) {
   return (nextUpcomingDeadlineArray = datesObject.dates);
 }
 
-// Counts how many tasks share the same nearest deadline
 /**
  * Counts tasks sharing the nearest deadline date.
  * @param {string[]} sortedArray
@@ -111,7 +104,6 @@ function countNextDeadlineDate(sortedArray) {
   changeInnerHTMlOfUrgencyBox(deadLineCount);
 }
 
-// Updates the deadline count in the urgency box
 /**
  * Updates the count badge in urgency box.
  * @param {number} deadLineCount
@@ -123,7 +115,6 @@ function changeInnerHTMlOfUrgencyBox(deadLineCount) {
   el.innerHTML = deadLineCount;
 }
 
-// Checks if a date is today or in the future
 /**
  * Checks if a date string is today or in the future.
  * @param {string} date
@@ -135,7 +126,6 @@ function verifyTheRightDate(date) {
   return date >= formatedDate;
 }
 
-// date: month and day has to be at least two digit -> adds 0 to date day/month if smaller then 10
 /**
  * Returns YYYY-MM-DD string for given parts (zero-padded).
  * @param {number} nowDay
@@ -149,7 +139,6 @@ function returnTheRightDateFormat(nowDay, nowMonth, nowYear) {
   return `${nowYear}-${mm}-${dd}`;
 }
 
-// Converts deadline into "Month Day, Year" format
 /**
  * Formats deadline as "Month Day, Year" and updates UI.
  * @param {string} deadLineDate
@@ -165,7 +154,6 @@ function getDateFromDataBankAndChangeFormat(deadLineDate) {
   changeInnerHtmlForDeadline(newFormat);
 }
 
-// Updates deadline text in the urgency box
 /**
  * Writes the deadline label into the urgency box.
  * @param {string} nextUpcomingDeadline

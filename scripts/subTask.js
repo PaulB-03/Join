@@ -178,7 +178,6 @@ function escapeHtml(text) {
  */
 document.addEventListener("DOMContentLoaded", initSubtaskUI);
 
-/* ------------------------- Subtasks im Detail-UI ------------------------- */
 
 /**
  * Reads subtasks from detail overlay and saves them.

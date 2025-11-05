@@ -1,4 +1,3 @@
-/* ---------------------------- Subtasks (Form) ---------------------------- */
 /**
  * Reads subtasks from overlay form (text + done).
  * @returns {{text:string,done:boolean}[]}
@@ -16,7 +15,6 @@ function getSubtasksFromForm() {
     .filter(Boolean);
 }
 
-/* ------------------------------ Bootstraps ------------------------------- */
 /**
  * Wires UI initializers on DOM ready.
  * @returns {void}
@@ -25,10 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initDateMinAndPicker();
 });
 
-/* --------------------------- Textarea Resize ----------------------------- */
 let _isResizing = false,
   _startY = 0,
   _startH = 0;
+
 /**
  * Begins textarea resize.
  * @param {MouseEvent} e
@@ -82,7 +80,6 @@ function endResize() {
   if (textarea && handle) handle.addEventListener("mousedown", beginResize);
 })();
 
-/* ------------------------- Date Validation (flatpickr) ------------------- */
 /**
  * Validates manual date input as future date (DD/MM/YYYY).
  * @param {unknown} _ - unused
@@ -123,8 +120,6 @@ function readTaskForm() {
     category: selectedCategory,
   };
 }
-
-/* ----------------------------- Add / Edit ------------------------------- */
 
 /**
  * Handles form submit: create or update task.

@@ -1,8 +1,6 @@
 (function () {
   const LOGO_KEY = "logoAnimated";
 
-  /** ========== DOM HELPERS ========== */
-
   /**
    * Reveals all elements that were hidden at startup,
    * including the login screen.
@@ -57,8 +55,6 @@
     });
   }
 
-  /** ========== ANIMATION HELPERS ========== */
-
   /**
    * Calculates translation and scaling values to transform
    * the splash logo into the target logo position.
@@ -91,8 +87,6 @@
       startLogo.style.transform = `translate(-50%, -50%) translate(${deltaX}px, ${deltaY}px) scale(${scale})`;
     });
   }
-
-  /** ========== SPLASH HANDLING ========== */
 
   /**
    * Finalizes splash animation: reveals hidden content,
@@ -168,8 +162,6 @@
     waitForTransitionOrTimeout(startLogo, handleFinish);
   }
 
-  /** ========== MAIN ANIMATION FLOW ========== */
-
   /**
    * Runs the splash sequence with delays, transitions,
    * and mobile-specific overlay handling.
@@ -228,8 +220,6 @@
     }
     runSplash(startLogo, finalLogo, overlay, isMobile);
   }
-
-  /** ========== INIT ========== */
 
   /**
    * Initializes splash animation

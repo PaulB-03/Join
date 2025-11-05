@@ -35,10 +35,6 @@
     "--contact-bg-yellow",
   ];
 
-  /* ===============================
-   *  DOM Utilities
-   * =============================== */
-
   /**
    * Returns an element by its ID.
    *
@@ -135,10 +131,6 @@
     if (element) element.style.display = "none";
   }
 
-  /* ===============================
-   *  HTTP Utilities
-   * =============================== */
-
   /**
    * Sends a GET request to the Firebase Realtime Database and returns parsed JSON.
    *
@@ -193,10 +185,6 @@
     if (!response.ok) throw new Error(`PATCH ${path} -> ${response.status}`);
     return response.json();
   }
-
-  /* ===============================
-   *  Name → Initials / Color
-   * =============================== */
 
   /**
    * Converts a full name into uppercase initials.
@@ -257,10 +245,6 @@
       console.error("Could not load contacts:", e);
     }
   }
-
-  /* ===============================
-   *  Global API Exposure
-   * =============================== */
 
   /**
    * Expose utility functions and constants to the global window object

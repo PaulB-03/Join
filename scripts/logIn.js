@@ -1,9 +1,4 @@
 /**
- * @fileoverview Handles user session state, avatar display logic,
- * header UI updates, and profile menu toggling for both guest and logged-in users.
- */
-
-/**
  * Saves the current login status to localStorage.
  *
  * @param {string} userType - The type of user ("user" or "guest").

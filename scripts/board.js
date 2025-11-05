@@ -15,17 +15,10 @@ const COL_TO_STATE = {
   done: "done",
 };
 
-/**
- * Reverse map (task state -> kanban column id).
- * @type {{[key in "toDo"|"in progress"|"await feedback"|"done"]: string}}
- */
 const STATE_TO_COL = Object.fromEntries(Object.entries(COL_TO_STATE).map(([c, s]) => [s, c]));
 
-/** Avoid double-binding live listeners. */
 let __liveBound = false;
-/** RTDB ref to "tasks". */
 let __tasksRef = null;
-/** Mark local edits to ignore echo updates from RTDB. */
 const __localEdits = new Set();
 
 /**

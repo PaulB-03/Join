@@ -8,15 +8,10 @@
  * @returns {void}
  */
 function sidebarHeaderInit() {
-  /** @const {Set<string>} Public routes accessible without login */
   const PUB = new Set(["/", "/index.html", "/html/privacyPolicy.html", "/html/legalNotice.html"]);
-  /** @type {string} Normalized current path */
   const path = location.pathname.replace(/\/+$/, "") || "/";
-  /** @type {boolean} True if the current page is public */
   const isPub = PUB.has(path) || document.body?.dataset.public === "true";
-  /** @type {boolean} True if no user is stored in localStorage */
   const noUser = !localStorage.getItem("currentUser");
-  // Redirect guests away from internal routes
   if (!isPub && noUser) {
     const exc = ["/Join/html/legalNotice.html", "/Join/html/privacyPolicy.html"];
     if (!exc.includes(path)) {
@@ -147,6 +142,11 @@ function highlightActiveLink() {
    */
   function isCard(el) {
     return !!el.closest(".card, .task-container");
+  }
+
+  function logout() {
+    localStorage.removeItem("showedOnce");
+    localStorage.removeItem("currentUser"); 
   }
 
   // Apply drag-scroll to all dropzones
