@@ -16,7 +16,7 @@ function initForSummary() {
 function dataForSummary() {
   getDataForTasks();
   getCurrentTime();
-  showSummaryGreeting(); // comes from logIn.js
+  showSummaryGreeting();
 }
 
 /**
@@ -53,7 +53,6 @@ async function getDataForTasks() {
   responseToJson = "";
   responseToJson = await response.json();
   countForSummary(responseToJson);
-  // toggleUrgentIconByGlobalUrgent(responseToJson); // optional
 }
 
 /**

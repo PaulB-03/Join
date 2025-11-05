@@ -125,8 +125,6 @@ function initialisePriorityHandlers() {
   items.forEach((el, i) => el.addEventListener("click", () => setPrioColor(i)));
 }
 
-// --- Public API ---
-
 /**
  * Public priority API exposed globally for other modules.
  *
@@ -142,7 +140,7 @@ window.priority = {
   getSelectedPriority,
   resetPrioUI,
   buildTaskPayloadFromForm,
-  initialisePriorityHandlers, // Optional manual call if needed
+  initialisePriorityHandlers,
 };
 
 /**

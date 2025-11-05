@@ -17,8 +17,6 @@ function getHighestPriority(datesObject, nextUpcomingDeadline) {
   for (let i = 0; i < datesObject.prioritys.length; i++) {
     const p = datesObject.prioritys[i];
     if (p === "urgent") numberArray.push(1);
-    // else if (p === "medium") numberArray.push(2);
-    // else if (p === "low") numberArray.push(3);
   }
   sortNumberArray(numberArray);
 }

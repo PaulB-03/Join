@@ -362,13 +362,7 @@ function setupOverlayResponsiveRedirect() {
    */
   function redirectIfMobile(e) {
     const ov = byId("taskOverlay");
-    if (
-      !ov?.classList.contains("open") ||
-      ov.classList.contains("edit-mode") || // <-- skip if edit-mode
-      !e.matches ||
-      redirecting
-    )
-      return;
+    if (!ov?.classList.contains("open") || ov.classList.contains("edit-mode") || !e.matches || redirecting) return;
     redirecting = true;
     hideTaskOverlay();
     setTimeout(() => location.assign("../html/addTask.html"), 200);

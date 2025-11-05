@@ -129,9 +129,8 @@ signupForm.addEventListener("submit", async (e) => {
 async function signupProcess(name, email, password) {
   const success = await addUser(name, email, password);
   if (!success) {
-    return; // Stop on failure
+    return;
   }
-  // Success flow
   showSignupSuccess();
   await new Promise((resolve) => setTimeout(resolve, 1000));
   signupForm.reset();
@@ -150,19 +149,15 @@ async function signupProcess(name, email, password) {
 function showSignupSuccess() {
   const overlay = document.getElementById("signupOverlay");
   overlay.classList.remove("d_none");
-  void overlay.offsetWidth; // Force reflow for CSS animation
+  void overlay.offsetWidth;
   overlay.classList.add("show");
 }
 
 function resetInputErrors(id) {
   const container = document.getElementById(id);
   if (!container) return;
-
-  // Remove input-error class from inputs
   const errorInputs = container.querySelectorAll(".input-error");
   errorInputs.forEach((input) => input.classList.remove("input-error"));
-
-  // Hide all error message elements
   const errorMessages = container.querySelectorAll(".errors");
   errorMessages.forEach((el) => {
     el.style.visibility = "hidden";
