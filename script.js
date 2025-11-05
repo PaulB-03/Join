@@ -1,22 +1,17 @@
+document.addEventListener("DOMContentLoaded", () => {
+  sidebarHeaderInit();
+});
+
 /**
- * Initializes the sidebar and header behavior on page load.
- * - Redirects guests away from internal pages.
- * - Loads and applies the correct sidebar (internal/external).
- * - Updates header avatars and highlights the active link.
- *
- * @function sidebarHeaderInit
- * @returns {void}
+ * Initializes header and sidebar, sets avatars and active links
+ * and shows hidden elements to avoid flicker.
  */
 function sidebarHeaderInit() {
-  /** @const {Set<string>} Public routes accessible without login */
   const PUB = new Set(["/", "/index.html", "/html/privacyPolicy.html", "/html/legalNotice.html"]);
-  /** @type {string} Normalized current path */
   const path = location.pathname.replace(/\/+$/, "") || "/";
-  /** @type {boolean} True if the current page is public */
   const isPub = PUB.has(path) || document.body?.dataset.public === "true";
-  /** @type {boolean} True if no user is stored in localStorage */
   const noUser = !localStorage.getItem("currentUser");
-  // Redirect guests away from internal routes
+
   if (!isPub && noUser) {
     const exc = ["/Join/html/legalNotice.html", "/Join/html/privacyPolicy.html"];
     if (!exc.includes(path)) {
@@ -30,6 +25,9 @@ function sidebarHeaderInit() {
   updateHeaderAvatars(user);
   highlightActiveLink();
   toggleSidebarAndHeader(user);
+
+  // Show avatars and helper after initialization
+  document.querySelector("header").classList.add("header-initialized");
 }
 
 /**

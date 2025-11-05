@@ -141,6 +141,20 @@ header {
   background-color: rgba(12, 46, 98, 0.12);
 }
 
+/* Hide avatars and helper link until JS initializes */
+.header-avatar,
+.avatar-wrapper,
+.help-link {
+  visibility: hidden; /* invisible but keeps layout */
+}
+
+/* Show elements after JS initialization */
+.header-initialized .header-avatar,
+.header-initialized .avatar-wrapper,
+.header-initialized .help-link {
+  visibility: visible;
+}
+
 .avatar-wrapper {
   width: 56px;
   height: 56px;
