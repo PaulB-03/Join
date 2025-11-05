@@ -34,7 +34,7 @@ function checkUserAccess() {
  * and applies initial layout classes.
  * @returns {void}
  */
-function initSidebarHeader() {
+function sidebarHeaderInit()  {
   if (!checkUserAccess()) return;
   const user = loadLoginStatus();
   updateHeaderAvatars(user);
