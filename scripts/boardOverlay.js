@@ -8,7 +8,9 @@ function byId(id) {
 }
 
 const __COL_TO_STATE = { "todo": "toDo", "in-progress": "in progress", "await-feedback": "await feedback", "done": "done" };
-const RTDB_BASE = (typeof baseURL !== "undefined" && baseURL) || "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
+/** @type {string} Firebase RTDB Base URL */
+const RTDB_BASE = (typeof baseURL !== "undefined" && baseURL) || DB_ROOT;
+/** @type {HTMLElement|null} remembers last focused element before overlay */
 let __lastActive = null;
 
 /**

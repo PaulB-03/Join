@@ -1,4 +1,4 @@
-const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
+const BASE_URL = DB_ROOT;
 
 /**
  * Checks if a user with the given email already exists.

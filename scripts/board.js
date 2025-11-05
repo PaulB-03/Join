@@ -1,4 +1,13 @@
-const BASE_URL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app";
+/**
+ * Base URL to Firebase Realtime Database (no trailing slash in requests).
+ * @type {string}
+ */
+const BASE_URL = DB_ROOT;
+
+/**
+ * Kanban column -> task state mapping.
+ * @type {{[key:string]: "toDo"|"in progress"|"await feedback"|"done"}}
+ */
 const COL_TO_STATE = {
   todo: "toDo",
   "in-progress": "in progress",

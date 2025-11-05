@@ -1,5 +1,15 @@
 (() => {
-  const DATABASE_BASE_URL = (typeof baseURL !== "undefined" && baseURL) || "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
+  /* ===============================
+   *  Base Configuration
+   * =============================== */
+
+  /**
+   * Base URL for Firebase Realtime Database requests.
+   *
+   * @constant
+   * @type {string}
+   */
+  const DATABASE_BASE_URL = (typeof baseURL !== "undefined" && baseURL) || DB_ROOT;
 
   /**
    * List of CSS variable names used for contact background colors.
