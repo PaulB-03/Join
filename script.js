@@ -34,7 +34,7 @@ function checkUserAccess() {
  * and applies initial layout classes.
  * @returns {void}
  */
-function sidebarHeaderInit()  {
+function sidebarHeaderInit() {
   if (!checkUserAccess()) return;
   const user = loadLoginStatus();
   updateHeaderAvatars(user);
@@ -155,20 +155,3 @@ function backArrow() {
     history.back();
   }
 }
-
-/**
- * Ensures user logout when navigating back to this page from the browser cache.
- *
- * @event pageshow
- * @description The `pageshow` event is triggered when a page is loaded from cache or directly.
- * If the page is restored from the browser's back/forward cache, it calls {@link logout}.
- *
- * @param {PageTransitionEvent} event - The event object containing navigation information.
- * @listens window#pageshow
- */
-window.addEventListener("pageshow", function (event) {
-  // event.persisted is true if the page was restored from the cache
-  if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
-    logout();
-  }
-});
