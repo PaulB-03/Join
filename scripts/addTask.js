@@ -3,7 +3,7 @@
  * Base URL for backend.
  * @type {string}
  */
-const baseURL = "https://join-1323-default-rtdb.europe-west1.firebasedatabase.app/";
+const baseURL = DB_ROOT;
 
 let selectedCategory = "";
 let selectedContact = "";
