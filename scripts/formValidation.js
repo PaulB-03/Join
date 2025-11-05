@@ -43,7 +43,7 @@ const passwordMatchError = document.getElementById("passwordMatchError");
 
 const acceptPolicy = document.getElementById("acceptPolicy");
 const policyError = document.getElementById("policyError");
-const acceptPolicyImg = document.getElementById("policyCheckboxImg");
+const policyCheckbox = document.getElementById("policyCheckbox");
 
 /**
  * Tracks whether the privacy policy has been accepted.
@@ -88,13 +88,8 @@ const validateSignupForm = () => {
 
 /* ─────────────── Event Listeners ─────────────── */
 
-/**
- * Toggles the checkbox image and state when the policy icon is clicked.
- * Updates error visibility immediately.
- */
-acceptPolicyImg.addEventListener("click", () => {
-  policyChecked = !policyChecked;
-  acceptPolicyImg.src = policyChecked ? "./assets/svg/checked.svg" : "./assets/svg/checkbox.svg";
+policyCheckbox.addEventListener("change", () => {
+  policyChecked = policyCheckbox.checked;
   policyError.style.visibility = policyChecked ? "hidden" : "visible";
 });
 
@@ -142,7 +137,7 @@ async function signupProcess(name, email, password) {
   signupForm.reset();
   resetInputErrors("signUpForm");
   policyChecked = false;
-  acceptPolicyImg.src = "./assets/svg/checkbox.svg";
+  policyCheckbox.checked = false;
   showLoginScreen();
 }
 

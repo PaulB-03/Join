@@ -157,24 +157,49 @@ a:hover {
 }
 
 .checkBoxContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+  border-radius: 43px;
+  margin-right: 12px;
+  width: fit-content;
+  height: 24px;
+}
+
+/* Hide native checkbox but keep it focusable */
+.checkBoxInput {
+  position: absolute;
+  opacity: 0;
   width: 24px;
   height: 24px;
-  border-radius: 43px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 12px;
+  margin: 0;
   cursor: pointer;
+  z-index: 2;
 }
 
+.checkBoxIcon {
+  width: 24px;
+  height: 24px;
+  background-image: url("../assets/svg/checkbox.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: background-image 0.2s ease, background-color 0.2s ease;
+  border-radius: 50%;
+}
+
+/* Remove or narrow down this */
 .checkBoxContainer:hover {
-  background-color: var(--bottom-gradient);
+  .checkBoxIcon {
+    background-color: var(--bottom-gradient);
+  }
 }
 
-/* .checkBox { */
-/* width: 16px; */
-/* height: 16px; */
-/* } */
+/* When checked, swap to filled checkbox */
+.checkBoxInput:checked + .checkBoxIcon {
+  background-image: url("../assets/svg/checked.svg");
+}
 
 .task-added-message {
   display: flex;
