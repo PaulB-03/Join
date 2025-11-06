@@ -61,7 +61,7 @@ function showContactToast(message = "Contact successfully created") {
  * @returns {void}
  */
 function openAddContactDialog() {
-  var overlay = document.getElementById("contactOverlay");
+  const overlay = document.getElementById("contactOverlay");
   if (overlay) {
     resetAddContactValidationUI();
     overlay.classList.add("open");
@@ -74,7 +74,7 @@ function openAddContactDialog() {
  * @returns {void}
  */
 function closeAddContactDialog() {
-  var overlay = document.getElementById("contactOverlay"),
+  const overlay = document.getElementById("contactOverlay"),
     form = document.getElementById("addContactForm");
   if (overlay) {
     overlay.classList.remove("open");
@@ -89,7 +89,7 @@ function closeAddContactDialog() {
  * @returns {{name: string, email: string, phone: string}} Trimmed string values for name, email, and phone.
  */
 function readAddContactForm() {
-  var form = document.getElementById("addContactForm");
+  const form = document.getElementById("addContactForm");
   return {
     name: form.name.value.trim(),
     email: form.email.value.trim(),
@@ -115,12 +115,12 @@ async function submitAddContact(event) {
  * @returns {void}
  */
 function setupAddContactOverlay() {
-  var overlay = document.getElementById("contactOverlay");
-  var form = document.getElementById("addContactForm");
-  var openButton = document.getElementById("openAddContact");
-  var openFab = document.getElementById("openAddContactFab");
-  var closeButton = document.getElementById("closeAddContact");
-  var cancelButton = document.getElementById("cancelAdd");
+  const overlay = document.getElementById("contactOverlay");
+  const form = document.getElementById("addContactForm");
+  const openButton = document.getElementById("openAddContact");
+  const openFab = document.getElementById("openAddContactFab");
+  const closeButton = document.getElementById("closeAddContact");
+  const cancelButton = document.getElementById("cancelAdd");
   if (openButton) openButton.addEventListener("click", openAddContactDialog);
   if (openFab) openFab.addEventListener("click", openAddContactDialog);
   if (closeButton) closeButton.addEventListener("click", closeAddContactDialog);
