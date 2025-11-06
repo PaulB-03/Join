@@ -2,6 +2,7 @@ let selectedCategory = "";
 let selectedContact = "";
 let selectedState = "";
 let allContacts = [];
+let isCreatingTask = false;
 window.assignedContacts = window.assignedContacts || [];
 
 /**
@@ -111,36 +112,20 @@ async function persistTask(payload) {
  * @returns {Promise<void>}
  */
 
-let isCreatingTask = false;
-
 async function createTask(event) {
-  if (event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+  if (event) { event.preventDefault(); event.stopPropagation(); }
   const b = document.getElementById("add");
-  if (b) {
-    b.setAttribute("disabled", true);
-  }
+  if (b) b.disabled = true;
   if (isCreatingTask) return;
   isCreatingTask = true;
   clearInlineErrors();
-  if (!validateTaskFormFields()) {
-    b?.removeAttribute("disabled");
-    isCreatingTask = false;
-    return;
-  }
-  try {
-    await persistTask(buildTaskPayloadFromForm());
+  if (!validateTaskFormFields()) { b?.removeAttribute("disabled"); isCreatingTask = false; return; }
+  try {await persistTask(buildTaskPayloadFromForm());
     showAddedToastAndRedirect();
   } catch (e) {
-    console.error(e);
-    b?.removeAttribute("disabled");
-    isCreatingTask = false;
+    console.error(e); b?.removeAttribute("disabled"); isCreatingTask = false;
   } finally {
-    if (!isCreatingTask) {
-      b?.removeAttribute("disabled");
-    }
+    if (!isCreatingTask) b?.removeAttribute("disabled");
   }
 }
 
