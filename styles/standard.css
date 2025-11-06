@@ -28,11 +28,6 @@ button {
   outline: none;
 }
 
-/* p {
-  font-weight: 400;
-  font-size: 20px;
-} */
-
 h1 {
   font-weight: 700;
   font-size: 61px;
@@ -173,7 +168,10 @@ a:hover {
   height: 24px;
 }
 
-/* Hide native checkbox but keep it focusable */
+.checkBoxInput:focus-within {
+  opacity: 1;
+}
+
 .checkBoxInput {
   position: absolute;
   opacity: 0;
