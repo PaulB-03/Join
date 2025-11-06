@@ -21,7 +21,7 @@ function renderAvatarsWithPriority(names = [], prio) {
  * @param {Object} [t={}] - Task data object.
  * @returns {string} HTML markup for the task detail overlay.
  */
-function taskDetailTemplate(id, t = {}) {
+function taskDetails(id, t = {}) {
   const title = escapeHtml(t.title);
   const desc = escapeHtml(t.description || "");
   const cat = escapeHtml(t.category);
@@ -33,10 +33,10 @@ function taskDetailTemplate(id, t = {}) {
         const txt = typeof s === "string" ? s : s?.text || "";
         const done = typeof s === "object" ? !!s?.done : false;
         const idc = `subtask-${id}-${i}`;
-        subtasksItemTemplate(idc, i, done, txt);
+        return subtasksItemTemplate(idc, i, done, txt);
       })
       .join("") || `<div class="subtasks__item" style="opacity:.6">No subtasks</div>`;
-  taskDetailTemplate(id, t, cat, title, desc, date, assigned, subtasks);
+  return taskDetailTemplate(id, t, cat, title, desc, date, assigned, subtasks);
 }
 
 /**
@@ -96,6 +96,6 @@ function clearColumns() {
  * @type {void}
  */
 taskCardInnerHtml = taskCardInnerHtml;
-taskDetailTemplate = taskDetailTemplate;
+taskDetails = taskDetails;
 getSwapTemplate = getSwapTemplate;
 renderAvatarsWithPriority = renderAvatarsWithPriority;

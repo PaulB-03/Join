@@ -115,7 +115,7 @@ async function openTaskDetail(id) {
   if (!ov || !ct) return;
   showOverlay(ov, { focus: false });
   const task = await window.Board?.fetchSingleTask?.(id);
-  ct.innerHTML = (window.taskDetailTemplate || taskDetailTemplate)(id, task);
+  ct.innerHTML = (window.taskDetails || taskDetails)(id, task);
   wireDetailActions(ov, ct, id, task);
   (firstFocusable(ov) || ov).focus();
 }
