@@ -89,7 +89,6 @@ function showGuestAvatar(userAvatar, guestAvatar) {
 function updateHeaderAvatars(currentUser = {}) {
   const userAvatar = document.getElementById("userAvatar");
   const guestAvatar = document.getElementById("guestAvatar");
-
   const type = currentUser.type || "";
   if (type === "user") {
     showUserAvatar(userAvatar, guestAvatar, currentUser.name || "");

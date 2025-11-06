@@ -1,7 +1,13 @@
+/**
+ * Adds a fallback message to the given array if no upcoming deadlines are found,
+ * and hides the element with the ID "deadLineText".
+ *
+ * @param {Array} nextUpcomingDeadlineArray - The array to which a fallback message will be added.
+ * @returns {number} The new length of the array after adding the fallback message.
+ */
 function stringIfNoDateFound(nextUpcomingDeadlineArray) {
   const deadlineText = document.getElementById("deadLineText");
   deadlineText.style.display = "none";
-
   return nextUpcomingDeadlineArray.push("Nothing to worry");
 }
 
@@ -31,7 +37,6 @@ function filterIrrelevantPrioritys(datesObject, nextUpcomingDeadline) {
   for (let index = 0; index < datesObject.dates.length; index++) {
     let dateToFilter = new Date(datesObject.dates[index]);
     let nextDeadline = new Date(nextUpcomingDeadline);
-
     if (dateToFilter < nextDeadline || dateToFilter > nextDeadline) {
       datesObject.dates.splice(index, 1);
       datesObject.prioritys.splice(index, 1);
@@ -171,19 +176,14 @@ function changeInnerHtmlForDeadline(nextUpcomingDeadline) {
  */
 function updateUrgentCountGlobal(data) {
   const tasks = data && data.tasks ? Object.values(data.tasks) : [];
-
-  // Count only urgent tasks that are not done
   const urgentCount = tasks.filter((t) => String(t?.priority || "").toLowerCase() === "urgent" && t?.state !== "done").length;
-
   const countEl = document.getElementById("urgencyCountBox");
   const img = document.getElementById("urgencyImg");
   const container = document.getElementById("urgencyImgContainer");
   if (!countEl || !img || !container) return;
-
   if (urgentCount > 0) {
     countEl.textContent = urgentCount;
   } else {
     countEl.textContent = "0";
-    // stringIfUrgencyCountZero();
   }
 }

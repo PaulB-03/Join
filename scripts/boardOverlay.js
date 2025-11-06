@@ -222,7 +222,6 @@ function onQuickAddClick(e) {
   const zone = e?.currentTarget?.parentElement?.nextElementSibling;
   const colId = zone && zone.classList.contains("dropzone") ? zone.id : "todo";
   window.selectedState = __COL_TO_STATE[colId] || "toDo";
-
   clearTask();
   if (window.innerWidth <= 850) {
     location.assign("../html/addTask.html");

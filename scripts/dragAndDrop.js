@@ -58,14 +58,11 @@ function onDragStart(e) {
   const box = e.target.closest(".task-container");
   if (!box) return;
   dragged = box;
-
   box.classList.add("is-dragging");
   box.querySelector(".card")?.classList.add("is-dragging");
-
   const clone = createDragImage(box);
   e.dataTransfer.setDragImage(clone, clone.offsetWidth / 2, clone.offsetHeight / 2);
   e.dataTransfer?.setData("text/plain", box.dataset.id || "");
-
   placeholder.style.height = `${box.offsetHeight}px`;
   placeholder.style.width = `${box.offsetWidth}px`;
 }

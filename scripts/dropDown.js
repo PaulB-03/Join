@@ -36,14 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
 function initDropDownMenue() {
   const assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
   const assignedToDropdownCategory = document.getElementById("assignedToDropdownCategory");
-
   if (assignedToDropDownContacts) {
     assignedToDropDownContacts.addEventListener("click", openAssignedToContacts);
   }
   if (assignedToDropdownCategory) {
     assignedToDropdownCategory.addEventListener("click", openCategoryDropDown);
   }
-
   if (document.getElementById("task-overlay-panel")) {
     const addTaskOverlayPanel = document.getElementById("task-overlay-panel");
     addTaskOverlayPanel.addEventListener("click", resetDropDown);
@@ -61,9 +59,7 @@ function openAssignedToContacts(event) {
   const assignedToDropDownContacts = document.getElementById("assignedToDropdownContacts");
   const dropDownArrow = document.getElementById("dropdown-arrow-contacts");
   const dropdownList = document.getElementById("dropdown-list-contacts");
-
   event.stopPropagation();
-
   if (!assignedToDropDownContacts.classList.contains("open")) {
     resetDropDown("category");
     const initialsBox = document.getElementById("assignedToInitials");
@@ -221,20 +217,16 @@ function makeLi() {
 function makeLabel(contact) {
   const label = document.createElement("label");
   label.className = "dropdown-checkbox";
-
   const av = document.createElement("span");
   av.className = "contact-initial";
   av.textContent = initials(contact.name);
   av.style.backgroundColor = colorForName(contact.name);
-
   const nm = document.createElement("span");
   nm.className = "contact-name";
   nm.textContent = contact.name;
-
   const img = document.createElement("img");
   img.className = "checkbox-svg";
   img.src = (window.assignedContacts || []).includes(contact.name) ? "../assets/svg/checked.svg" : "../assets/svg/checkbox.svg";
-
   label.append(av, nm, img);
   return label;
 }
@@ -246,11 +238,9 @@ function makeLabel(contact) {
 function toggleContact(name) {
   const list = getAssignedList();
   toggleName(list, name);
-
   const dd = document.getElementById("assignedToDropdownContacts");
   const isOpen = dd?.classList.contains("open");
-  const before = isOpen && window.__categoryBox ? window.__categoryBox.offsetTop : 0; 
-
+  const before = isOpen && window.__categoryBox ? window.__categoryBox.offsetTop : 0;
   renderAssignedContacts();
   updateDropdownHighlight();
 }
@@ -261,14 +251,12 @@ function toggleContact(name) {
 function updateDropdownHighlight() {
   const list = document.getElementById("dropdown-list-contacts");
   if (!list) return;
-
   const labels = list.querySelectorAll("label.dropdown-checkbox");
   labels.forEach((label) => {
     const name = label.querySelector("span.contact-name")?.textContent?.trim() || "";
     const img = label.querySelector("img.checkbox-svg");
     const sel = window.assignedContacts?.includes(name);
     const item = label.closest(".dropdown-item-contact");
-
     if (img) {
       img.src = sel ? "../assets/svg/checked.svg" : "../assets/svg/checkbox.svg";
       img.classList.toggle("checked", !!sel);

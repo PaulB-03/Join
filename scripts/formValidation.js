@@ -138,6 +138,16 @@ function showSignupSuccess() {
   overlay.classList.add("show");
 }
 
+/**
+ * Resets input error states within a specified container element.
+ *
+ * This function removes the "input-error" class from all inputs and hides
+ * all elements with the "errors" class inside the container with the given ID.
+ * If the container does not exist, the function exits without doing anything.
+ *
+ * @param {string} id - The ID of the container element whose input errors should be reset.
+ * @returns {void}
+ */
 function resetInputErrors(id) {
   const container = document.getElementById(id);
   if (!container) return;

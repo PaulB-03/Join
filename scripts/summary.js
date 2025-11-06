@@ -123,15 +123,11 @@ function createCountObject() {
  */
 function checkState(datesObject, taskState, index, objectToArray) {
   if (taskState === "done") return;
-
   const task = objectToArray[index][1];
-
-  // Only push if priority is "urgent"
   if (task.priority === "urgent") {
     datesObject.dates.push(task.date);
     datesObject.prioritys.push(task.priority);
   }
-
   return datesObject;
 }
 

@@ -5,8 +5,6 @@
 
 const LOGO_KEY = "logoAnimated";
 
-/* ─────────────── Visibility Control ─────────────── */
-
 /**
  * Reveals hidden elements and shows the login screen.
  * @returns {void}
@@ -37,8 +35,6 @@ function unlockLogos() {
     el.style.visibility = "visible";
   });
 }
-
-/* ─────────────── Fade & Animation ─────────────── */
 
 /**
  * Fades in key page elements like header and login screen.
@@ -94,8 +90,6 @@ function animateLogo(startLogo, deltaX, deltaY, scale) {
     startLogo.style.transform = `translate(-50%, -50%) translate(${deltaX}px, ${deltaY}px) scale(${scale})`;
   });
 }
-
-/* ─────────────── Splash Finish Logic ─────────────── */
 
 /**
  * Completes splash animation, hides logos, and sets session flag.
@@ -162,8 +156,6 @@ function showHiddenElements(startLogo, onDone) {
   waitForTransitionOrTimeout(startLogo, handleFinish);
 }
 
-/* ─────────────── Mobile Overlay ─────────────── */
-
 /**
  * Fades out mobile overlay and swaps splash logo.
  * @param {HTMLElement} startLogo - Mobile splash logo element.
@@ -175,8 +167,6 @@ function handleMobileOverlay(startLogo, overlay) {
   setTimeout(() => overlay.classList.add("d_none"), 450);
   setTimeout(() => (startLogo.src = "./assets/svg/join_logo_small.svg"), 200);
 }
-
-/* ─────────────── Main Splash Logic ─────────────── */
 
 /**
  * Runs splash sequence with logo animation and transitions.
@@ -202,8 +192,6 @@ function runSplash(startLogo, finalLogo, overlay, isMobile) {
   }, 1000);
 }
 
-/* ─────────────── Entry Point ─────────────── */
-
 /**
  * Initializes splash animation depending on device and session state.
  * @returns {void}
@@ -213,20 +201,17 @@ function startAnimation() {
   const startLogo = document.querySelector(isMobile ? ".startLogoMobile" : ".startLogo");
   const finalLogo = document.querySelector(isMobile ? ".mobileLogo img" : ".logo img");
   const overlay = isMobile ? document.querySelector(".startLogoMobileBg") : null;
-
   if (!startLogo || !finalLogo) {
     revealHidden();
     hideAllSplash();
     return;
   }
-
   if (sessionStorage.getItem(LOGO_KEY)) {
     revealHidden();
     hideAllSplash();
     unlockLogos();
     return;
   }
-
   runSplash(startLogo, finalLogo, overlay, isMobile);
 }
 

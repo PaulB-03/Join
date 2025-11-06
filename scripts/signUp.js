@@ -27,7 +27,6 @@ function setEmailError(message, show) {
   emailError.innerHTML = message;
 }
 
-// 2. Determine the next index
 /**
  * Finds the next available numeric index for a new user.
  * @param {Object|null} users - Existing users object.
@@ -39,7 +38,6 @@ function checkIndexPosition(users) {
   return numbers.length ? Math.max(...numbers) + 1 : 1;
 }
 
-// 3. Save new user to database
 /**
  * Saves a new user to the backend database.
  * @param {Object} newUser - User object with name/email/password.
@@ -61,7 +59,6 @@ async function saveNewUser(newUser, nextIndex) {
   return newKey;
 }
 
-// 4. Main function
 /**
  * Adds a new user if email is unique and saves to DB.
  * @param {string} name - User's name.
