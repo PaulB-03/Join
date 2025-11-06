@@ -272,3 +272,111 @@ a:hover {
     font-size: 24px;
   }
 }
+
+.date-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.custom-calendar-overlay {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 1000;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 12px;
+  min-width: 280px;
+}
+
+.cal-week,
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal-week div {
+  font: 600 11px/1 sans-serif;
+  color: #666;
+  text-align: center;
+}
+
+.cal-day {
+  height: 32px;
+  border: none;
+  border-radius: 4px;
+  background: #fff;
+  color: #2a3647;
+  cursor: pointer;
+  font: 400 13px/32px sans-serif;
+}
+
+.cal-day:hover {
+  background: #f0f0f0;
+}
+
+.cal-day.today {
+  background: #29abe2;
+  color: #fff;
+  font-weight: 600;
+}
+
+.cal-today {
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid #29abe2;
+  background: #fff;
+  color: #29abe2;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cal-today:hover {
+  background: #29abe2;
+  color: #fff;
+}
+
+.cal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.cal-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: #2a3647;
+}
+
+.cal-nav-group {
+  display: flex;
+  gap: 4px;
+}
+
+.cal-nav {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: #f0f0f0;
+  color: #2a3647;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cal-nav:hover {
+  background: #29abe2;
+  color: #fff;
+}
+
+.cal-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
