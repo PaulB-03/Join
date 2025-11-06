@@ -11,16 +11,11 @@ const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+(?:\s+[a-zA-ZÀ-ÖØ-öø-ÿß
  */
 const emailRegex = /^[\p{L}0-9]+(?:\.[\p{L}0-9]+)*@[\p{L}0-9]+\.[\p{L}]+$/u;
 
-/* ─────────────── DOM References ─────────────── */
-
-/** @type {HTMLFormElement | null} */
 const signupForm = document.getElementById("signUpForm");
-/** @type {HTMLFormElement | null} */
 const signinForm = document.getElementById("signinForm");
 
 const signinEmail = document.getElementById("signinEmail")?.value.toLowerCase();
 const loginError = document.getElementById("loginError");
-/** @type {HTMLInputElement | null} */
 const signinPassword = document.getElementById("signinPassword");
 
 const signupName = document.getElementById("signupName");
