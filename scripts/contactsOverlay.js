@@ -1,19 +1,5 @@
-/**
- * Regex for validating a full name (two or more parts).
- * @constant {RegExp}
- */
 const addNameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+(?:\s+[a-zA-ZÀ-ÖØ-öø-ÿß\s'-]+)+$/;
-
-/**
- * Regex for validating an email address.
- * @constant {RegExp}
- */
 const addEmailRegex = /^[\p{L}0-9]+(?:\.[\p{L}0-9]+)*@[\p{L}0-9]+\.[\p{L}]+$/u;
-
-/**
- * Regex for validating a phone number (optional).
- * @constant {RegExp}
- */
 const addPhoneRegex = /^\s*$|^\+?[0-9\-\*\s]+$|^add phone number$/i;
 
 /**
@@ -127,7 +113,6 @@ function resetAddContactValidationUI() {
 
 /**
  * Delete a contact by id and update the UI.
- * @async
  * @param {string} id - Firebase id of the contact to delete.
  * @returns {Promise<void>}
  */
@@ -159,11 +144,7 @@ async function removeContactFromAllTasks(name) {
       Object.entries(tasks)
         .filter(([_, t]) => t.assignedContacts?.includes(name))
         .map(([id, t]) =>
-          fetch(`${DB_ROOT}/tasks/${id}.json`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ assignedContacts: t.assignedContacts.filter((n) => n !== name) }),
-          })
+          fetch(`${DB_ROOT}/tasks/${id}.json`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ assignedContacts: t.assignedContacts.filter((n) => n !== name) }),})
         )
     );
   } catch (e) {
@@ -192,11 +173,7 @@ function stripId(obj) {
 async function updateContact(id, updates) {
   const existing = contacts.find((c) => c.id === id) || {};
   const payload = stripId({ ...existing, ...updates });
-  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+  const res = await fetch(`${DB_ROOT}/contacts/${id}.json`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload),});
   if (!res.ok) throw new Error("Failed to update contact");
   await loadContacts();
   const updated = contacts.find((c) => c.id === id);
@@ -330,10 +307,7 @@ function wireSave(overlay, contact) {
   overlay.querySelector("#editContactForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!validateEditContactForm(overlay)) return; // <-- shows errors
-    const f = e.currentTarget,
-      n = f.elements.name.value.trim(),
-      em = f.elements.email.value.trim(),
-      ph = (f.elements.phone.value || "").replace(/[^0-9+\-\*\s]/g, "").trim();
+    const f = e.currentTarget, n = f.elements.name.value.trim(), em = f.elements.email.value.trim(), ph = (f.elements.phone.value || "").replace(/[^0-9+\-\*\s]/g, "").trim();
     await updateContact(contact.id, { name: n, email: em, phone: ph });
     closeEditDialog();
   });
@@ -368,8 +342,7 @@ function getById(id) {
 }
 
 /**
- * Opens the Floating Action Button (FAB) action menu.
- * Updates ARIA attributes for accessibility.
+ * Opens the Floating Action Button (FAB) action menu. Updates ARIA attributes for accessibility.
  * @param {HTMLElement} fabContainer - The FAB container element.
  * @param {HTMLElement} toggleButton - The button that toggles the menu.
  * @param {HTMLElement} menu - The menu element containing the actions.
@@ -382,8 +355,7 @@ function openFabMenu(fabContainer, toggleButton, menu) {
 }
 
 /**
- * Closes the Floating Action Button (FAB) action menu.
- * Updates ARIA attributes for accessibility.
+ * Closes the Floating Action Button (FAB) action menu. Updates ARIA attributes for accessibility.
  * @param {HTMLElement} fabContainer - The FAB container element.
  * @param {HTMLElement} toggleButton - The button that toggles the menu.
  * @param {HTMLElement} menu - The menu element containing the actions.
@@ -403,18 +375,11 @@ function closeFabMenu(fabContainer, toggleButton, menu) {
  * @returns {void}
  */
 function toggleFabMenu(fabContainer, toggleButton, menu) {
-  if (fabContainer.classList.contains("is-open")) {
-    closeFabMenu(fabContainer, toggleButton, menu);
-  } else {
-    openFabMenu(fabContainer, toggleButton, menu);
-  }
+  if (fabContainer.classList.contains("is-open")) {closeFabMenu(fabContainer, toggleButton, menu);} else {openFabMenu(fabContainer, toggleButton, menu);}
 }
 
 /**
- * Initializes FAB actions for a given contact:
- * - Edit opens the edit overlay.
- * - Delete removes the contact.
- * - Outside click and Escape key close the menu.
+ * Initializes FAB actions for a given contact, Edit opens the edit overlay, Delete removes the contact, Outside click and Escape key close the menu.
  * @param {Contact} contact - The contact linked to the FAB actions.
  * @returns {void}
  * @see openEdit
@@ -425,19 +390,9 @@ function setupContactActionsFab(contact) {
   const toggleButton = getById("contactActionsToggle");
   const fabMenu = getById("contactActionsMenu");
   if (!fabContainer || !toggleButton || !fabMenu) return;
-  getById("fabEdit").onclick = () => {
-    closeFabMenu(fabContainer, toggleButton, fabMenu);
-    openEdit(contact);
-  };
-  getById("fabDelete").onclick = () => {
-    closeFabMenu(fabContainer, toggleButton, fabMenu);
-    deleteContact(contact.id);
-  };
+  getById("fabEdit").onclick = () => { closeFabMenu(fabContainer, toggleButton, fabMenu); openEdit(contact);};
+  getById("fabDelete").onclick = () => { closeFabMenu(fabContainer, toggleButton, fabMenu); deleteContact(contact.id);};
   toggleButton.onclick = () => toggleFabMenu(fabContainer, toggleButton, fabMenu);
-  document.addEventListener("click", (e) => {
-    if (!fabContainer.contains(e.target)) closeFabMenu(fabContainer, toggleButton, fabMenu);
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeFabMenu(fabContainer, toggleButton, fabMenu);
-  });
+  document.addEventListener("click", (e) => { if (!fabContainer.contains(e.target)) closeFabMenu(fabContainer, toggleButton, fabMenu);});
+  document.addEventListener("keydown", (e) => {if (e.key === "Escape") closeFabMenu(fabContainer, toggleButton, fabMenu);});
 }
