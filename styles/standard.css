@@ -168,10 +168,6 @@ a:hover {
   height: 24px;
 }
 
-.checkBoxInput:focus-within {
-  opacity: 1;
-}
-
 .checkBoxInput {
   position: absolute;
   opacity: 0;
@@ -180,6 +176,14 @@ a:hover {
   margin: 0;
   cursor: pointer;
   z-index: 2;
+}
+
+/* Optional: show visible outline when focused with keyboard */
+.checkBoxInput:focus-within + .checkBoxIcon {
+  outline: 1px solid var(--board-column);
+  outline-offset: 1px;
+  background-color: var(--bottom-gradient);
+  border-radius: 0;
 }
 
 .checkBoxIcon {
