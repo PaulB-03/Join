@@ -320,7 +320,7 @@ header {
     justify-content: center;
     padding: 0;
     gap: 4px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     border-radius: 16px;
   }
@@ -354,11 +354,11 @@ header {
 
 @media (max-width: 340px) {
   .nav-link {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .nav-item span {
-    font-size: 12px;
+    font-size: 16px;
   }
 }
 

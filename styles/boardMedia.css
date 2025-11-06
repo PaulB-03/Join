@@ -253,7 +253,7 @@
     width: 40px;
     border-radius: 10px;
     justify-content: center;
-    font-size: 0;
+    font-size: 16;
     display: inline-flex !important;
   }
 

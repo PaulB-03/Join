@@ -7,7 +7,7 @@
 
 .field-error {
   color: var(--form-error);
-  font-size: 14px;
+  font-size: 16px;
   min-height: 14px;
 }
 

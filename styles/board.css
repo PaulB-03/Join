@@ -42,7 +42,7 @@
   cursor: pointer;
   color: white;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .pill {
@@ -98,7 +98,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 16px;
   border: 2px solid white;
   flex-shrink: 0;
 }
@@ -114,7 +114,7 @@
   border-radius: 100%;
   display: grid;
   place-items: center;
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 800;
   color: #fff;
   margin-right: -6px;
@@ -123,7 +123,7 @@
 
 .avatars .av.more {
   background: #999;
-  font-size: 11px;
+  font-size: 16px;
 }
 
 .av.orange {
@@ -165,7 +165,7 @@
   align-items: center;
   justify-content: space-between;
   color: var(--color-icon);
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .meta-container {
@@ -268,7 +268,7 @@
   justify-content: center;
   color: #fff;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .subtasks,
@@ -280,7 +280,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 15px;
+  font-size: 16px;
   color: #111827;
   line-height: 1.5;
 }
@@ -387,5 +387,5 @@
   top: 52px;
   left: 17px;
   color: var(--form-error);
-  font-size: 14px;
+  font-size: 16px;
 }
