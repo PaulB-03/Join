@@ -184,6 +184,14 @@ a:hover {
   z-index: 2;
 }
 
+/* Optional: show visible outline when focused with keyboard */
+.checkBoxInput:focus-within + .checkBoxIcon {
+  outline: 1px solid var(--board-column);
+  outline-offset: 1px;
+  background-color: var(--bottom-gradient);
+  border-radius: 0;
+}
+
 .checkBoxIcon {
   width: 24px;
   height: 24px;
