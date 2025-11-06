@@ -96,7 +96,7 @@ function buildTaskPayloadFromForm() {
  * @returns {Promise<any>}
  */
 async function persistTask(payload) {
-  const res = await fetch(`${baseURL}tasks.json`, {
+  const res = await fetch(`${DB_ROOT}tasks.json`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -124,14 +124,12 @@ async function createTask(event) {
   }
   if (isCreatingTask) return;
   isCreatingTask = true;
-
   clearInlineErrors();
   if (!validateTaskFormFields()) {
     b?.removeAttribute("disabled");
     isCreatingTask = false;
     return;
   }
-
   try {
     await persistTask(buildTaskPayloadFromForm());
     showAddedToastAndRedirect();

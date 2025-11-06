@@ -1,4 +1,45 @@
 /**
+ * Renders avatar bubbles with background colors and a priority icon.
+ * @param {string[]} [names=[]] - Array of assigned contact names.
+ * @param {string} prio - Priority level (e.g. "urgent", "medium", "low").
+ * @returns {string} HTML markup for avatar row and priority icon.
+ */
+function renderAvatarsWithPriority(names = [], prio) {
+  const MAX_AVATARS = 3;
+  const shown = names.slice(0, MAX_AVATARS);
+  const extra = names.length - shown.length;
+  const avatars = shown.map((n) => `<div class="av" style="background-color:${colorForName(n)}">${initials(n)}</div>`).join("");
+  const more = extra > 0 ? `<div class="av more">+${extra}</div>` : "";
+  const prioIcon = getPriorityIcon(prio);
+  return avatarRowTemplate(avatars, more, prioIcon);
+}
+
+/**
+ * Creates the HTML for the task detail overlay view.
+ * Displays all metadata, assignees, subtasks, and action buttons.
+ * @param {string} id - Task ID.
+ * @param {Object} [t={}] - Task data object.
+ * @returns {string} HTML markup for the task detail overlay.
+ */
+function taskDetailTemplate(id, t = {}) {
+  const title = escapeHtml(t.title);
+  const desc = escapeHtml(t.description || "");
+  const cat = escapeHtml(t.category);
+  const date = formatDate(t.date);
+  const assigned = (t.assignedContacts || []).map((n) => taskAssignedItemTemplate(n)).join("") || `<div class="task-assigned__item" style="opacity:.6">No assignees</div>`;
+  const subtasks =
+    (t.subtasks || [])
+      .map((s, i) => {
+        const txt = typeof s === "string" ? s : s?.text || "";
+        const done = typeof s === "object" ? !!s?.done : false;
+        const idc = `subtask-${id}-${i}`;
+        subtasksItemTemplate(idc, i, done, txt);
+      })
+      .join("") || `<div class="subtasks__item" style="opacity:.6">No subtasks</div>`;
+  taskDetailTemplate(id, t, cat, title, desc, date, assigned, subtasks);
+}
+
+/**
  * Briefly highlights a newly created task card if the current URL contains ?newTask=ID.
  * @returns {void}
  */
@@ -58,4 +99,3 @@ taskCardInnerHtml = taskCardInnerHtml;
 taskDetailTemplate = taskDetailTemplate;
 getSwapTemplate = getSwapTemplate;
 renderAvatarsWithPriority = renderAvatarsWithPriority;
-  

@@ -1,16 +1,12 @@
 /**
- * Renders avatar bubbles with background colors and a priority icon.
- * @param {string[]} [names=[]] - Array of assigned contact names.
- * @param {string} prio - Priority level (e.g. "urgent", "medium", "low").
- * @returns {string} HTML markup for avatar row and priority icon.
+ * Generates an HTML template for a row displaying user avatars and a priority icon.
+ *
+ * @param {string} avatars - The HTML string containing avatar elements (usually generated from user initials and colors).
+ * @param {string} more - The HTML string representing the “+N” avatar element for extra users not shown.
+ * @param {string} prioIcon - The HTML string for the priority icon, or an empty string if none.
+ * @returns {string} HTML string representing the avatar row with the priority icon.
  */
-function renderAvatarsWithPriority(names = [], prio) {
-  const MAX_AVATARS = 3;
-  const shown = names.slice(0, MAX_AVATARS);
-  const extra = names.length - shown.length;
-  const avatars = shown.map((n) => `<div class="av" style="background-color:${colorForName(n)}">${initials(n)}</div>`).join("");
-  const more = extra > 0 ? `<div class="av more">+${extra}</div>` : "";
-  const prioIcon = getPriorityIcon(prio);
+function avatarRowTemplate(avatars, more, prioIcon) {
   return `
     <div class="row">
       <div class="avatars">${avatars}${more}</div>
@@ -55,81 +51,7 @@ function taskCardInnerHtml(t, percent, doneCount, total) {
       </div>
     `
     }
-
     ${renderAvatarsWithPriority(t?.assignedContacts || [], t?.priority)}
-  `;
-}
-
-/**
- * Creates the HTML for the task detail overlay view.
- * Displays all metadata, assignees, subtasks, and action buttons.
- * @param {string} id - Task ID.
- * @param {Object} [t={}] - Task data object.
- * @returns {string} HTML markup for the task detail overlay.
- */
-function taskDetailTemplate(id, t = {}) {
-  const title = escapeHtml(t.title);
-  const desc = escapeHtml(t.description || "");
-  const cat = escapeHtml(t.category);
-  const date = formatDate(t.date);
-
-  const assigned =
-    (t.assignedContacts || [])
-      .map(
-        (n) => `
-      <div class="task-assigned__item">
-        <div class="av" style="background-color:${colorForName(n)}">${initials(n)}</div>
-        <h6 class="task-assigned__name">${escapeHtml(n)}</h6>
-      </div>`
-      )
-      .join("") || `<div class="task-assigned__item" style="opacity:.6">No assignees</div>`;
-
-  const subtasks =
-    (t.subtasks || [])
-      .map((s, i) => {
-        const txt = typeof s === "string" ? s : s?.text || "";
-        const done = typeof s === "object" ? !!s?.done : false;
-        const idc = `subtask-${id}-${i}`;
-        return `
-        <label class="subtasks__item" for="${idc}">
-          <input type="checkbox" id="${idc}" data-sub-index="${i}" ${done ? "checked" : ""}/>
-          <div class="cb cb--unchecked" aria-hidden="true"></div>
-          <div class="cb cb--checked" aria-hidden="true"></div>
-          <span class="txt">${escapeHtml(txt)}</span>
-        </label>`;
-      })
-      .join("") || `<div class="subtasks__item" style="opacity:.6">No subtasks</div>`;
-
-  return `
-    <div class="task-detail" data-id="${id}">
-      <span class="pill ${t?.category?.toLowerCase?.().includes("tech") ? "tech" : "user"}">${cat}</span>
-      <h1 id="taskDetailTitle" class="task-detail__title">${title.replace(/\n/g, "<br>")}</h1>
-
-      ${desc ? `<h6 class="task-detail__desc">${desc}</h6>` : ""}
-
-      <dl class="task-meta">
-        <dt><h6>Due date:</h6></dt><dd><h6>${date}</h6></dd>
-        <dt><h6>Priority:</h6></dt><dd>${getPriorityBadge(t.priority)}</dd>
-      </dl>
-      <div class="task-assigned">
-        <h6 class="section-title">Assigned to:</h6></div>
-        <div class="task-assigned__list task-name">${assigned}</div>
-      </div>
-      <div class="subtasks">
-        <h6div class="section-title"><h6>Subtasks</h6></div>
-        <div class="subtasks__list">${subtasks}</div>
-      </div>
-      <div class="task-actions">
-        <button type="button" id="taskDelete" class="danger">
-          <img class="icon" src="../assets/svg/subdelete.svg" alt="" aria-hidden="true" />
-          <span>Delete</span>
-        </button>
-      <div class="task-divider"></div>
-        <button type="button" id="taskEdit" class="primary">
-          <img class="icon" src="../assets/svg/subedit.svg" alt="" aria-hidden="true" />
-          <span>Edit</span>
-        </button>
-    </div>
   `;
 }
 
@@ -149,5 +71,101 @@ function getSwapTemplate() {
               <li>Done</li>
             </div>
           </ul>
+  `;
+}
+
+/**
+ * Generates the HTML for a single assigned task item.
+ *
+ * @param {string} n - The name of the person assigned to the task.
+ * @returns {string} HTML string representing the assigned person item.
+ */
+function taskAssignedItemTemplate(n) {
+  return `
+      <div class="task-assigned__item">
+        <div class="av" style="background-color:${colorForName(n)}">${initials(n)}</div>
+        <h6 class="task-assigned__name">${escapeHtml(n)}</h6>
+      </div>`;
+}
+
+/**
+ * Generates HTML for a single subtask element including edit and delete actions.
+ *
+ * @param {string} text - The text/title of the subtask.
+ * @returns {string} HTML string representing the subtask with action icons.
+ */
+function createSubtaskElementTemplate(text) {
+  return `
+    <span class="subtaskTitle">${escapeHtml(text)}</span>
+    <div class="subtaskActions">
+      <img src="../assets/svg/subedit.svg" alt="Edit" class="editIcon">
+      <div class="divider1"></div>
+      <img src="../assets/svg/subdelete.svg" alt="Delete" class="deleteIcon">
+    </div>`;
+}
+
+/**
+ * Generates HTML for a subtask list item with a checkbox.
+ *
+ * @param {string} idc - The unique ID for the checkbox input element.
+ * @param {number} i - The index of the subtask in the list.
+ * @param {boolean} done - Whether the subtask is marked as completed.
+ * @param {string} txt - The subtask text/content.
+ * @returns {string} HTML string representing a subtask item with checkbox.
+ */
+function subtasksItemTemplate(idc, i, done, txt) {
+  return `
+        <label class="subtasks__item" for="${idc}">
+          <input type="checkbox" id="${idc}" data-sub-index="${i}" ${done ? "checked" : ""}/>
+          <div class="cb cb--unchecked" aria-hidden="true"></div>
+          <div class="cb cb--checked" aria-hidden="true"></div>
+          <span class="txt">${escapeHtml(txt)}</span>
+        </label>`;
+}
+
+/**
+ * Generates the detailed HTML view of a task, including title, description, metadata,
+ * assigned users, subtasks, and action buttons.
+ *
+ * @param {string|number} id - The unique identifier for the task.
+ * @param {Object} t - The full task object.
+ * @param {string} cat - The task category name.
+ * @param {string} title - The title of the task.
+ * @param {string} desc - Optional description of the task.
+ * @param {string} date - The due date for the task.
+ * @param {string} assigned - HTML string of assigned users (rendered using `taskAssignedItemTemplate`).
+ * @param {string} subtasks - HTML string of subtasks (rendered using `subtasksItemTemplate` or `createSubtaskElementTemplate`).
+ * @returns {string} HTML string representing the detailed task view.
+ */
+function taskDetailTemplate(id, t, cat, title, desc, date, assigned, subtasks) {
+  return `
+    <div class="task-detail" data-id="${id}">
+      <span class="pill ${t?.category?.toLowerCase?.().includes("tech") ? "tech" : "user"}">${cat}</span>
+      <h1 id="taskDetailTitle" class="task-detail__title">${title.replace(/\n/g, "<br>")}</h1>
+      ${desc ? `<h6 class="task-detail__desc">${desc}</h6>` : ""}
+      <dl class="task-meta">
+        <dt><h6>Due date:</h6></dt><dd><h6>${date}</h6></dd>
+        <dt><h6>Priority:</h6></dt><dd>${getPriorityBadge(t.priority)}</dd>
+      </dl>
+      <div class="task-assigned">
+        <h6 class="section-title">Assigned to:</h6>
+        <div class="task-assigned__list task-name">${assigned}</div>
+      </div>
+      <div class="subtasks">
+        <div class="section-title"><h6>Subtasks</h6></div>
+        <div class="subtasks__list">${subtasks}</div>
+      </div>
+      <div class="task-actions">
+        <button type="button" id="taskDelete" class="danger">
+          <img class="icon" src="../assets/svg/subdelete.svg" alt="" aria-hidden="true" />
+          <span>Delete</span>
+        </button>
+        <div class="task-divider"></div>
+        <button type="button" id="taskEdit" class="primary">
+          <img class="icon" src="../assets/svg/subedit.svg" alt="" aria-hidden="true" />
+          <span>Edit</span>
+        </button>
+      </div>
+    </div>
   `;
 }

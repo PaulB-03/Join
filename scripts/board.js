@@ -1,4 +1,3 @@
-const BASE_URL = DB_ROOT;
 const COL_TO_STATE = {
   todo: "toDo",
   "in-progress": "in progress",
@@ -48,7 +47,7 @@ async function init() {
 async function updateTaskState(id, state) {
   __localEdits.add(id);
   setTimeout(() => __localEdits.delete(id), 1500);
-  const res = await fetch(`${BASE_URL}/tasks/${id}.json`, {
+  const res = await fetch(`${DB_ROOT}/tasks/${id}.json`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ state }),
@@ -61,7 +60,7 @@ async function updateTaskState(id, state) {
  * @returns {Promise<Record<string, any>>}
  */
 async function fetchTasks() {
-  const r = await fetch(`${BASE_URL}/tasks.json`);
+  const r = await fetch(`${DB_ROOT}/tasks.json`);
   if (!r.ok) throw new Error(`GET tasks failed: ${r.status}`);
   const data = await r.json();
   if (!data) return {};
@@ -77,7 +76,7 @@ async function fetchTasks() {
  * @returns {Promise<any>}
  */
 async function fetchSingleTask(id) {
-  const r = await fetch(`${BASE_URL}/tasks/${id}.json`);
+  const r = await fetch(`${DB_ROOT}/tasks/${id}.json`);
   if (!r.ok) throw new Error(`GET task ${id} failed: ${r.status}`);
   return (await r.json()) || {};
 }
@@ -88,7 +87,7 @@ async function fetchSingleTask(id) {
  * @returns {Promise<void>}
  */
 async function deleteTask(id) {
-  const r = await fetch(`${BASE_URL}/tasks/${id}.json`, { method: "DELETE" });
+  const r = await fetch(`${DB_ROOT}/tasks/${id}.json`, { method: "DELETE" });
   if (!r.ok) throw new Error(`DELETE task ${id} failed: ${r.status}`);
 }
 
@@ -358,7 +357,9 @@ function removeTaskCard(id) {
  * Unsubscribe RTDB listeners on page unload.
  */
 addEventListener("beforeunload", () => {
-  try { __tasksRef?.off(); } catch (e) {}
+  try {
+    __tasksRef?.off();
+  } catch (e) {}
 });
 
 /**

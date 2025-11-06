@@ -82,13 +82,7 @@ function handleSave(input, wrapper, toggle) {
 window.createSubtaskElement = function (text) {
   const item = document.createElement("li");
   item.className = "subtaskItem";
-  item.innerHTML = `
-    <span class="subtaskTitle">${escapeHtml(text)}</span>
-    <div class="subtaskActions">
-      <img src="../assets/svg/subedit.svg" alt="Edit" class="editIcon">
-      <div class="divider1"></div>
-      <img src="../assets/svg/subdelete.svg" alt="Delete" class="deleteIcon">
-    </div>`;
+  item.innerHTML = createSubtaskElementTemplate(text);
   const title = item.querySelector(".subtaskTitle");
   const actions = item.querySelector(".subtaskActions");
   const del = item.querySelector(".deleteIcon");
