@@ -60,7 +60,7 @@
   background-image: url(../assets/svg/search_default.svg);
   background-size: cover;
   background-position: center;
-  transition: background-image 0.3s ease; /* optional */
+  transition: background-image 0.3s ease; 
 }
 
 .search-icon:hover {
@@ -206,7 +206,6 @@ a.btn:active {
   overflow-y: auto;
   gap: 10px;
   padding: 16px;
-  /* padding-bottom: 200px; */
   scrollbar-width: thin;
 }
 
@@ -242,7 +241,6 @@ a.btn:active {
   align-items: center;
   min-height: 0;
   opacity: 1;
-  /* gap: 16px; */
 }
 
 body.modal-open {
