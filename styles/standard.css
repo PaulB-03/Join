@@ -168,10 +168,6 @@ a:hover {
   height: 24px;
 }
 
-.checkBoxInput:focus-within {
-  opacity: 1;
-}
-
 .checkBoxInput {
   position: absolute;
   opacity: 0;
