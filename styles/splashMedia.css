@@ -77,6 +77,11 @@
   .signupOverlay.show .signupSuccess {
     transform: translateY(25vh);
   }
+
+  .policyErrorMarginLeft {
+    margin-left: 0px;
+    align-self: center;
+  }
 }
 
 @media (max-height: 820px) {
